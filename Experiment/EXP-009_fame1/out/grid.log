@@ -1,0 +1,38 @@
+ours (mlp+infonce, drop .3, emb128)      int_ng  21.94  int_g  30.53  (366s)
+FAME1 (linear+aam, drop .9, emb192)      int_ng  23.40  int_g  32.56  (166s)
+FAME1 no-pca-face (4096 raw)             int_ng  30.72  int_g  37.67  (286s)
+FAME1 + align                            int_ng  24.14  int_g  32.67  (98s)
+FAME1 drop .5                            int_ng  23.51  int_g  31.59  (77s)
+FAME1 drop .7                            int_ng  23.07  int_g  31.11  (75s)
+FAME1 emb128                             int_ng  24.01  int_g  33.04  (78s)
+FAME1 margin .3                          int_ng  23.42  int_g  32.54  (76s)
+FAME1 margin .1                          int_ng  23.41  int_g  32.98  (95s)
+FAME1 scale 16                           int_ng  23.46  int_g  32.46  (83s)
+FAME1 mlp head                           int_ng  27.64  int_g  36.79  (181s)
+FAME1 infonce (isolate the loss)         int_ng  24.27  int_g  33.77  (71s)
+FAME1 100ep                              int_ng  24.13  int_g  32.89  (188s)
+FAME1 200ep                              int_ng  25.54  int_g  34.03  (460s)
+FAME1 100ep lr3e-3                       int_ng  25.05  int_g  33.52  (424s)
+FAME1 100ep + align                      int_ng  25.18  int_g  33.42  (348s)
+ours + aam (swap loss only)              int_ng  22.85  int_g  30.66  (618s)
+ours + drop .9 (swap reg only)           int_ng  26.15  int_g  37.82  (1307s)
+
+                                cfg  int_ng  int_g  proxy  sec
+ours (mlp+infonce, drop .3, emb128)   21.94  30.53  26.24  366
+        ours + aam (swap loss only)   22.85  30.66  26.76  618
+                      FAME1 drop .7   23.07  31.11  27.09   74
+                      FAME1 drop .5   23.51  31.59  27.55   76
+                     FAME1 scale 16   23.46  32.46  27.96   83
+                    FAME1 margin .3   23.42  32.54  27.98   76
+FAME1 (linear+aam, drop .9, emb192)   23.40  32.56  27.98  166
+                      FAME1 + align   24.14  32.67  28.41   97
+                        FAME1 100ep   24.13  32.89  28.51  188
+                    FAME1 margin .1   23.41  32.98  28.19   95
+                       FAME1 emb128   24.01  33.04  28.52   77
+                FAME1 100ep + align   25.18  33.42  29.30  347
+                 FAME1 100ep lr3e-3   25.05  33.52  29.28  404
+   FAME1 infonce (isolate the loss)   24.27  33.77  29.02   71
+                        FAME1 200ep   25.54  34.03  29.79  437
+                     FAME1 mlp head   27.64  36.79  32.21  180
+       FAME1 no-pca-face (4096 raw)   30.72  37.67  34.19  286
+     ours + drop .9 (swap reg only)   26.15  37.82  31.98 1306

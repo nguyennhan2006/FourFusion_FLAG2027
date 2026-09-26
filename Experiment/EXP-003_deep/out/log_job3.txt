@@ -1,0 +1,22 @@
+{'cfg': 'B_infonce_sg_e128', 'seed': 1, 'ep': 21, 'int_ng': np.float64(29.833333333333336), 'int_g': np.float64(30.349999999999998), 'last_int_g': np.float64(30.800000000000004), 'last_int_ng': np.float64(30.349999999999998), 'sec': 15}
+{'cfg': 'B_infonce_sg_e128', 'seed': 2, 'ep': 8, 'int_ng': np.float64(29.166666666666664), 'int_g': np.float64(32.233333333333334), 'last_int_g': np.float64(33.28333333333333), 'last_int_ng': np.float64(28.933333333333334), 'sec': 15}
+{'cfg': 'B_infonce_sg_e128', 'seed': 3, 'ep': 2, 'int_ng': np.float64(32.46666666666667), 'int_g': np.float64(35.416666666666664), 'last_int_g': np.float64(36.35), 'last_int_ng': np.float64(34.56666666666667), 'sec': 17}
+{'cfg': 'AB_ce_opl_sg_e128', 'seed': 1, 'ep': 11, 'int_ng': np.float64(25.900000000000002), 'int_g': np.float64(32.53333333333334), 'last_int_g': np.float64(33.483333333333334), 'last_int_ng': np.float64(25.350000000000005), 'sec': 16}
+{'cfg': 'AB_ce_opl_sg_e128', 'seed': 2, 'ep': 31, 'int_ng': np.float64(25.983333333333334), 'int_g': np.float64(38.76666666666667), 'last_int_g': np.float64(38.800000000000004), 'last_int_ng': np.float64(26.1), 'sec': 18}
+{'cfg': 'AB_ce_opl_sg_e128', 'seed': 3, 'ep': 9, 'int_ng': np.float64(28.683333333333326), 'int_g': np.float64(39.1), 'last_int_g': np.float64(40.733333333333334), 'last_int_ng': np.float64(29.600000000000005), 'sec': 21}
+{'cfg': 'C_infonce_e64_ce', 'seed': 1, 'ep': 24, 'int_ng': np.float64(22.599999999999998), 'int_g': np.float64(31.366666666666664), 'last_int_g': np.float64(31.75), 'last_int_ng': np.float64(22.483333333333334), 'sec': 15}
+{'cfg': 'C_infonce_e64_ce', 'seed': 2, 'ep': 21, 'int_ng': np.float64(24.06666666666667), 'int_g': np.float64(34.71666666666667), 'last_int_g': np.float64(35.71666666666666), 'last_int_ng': np.float64(24.5), 'sec': 15}
+{'cfg': 'C_infonce_e64_ce', 'seed': 3, 'ep': 21, 'int_ng': np.float64(26.833333333333332), 'int_g': np.float64(36.74999999999999), 'last_int_g': np.float64(37.56666666666667), 'last_int_ng': np.float64(27.016666666666666), 'sec': 16}
+{'cfg': 'A_ce_opl_e64_nodedup', 'seed': 1, 'ep': 12, 'int_ng': np.float64(25.316666666666666), 'int_g': np.float64(33.43333333333334), 'last_int_g': np.float64(35.53333333333333), 'last_int_ng': np.float64(28.066666666666663), 'sec': 22}
+{'cfg': 'A_ce_opl_e64_nodedup', 'seed': 2, 'ep': 14, 'int_ng': np.float64(24.05), 'int_g': np.float64(35.266666666666666), 'last_int_g': np.float64(36.23333333333333), 'last_int_ng': np.float64(24.86666666666667), 'sec': 22}
+{'cfg': 'A_ce_opl_e64_nodedup', 'seed': 3, 'ep': 9, 'int_ng': np.float64(25.26666666666667), 'int_g': np.float64(36.73333333333333), 'last_int_g': np.float64(39.416666666666664), 'last_int_ng': np.float64(30.783333333333335), 'sec': 23}
+{'cfg': 'C_infonce_e64_tau0.2', 'seed': 1, 'ep': 39, 'int_ng': np.float64(22.85), 'int_g': np.float64(32.45), 'last_int_g': np.float64(32.550000000000004), 'last_int_ng': np.float64(22.883333333333333), 'sec': 13}
+{'cfg': 'C_infonce_e64_tau0.2', 'seed': 2, 'ep': 19, 'int_ng': np.float64(24.0), 'int_g': np.float64(35.73333333333333), 'last_int_g': np.float64(36.266666666666666), 'last_int_ng': np.float64(23.883333333333333), 'sec': 10}
+{'cfg': 'C_infonce_e64_tau0.2', 'seed': 3, 'ep': 37, 'int_ng': np.float64(26.333333333333332), 'int_g': np.float64(37.35000000000001), 'last_int_g': np.float64(37.71666666666667), 'last_int_ng': np.float64(26.616666666666667), 'sec': 10}
+                      int_ng  int_g     ep
+cfg                                       
+B_infonce_sg_e128      30.49  32.67  10.33
+C_infonce_e64_ce       24.50  34.28  22.00
+A_ce_opl_e64_nodedup   24.88  35.14  11.67
+C_infonce_e64_tau0.2   24.39  35.18  31.67
+AB_ce_opl_sg_e128      26.86  36.80  17.00

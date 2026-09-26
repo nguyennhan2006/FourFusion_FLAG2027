@@ -1,0 +1,12 @@
+seed 1 done
+seed 2 done
+seed 3 done
+protocol  gender  no_gender
+align                      
+mean       32.39      22.48
+std        32.86      23.39
+mean_v     33.55      23.49
+std_v      33.61      23.69
+none       34.07      23.82
+coral_v    40.19      31.85
+coral      42.95      36.97

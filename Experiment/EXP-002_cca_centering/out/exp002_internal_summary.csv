@@ -1,0 +1,15 @@
+,,,mean,mean,std,std
+protocol,,,gender,no_gender,gender,no_gender
+cfg,center,snorm,,,,
+k32,file,asnorm,32.62,26.64,1.42,0.57
+k32,file,raw,33.23,26.73,2.21,0.58
+k32,file_voice_only,asnorm,32.7,26.82,1.08,0.65
+k32,file_voice_only,raw,33.81,27.07,1.81,0.31
+k32,none,asnorm,33.29,27.28,1.37,1.08
+k32,none,raw,34.67,27.67,2.19,0.37
+k4,file,asnorm,33.09,23.38,2.55,1.36
+k4,file,raw,35.48,24.01,3.44,0.83
+k4,file_voice_only,asnorm,33.08,23.57,2.42,1.2
+k4,file_voice_only,raw,35.19,24.39,3.37,0.86
+k4,none,asnorm,33.19,23.42,2.61,1.35
+k4,none,raw,35.55,24.52,3.7,0.19

@@ -1,0 +1,25 @@
+# Organiser data (MAV-Celeb v4): never redistribute
+Input/
+kaggle_upload/
+Experiment/EDA-000_raw/data/
+
+# Extracted features and model artefacts (large, re-creatable on Kaggle)
+*.npy
+kaggle/output/
+kaggle/NB4/feats_v3/
+_ecapa*/
+_vggface/
+
+# Dev-derived outputs: kept private while the challenge is running (decision 2026-09-26).
+# pseudo-labels agree with the true dev labels on 96-99% of trials; zips / npz / matrices are our dev scores.
+*.zip
+*.npz
+sub_score_v4_*.txt
+Experiment/GRAPH-01/mats/
+
+# Python / tooling
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.vscode/
+.claude/

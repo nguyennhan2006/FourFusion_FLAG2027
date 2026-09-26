@@ -1,0 +1,14 @@
+﻿gender/Bangla n=1447
+   static, simplex step 0.05 (fuse03.py)    OOF gain vs 0.5/0.5 +1.09   folds improved 3
+   static, simplex step 0.02                OOF gain vs 0.5/0.5 +0.76   folds improved 4
+   static, sigmoid(b) b step 0.25           OOF gain vs 0.5/0.5 -0.42   folds improved 3
+   duration gate (2 param, FUSE-03)         OOF gain vs 0.5/0.5 +1.25   folds improved 4
+   duration SHUFFLED, mean of 5 perms       OOF gain vs 0.5/0.5 +0.28   folds improved [3, 3, 2, 3, 3]
+   disagreement gate (2 param)              OOF gain vs 0.5/0.5 +0.46   folds improved 3
+no_gender/Bangla n=1379
+   static, simplex step 0.05 (fuse03.py)    OOF gain vs 0.5/0.5 -0.58   folds improved 1
+   static, simplex step 0.02                OOF gain vs 0.5/0.5 -0.07   folds improved 2
+   static, sigmoid(b) b step 0.25           OOF gain vs 0.5/0.5 -0.00   folds improved 2
+   duration gate (2 param, FUSE-03)         OOF gain vs 0.5/0.5 +0.30   folds improved 2
+   duration SHUFFLED, mean of 5 perms       OOF gain vs 0.5/0.5 +0.62   folds improved [3, 4, 4, 4, 3]
+   disagreement gate (2 param)              OOF gain vs 0.5/0.5 +0.10   folds improved 2

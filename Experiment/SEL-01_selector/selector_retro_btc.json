@@ -1,0 +1,62 @@
+{
+ "thr": {
+  "face": 0.75,
+  "voice": 0.7
+ },
+ "ari": {
+  "face": 0.8183835123713055,
+  "voice": 0.9575068340250869
+ },
+ "labels": [
+  {
+   "cell": "no_gender/English",
+   "rows": 1008,
+   "labelled": 646,
+   "pos_rate": 0.478
+  },
+  {
+   "cell": "gender/English",
+   "rows": 982,
+   "labelled": 640,
+   "pos_rate": 0.48
+  },
+  {
+   "cell": "no_gender/Bangla",
+   "rows": 1406,
+   "labelled": 927,
+   "pos_rate": 0.482
+  },
+  {
+   "cell": "gender/Bangla",
+   "rows": 1468,
+   "labelled": 996,
+   "pos_rate": 0.516
+  }
+ ],
+ "summary": [
+  {
+   "cell": "no_gender/English",
+   "spearman": 0.857,
+   "pair_acc": "30/36",
+   "top4_pair_acc": "5/10"
+  },
+  {
+   "cell": "no_gender/Bangla",
+   "spearman": 0.921,
+   "pair_acc": "32/36",
+   "top4_pair_acc": "8/10"
+  },
+  {
+   "cell": "gender/English",
+   "spearman": 0.983,
+   "pair_acc": "35/36",
+   "top4_pair_acc": "9/10"
+  },
+  {
+   "cell": "gender/Bangla",
+   "spearman": 0.867,
+   "pair_acc": "32/36",
+   "top4_pair_acc": "6/10"
+  }
+ ]
+}

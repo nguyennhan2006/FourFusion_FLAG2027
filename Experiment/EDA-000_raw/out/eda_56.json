@@ -1,0 +1,278 @@
+{
+ "DEV_INTEGRITY": {
+  "no_gender/English": {
+   "face_shape": [
+    1008,
+    4096
+   ],
+   "voice_shape": [
+    1008,
+    192
+   ],
+   "nan": 0,
+   "face_unique": 983,
+   "voice_unique": 822
+  },
+  "no_gender/Bangla": {
+   "face_shape": [
+    1406,
+    4096
+   ],
+   "voice_shape": [
+    1406,
+    192
+   ],
+   "nan": 0,
+   "face_unique": 1358,
+   "voice_unique": 1169
+  },
+  "gender/English": {
+   "face_shape": [
+    982,
+    4096
+   ],
+   "voice_shape": [
+    982,
+    192
+   ],
+   "nan": 0,
+   "face_unique": 938,
+   "voice_unique": 791
+  },
+  "gender/Bangla": {
+   "face_shape": [
+    1468,
+    4096
+   ],
+   "voice_shape": [
+    1468,
+    192
+   ],
+   "nan": 0,
+   "face_unique": 1407,
+   "voice_unique": 1210
+  },
+  "face_overlap_nogender_vs_gender_English": [
+   26,
+   983,
+   938
+  ],
+  "face_overlap_nogender_vs_gender_Bangla": [
+   74,
+   1358,
+   1407
+  ],
+  "face_overlap_English_vs_Bangla_nogender": [
+   38,
+   983,
+   1358
+  ],
+  "face_overlap_dev_vs_train_nogender_English": [
+   0,
+   983,
+   6041
+  ],
+  "voice_overlap_nogender_vs_gender_English": [
+   98,
+   822,
+   791
+  ],
+  "voice_overlap_nogender_vs_gender_Bangla": [
+   180,
+   1169,
+   1210
+  ],
+  "voice_overlap_English_vs_Bangla_nogender": [
+   0,
+   822,
+   1169
+  ],
+  "voice_overlap_dev_vs_train_nogender_English": [
+   0,
+   822,
+   4029
+  ]
+ },
+ "EDA6_shift_table": {
+  "face|train": {
+   "norm_mean": 119.08995819091797,
+   "norm_std": 19.40251922607422,
+   "frac_zero": 0.8889640531635505,
+   "centroid_dist_pca": 0.0,
+   "centroid_dist_pca_in_train_sd": 0.0,
+   "maha_mean": 7.650455913893898,
+   "maha_p95": 12.017683243214767,
+   "var_ratio_vs_train": 1.0,
+   "knn5_cos_dist_to_train": NaN,
+   "mmd_vs_train": 0.0,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": 0.5183997308970515,
+   "mmd_train_vs_heldout_speakers_ref": 0.026580095291137695
+  },
+  "face|no_gender/English": {
+   "norm_mean": 116.5436782836914,
+   "norm_std": 22.83405113220215,
+   "frac_zero": 0.8901418050130209,
+   "centroid_dist_pca": 5.345489978790283,
+   "centroid_dist_pca_in_train_sd": 0.9798208475112915,
+   "maha_mean": 5.665038596795061,
+   "maha_p95": 8.745641038958672,
+   "var_ratio_vs_train": 0.5003302693367004,
+   "knn5_cos_dist_to_train": 0.5529655329291783,
+   "mmd_vs_train": 0.02815389633178711,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": NaN,
+   "mmd_train_vs_heldout_speakers_ref": NaN
+  },
+  "face|no_gender/Bangla": {
+   "norm_mean": 116.11424255371094,
+   "norm_std": 23.090316772460938,
+   "frac_zero": 0.8872143242131935,
+   "centroid_dist_pca": 5.765933513641357,
+   "centroid_dist_pca_in_train_sd": 1.0458437204360962,
+   "maha_mean": 5.838889307387731,
+   "maha_p95": 8.817920875146179,
+   "var_ratio_vs_train": 0.5357205271720886,
+   "knn5_cos_dist_to_train": 0.5534600281444078,
+   "mmd_vs_train": 0.025803208351135254,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": NaN,
+   "mmd_train_vs_heldout_speakers_ref": NaN
+  },
+  "face|gender/English": {
+   "norm_mean": 118.52825164794922,
+   "norm_std": 22.318939208984375,
+   "frac_zero": 0.8877579636583504,
+   "centroid_dist_pca": 5.423325061798096,
+   "centroid_dist_pca_in_train_sd": 1.0136234760284424,
+   "maha_mean": 5.809026367394718,
+   "maha_p95": 8.703191709384807,
+   "var_ratio_vs_train": 0.5224215388298035,
+   "knn5_cos_dist_to_train": 0.5475226807618578,
+   "mmd_vs_train": 0.025617003440856934,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": NaN,
+   "mmd_train_vs_heldout_speakers_ref": NaN
+  },
+  "face|gender/Bangla": {
+   "norm_mean": 114.87979125976562,
+   "norm_std": 22.360973358154297,
+   "frac_zero": 0.8879170015007664,
+   "centroid_dist_pca": 5.968513488769531,
+   "centroid_dist_pca_in_train_sd": 1.033170223236084,
+   "maha_mean": 5.794962253039544,
+   "maha_p95": 8.84447007662935,
+   "var_ratio_vs_train": 0.5270707011222839,
+   "knn5_cos_dist_to_train": 0.5543951228139186,
+   "mmd_vs_train": 0.02691483497619629,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": NaN,
+   "mmd_train_vs_heldout_speakers_ref": NaN
+  },
+  "voice|train": {
+   "norm_mean": 137.22390747070312,
+   "norm_std": 14.473596572875977,
+   "frac_zero": 0.0,
+   "centroid_dist_pca": 0.0,
+   "centroid_dist_pca_in_train_sd": 0.0,
+   "maha_mean": 7.928699267598459,
+   "maha_p95": 9.75687851629396,
+   "var_ratio_vs_train": 1.0,
+   "knn5_cos_dist_to_train": NaN,
+   "mmd_vs_train": 0.0,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": 0.5401417645248207,
+   "mmd_train_vs_heldout_speakers_ref": 0.03253531455993652
+  },
+  "voice|no_gender/English": {
+   "norm_mean": 137.4231719970703,
+   "norm_std": 13.333120346069336,
+   "frac_zero": 0.0,
+   "centroid_dist_pca": 3.1022677421569824,
+   "centroid_dist_pca_in_train_sd": 2.178379774093628,
+   "maha_mean": 8.532947388550381,
+   "maha_p95": 10.377005574597025,
+   "var_ratio_vs_train": 0.8063143491744995,
+   "knn5_cos_dist_to_train": 0.5568558838041056,
+   "mmd_vs_train": 0.02442455291748047,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": NaN,
+   "mmd_train_vs_heldout_speakers_ref": NaN
+  },
+  "voice|no_gender/Bangla": {
+   "norm_mean": 139.9322509765625,
+   "norm_std": 14.813260078430176,
+   "frac_zero": 0.0,
+   "centroid_dist_pca": 3.38724946975708,
+   "centroid_dist_pca_in_train_sd": 2.3869400024414062,
+   "maha_mean": 8.641487521191438,
+   "maha_p95": 10.243969308581772,
+   "var_ratio_vs_train": 0.8202054500579834,
+   "knn5_cos_dist_to_train": 0.5429794138051028,
+   "mmd_vs_train": 0.02732837200164795,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": NaN,
+   "mmd_train_vs_heldout_speakers_ref": NaN
+  },
+  "voice|gender/English": {
+   "norm_mean": 138.1073760986328,
+   "norm_std": 13.50220012664795,
+   "frac_zero": 0.0,
+   "centroid_dist_pca": 2.9858059883117676,
+   "centroid_dist_pca_in_train_sd": 2.1253182888031006,
+   "maha_mean": 8.530655876491224,
+   "maha_p95": 10.490494227959843,
+   "var_ratio_vs_train": 0.8162437677383423,
+   "knn5_cos_dist_to_train": 0.549521169630913,
+   "mmd_vs_train": 0.02224278450012207,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": NaN,
+   "mmd_train_vs_heldout_speakers_ref": NaN
+  },
+  "voice|gender/Bangla": {
+   "norm_mean": 140.08233642578125,
+   "norm_std": 15.393780708312988,
+   "frac_zero": 0.0,
+   "centroid_dist_pca": 3.4212331771850586,
+   "centroid_dist_pca_in_train_sd": 2.409226417541504,
+   "maha_mean": 8.670566272316671,
+   "maha_p95": 10.387021485788026,
+   "var_ratio_vs_train": 0.8139752745628357,
+   "knn5_cos_dist_to_train": 0.5479070543430806,
+   "mmd_vs_train": 0.028757691383361816,
+   "knn5_cos_dist_to_train(heldout_speakers_ref)": NaN,
+   "mmd_train_vs_heldout_speakers_ref": NaN
+  }
+ },
+ "EDA5": {
+  "face_mmd_En_vs_Bn": 0.005337834358215332,
+  "face_centroid_dist_En_Bn_in_train_sd": 0.5899531245231628,
+  "face_language_probe_acc(5fold, optimistic)": 0.6132843989358777,
+  "face_knn5_Bn_to_En": 0.1962095854924467,
+  "face_knn5_En_to_En(loo-ish)": 0.19976010918617249,
+  "face_knn5_Bn_to_Bn(loo-ish)": 0.17190447449684143,
+  "voice_mmd_En_vs_Bn": 0.03318178653717041,
+  "voice_centroid_dist_En_Bn_in_train_sd": 2.583374500274658,
+  "voice_language_probe_acc(5fold, optimistic)": 0.8838400179327438,
+  "voice_knn5_Bn_to_En": 0.41526482467362674,
+  "voice_knn5_En_to_En(loo-ish)": 0.18209369480609894,
+  "voice_knn5_Bn_to_Bn(loo-ish)": 0.18931137025356293,
+  "face_train_same_speaker_cos_mean": 0.45638817506756946,
+  "face_train_diff_speaker_cos_mean": 0.0011997437104582787,
+  "face_Bn_nearest_En_cos_mean": 0.8371894359588623,
+  "face_frac_Bn_with_En_nn_cos>0.6": 0.9610299234516354
+ },
+ "GENDER_PROTOCOL_SANITY": {
+  "no_gender/English": {
+   "face_voice_gender_agree": 0.6765873015873016,
+   "face_pred_male_frac": 0.5367063492063492,
+   "voice_pred_male_frac": 0.5684523809523809
+  },
+  "no_gender/Bangla": {
+   "face_voice_gender_agree": 0.6849217638691323,
+   "face_pred_male_frac": 0.6258890469416786,
+   "voice_pred_male_frac": 0.6294452347083926
+  },
+  "gender/English": {
+   "face_voice_gender_agree": 0.8329938900203666,
+   "face_pred_male_frac": 0.49287169042769857,
+   "voice_pred_male_frac": 0.5417515274949084
+  },
+  "gender/Bangla": {
+   "face_voice_gender_agree": 0.8916893732970027,
+   "face_pred_male_frac": 0.6743869209809265,
+   "voice_pred_male_frac": 0.6641689373297003
+  }
+ }
+}

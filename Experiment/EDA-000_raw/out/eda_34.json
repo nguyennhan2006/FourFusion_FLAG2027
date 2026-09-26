@@ -1,0 +1,420 @@
+{
+ "EDA3": {
+  "config": {
+   "cca_k32": {
+    "k": 32,
+    "reg": 0.1,
+    "pca_x": 256,
+    "canon_corr_top5": [
+     0.950437613090002,
+     0.9311078677989746,
+     0.920042815286271,
+     0.9030985945272776,
+     0.8990806365551474
+    ],
+    "canon_corr_mean": 0.8293165159947549
+   },
+   "cca_k64": {
+    "k": 64,
+    "reg": 0.1,
+    "pca_x": 256,
+    "canon_corr_top5": [
+     0.950437613090002,
+     0.9311078677989746,
+     0.920042815286271,
+     0.9030985945272776,
+     0.8990806365551474
+    ],
+    "canon_corr_mean": 0.6525256212199719
+   },
+   "cca_k128": {
+    "k": 128,
+    "reg": 0.1,
+    "pca_x": 512,
+    "pca_y": null,
+    "canon_corr_top5": [
+     0.9565317603762368,
+     0.9403325534725183,
+     0.9303865504777555,
+     0.9148943339099365,
+     0.9113814936513404
+    ],
+    "canon_corr_mean": 0.47935266239936136
+   },
+   "cca_k64_pca512": {
+    "k": 64,
+    "reg": 0.1,
+    "pca_x": 512,
+    "canon_corr_top5": [
+     0.9565317603762368,
+     0.9403325534725183,
+     0.9303865504777555,
+     0.9148943339099365,
+     0.9113814936513404
+    ],
+    "canon_corr_mean": 0.6897980384696454
+   }
+  },
+  "per_seed": [
+   {
+    "seed": 1,
+    "cfg": "cca_k64",
+    "split": "val",
+    "protocol": "no_gender",
+    "eer": 34.93,
+    "auc": 70.91,
+    "pos_d": 1.79,
+    "neg_d": 2.02,
+    "margin": 0.23,
+    "cohen_d": 0.78
+   },
+   {
+    "seed": 1,
+    "cfg": "cca_k64",
+    "split": "val",
+    "protocol": "gender",
+    "eer": 37.07,
+    "auc": 67.95,
+    "pos_d": 1.79,
+    "neg_d": 1.99,
+    "margin": 0.2,
+    "cohen_d": 0.66
+   },
+   {
+    "seed": 1,
+    "cfg": "cca_k64",
+    "split": "train",
+    "protocol": "no_gender",
+    "eer": 1.83,
+    "auc": 99.62,
+    "pos_d": 0.75,
+    "neg_d": 2.03,
+    "margin": 1.28,
+    "cohen_d": 4.62
+   },
+   {
+    "seed": 1,
+    "cfg": "cca_k64",
+    "split": "train",
+    "protocol": "gender",
+    "eer": 2.1,
+    "auc": 99.58,
+    "pos_d": 0.75,
+    "neg_d": 2.03,
+    "margin": 1.28,
+    "cohen_d": 4.54
+   },
+   {
+    "seed": 2,
+    "cfg": "cca_k64",
+    "split": "val",
+    "protocol": "no_gender",
+    "eer": 40.73,
+    "auc": 64.13,
+    "pos_d": 1.83,
+    "neg_d": 2.01,
+    "margin": 0.18,
+    "cohen_d": 0.56
+   },
+   {
+    "seed": 2,
+    "cfg": "cca_k64",
+    "split": "val",
+    "protocol": "gender",
+    "eer": 43.83,
+    "auc": 60.19,
+    "pos_d": 1.83,
+    "neg_d": 1.97,
+    "margin": 0.14,
+    "cohen_d": 0.42
+   },
+   {
+    "seed": 2,
+    "cfg": "cca_k64",
+    "split": "train",
+    "protocol": "no_gender",
+    "eer": 2.28,
+    "auc": 99.43,
+    "pos_d": 0.76,
+    "neg_d": 2.03,
+    "margin": 1.27,
+    "cohen_d": 4.49
+   },
+   {
+    "seed": 2,
+    "cfg": "cca_k64",
+    "split": "train",
+    "protocol": "gender",
+    "eer": 2.63,
+    "auc": 99.36,
+    "pos_d": 0.76,
+    "neg_d": 2.02,
+    "margin": 1.26,
+    "cohen_d": 4.38
+   },
+   {
+    "seed": 3,
+    "cfg": "cca_k64",
+    "split": "val",
+    "protocol": "no_gender",
+    "eer": 37.03,
+    "auc": 68.46,
+    "pos_d": 1.81,
+    "neg_d": 2.0,
+    "margin": 0.19,
+    "cohen_d": 0.69
+   },
+   {
+    "seed": 3,
+    "cfg": "cca_k64",
+    "split": "val",
+    "protocol": "gender",
+    "eer": 39.78,
+    "auc": 63.82,
+    "pos_d": 1.81,
+    "neg_d": 1.95,
+    "margin": 0.15,
+    "cohen_d": 0.51
+   },
+   {
+    "seed": 3,
+    "cfg": "cca_k64",
+    "split": "train",
+    "protocol": "no_gender",
+    "eer": 1.88,
+    "auc": 99.69,
+    "pos_d": 0.74,
+    "neg_d": 2.02,
+    "margin": 1.28,
+    "cohen_d": 4.63
+   },
+   {
+    "seed": 3,
+    "cfg": "cca_k64",
+    "split": "train",
+    "protocol": "gender",
+    "eer": 2.15,
+    "auc": 99.64,
+    "pos_d": 0.74,
+    "neg_d": 2.02,
+    "margin": 1.28,
+    "cohen_d": 4.52
+   }
+  ],
+  "summary": {
+   "cca_k128|train|gender": {
+    "eer_mean": 7.94,
+    "eer_std": 0.29,
+    "auc": 96.81,
+    "margin": 0.72,
+    "cohen_d": 2.62
+   },
+   "cca_k128|train|no_gender": {
+    "eer_mean": 7.48,
+    "eer_std": 0.25,
+    "auc": 97.0,
+    "margin": 0.72,
+    "cohen_d": 2.65
+   },
+   "cca_k128|val|gender": {
+    "eer_mean": 46.08,
+    "eer_std": 1.6,
+    "auc": 55.59,
+    "margin": 0.04,
+    "cohen_d": 0.21
+   },
+   "cca_k128|val|no_gender": {
+    "eer_mean": 44.57,
+    "eer_std": 1.0,
+    "auc": 57.78,
+    "margin": 0.06,
+    "cohen_d": 0.28
+   },
+   "cca_k32|train|gender": {
+    "eer_mean": 1.33,
+    "eer_std": 0.36,
+    "auc": 99.77,
+    "margin": 1.7,
+    "cohen_d": 6.44
+   },
+   "cca_k32|train|no_gender": {
+    "eer_mean": 1.06,
+    "eer_std": 0.32,
+    "auc": 99.81,
+    "margin": 1.73,
+    "cohen_d": 7.01
+   },
+   "cca_k32|val|gender": {
+    "eer_mean": 36.56,
+    "eer_std": 3.26,
+    "auc": 69.2,
+    "margin": 0.31,
+    "cohen_d": 0.73
+   },
+   "cca_k32|val|no_gender": {
+    "eer_mean": 30.31,
+    "eer_std": 1.31,
+    "auc": 75.74,
+    "margin": 0.41,
+    "cohen_d": 0.99
+   },
+   "cca_k64|train|gender": {
+    "eer_mean": 2.29,
+    "eer_std": 0.29,
+    "auc": 99.53,
+    "margin": 1.27,
+    "cohen_d": 4.48
+   },
+   "cca_k64|train|no_gender": {
+    "eer_mean": 2.0,
+    "eer_std": 0.25,
+    "auc": 99.58,
+    "margin": 1.28,
+    "cohen_d": 4.58
+   },
+   "cca_k64|val|gender": {
+    "eer_mean": 40.23,
+    "eer_std": 3.41,
+    "auc": 63.98,
+    "margin": 0.16,
+    "cohen_d": 0.53
+   },
+   "cca_k64|val|no_gender": {
+    "eer_mean": 37.57,
+    "eer_std": 2.94,
+    "auc": 67.83,
+    "margin": 0.2,
+    "cohen_d": 0.68
+   },
+   "cca_k64_pca512|train|gender": {
+    "eer_mean": 2.01,
+    "eer_std": 0.27,
+    "auc": 99.59,
+    "margin": 1.28,
+    "cohen_d": 4.66
+   },
+   "cca_k64_pca512|train|no_gender": {
+    "eer_mean": 1.88,
+    "eer_std": 0.33,
+    "auc": 99.62,
+    "margin": 1.29,
+    "cohen_d": 4.74
+   },
+   "cca_k64_pca512|val|gender": {
+    "eer_mean": 42.14,
+    "eer_std": 3.54,
+    "auc": 61.67,
+    "margin": 0.14,
+    "cohen_d": 0.45
+   },
+   "cca_k64_pca512|val|no_gender": {
+    "eer_mean": 40.04,
+    "eer_std": 3.91,
+    "auc": 64.36,
+    "margin": 0.16,
+    "cohen_d": 0.55
+   }
+  },
+  "sanity_shuffled_labels_eer": 49.133333333333326
+ },
+ "EDA4": {
+  "cca_negative_anatomy_mean": {
+   "seed": 2.0,
+   "pos_mean": 1.811,
+   "neg_same_mean": 1.973,
+   "neg_cross_mean": 2.043,
+   "eer_same_gender_neg": 40.268,
+   "eer_cross_gender_neg": 35.509,
+   "frac_neg_same_gender": 0.456
+  },
+  "cca_negative_anatomy_per_seed": [
+   {
+    "seed": 1,
+    "pos_mean": 1.794,
+    "neg_same_mean": 2.001,
+    "neg_cross_mean": 2.042,
+    "eer_same_gender_neg": 36.372,
+    "eer_cross_gender_neg": 33.916,
+    "frac_neg_same_gender": 0.45
+   },
+   {
+    "seed": 2,
+    "pos_mean": 1.831,
+    "neg_same_mean": 1.967,
+    "neg_cross_mean": 2.046,
+    "eer_same_gender_neg": 44.165,
+    "eer_cross_gender_neg": 38.68,
+    "frac_neg_same_gender": 0.449
+   },
+   {
+    "seed": 3,
+    "pos_mean": 1.808,
+    "neg_same_mean": 1.95,
+    "neg_cross_mean": 2.039,
+    "eer_same_gender_neg": 40.266,
+    "eer_cross_gender_neg": 33.931,
+    "frac_neg_same_gender": 0.469
+   }
+  ],
+  "gender_probe": {
+   "face": {
+    "acc_mean": 0.9337195901112093,
+    "acc_std": 0.02372158974125401,
+    "per_seed": [
+     0.9011379800853485,
+     0.9569313593539704,
+     0.943089430894309
+    ]
+   },
+   "voice": {
+    "acc_mean": 0.9168831883004555,
+    "acc_std": 0.026433859208050123,
+    "per_seed": [
+     0.8869132290184921,
+     0.9125168236877523,
+     0.9512195121951219
+    ]
+   },
+   "cca64_face": {
+    "acc_mean": 0.9187884909369873,
+    "per_seed": [
+     0.9046941678520626,
+     0.9266487213997309,
+     0.9250225835591689
+    ]
+   },
+   "cca64_voice": {
+    "acc_mean": 0.9275518008899488,
+    "per_seed": [
+     0.9054054054054054,
+     0.917900403768506,
+     0.959349593495935
+    ]
+   }
+  },
+  "gender_projection_out": {
+   "cca64|gender": {
+    "mean": 40.23,
+    "std": 3.41
+   },
+   "cca64|no_gender": {
+    "mean": 37.57,
+    "std": 2.94
+   },
+   "cca64_gender_projected_out|gender": {
+    "mean": 40.31,
+    "std": 3.44
+   },
+   "cca64_gender_projected_out|no_gender": {
+    "mean": 39.49,
+    "std": 2.73
+   }
+  },
+  "face_raw_neg_cos_same_gender": 0.03040195070207119,
+  "face_raw_neg_cos_cross_gender": -0.042679138481616974,
+  "face_raw_gender_gap_cohen_d": 0.8477216362953186,
+  "voice_raw_neg_cos_same_gender": 0.021270330995321274,
+  "voice_raw_neg_cos_cross_gender": -0.03875884413719177,
+  "voice_raw_gender_gap_cohen_d": 0.5525112152099609
+ }
+}

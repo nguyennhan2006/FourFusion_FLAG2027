@@ -1,0 +1,13 @@
+cell,w,pseudo
+no_gender_English,0.0,22.42
+no_gender_English,0.1,21.5
+no_gender_English,0.2,22.33
+no_gender_English,0.3,22.22
+no_gender_English,0.5,23.97
+no_gender_English,1.0,32.51
+no_gender_Bangla,0.0,27.27
+no_gender_Bangla,0.1,27.63
+no_gender_Bangla,0.2,28.35
+no_gender_Bangla,0.3,27.92
+no_gender_Bangla,0.5,26.32
+no_gender_Bangla,1.0,32.49

@@ -1,0 +1,19 @@
+{
+ "created": "2026-09-26 03:34",
+ "files": {
+  "ext_v3_train_face.npy": [
+   2791,
+   4096
+  ],
+  "ext_v3_train_voice.npy": [
+   3017,
+   192
+  ]
+ },
+ "sources": [
+  "v3_train",
+  "v1_train",
+  "v2_complete"
+ ],
+ "encoders": "organiser VGGFace fc7 + yangwang825/ecapa-tdnn-vox2"
+}

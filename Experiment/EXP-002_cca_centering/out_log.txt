@@ -1,0 +1,23 @@
+                             mean              std          
+protocol                   gender no_gender gender no_gender
+cfg center          snorm                                   
+k32 file            asnorm  32.62     26.64   1.42      0.57
+                    raw     33.23     26.73   2.21      0.58
+    file_voice_only asnorm  32.70     26.82   1.08      0.65
+                    raw     33.81     27.07   1.81      0.31
+    none            asnorm  33.29     27.28   1.37      1.08
+                    raw     34.67     27.67   2.19      0.37
+k4  file            asnorm  33.09     23.38   2.55      1.36
+                    raw     35.48     24.01   3.44      0.83
+    file_voice_only asnorm  33.08     23.57   2.42      1.20
+                    raw     35.19     24.39   3.37      0.86
+    none            asnorm  33.19     23.42   2.61      1.35
+                    raw     35.55     24.52   3.70      0.19
+wrote submission_EXP002_k4_file_raw.zip
+wrote submission_EXP002_k4_file_asnorm.zip
+wrote submission_EXP002_k4_file_voice_only_raw.zip
+wrote submission_EXP002_k4_file_voice_only_asnorm.zip
+wrote submission_EXP002_k32_file_raw.zip
+wrote submission_EXP002_k32_file_asnorm.zip
+wrote submission_EXP002_k32_file_voice_only_raw.zip
+wrote submission_EXP002_k32_file_voice_only_asnorm.zip

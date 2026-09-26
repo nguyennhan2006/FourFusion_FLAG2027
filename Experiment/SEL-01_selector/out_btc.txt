@@ -1,0 +1,108 @@
+pseudo-label features: btc
+calibrated on 30 train speakers: face thr 0.75 ARI 0.818 | voice thr 0.70 ARI 0.958
+             cell  rows  labelled  pos_rate
+no_gender/English  1008       646     0.478
+   gender/English   982       640     0.480
+ no_gender/Bangla  1406       927     0.482
+    gender/Bangla  1468       996     0.516
+
+Pseudo-EER vs real CodaBench EER, per cell (8 systems):
+
+no_gender/English
+  system    cb  pseudo
+    010B 23.81   23.22
+sub_base 24.80   23.22
+     007 25.60   22.44
+    003c 25.60   24.63
+    003b 25.79   23.99
+    000e 28.97   24.61
+    000d 33.73   27.09
+    000c 36.31   28.64
+     004 37.30   32.50
+
+no_gender/Bangla
+  system    cb  pseudo
+    003c 27.88   26.97
+    003b 28.88   26.75
+    000e 29.02   29.34
+     007 29.02   27.94
+    010B 30.87   29.78
+sub_base 31.29   29.01
+    000d 34.00   31.28
+     004 37.84   36.14
+    000c 38.98   36.36
+
+gender/English
+  system    cb  pseudo
+     007 30.96   25.94
+sub_base 32.18   30.01
+    010B 32.38   29.54
+    003b 33.81   30.16
+    003c 34.01   30.62
+    000d 34.42   32.19
+    000e 37.47   35.31
+    000c 43.38   39.69
+     004 43.99   43.45
+
+gender/Bangla
+  system    cb  pseudo
+    003c 37.87   35.24
+     007 38.01   36.25
+    003b 39.37   37.45
+sub_base 39.51   34.83
+    010B 39.78   36.65
+    000d 41.01   38.15
+    000e 42.37   41.16
+     004 46.32   45.39
+    000c 50.00   47.80
+
+             cell  spearman pair_acc top4_pair_acc
+no_gender/English     0.857    30/36          5/10
+ no_gender/Bangla     0.921    32/36          8/10
+   gender/English     0.983    35/36          9/10
+    gender/Bangla     0.867    32/36          6/10
+
+Close competitors: pseudo delta (A - B) with face-cluster bootstrap 95% CI vs real CB delta
+             cell          pair  cb_delta       pseudo_ci  P_A_better  confident  correct
+no_gender/English     003b-003c      0.19  [-3.13, +1.51]        0.74      False    False
+no_gender/English      003b-007      0.19  [-4.13, +5.61]        0.30      False     True
+no_gender/English     003b-010B      1.98  [-7.61, +8.07]        0.47      False     True
+no_gender/English 003b-sub_base      0.99  [-6.72, +6.87]        0.46      False     True
+no_gender/English      003c-007      0.00  [-2.91, +6.67]        0.20      False    False
+no_gender/English     003c-010B      1.79  [-7.13, +8.25]        0.40      False     True
+no_gender/English 003c-sub_base      0.80  [-5.92, +6.75]        0.36      False     True
+no_gender/English      007-010B      1.79  [-7.88, +4.58]        0.59      False    False
+no_gender/English  007-sub_base      0.80  [-7.14, +4.25]        0.58      False    False
+no_gender/English 010B-sub_base     -0.99  [-2.49, +2.71]        0.57      False     True
+ no_gender/Bangla     003b-003c      1.00  [-0.95, +2.25]        0.21      False     True
+ no_gender/Bangla      003b-007     -0.14  [-3.43, +2.96]        0.61      False     True
+ no_gender/Bangla     003b-010B     -1.99  [-5.91, +2.75]        0.80      False     True
+ no_gender/Bangla 003b-sub_base     -2.41  [-6.19, +3.66]        0.76      False     True
+ no_gender/Bangla      003c-007     -1.14  [-4.29, +2.34]        0.75      False     True
+ no_gender/Bangla     003c-010B     -2.99  [-6.49, +2.14]        0.88      False     True
+ no_gender/Bangla 003c-sub_base     -3.41  [-6.65, +2.85]        0.83      False     True
+ no_gender/Bangla      007-010B     -1.85  [-4.44, +2.56]        0.80      False     True
+ no_gender/Bangla  007-sub_base     -2.27  [-4.41, +2.54]        0.77      False     True
+ no_gender/Bangla 010B-sub_base     -0.42  [-1.50, +1.90]        0.35      False    False
+   gender/English     003b-003c     -0.20  [-3.32, +1.00]        0.84      False     True
+   gender/English      003b-007      2.85  [-1.04, +6.88]        0.06      False     True
+   gender/English     003b-010B      1.43 [-10.06, +6.69]        0.61      False    False
+   gender/English 003b-sub_base      1.63  [-8.35, +6.61]        0.55      False    False
+   gender/English      003c-007      3.05  [+0.22, +8.49]        0.02       True     True
+   gender/English     003c-010B      1.63  [-9.83, +8.15]        0.50      False    False
+   gender/English 003c-sub_base      1.83  [-7.92, +7.94]        0.44      False     True
+   gender/English      007-010B     -1.42 [-13.51, +2.75]        0.88      False     True
+   gender/English  007-sub_base     -1.22 [-12.46, +2.73]        0.86      False     True
+   gender/English 010B-sub_base      0.20  [-1.72, +2.87]        0.32      False     True
+    gender/Bangla     003b-003c      1.50  [-0.50, +3.50]        0.07      False     True
+    gender/Bangla      003b-007      1.36  [-3.15, +4.85]        0.37      False     True
+    gender/Bangla     003b-010B     -0.41  [-3.87, +5.43]        0.38      False    False
+    gender/Bangla 003b-sub_base     -0.14  [-4.41, +7.31]        0.29      False    False
+    gender/Bangla      003c-007     -0.14  [-5.24, +3.92]        0.63      False     True
+    gender/Bangla     003c-010B     -1.91  [-5.40, +3.80]        0.65      False     True
+    gender/Bangla 003c-sub_base     -1.64  [-6.00, +5.50]        0.50      False     True
+    gender/Bangla      007-010B     -1.77  [-6.24, +6.26]        0.51      False     True
+    gender/Bangla  007-sub_base     -1.50  [-5.62, +7.18]        0.42      False    False
+    gender/Bangla 010B-sub_base      0.27  [-1.78, +3.42]        0.28      False     True
+
+confident calls: 1/1 correct | uncertain calls: 39 (of which the median direction was right 28)

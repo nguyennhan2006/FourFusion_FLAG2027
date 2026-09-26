@@ -1,0 +1,49 @@
+seed 1 done
+seed 2 done
+seed 3 done
+protocol                         gender  no_gender
+model             center snorm                    
+C_ens3+k4         file   asnorm   30.02      21.76
+                  none   asnorm   30.27      22.18
+C_ens3+k32        file   asnorm   31.01      23.32
+C                 none   asnorm   31.21      23.63
+C_ens3            file   asnorm   31.22      23.08
+C_ens3+B_ens3+k32 file   asnorm   31.22      24.98
+B_ens3+k32        file   asnorm   31.28      27.69
+C_ens3+B_ens3+k32 none   asnorm   31.31      25.45
+C_ens3+B_ens3     none   asnorm   31.41      25.63
+C_ens3+k32        none   asnorm   31.42      23.89
+C_ens3+B_ens3     file   asnorm   31.42      25.32
+C                 file   asnorm   31.43      23.80
+C_ens3            none   asnorm   31.54      23.42
+B_ens3+k32        none   asnorm   31.88      28.21
+B_ens3            file   asnorm   31.89      29.52
+                  none   asnorm   32.23      29.74
+C_ens3+k4         file   raw      32.39      22.48
+B                 none   asnorm   32.54      30.99
+k32               file   asnorm   32.62      26.64
+C_ens3+k32        file   raw      32.68      23.83
+B_ens3+k32        file   raw      32.72      28.75
+C_ens3+B_ens3+k32 file   raw      32.72      25.93
+B                 file   asnorm   32.79      30.85
+C_ens3+B_ens3     file   raw      33.07      26.18
+k4                file   asnorm   33.09      23.38
+                  none   asnorm   33.19      23.42
+C_ens3            file   raw      33.21      23.93
+k32               file   raw      33.23      26.73
+                  none   asnorm   33.29      27.28
+B_ens3            file   raw      33.39      31.06
+C                 file   raw      33.64      24.63
+B                 file   raw      33.87      31.89
+B_ens3+k32        none   raw      33.88      29.76
+C_ens3+B_ens3+k32 none   raw      33.88      26.87
+C_ens3+k4         none   raw      34.07      23.82
+C_ens3+B_ens3     none   raw      34.13      27.29
+C_ens3+k32        none   raw      34.17      25.01
+B_ens3            none   raw      34.25      31.82
+B                 none   raw      34.27      32.21
+C                 none   raw      34.42      25.22
+C_ens3            none   raw      34.54      25.08
+k32               none   raw      34.67      27.67
+k4                file   raw      35.48      24.01
+                  none   raw      35.55      24.52

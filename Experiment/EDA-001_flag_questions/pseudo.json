@@ -1,0 +1,96 @@
+{
+ "thr": {
+  "face": 0.7499999999999999,
+  "voice": 0.7
+ },
+ "q45": [
+  {
+   "file": "no_gender/English",
+   "rows": 1008,
+   "linked": 646,
+   "est_pos": "309",
+   "est_neg": 337,
+   "pos_rate": 0.478,
+   "neg_same_gender": 172,
+   "neg_cross_gender": 165,
+   "mm": 119,
+   "ff": 53
+  },
+  {
+   "file": "no_gender/Bangla",
+   "rows": 1406,
+   "linked": 927,
+   "est_pos": "447",
+   "est_neg": 480,
+   "pos_rate": 0.482,
+   "neg_same_gender": 235,
+   "neg_cross_gender": 245,
+   "mm": 157,
+   "ff": 78
+  },
+  {
+   "file": "gender/English",
+   "rows": 982,
+   "linked": 640,
+   "est_pos": "307",
+   "est_neg": 333,
+   "pos_rate": 0.48,
+   "neg_same_gender": 321,
+   "neg_cross_gender": 12,
+   "mm": 203,
+   "ff": 118
+  },
+  {
+   "file": "gender/Bangla",
+   "rows": 1468,
+   "linked": 996,
+   "est_pos": "514",
+   "est_neg": 482,
+   "pos_rate": 0.516,
+   "neg_same_gender": 460,
+   "neg_cross_gender": 22,
+   "mm": 318,
+   "ff": 142
+  }
+ ],
+ "q7": {
+  "same spk En-En": {
+   "n": 97757,
+   "mean": 0.511,
+   "sd": 0.243
+  },
+  "same spk Bn-Bn": {
+   "n": 198030,
+   "mean": 0.501,
+   "sd": 0.201
+  },
+  "same spk En-Bn": {
+   "n": 144292,
+   "mean": 0.346,
+   "sd": 0.196
+  },
+  "diff spk same-gender En-En": {
+   "n": 333274,
+   "mean": -0.022,
+   "sd": 0.103
+  },
+  "diff spk same-gender Bn-Bn": {
+   "n": 782851,
+   "mean": -0.017,
+   "sd": 0.11
+  },
+  "diff spk same-gender En-Bn": {
+   "n": 1156862,
+   "mean": 0.005,
+   "sd": 0.107
+  },
+  "diff spk cross-gender (any)": {
+   "n": 2434170,
+   "mean": -0.058,
+   "sd": 0.09
+  }
+ },
+ "speakers_both_lang": 10,
+ "linked": 34,
+ "face_clusters": 37
+}

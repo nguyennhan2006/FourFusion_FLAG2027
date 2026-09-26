@@ -1,0 +1,19 @@
+cfg,int_ng,int_g,proxy,sec
+"ours (mlp+infonce, drop .3, emb128)",21.94,30.53,26.24,366
+"FAME1 (linear+aam, drop .9, emb192)",23.4,32.56,27.98,166
+FAME1 no-pca-face (4096 raw),30.72,37.67,34.19,286
+FAME1 + align,24.14,32.67,28.41,97
+FAME1 drop .5,23.51,31.59,27.55,76
+FAME1 drop .7,23.07,31.11,27.09,74
+FAME1 emb128,24.01,33.04,28.52,77
+FAME1 margin .3,23.42,32.54,27.98,76
+FAME1 margin .1,23.41,32.98,28.19,95
+FAME1 scale 16,23.46,32.46,27.96,83
+FAME1 mlp head,27.64,36.79,32.21,180
+FAME1 infonce (isolate the loss),24.27,33.77,29.02,71
+FAME1 100ep,24.13,32.89,28.51,188
+FAME1 200ep,25.54,34.03,29.79,437
+FAME1 100ep lr3e-3,25.05,33.52,29.28,404
+FAME1 100ep + align,25.18,33.42,29.3,347
+ours + aam (swap loss only),22.85,30.66,26.76,618
+ours + drop .9 (swap reg only),26.15,37.82,31.98,1306
