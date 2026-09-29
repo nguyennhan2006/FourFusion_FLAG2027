@@ -1,0 +1,48 @@
+10:41:56 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+10:41:56 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_ext | 6 arrays
+split 1 MLP 123s | av4_en/ng/c 20.20 av4_en/g/c 27.17 +v4_en/ng/c 17.27 +v4_en/g/c 27.37 aurdu/ng/p 22.17 aurdu/g/p 35.17 +urdu/ng/p 19.27 +urdu/g/p 32.20 ahindi/ng/p 31.73 +hindi/ng/p 28.47
+split 1 LIN128 37s | av4_en/ng/c 23.33 av4_en/g/c 30.00 +v4_en/ng/c 21.27 +v4_en/g/c 30.60 aurdu/ng/p 20.33 aurdu/g/p 34.50 +urdu/ng/p 20.33 +urdu/g/p 33.23 ahindi/ng/p 26.77 +hindi/ng/p 25.60
+split 1 LIN16 18s | av4_en/ng/c 24.30 av4_en/g/c 34.10 +v4_en/ng/c 21.57 +v4_en/g/c 34.73 aurdu/ng/p 20.70 aurdu/g/p 28.23 +urdu/ng/p 20.70 +urdu/g/p 27.63 ahindi/ng/p 25.60 +hindi/ng/p 25.60
+split 1 CCA8 20s | av4_en/ng/c 19.67 av4_en/g/c 28.17 +v4_en/ng/c 18.83 +v4_en/g/c 26.23 aurdu/ng/p 20.50 aurdu/g/p 34.77 +urdu/ng/p 19.50 +urdu/g/p 35.77 ahindi/ng/p 30.20 +hindi/ng/p 30.40
+split 1 CCA16 19s | av4_en/ng/c 21.47 av4_en/g/c 30.23 +v4_en/ng/c 18.97 +v4_en/g/c 26.50 aurdu/ng/p 16.17 aurdu/g/p 29.50 +urdu/ng/p 13.80 +urdu/g/p 26.80 ahindi/ng/p 30.53 +hindi/ng/p 27.47
+split 1 CCA32 19s | av4_en/ng/c 24.63 av4_en/g/c 29.40 +v4_en/ng/c 18.60 +v4_en/g/c 28.27 aurdu/ng/p 27.23 aurdu/g/p 41.27 +urdu/ng/p 22.03 +urdu/g/p 31.07 ahindi/ng/p 35.57 +hindi/ng/p 25.00
+split 1 CCA64 20s | av4_en/ng/c 36.03 av4_en/g/c 37.50 +v4_en/ng/c 24.10 +v4_en/g/c 32.30 aurdu/ng/p 50.50 aurdu/g/p 57.40 +urdu/ng/p 42.30 +urdu/g/p 55.07 ahindi/ng/p 47.23 +hindi/ng/p 39.63
+split 1 RCCA16 a=0.254/0.290 a=0.248/0.284 51s | av4_en/ng/c 22.03 av4_en/g/c 37.63 +v4_en/ng/c 21.00 +v4_en/g/c 36.40 aurdu/ng/p 22.23 aurdu/g/p 41.43 +urdu/ng/p 18.40 +urdu/g/p 38.87 ahindi/ng/p 31.33 +hindi/ng/p 28.13
+split 1 RCCA32 a=0.298/0.334 a=0.291/0.328 51s | av4_en/ng/c 28.13 av4_en/g/c 30.97 +v4_en/ng/c 24.60 +v4_en/g/c 31.27 aurdu/ng/p 30.07 aurdu/g/p 44.43 +urdu/ng/p 24.73 +urdu/g/p 36.20 ahindi/ng/p 35.27 +hindi/ng/p 31.03
+split 2 MLP 44s | av4_en/ng/c 25.23 av4_en/g/c 38.80 +v4_en/ng/c 25.27 +v4_en/g/c 35.50 aurdu/ng/p 35.37 aurdu/g/p 35.37 +urdu/ng/p 29.50 +urdu/g/p 35.37 ahindi/ng/p 28.80 +hindi/ng/p 28.97
+split 2 LIN128 10s | av4_en/ng/c 29.83 av4_en/g/c 45.73 +v4_en/ng/c 29.07 +v4_en/g/c 43.17 aurdu/ng/p 29.20 aurdu/g/p 35.27 +urdu/ng/p 28.03 +urdu/g/p 28.07 ahindi/ng/p 29.67 +hindi/ng/p 33.57
+split 2 LIN16 8s | av4_en/ng/c 29.27 av4_en/g/c 39.80 +v4_en/ng/c 23.70 +v4_en/g/c 38.97 aurdu/ng/p 30.13 aurdu/g/p 35.77 +urdu/ng/p 28.87 +urdu/g/p 35.77 ahindi/ng/p 35.70 +hindi/ng/p 36.97
+split 2 CCA8 22s | av4_en/ng/c 27.73 av4_en/g/c 38.70 +v4_en/ng/c 25.47 +v4_en/g/c 36.70 aurdu/ng/p 38.17 aurdu/g/p 42.73 +urdu/ng/p 35.43 +urdu/g/p 38.70 ahindi/ng/p 28.43 +hindi/ng/p 31.77
+split 2 CCA16 22s | av4_en/ng/c 27.10 av4_en/g/c 33.13 +v4_en/ng/c 25.93 +v4_en/g/c 32.47 aurdu/ng/p 35.77 aurdu/g/p 35.77 +urdu/ng/p 35.77 +urdu/g/p 35.77 ahindi/ng/p 32.00 +hindi/ng/p 30.47
+split 2 CCA32 22s | av4_en/ng/c 38.23 av4_en/g/c 44.57 +v4_en/ng/c 29.80 +v4_en/g/c 42.73 aurdu/ng/p 40.50 aurdu/g/p 45.77 +urdu/ng/p 29.07 +urdu/g/p 37.93 ahindi/ng/p 24.70 +hindi/ng/p 23.17
+split 2 CCA64 22s | av4_en/ng/c 35.47 av4_en/g/c 38.07 +v4_en/ng/c 25.70 +v4_en/g/c 36.03 aurdu/ng/p 39.17 aurdu/g/p 42.43 +urdu/ng/p 35.20 +urdu/g/p 39.50 ahindi/ng/p 36.47 +hindi/ng/p 30.77
+split 2 RCCA16 a=0.252/0.283 a=0.249/0.289 56s | av4_en/ng/c 29.67 av4_en/g/c 39.60 +v4_en/ng/c 27.77 +v4_en/g/c 34.87 aurdu/ng/p 35.77 aurdu/g/p 35.77 +urdu/ng/p 35.77 +urdu/g/p 35.77 ahindi/ng/p 35.10 +hindi/ng/p 35.83
+split 2 RCCA32 a=0.298/0.336 a=0.300/0.340 56s | av4_en/ng/c 34.40 av4_en/g/c 40.03 +v4_en/ng/c 26.13 +v4_en/g/c 34.53 aurdu/ng/p 42.33 aurdu/g/p 42.33 +urdu/ng/p 35.37 +urdu/g/p 35.37 ahindi/ng/p 35.90 +hindi/ng/p 34.03
+split 3 MLP 42s | av4_en/ng/c 32.13 av4_en/g/c 38.93 +v4_en/ng/c 27.63 +v4_en/g/c 36.67 aurdu/ng/p 21.53 aurdu/g/p 35.70 +urdu/ng/p 27.00 +urdu/g/p 35.33 ahindi/ng/p 24.17 +hindi/ng/p 24.00
+split 3 LIN128 9s | av4_en/ng/c 29.40 av4_en/g/c 43.47 +v4_en/ng/c 25.07 +v4_en/g/c 38.10 aurdu/ng/p 26.43 aurdu/g/p 34.67 +urdu/ng/p 21.67 +urdu/g/p 34.67 ahindi/ng/p 24.50 +hindi/ng/p 24.07
+split 3 LIN16 7s | av4_en/ng/c 24.20 av4_en/g/c 35.90 +v4_en/ng/c 22.47 +v4_en/g/c 35.03 aurdu/ng/p 25.07 aurdu/g/p 41.23 +urdu/ng/p 24.10 +urdu/g/p 40.87 ahindi/ng/p 26.70 +hindi/ng/p 26.93
+split 3 CCA8 21s | av4_en/ng/c 26.30 av4_en/g/c 33.13 +v4_en/ng/c 22.73 +v4_en/g/c 33.03 aurdu/ng/p 27.63 aurdu/g/p 49.57 +urdu/ng/p 27.33 +urdu/g/p 43.40 ahindi/ng/p 30.43 +hindi/ng/p 32.10
+split 3 CCA16 22s | av4_en/ng/c 28.60 av4_en/g/c 36.90 +v4_en/ng/c 25.20 +v4_en/g/c 38.33 aurdu/ng/p 30.70 aurdu/g/p 48.97 +urdu/ng/p 27.37 +urdu/g/p 45.83 ahindi/ng/p 27.83 +hindi/ng/p 26.23
+split 3 CCA32 22s | av4_en/ng/c 33.70 av4_en/g/c 36.03 +v4_en/ng/c 25.87 +v4_en/g/c 34.37 aurdu/ng/p 29.33 aurdu/g/p 35.07 +urdu/ng/p 22.97 +urdu/g/p 35.07 ahindi/ng/p 24.50 +hindi/ng/p 22.50
+split 3 CCA64 21s | av4_en/ng/c 40.37 av4_en/g/c 42.70 +v4_en/ng/c 33.30 +v4_en/g/c 43.07 aurdu/ng/p 37.27 aurdu/g/p 46.47 +urdu/ng/p 29.00 +urdu/g/p 43.70 ahindi/ng/p 30.70 +hindi/ng/p 23.50
+split 3 RCCA16 a=0.242/0.283 a=0.252/0.283 55s | av4_en/ng/c 29.90 av4_en/g/c 41.50 +v4_en/ng/c 28.67 +v4_en/g/c 39.53 aurdu/ng/p 25.87 aurdu/g/p 47.30 +urdu/ng/p 24.33 +urdu/g/p 43.20 ahindi/ng/p 24.50 +hindi/ng/p 24.20
+split 3 RCCA32 a=0.290/0.329 a=0.293/0.326 55s | av4_en/ng/c 32.27 av4_en/g/c 38.90 +v4_en/ng/c 33.30 +v4_en/g/c 36.63 aurdu/ng/p 35.03 aurdu/g/p 47.00 +urdu/ng/p 32.97 +urdu/g/p 46.23 ahindi/ng/p 34.93 +hindi/ng/p 28.83
+split 4 MLP 46s | av4_en/ng/c 26.10 av4_en/g/c 39.20 +v4_en/ng/c 23.53 +v4_en/g/c 38.70 aurdu/ng/p 22.60 aurdu/g/p 36.67 +urdu/ng/p 21.20 +urdu/g/p 32.50 ahindi/ng/p 17.43 +hindi/ng/p 17.87
+split 4 LIN128 10s | av4_en/ng/c 29.57 av4_en/g/c 37.70 +v4_en/ng/c 26.63 +v4_en/g/c 36.93 aurdu/ng/p 27.10 aurdu/g/p 39.63 +urdu/ng/p 22.60 +urdu/g/p 31.63 ahindi/ng/p 16.93 +hindi/ng/p 18.83
+split 4 LIN16 8s | av4_en/ng/c 24.53 av4_en/g/c 39.17 +v4_en/ng/c 22.37 +v4_en/g/c 36.90 aurdu/ng/p 19.30 aurdu/g/p 35.50 +urdu/ng/p 20.30 +urdu/g/p 30.73 ahindi/ng/p 17.77 +hindi/ng/p 23.80
+split 4 CCA8 23s | av4_en/ng/c 27.57 av4_en/g/c 34.17 +v4_en/ng/c 27.70 +v4_en/g/c 37.13 aurdu/ng/p 21.07 aurdu/g/p 28.40 +urdu/ng/p 18.83 +urdu/g/p 30.73 ahindi/ng/p 24.53 +hindi/ng/p 22.33
+split 4 CCA16 24s | av4_en/ng/c 30.70 av4_en/g/c 43.77 +v4_en/ng/c 28.30 +v4_en/g/c 39.73 aurdu/ng/p 25.23 aurdu/g/p 34.27 +urdu/ng/p 21.37 +urdu/g/p 34.17 ahindi/ng/p 21.10 +hindi/ng/p 20.97
+split 4 CCA32 24s | av4_en/ng/c 33.67 av4_en/g/c 42.30 +v4_en/ng/c 32.13 +v4_en/g/c 36.87 aurdu/ng/p 27.63 aurdu/g/p 35.67 +urdu/ng/p 22.70 +urdu/g/p 34.43 ahindi/ng/p 36.00 +hindi/ng/p 29.77
+split 4 CCA64 23s | av4_en/ng/c 45.27 av4_en/g/c 48.10 +v4_en/ng/c 33.33 +v4_en/g/c 40.80 aurdu/ng/p 36.33 aurdu/g/p 36.33 +urdu/ng/p 25.80 +urdu/g/p 35.43 ahindi/ng/p 49.97 +hindi/ng/p 42.27
+split 4 RCCA16 a=0.251/0.288 a=0.255/0.283 59s | av4_en/ng/c 33.13 av4_en/g/c 43.93 +v4_en/ng/c 30.03 +v4_en/g/c 40.50 aurdu/ng/p 21.83 aurdu/g/p 33.17 +urdu/ng/p 19.73 +urdu/g/p 31.47 ahindi/ng/p 17.57 +hindi/ng/p 17.27
+split 4 RCCA32 a=0.303/0.334 a=0.298/0.337 59s | av4_en/ng/c 30.17 av4_en/g/c 38.90 +v4_en/ng/c 31.30 +v4_en/g/c 39.70 aurdu/ng/p 28.87 aurdu/g/p 42.63 +urdu/ng/p 21.50 +urdu/g/p 36.73 ahindi/ng/p 27.87 +hindi/ng/p 23.97
+split 5 MLP 45s | av4_en/ng/c 23.50 av4_en/g/c 29.27 +v4_en/ng/c 22.53 +v4_en/g/c 27.93 aurdu/ng/p 36.23 aurdu/g/p 48.00 +urdu/ng/p 34.83 +urdu/g/p 46.00 ahindi/ng/p 33.03 +hindi/ng/p 32.60
+split 5 LIN128 10s | av4_en/ng/c 24.43 av4_en/g/c 35.07 +v4_en/ng/c 20.20 +v4_en/g/c 30.27 aurdu/ng/p 34.63 aurdu/g/p 45.63 +urdu/ng/p 30.70 +urdu/g/p 37.77 ahindi/ng/p 34.10 +hindi/ng/p 30.83
+split 5 LIN16 11s | av4_en/ng/c 21.60 av4_en/g/c 35.37 +v4_en/ng/c 18.20 +v4_en/g/c 30.70 aurdu/ng/p 32.43 aurdu/g/p 46.53 +urdu/ng/p 26.37 +urdu/g/p 45.57 ahindi/ng/p 27.80 +hindi/ng/p 30.57
+split 5 CCA8 23s | av4_en/ng/c 20.97 av4_en/g/c 28.00 +v4_en/ng/c 20.13 +v4_en/g/c 26.43 aurdu/ng/p 41.37 aurdu/g/p 61.40 +urdu/ng/p 36.93 +urdu/g/p 56.80 ahindi/ng/p 29.80 +hindi/ng/p 32.50
+split 5 CCA16 23s | av4_en/ng/c 24.23 av4_en/g/c 29.83 +v4_en/ng/c 21.80 +v4_en/g/c 30.20 aurdu/ng/p 32.97 aurdu/g/p 50.87 +urdu/ng/p 30.07 +urdu/g/p 51.87 ahindi/ng/p 34.80 +hindi/ng/p 30.83
+split 5 CCA32 23s | av4_en/ng/c 31.10 av4_en/g/c 34.90 +v4_en/ng/c 25.57 +v4_en/g/c 31.83 aurdu/ng/p 31.40 aurdu/g/p 43.90 +urdu/ng/p 30.60 +urdu/g/p 44.57 ahindi/ng/p 30.53 +hindi/ng/p 31.50
+split 5 CCA64 23s | av4_en/ng/c 38.53 av4_en/g/c 43.57 +v4_en/ng/c 27.83 +v4_en/g/c 34.30 aurdu/ng/p 46.77 aurdu/g/p 54.10 +urdu/ng/p 36.37 +urdu/g/p 56.07 ahindi/ng/p 50.43 +hindi/ng/p 45.10
+split 5 RCCA16 a=0.261/0.301 a=0.260/0.298 58s | av4_en/ng/c 28.77 av4_en/g/c 35.23 +v4_en/ng/c 28.80 +v4_en/g/c 35.33 aurdu/ng/p 37.93 aurdu/g/p 50.90 +urdu/ng/p 32.40 +urdu/g/p 46.50 ahindi/ng/p 32.20 +hindi/ng/p 34.87
+split 5 RCCA32 a=0.303/0.338 a=0.301/0.335 57s | av4_en/ng/c 32.13 av4_en/g/c 33.70 +v4_en/ng/c 33.40 +v4_en/g/c 35.67 aurdu/ng/p 35.67 aurdu/g/p 38.53 +urdu/ng/p 31.33 +urdu/g/p 42.03 ahindi/ng/p 34.33 +hindi/ng/p 32.50
+ALL DONE

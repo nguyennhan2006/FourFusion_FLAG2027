@@ -1,0 +1,45 @@
+20:50:22 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+20:50:22 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_models | 70 arrays
+20:50:22 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_ext_full | 6 arrays
+thresholds (v4 train): face 0.75 voice 0.70
+urdu done
+hindi done
+english done
+many60 done
+many100 done
+many150 done
+urdu_m2 done
+hindi_m2 done
+
+MEAN EER over reps
+arm                   L0     L1     L2    L2a    L2o   AUTO  L2-L0
+scenario protocol                                                 
+urdu     g         36.96  36.79  31.44  32.03  30.52  31.44  -5.52
+         ng        25.89  24.30  20.94  21.52  18.59  20.94  -4.95
+hindi    g         39.60  39.84  34.26  34.79  32.69  34.26  -5.34
+         ng        24.94  25.40  20.41  21.10  20.28  20.41  -4.53
+english  g         36.13  36.35  31.77  33.24  31.27  31.77  -4.36
+         ng        25.68  25.43  19.15  19.89  18.63  19.15  -6.53
+many60   g         37.58  38.33  34.33  34.92  33.25  34.33  -3.25
+         ng        24.42  24.25  21.08  21.33  19.58  21.08  -3.34
+many100  g         39.05  38.70  36.40  36.05  34.35  36.40  -2.65
+         ng        26.30  25.40  21.55  21.70  20.35  21.55  -4.75
+many150  g         37.87  37.53  34.37  34.80  33.93  34.37  -3.50
+         ng        26.27  25.20  22.03  22.27  20.67  22.03  -4.24
+urdu_m2  g         36.67  36.00  34.67  34.67  33.33  34.67  -2.00
+         ng        25.33  24.00  20.00  20.00  20.67  20.00  -5.33
+hindi_m2 g         40.18  42.00  34.00  34.67  32.67  34.00  -6.18
+         ng        28.67  28.67  24.00  24.00  22.67  24.00  -4.67
+
+          persons  ari_face  ari_voice  face_clusters  voice_clusters  voice_face_ratio  largest_share  face_median_size  voice_median_size
+scenario                                                                                                                                   
+urdu         30.0      0.99       0.91           34.4            48.7              1.42           0.05              16.0               15.6
+hindi        30.0      0.99       0.93           32.0            43.4              1.36           0.05              16.0               15.6
+english      30.0      0.99       0.91           33.2            47.7              1.44           0.05              16.0               15.6
+many60       60.0      0.99       0.89           63.9            81.3              1.27           0.03               8.0                8.0
+many100     100.0      0.99       0.86          105.9           121.8              1.15           0.02               8.0                8.0
+many150     150.0      0.99       0.81          157.8           180.1              1.14           0.02               8.0                8.0
+urdu_m2      30.0      0.99       0.80           30.8            32.5              1.06           0.06               2.0                2.0
+hindi_m2     30.0      0.99       0.84           30.8            32.7              1.06           0.06               2.0                2.0
+ALL DONE
+EXIT 0

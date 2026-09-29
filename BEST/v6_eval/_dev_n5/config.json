@@ -1,0 +1,47 @@
+{
+ "recipe": {
+  "head": "mlp",
+  "drop": 0.3,
+  "emb": 128,
+  "epochs": 40
+ },
+ "members": {
+  "s007": {},
+  "s010B": {
+   "voice": "ecapa6144"
+  },
+  "r2mix": {
+   "voice": "ecapa192",
+   "voice_view": "mix"
+  }
+ },
+ "seeds": "1 + 100 i",
+ "cca_w": 0.25,
+ "cells": {
+  "English": [
+   "s007",
+   "s010B"
+  ],
+  "Bangla": [
+   "r2mix",
+   "s007"
+  ]
+ },
+ "cluster_face": "arcface",
+ "cluster_voice": "ecapa192",
+ "b": 0.99,
+ "s007_recipe": {
+  "w_ib": 0.5,
+  "w_age": 0.1
+ },
+ "ref_pairs": 20000,
+ "auto": {
+  "warn_voice_face_ratio": 0.8
+ },
+ "mode": "auto",
+ "n_models": 5,
+ "feats": [
+  "../../kaggle/output/feats_v2",
+  "../../kaggle/output/feats_models"
+ ]
+}

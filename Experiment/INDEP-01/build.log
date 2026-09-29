@@ -1,0 +1,8 @@
+11:37:53 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+11:37:53 polarity: internal scores are higher = same; write_submission writes -score (LOWER = same, measured on CodaBench: -d2 57.83 vs +d2 42.17 with one checkpoint, docs/DATA.md)
+  s007: 5 models in 134s
+  {'voice': 'ecapa6144'}: 5 models in 366s
+  {'voice': 'ecapa192', 'voice_view': 'mix'}: 5 models in 109s
+11:51:59 zip OK: D:\Sinh viên CNhan\FLAG_2027_FourFusion\Experiment\INDEP-01\out\submission_INDEP01.zip
+wrote D:\Sinh viên CNhan\FLAG_2027_FourFusion\Experiment\INDEP-01\out\submission_INDEP01.zip
+EXIT 0

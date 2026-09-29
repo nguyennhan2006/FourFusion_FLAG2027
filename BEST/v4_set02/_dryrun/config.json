@@ -1,0 +1,33 @@
+{
+ "recipe": {
+  "head": "mlp",
+  "drop": 0.3,
+  "emb": 128,
+  "epochs": 40
+ },
+ "members": {
+  "s007": {},
+  "s010B": {
+   "voice": "ecapa6144"
+  },
+  "r2mix": {
+   "voice": "ecapa192",
+   "voice_view": "mix"
+  }
+ },
+ "n_models": 5,
+ "cca_w": 0.25,
+ "cells": {
+  "English": [
+   "s007",
+   "s010B"
+  ],
+  "Bangla": [
+   "r2mix",
+   "s007"
+  ]
+ },
+ "cluster_face": "arcface",
+ "cluster_voice": "ecapa192",
+ "b": 0.99
+}

@@ -1,5 +1,7 @@
 # Bản tốt nhất — FUSE-03 · CodaBench Overall **28.69** (nộp 2026-09-26)
 
+> **Lịch sử: đã thay bởi SET-02 (v4_set02) → SET-13 (v5_set13) → pipeline Evaluation v6_eval.** Trạng thái hiện hành (29/09, nhật ký tới mục 75): cấu hình Evaluation là **SET-13 (CB 21.01) qua `BEST/v6_eval`**; xem [DECISIONS.md](../../docs/DECISIONS.md) và [OPEN_DIRECTIONS.md](../../docs/OPEN_DIRECTIONS.md).
+
 Thứ hạng thay đổi liên tục; xem snapshot có ngày trong [../../README.md](../../README.md). Kế hoạch tiếp theo: [../../docs/PLAN_V4.md](../../docs/PLAN_V4.md).
 
 | | Overall | ng/En | ng/Bn | g/En | g/Bn |

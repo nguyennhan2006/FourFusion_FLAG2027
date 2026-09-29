@@ -1,5 +1,7 @@
 # Kế hoạch giai đoạn 2 — re-extract feature + mô hình mới trên Kaggle
 
+> **Lịch sử (25/09). Notebook Kaggle hiện hành cho Evaluation là `kaggle/FLAG_12_features.ipynb` (code đầy đủ trong cell); xem kaggle/README.md.** Trạng thái hiện hành (29/09, nhật ký tới mục 75): cấu hình Evaluation là **SET-13 (CB 21.01) qua `BEST/v6_eval`**; xem [DECISIONS.md](DECISIONS.md) và [OPEN_DIRECTIONS.md](OPEN_DIRECTIONS.md).
+
 Lập 2026-09-25. Nền: [RESEARCH_DIRECTIONS.md](RESEARCH_DIRECTIONS.md) (hướng H1–H9), EDA mới [EDA-001](../Experiment/EDA-001_flag_questions/).
 Mốc cần vượt: **30.90** (top 4), ghép per-cell kỳ vọng 30.58. Hạng 1: 26.64.
 

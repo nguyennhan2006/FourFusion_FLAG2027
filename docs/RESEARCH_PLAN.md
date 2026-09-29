@@ -1,5 +1,7 @@
 # Kế hoạch nghiên cứu FLAG 2027 — FourFusion
 
+> **Lịch sử (21–22/09, mốc 31.34). Quy tắc "submission cuối = ghép per-cell tốt nhất" không còn áp dụng cho Evaluation: cấu hình là một pipeline duy nhất (SET-13), chọn bằng validation nhãn thật (A6, A7 trong DECISIONS).** Trạng thái hiện hành (29/09, nhật ký tới mục 75): cấu hình Evaluation là **SET-13 (CB 21.01) qua `BEST/v6_eval`**; xem [DECISIONS.md](DECISIONS.md) và [OPEN_DIRECTIONS.md](OPEN_DIRECTIONS.md).
+
 Ngày lập: 2026-09-21, cập nhật 2026-09-22. Baseline: **EXP-003c InfoNCE-ens + CCA-k4 + centering (không AS-norm) = 31.34** (25.60 / 27.88 / 34.01 / 37.87) (FOP 000c: 42.17; organizer ref 36.92). Mục tiêu giai đoạn: **≤ 31** rồi **≤ 28**. Quy tắc nộp: submission cuối = ghép per-cell tốt nhất; mỗi EXP chỉ cần thắng ở ít nhất một cell.
 
 ---

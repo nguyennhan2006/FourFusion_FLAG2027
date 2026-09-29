@@ -1,0 +1,249 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,array,multirow}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\definecolor{accent}{HTML}{1F5FA8}
+\definecolor{muted}{HTML}{555555}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\abstractname}{Tóm tắt}
+\newcommand{\key}[1]{\textbf{\color{accent}#1}}
+
+\title{\textbf{Gộp theo cụm lúc kiểm thử (SET-02)}\\[4pt]
+\large Kỹ thuật, trực giác, và vì sao nó thắng các hướng đã thử trong FLAG 2027}
+\author{Nhóm FourFusion}
+\date{26/09/2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent Sau hơn hai mươi thí nghiệm xoay quanh kiến trúc, hàm mất mát, bộ mã hoá và các phép chuẩn hoá điểm, hệ thống của nhóm dừng ở mức 28.69\% EER trung bình. Một thay đổi duy nhất --- \emph{gom cụm các khuôn mặt và các giọng nói trong từng tệp kiểm thử, rồi chấm điểm ở mức cụm thay vì ở mức từng mẫu} --- đưa kết quả xuống 21.68\%, hạng 2 trên bảng xếp hạng. Tài liệu này giải thích kỹ thuật đó từng bước, lý do nó có cơ sở, và vì sao nó thành công ở chỗ các hướng trước thất bại. Mọi con số trong tài liệu đều được đo; các con số dùng để \emph{chọn} cấu hình đều đo bằng nhãn thật.
+\end{abstract}
+
+\section{Bài toán nhìn từ góc độ một phép thử}
+
+Mỗi \emph{trial} của FLAG 2027 gồm đúng \key{một ảnh khuôn mặt} và \key{một đoạn giọng nói}; hệ thống phải trả về một điểm cho biết hai thứ này có thuộc cùng một người hay không. Chất lượng được đo bằng EER (tỷ lệ lỗi tại điểm mà tỷ lệ chấp nhận nhầm bằng tỷ lệ từ chối nhầm), tính riêng trên bốn tệp: hai giao thức (\texttt{no\_gender}, \texttt{gender} --- ở giao thức sau, cặp âm luôn cùng giới tính) nhân hai ngôn ngữ (English đã nghe khi huấn luyện, Bangla chưa nghe). Điểm cuối cùng là trung bình bốn EER.
+
+Hệ thống trước SET-02 (gọi là FUSE-03, 28.69\%) được xây theo công thức quen thuộc:
+\begin{enumerate}[leftmargin=1.5em,itemsep=2pt]
+\item Mã hoá ảnh bằng VGGFace (vector 4096 chiều) và giọng bằng ECAPA-TDNN (192 chiều) --- đúng các bộ mã hoá ban tổ chức dùng.
+\item Học một ``cây cầu'' gồm hai mạng MLP nhỏ, chiếu hai modality vào chung một không gian 128 chiều, huấn luyện bằng InfoNCE sao cho khuôn mặt và giọng của cùng một người nằm gần nhau.
+\item Điểm của một trial là cosine giữa hai vector đã chiếu, trộn với một phép chiếu CCA tuyến tính, rồi trộn nhiều hệ theo thứ hạng cho từng tệp.
+\end{enumerate}
+Nói gọn: \emph{mỗi trial được chấm độc lập, chỉ dựa vào đúng một ảnh và một đoạn giọng của nó.} Đó chính là giả định mà SET-02 phá bỏ.
+
+\section{Chẩn đoán: vấn đề nằm ở đâu?}
+
+\subsection{Nhận dạng một modality thì dễ, ghép hai modality thì khó}
+
+Bảng~\ref{tab:uni} so sánh độ khó của ba bài toán trên cùng dữ liệu. Nhận ra hai ảnh cùng người, hay hai đoạn giọng cùng người, là việc các bộ mã hoá hiện đại làm rất tốt. Nhưng đoán ``giọng này thuộc khuôn mặt nào'' thì khó hơn gấp nhiều lần.
+
+\begin{table}[h]
+\centering
+\caption{EER (\%) trên 70 người của tập train, không huấn luyện thêm gì cho hai dòng đầu.}
+\label{tab:uni}
+\begin{tabular}{lcc}
+\toprule
+Bài toán & \texttt{no\_gender} & \texttt{gender} \\
+\midrule
+Mặt $\leftrightarrow$ mặt (ArcFace) & 1.70 & 1.87 \\
+Giọng $\leftrightarrow$ giọng (ECAPA-192) & 4.33 & 5.33 \\
+Mặt $\leftrightarrow$ giọng (cầu nối đã huấn luyện, người chưa thấy) & $\approx$24 & $\approx$32 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Sự bất đối xứng này là manh mối quan trọng nhất của tài liệu: \key{cấu trúc ``ai là ai'' bên trong mỗi modality gần như biết chắc, trong khi cầu nối giữa hai modality rất nhiễu.}
+
+\subsection{Nhìn tận mắt các ca sai (ERR-01)}
+
+Khi đặt các ca sai tệ nhất cạnh nhau, ta thấy ba hiện tượng. (i) Lỗi dồn vào một số người: ba người tệ nhất trong mỗi tệp chiếm khoảng 30\% số lỗi dù chỉ chiếm 20\% số trial. (ii) Có những ca bỏ sót mà ảnh của trial gần như trùng khung hình với ảnh đại diện của chủ giọng --- tức là bản thân khuôn mặt không có vấn đề. (iii) Câu nói ngắn dưới 4 giây bị bỏ sót gần gấp đôi câu dài trên 8 giây. Cả ba đều gợi ý rằng \emph{một mẫu đơn lẻ} --- một khung hình, một câu nói --- là một ước lượng ồn của ``con người'' đứng sau nó.
+
+\subsection{Thí nghiệm oracle (ORA-01): nếu biết trước ai là ai?}
+
+Để định lượng giả thuyết, ta làm một thí nghiệm tưởng tượng trên những người của tập train mà mô hình \emph{chưa từng thấy} (nên có nhãn thật): thay vector của một ảnh bằng trung bình vector của \emph{mọi} ảnh của người đó, và tương tự với giọng.
+
+\begin{table}[h]
+\centering
+\caption{ORA-01, giao thức \texttt{gender}, nhãn thật, ba cách chia tập.}
+\label{tab:oracle}
+\begin{tabular}{lccc}
+\toprule
+Thay thế & chia 1 & chia 2 & chia 3 \\
+\midrule
+Không thay (hệ hiện tại) & 29.83 & 33.37 & 31.83 \\
+Mặt $\to$ trung bình ảnh của người đó & 24.53 & 27.43 & 29.93 \\
+Giọng $\to$ trung bình câu của người đó & 24.73 & 30.23 & 28.43 \\
+\textbf{Cả hai} & \textbf{17.77} & \textbf{25.40} & \textbf{22.73} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kết luận của bảng~\ref{tab:oracle} rất rõ: nhiễu theo mẫu ở \emph{cả hai} phía gây hại ngang nhau, và loại bỏ nó ở cả hai phía giảm EER 7--12 điểm. Không có thay đổi kiến trúc nào trước đó cho được con số này. Câu hỏi còn lại là thực tế: ta không biết trước ai là ai trong tập kiểm thử. Nhưng --- nhờ bảng~\ref{tab:uni} --- ta có thể \emph{đoán} rất chính xác.
+
+\section{Kỹ thuật SET-02}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[every node/.style={font=\small},
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=0.95cm, minimum width=2.3cm, fill=#1!8}, box/.default=accent,
+  arr/.style={-{Stealth[length=2mm]}, thick, color=muted}]
+\node[box] (F) at (0, 1.5) {Ảnh mặt\\của tệp};
+\node[box] (V) at (0,-1.5) {Đoạn giọng\\của tệp};
+\node[box=green] (CF) at (3.6, 1.5) {Gom cụm mặt\\(ArcFace)};
+\node[box=green] (CV) at (3.6,-1.5) {Gom cụm giọng\\(ECAPA)};
+\node[box=orange] (M) at (3.6, 0) {Ma trận điểm mặt $\times$ giọng\\(cầu nối VGG + ECAPA)};
+\node[box=red] (B) at (8.0, 0) {Trung bình theo khối\\cụm $\times$ cụm};
+\node[box] (O) at (11.4, 0) {Điểm\\cho trial};
+\draw[arr] (F) -- (CF); \draw[arr] (V) -- (CV);
+\draw[arr] (F.south east) -- (M.north west); \draw[arr] (V.north east) -- (M.south west);
+\draw[arr] (CF.east) -- (B.north west); \draw[arr] (CV.east) -- (B.south west); \draw[arr] (M) -- (B); \draw[arr] (B) -- (O);
+\end{tikzpicture}
+\caption{Luồng xử lý của SET-02 cho một tệp kiểm thử. Màu xanh lá: chỉ dùng thông tin trong \emph{một} modality.}
+\end{figure}
+
+\subsection{Bước 1 --- Ma trận điểm đầy đủ}
+Với một tệp kiểm thử gồm $N$ trial, ta có $N$ ảnh $f_1,\dots,f_N$ và $N$ đoạn giọng $v_1,\dots,v_N$. Thay vì chỉ chấm $N$ cặp của danh sách trial, cầu nối chấm \emph{mọi} cặp, cho ma trận $M\in\mathbb{R}^{N\times N}$ với $M_{ij}=s(f_i,v_j)$. Đường chéo $M_{ii}$ chính là điểm của các trial. Bước này không dùng bất kỳ nhãn nào, và không dùng việc cặp nào xuất hiện trong danh sách trial.
+
+\subsection{Bước 2 --- Gom cụm trong từng modality}
+Các ảnh trong tệp được gom cụm bằng embedding ArcFace; các đoạn giọng bằng embedding ECAPA-192. Thuật toán là gom cụm phân cấp (agglomerative) với khoảng cách cosine và liên kết trung bình. Tham số duy nhất là \key{ngưỡng cắt}, và nó được chọn \emph{trên những người của tập train} (tối đa chỉ số ARI giữa cụm và danh tính thật), không phải trên tập kiểm thử. Với ngưỡng đó, trên những người chưa thấy, ARI của cụm mặt đạt 0.98--0.995 và của cụm giọng đạt 0.86--0.96: ta ``đoán'' ai là ai gần như đúng.
+
+Có một điểm tinh tế đáng dừng lại: ArcFace từng là một thất bại khi dùng làm đầu vào cho cầu nối (Mục~\ref{sec:why-others}). Ở đây nó được dùng cho đúng việc nó giỏi --- nhận ra hai ảnh cùng người --- chứ không phải để ghép với giọng. Cầu nối vẫn dùng VGGFace.
+
+\subsection{Bước 3 --- Trung bình theo khối}
+Gọi $C(f)$ là cụm chứa ảnh $f$ và $D(v)$ là cụm chứa giọng $v$. Điểm mới của trial $(f,v)$ là
+\begin{equation}
+s'(f,v) \;=\; (1-b)\,M_{fv} \;+\; b\,\frac{1}{|C(f)|\,|D(v)|}\sum_{i\in C(f)}\sum_{j\in D(v)} M_{ij},
+\label{eq:block}
+\end{equation}
+tức trung bình của cả khối ``mọi ảnh cùng cụm $\times$ mọi giọng cùng cụm''. Trọng số $b=0.99$: gần như hoàn toàn dùng điểm cấp cụm, giữ 1\% điểm gốc chỉ để phân định thứ hạng giữa các trial trong cùng một khối.
+
+Vì sao trung bình khối lại tương đương với ``lấy trung bình ảnh'' trong thí nghiệm oracle? Nếu điểm là tích vô hướng $M_{ij}=\langle \phi(f_i),\psi(v_j)\rangle$ thì, do tính song tuyến,
+\begin{equation}
+\frac{1}{|C||D|}\sum_{i\in C}\sum_{j\in D}\langle \phi(f_i),\psi(v_j)\rangle
+= \Big\langle \underbrace{\tfrac{1}{|C|}\textstyle\sum_{i\in C}\phi(f_i)}_{\text{ảnh trung bình}},\;
+\underbrace{\tfrac{1}{|D|}\textstyle\sum_{j\in D}\psi(v_j)}_{\text{giọng trung bình}}\Big\rangle .
+\end{equation}
+Trung bình của các điểm chính là điểm của các trung bình. Ma trận thực tế là điểm cosine đã chuẩn hoá z (một phép biến đổi affine cho mỗi mô hình), nên đẳng thức giữ nguyên thứ tự. Đây là lý do SET-02 hiện thực hoá được thí nghiệm oracle mà không cần biết danh tính.
+
+\subsection{Bước 4 --- Trộn theo tệp}
+Như trước, mỗi tệp dùng hai hệ thành phần và trộn theo thứ hạng: English dùng cầu nối với giọng của ban tổ chức (s007) và với giọng ECAPA 6144 chiều (s010B); Bangla dùng cầu nối với ECAPA-192 tự trích huấn luyện trên đoạn cắt theo độ dài Bangla (r2mix) và s007.
+
+\section{Vì sao nó có cơ sở}
+
+\subsection{Một mô hình nhiễu đơn giản}
+Hãy viết điểm của cầu nối cho một cặp (ảnh $f$ của người $p$, giọng $v$ của người $q$) như
+\begin{equation}
+s(f,v) \;=\; \underbrace{\mu(p,q)}_{\text{độ hợp cấp người}} \;+\; \underbrace{\varepsilon_f}_{\text{nhiễu của ảnh}} \;+\; \underbrace{\eta_v}_{\text{nhiễu của câu}},
+\qquad \operatorname{Var}\varepsilon=\sigma_f^2,\;\operatorname{Var}\eta=\sigma_v^2 .
+\end{equation}
+Nhiễu ảnh đến từ góc mặt, biểu cảm, ánh sáng; nhiễu câu đến từ độ dài, nội dung, kênh thu. Điều cần tách bạch là $\mu(p,q)$ \emph{cũng} không hoàn hảo: với một số người, cầu nối ước lượng sai độ hợp ngay ở cấp người --- đây là ``người lệch kiểu'' của ERR-01, và ta gọi phương sai của sai số này là $\sigma_p^2$.
+
+Khi lấy trung bình trên $n_f$ ảnh và $n_v$ câu cùng người, phương sai của điểm giảm thành
+\begin{equation}
+\sigma_p^2 + \frac{\sigma_f^2}{n_f} + \frac{\sigma_v^2}{n_v}.
+\end{equation}
+Mỗi tệp kiểm thử có khoảng 30 người và 1000--1500 trial, tức hàng chục ảnh và hàng chục câu cho mỗi người: hai thành phần sau gần như biến mất. EER phụ thuộc vào mức chồng lấn giữa phân phối điểm của cặp dương và cặp âm; khi phương sai mỗi phân phối giảm mà khoảng cách giữa hai trung bình giữ nguyên, mức chồng lấn giảm và EER giảm theo.
+
+Mô hình này giải thích luôn hai điều quan sát được. Thứ nhất, oracle không đưa EER về 0 mà dừng ở 14--23: phần còn lại chính là $\sigma_p^2$, thứ mà việc lấy trung bình không chạm tới. Thứ hai, tệp \texttt{gender/English} gần như không cải thiện trên bảng xếp hạng (29.12 $\to$ 28.31): nhiều khả năng lỗi ở tệp này chủ yếu thuộc cấp người.
+
+\subsection{Tận dụng đúng thế mạnh của từng thành phần}
+SET-02 không đòi cầu nối làm tốt hơn. Nó dùng thông tin \emph{trong một modality} --- vốn dễ và gần như chắc chắn (bảng~\ref{tab:uni}) --- để khử nhiễu cho thông tin \emph{giữa hai modality} --- vốn khó. Đây là một mẫu hình thiết kế chung: khi một bài toán gồm một phần dễ và một phần khó, hãy dùng lời giải của phần dễ làm ràng buộc cho phần khó.
+
+\subsection{Gom cụm sai một chút không sao}
+Một lo ngại tự nhiên: nếu gom nhầm hai người khác nhau vào một cụm thì sao? Thí nghiệm SET-03 trả lời bằng nhãn thật, với mật độ giống tập dev (giữ ra 30 người): nới ngưỡng cụm giọng từ 0.6 lên 0.8 làm tỷ lệ mẫu nằm trong cụm lẫn nhiều người tăng từ 4\% lên 38\%, nhưng EER \texttt{gender} lại giảm từ 34.7 xuống 30.8. Lý do: cầu nối vốn chấm theo ``kiểu người'' (giới, tuổi, dáng), nên gộp hai người giống kiểu nhau vẫn là một phép khử nhiễu hợp lý hơn là giữ nguyên một mẫu ồn.
+
+\section{Bằng chứng}
+
+\begin{table}[h]
+\centering
+\caption{SET-01: những người chưa thấy của tập train, \textbf{nhãn thật}, cụm do máy tự ước lượng. Trung bình ba cách chia.}
+\label{tab:set01}
+\begin{tabular}{lcc}
+\toprule
+Trọng số gộp $b$ & \texttt{gender} & \texttt{no\_gender} \\
+\midrule
+0 (không gộp) & 32.10 & 24.11 \\
+0.50 & 25.91 & 17.93 \\
+0.75 & 24.32 & 16.54 \\
+1.00 & \textbf{23.68} & \textbf{14.80} \\
+\midrule
+\multicolumn{1}{l}{\color{muted}Tham chiếu: gộp theo danh tính thật, $b=1$} & \color{muted}22.75 & \color{muted}13.87 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Bảng~\ref{tab:set01} là bằng chứng quan trọng nhất vì nó \emph{không} dựa vào tập dev: cụm do máy tự đoán lấy được gần trọn lợi ích của cụm lý tưởng, và lợi ích tăng đều theo $b$. Cấu hình nộp ($b=0.99$) được chọn từ bảng này.
+
+\begin{table}[h]
+\centering
+\caption{Kết quả chính thức trên CodaBench (EER \%).}
+\label{tab:cb}
+\begin{tabular}{lccccc}
+\toprule
+Hệ & ng/En & ng/Bn & g/En & g/Bn & Trung bình \\
+\midrule
+FOP của ban tổ chức & 32.54 & 38.12 & 32.99 & 44.01 & 36.92 \\
+FUSE-03 (trước SET-02) & 23.61 & 26.88 & 29.12 & 35.15 & 28.69 \\
+\textbf{SET-02} & \textbf{12.50} & \textbf{21.34} & \textbf{28.31} & \textbf{24.59} & \textbf{21.68} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Vì sao SET-02 thắng ở chỗ các hướng khác thất bại}
+\label{sec:why-others}
+
+\begin{table}[h]
+\centering
+\small
+\caption{Các hướng đã thử trước SET-02 và cơ chế khiến chúng không đi xa.}
+\begin{tabular}{>{\raggedright}p{3.6cm}>{\raggedright}p{3.2cm}>{\raggedright\arraybackslash}p{7.2cm}}
+\toprule
+Hướng & Kết quả & Vì sao \\
+\midrule
+Kiến trúc, hàm mất mát (28 cấu hình, AAM, OPL, head của đội thắng FAME) & chênh $\le$ 0.5 & Cải thiện ánh xạ \emph{từng mẫu} từ chỉ 70 người; cả hệ đã bão hoà. \\
+Bộ mã hoá mạnh hơn (ArcFace, ReDimNet2) & tệ hơn & Mã hoá càng chuyên biệt danh tính thì càng ít giữ các đặc điểm chung mà giọng dự đoán được. \\
+CORAL, CORAL từng phần & tệ hơn tới 10 điểm & Hiệp phương sai của một tệp chính là cấu trúc giữa các người trong tệp; làm trắng nó xoá luôn danh tính. \\
+AS-norm, CSLS & hại hoặc triệt tiêu khi trộn & Chuẩn hoá theo thống kê phân phối điểm, không dùng cấu trúc danh tính. \\
+Làm mượt theo đồ thị kNN & lợi nhỏ, English tệ hơn & Chỉ gộp một phần (vài láng giềng, $\lambda\le0.3$), không đủ để triệt nhiễu. \\
+Dữ liệu ngoài v3 (châu Âu) & tệ hơn mọi tệp & Ánh xạ mặt--giọng phụ thuộc quần thể. \\
+\midrule
+\textbf{SET-02} & \textbf{$-7.0$ điểm} & Không cố sửa ánh xạ; khử \emph{nhiễu theo mẫu} bằng cấu trúc danh tính gần như chắc chắn trong từng modality, với mức gộp đầy đủ. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Có thể tóm lại sự khác biệt trong một câu: \key{các hướng trước tìm cách làm cho mỗi phép chấm điểm đơn lẻ tốt hơn; SET-02 nhận ra rằng mỗi người xuất hiện nhiều lần trong một tệp, và dùng tất cả các lần xuất hiện đó cho mỗi phép chấm.} Với 70 người huấn luyện, phần ``mỗi phép chấm đơn lẻ'' đã chạm trần; phần ``dùng nhiều lần xuất hiện'' thì chưa ai khai thác.
+
+Cần phân biệt SET-02 với làm mượt theo đồ thị, vì hai kỹ thuật trông giống nhau. Làm mượt theo đồ thị trộn điểm của một mẫu với vài láng giềng gần nhất, với trọng số nhỏ; SET-02 thay điểm bằng trung bình trên \emph{toàn bộ} cụm danh tính. Theo mô hình nhiễu ở trên, lợi ích tỷ lệ với số mẫu được gộp: 3--10 láng giềng với trọng số 0.3 chỉ lấy được một phần nhỏ so với hàng chục mẫu với trọng số gần 1.
+
+\section{Giới hạn và những điều cần trung thực}
+
+\begin{itemize}[leftmargin=1.5em,itemsep=3pt]
+\item \key{Đây là kỹ thuật transductive.} Nó dùng các mẫu khác trong cùng tệp kiểm thử (không nhãn) để chấm một trial. Evaluation Plan chỉ quy định bộ mã hoá pretrained được phép, phải nộp mô tả hệ thống và công khai mã nguồn; không có điều khoản cấm. Mô tả hệ thống phải nêu rõ bước gom cụm không giám sát này.
+\item \key{Không dùng danh sách trial.} Cụm chỉ dựng từ embedding của ảnh và giọng. Việc cặp nào xuất hiện cùng nhau trong danh sách --- một cấu trúc do cách dựng bộ đề mà có --- không được dùng.
+\item \key{Phụ thuộc vào việc mỗi người xuất hiện nhiều lần trong một tệp.} Điều này đúng với tập dev; nếu tệp đánh giá cuối cùng (Evaluation Phase, 11--18/11) có ít mẫu cho mỗi người, lợi ích sẽ nhỏ hơn.
+\item \key{Tệp \texttt{gender/English} gần như không cải thiện.} Giả thuyết hiện tại là lỗi ở tệp này chủ yếu thuộc cấp người ($\sigma_p^2$), thứ mà gộp không chạm tới; cần thêm dữ liệu huấn luyện (nhiều người hơn) để giải quyết.
+\item \key{Bộ chọn mô hình dựa trên nhãn giả không còn đáng tin với hệ có gộp cụm}: nhãn giả cũng dựng từ cụm, nên thiên vị những hệ dùng cụm (dự đoán 20.2 cho \texttt{g/En}, thực tế 28.31). Mọi quyết định về gộp cụm từ nay dựa trên nhãn thật.
+\end{itemize}
+
+\section{Kết luận}
+
+SET-02 không thêm dữ liệu, không đổi kiến trúc, không huấn luyện lại. Nó thay đổi \emph{đơn vị} của phép chấm điểm: từ một ảnh và một câu, sang một người và một người. Sự thay đổi đó có cơ sở toán học rõ ràng (trung bình làm giảm phương sai của nhiễu theo mẫu, và trung bình của điểm chính là điểm của trung bình), được kiểm chứng bằng nhãn thật trước khi nộp, và giảm EER trung bình 7 điểm trên bảng xếp hạng. Phần lỗi còn lại chủ yếu thuộc cấp người, và đó là nơi các bước tiếp theo --- nhiều danh tính huấn luyện hơn từ MAV-Celeb v1/v2 --- nhắm tới.
+
+\vspace{1em}
+{\small\color{muted} Mã nguồn: \texttt{Experiment/SET-01/} (\texttt{run.py}: SET-01, \texttt{dev.py}: SET-02, \texttt{set03.py}: SET-03), \texttt{Experiment/ORA-01/}, \texttt{Experiment/ERR-01/}. Nhật ký đầy đủ: \texttt{Experiment/EXPERIMENT\_LOG.md}, mục 41--45.}
+
+\end{document}

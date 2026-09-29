@@ -1,0 +1,42 @@
+13:28:19 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+13:28:19 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_ext_full | 6 arrays
+split 1: 116s, ext train persons 122, test 31
+split 2: 142s, ext train persons 122, test 31
+split 3: 98s, ext train persons 122, test 31
+split 4: 104s, ext train persons 123, test 30
+split 5: 172s, ext train persons 123, test 30
+arm                           AD4    ADX     ZS  ZS+ADX  AD4-ZS  ADX-ZS  ZS+ADX-ZS
+data       protocol level                                                         
+hindi      ng       person  19.03  18.61  20.86   19.56   -1.83   -2.25      -1.30
+                    sample  29.08  25.57  27.00   24.64    2.08   -1.43      -2.36
+urdu       g        person  34.50  35.00  33.17   34.11    1.33    1.83       0.94
+                    sample  43.34  42.30  41.23   41.61    2.11    1.07       0.38
+           ng       person  17.41  15.38  16.83   15.58    0.58   -1.45      -1.25
+                    sample  29.69  24.80  28.15   24.96    1.54   -3.35      -3.19
+v1_english ng       person  19.83  19.33  14.47   15.86    5.36    4.86       1.39
+                    sample  28.18  25.48  25.06   23.58    3.12    0.42      -1.48
+v2_english ng       person  24.71  20.99  22.20   20.53    2.51   -1.21      -1.67
+                    sample  28.98  27.15  28.24   27.26    0.74   -1.09      -0.98
+v4         g        person  30.51  30.87  27.04   28.47    3.47    3.83       1.43
+                    sample  37.67  36.77  35.61   35.48    2.06    1.16      -0.13
+           ng       person  19.31  18.71  18.73   17.16    0.58   -0.02      -1.57
+                    sample  26.31  24.58  24.76   23.54    1.55   -0.18      -1.22
+
+splits where ADX beats ZS by >= 1 EER:
+data        protocol  level 
+hindi       ng        person    4
+                      sample    2
+urdu        g         person    1
+                      sample    0
+            ng        person    3
+                      sample    3
+v1_english  ng        person    0
+                      sample    1
+v2_english  ng        person    3
+                      sample    3
+v4          g         person    1
+                      sample    0
+            ng        person    2
+                      sample    0
+ALL DONE
+EXIT 0

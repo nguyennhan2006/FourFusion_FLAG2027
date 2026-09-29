@@ -1,0 +1,6 @@
+src,cell,arm,heard,d_heard,sd_heard,folds_better_heard,unheard,d_unheard,sd_unheard,folds_better_unheard,verdict
+v3_train,no_gender,v4,42.99,0.0,0.0,0/5,42.11,0.0,0.0,0/5,control
+v3_train,no_gender,mix_en,36.33,-6.65,5.06,5/5,35.45,-6.65,4.53,5/5,transfer
+v3_train,no_gender,mix_all,33.79,-9.2,5.16,5/5,30.35,-11.76,5.84,5/5,transfer
+v3_train,no_gender,pt_en>ft,38.48,-4.51,4.63,4/5,39.11,-3.0,5.11,3/5,transfer
+v3_train,no_gender,pt_all>ft,39.15,-3.84,5.74,3/5,37.28,-4.83,3.97,4/5,transfer

@@ -120,31 +120,35 @@ class FeatureStore:
         if key in self._c:
             return self._c[key]
         rng = np.random.RandomState(seed)
-        F_all, V_all, S_all = [], [], []
+        parts = [pair_ext(self.ext_source(src), src, cap, rng, exclude) for src in sources]
         for src in sources:
-            fv = self._find(f"ext_{src}_voice.npy")
-            assert fv is not None, f"ext_{src}_voice.npy not found in {self.fds}"
-            V = np.load(fv).astype(np.float32); vm = pd.read_csv(fv.parent / f"ext_{src}_voice_meta.csv")
-            Fa = np.load(fv.parent / f"ext_{src}_face.npy").astype(np.float32)
-            fm = pd.read_csv(fv.parent / f"ext_{src}_face_meta.csv")
-            by_vid = {k: np.asarray(g.index) for k, g in fm.groupby(["spk", "lang", "video"])}
-            by_spk = {k: np.asarray(g.index) for k, g in fm.groupby("spk")}
-            ok = np.array([f"{src}:{x}" not in exclude and x in by_spk for x in vm.spk])
-            vm = vm[ok]
-            for spk_, g in vm.groupby("spk"):
-                idx = np.asarray(g.index)
-                if len(idx) > cap:
-                    idx = rng.choice(idx, cap, replace=False)
-                for j, i in enumerate(idx):
-                    r = vm.loc[i]
-                    cand = by_vid.get((r.spk, r.lang, r.video), by_spk[r.spk])
-                    F_all.append(Fa[cand[j % len(cand)]]); V_all.append(V[i]); S_all.append(f"{src}:{spk_}")
-        out = (np.stack(F_all), np.stack(V_all), np.array(S_all))
+            self.gmap.update(self.ext_source(src)["gen_of"])
+        out = tuple(np.concatenate([p[i] for p in parts]) for i in range(3))
         for sp in np.unique(out[2]):
             self.gmap.setdefault(sp, "u")
         log(f"ext rows {sources}: {len(out[2])} rows, {len(np.unique(out[2]))} speakers (cap {cap}, excluded {len(exclude)})")
         self._c[key] = out
         return out
+
+    def ext_source(self, src):
+        """Raw arrays + meta of one external source: dict(V, vm, Fa, fm). Cached."""
+        key = ("ext_src", src)
+        if key not in self._c:
+            fv = self._find(f"ext_{src}_voice.npy")
+            assert fv is not None, f"ext_{src}_voice.npy not found in {self.fds}"
+            D = dict(V=np.load(fv).astype(np.float32), vm=pd.read_csv(fv.parent / f"ext_{src}_voice_meta.csv"),
+                     Fa=np.load(fv.parent / f"ext_{src}_face.npy").astype(np.float32),
+                     fm=pd.read_csv(fv.parent / f"ext_{src}_face_meta.csv"), key_of={}, gen_of={})
+            # optional ext_<src>_speakers.csv (ids,name,split,gender): ids of the SAME person are merged
+            # (v1 lists "Imran Khan" as id0001 and id0004) and the real gender is used.
+            mf_ = fv.parent / f"ext_{src}_speakers.csv"
+            if mf_.exists():
+                for r_ in pd.read_csv(mf_).itertuples():
+                    k_ = f"{src}:" + str(r_.name).strip().lower().replace(" ", "_")
+                    D["key_of"][r_.ids] = k_
+                    D["gen_of"][k_] = "m" if str(r_.gender).lower().startswith("m") else "f"
+            self._c[key] = D
+        return self._c[key]
 
     def dev_voices_all(self, name):
         """(X, is_bangla) over the four dev files — the only language-labelled audio we have (for DANN)."""
@@ -153,6 +157,34 @@ class FeatureStore:
             X = self.voice(name, "/".join(k))
             Xs.append(X - X.mean(0)); ys.append(np.full(len(X), k[1] == "Bangla"))
         return np.concatenate(Xs), np.concatenate(ys)
+
+
+def pair_ext(D, src, cap, rng, exclude=(), ids=None, langs=None):
+    """One training row per external utterance, paired with a face frame of the SAME video (cycling through
+    its sampled frames; any frame of the speaker if that video has none). cap = max rows per speaker.
+    ids / langs: keep only these speakers / languages (bilingual validation, flag_bilingual.py)."""
+    V, vm, Fa, fm = D["V"], D["vm"], D["Fa"], D["fm"]
+    by_vid = {k: np.asarray(g.index) for k, g in fm.groupby(["spk", "lang", "video"])}
+    by_spk = {k: np.asarray(g.index) for k, g in fm.groupby("spk")}
+    key_of = D.get("key_of", {})
+    ok = np.array([f"{src}:{x}" not in exclude and key_of.get(x, "") not in exclude and x in by_spk for x in vm.spk])
+    if ids is not None:
+        ok &= vm.spk.isin(ids).values
+    if langs is not None:
+        ok &= vm.lang.isin(langs).values
+    vm = vm[ok]
+    F_all, V_all, S_all = [], [], []
+    for spk_, g in vm.groupby("spk"):
+        idx = np.asarray(g.index)
+        if len(idx) > cap:
+            idx = rng.choice(idx, cap, replace=False)
+        for j, i in enumerate(idx):
+            r = vm.loc[i]
+            cand = by_vid.get((r.spk, r.lang, r.video), by_spk[r.spk])
+            F_all.append(Fa[cand[j % len(cand)]]); V_all.append(V[i]); S_all.append(key_of.get(spk_, f"{src}:{spk_}"))
+    if not S_all:
+        return np.zeros((0, Fa.shape[1]), np.float32), np.zeros((0, V.shape[1]), np.float32), np.array([], dtype=str)
+    return np.stack(F_all), np.stack(V_all), np.array(S_all)
 
 
 # ============================================================================ preprocessing
@@ -260,7 +292,42 @@ BASE = dict(
     grl_gender=0.0, dann_lang=0.0,
     voice_view="full",                # full | crops | mix  (crops = duration-matched, plan §0.4)
     ext=(), ext_cap=150,              # external MAV-Celeb sources added to TRAINING only (organiser feature space)
+    sampler="random", pk_P=32, pk_K=8,  # "pk": each batch = P speakers x K rows (needed for set-level losses)
+    avg_from=None,                    # SWA-style tail averaging: mean of the weights at the end of every epoch >= avg_from
+                                      # (0-based), BatchNorm statistics then recomputed on the training rows. None = off.
+    w_proto=0.0, proto_min=2,         # SetProto: InfoNCE between per-speaker MEAN face and MEAN voice embeddings,
+                                      # each mean over an independent random subset of 2..K rows (test-time
+                                      # scoring aggregates clusters, so the bridge is trained at that level too)
 )
+
+
+def pk_batches(spk_idx, P, K, n_rows, rng):
+    """One epoch of P-speakers x K-rows batches (rows drawn with replacement for small speakers).
+    The number of batches keeps the epoch at about n_rows rows, like the random sampler."""
+    speakers = list(spk_idx)
+    out = []
+    for _ in range(max(1, n_rows // (P * K))):
+        chosen = rng.choice(len(speakers), size=min(P, len(speakers)), replace=False)
+        b = []
+        for c in chosen:
+            rows = spk_idx[speakers[c]]
+            b.append(rng.choice(rows, size=K, replace=len(rows) < K))
+        out.append(np.concatenate(b))
+    return out
+
+
+def proto_infonce(u, w, P, K, kmin, tau, gen):
+    """u, w: (P*K, d) rows grouped by speaker. Independent random subsets (size kmin..K) for faces and voices."""
+    U, W = u.view(P, K, -1), w.view(P, K, -1)
+    mf = torch.zeros(P, K, device=u.device); mv = torch.zeros(P, K, device=u.device)
+    for p in range(P):
+        a = int(torch.randint(kmin, K + 1, (1,), generator=gen)); c = int(torch.randint(kmin, K + 1, (1,), generator=gen))
+        mf[p, torch.randperm(K, generator=gen)[:a]] = 1; mv[p, torch.randperm(K, generator=gen)[:c]] = 1
+    pf = F.normalize((U * mf[..., None]).sum(1) / mf.sum(1, keepdim=True), dim=1)
+    pv = F.normalize((W * mv[..., None]).sum(1) / mv.sum(1, keepdim=True), dim=1)
+    S = pf @ pv.T / tau
+    t = torch.arange(P, device=u.device)
+    return 0.5 * (F.cross_entropy(S, t) + F.cross_entropy(S.T, t))
 
 
 def ramp(p):
@@ -268,17 +335,24 @@ def ramp(p):
     return float(2 / (1 + np.exp(-10 * p)) - 1)
 
 
-def train_one(store, cfg, tr_idx, seed):
+def train_one(store, cfg, tr_idx, seed, rows=None, prep=None, init=None):
+    """rows=(F, V, spk): train on exactly these rows instead of store train[tr_idx] (+ cfg ext).
+    prep: reuse a fitted Prep (pretrain -> fine-tune must share one input space).
+    init: state_dict to start from; the AAM centres W are skipped (their class set differs)."""
     cfg = dict(BASE, **cfg)
     torch.manual_seed(seed); np.random.seed(seed)
     rng = np.random.RandomState(seed)
-    Xf, Xv = store.face(cfg["face"], "train"), store.voice(cfg["voice"], "train")
-    TF, TV, spk = Xf[tr_idx], Xv[tr_idx], store.spk[tr_idx]
-    if cfg["ext"]:
-        assert cfg["face"] == "vgg" and cfg["voice"] == "given" and cfg["voice_view"] == "full",             "external rows exist only in the organiser feature space (VGG 4096 + organiser ECAPA 192)"
-        EF, EV, ES = store.ext_rows(tuple(cfg["ext"]), cfg["ext_cap"], exclude=tuple(cfg.get("ext_exclude", ())))
-        TF, TV, spk = np.concatenate([TF, EF]), np.concatenate([TV, EV]), np.concatenate([spk, ES])
-    prep = Prep(TF, TV, cfg["pca_f"], cfg["pca_v"])
+    if rows is not None:
+        assert cfg["voice_view"] == "full" and not cfg["ext"] and not cfg["dann_lang"], "rows= supports plain training only"
+        TF, TV, spk = rows
+    else:
+        Xf, Xv = store.face(cfg["face"], "train"), store.voice(cfg["voice"], "train")
+        TF, TV, spk = Xf[tr_idx], Xv[tr_idx], store.spk[tr_idx]
+        if cfg["ext"]:
+            assert cfg["face"] == "vgg" and cfg["voice"] == "given" and cfg["voice_view"] == "full",                 "external rows exist only in the organiser feature space (VGG 4096 + organiser ECAPA 192)"
+            EF, EV, ES = store.ext_rows(tuple(cfg["ext"]), cfg["ext_cap"], exclude=tuple(cfg.get("ext_exclude", ())))
+            TF, TV, spk = np.concatenate([TF, EF]), np.concatenate([TV, EV]), np.concatenate([spk, ES])
+    prep = prep or Prep(TF, TV, cfg["pca_f"], cfg["pca_v"])
     Ftr = torch.tensor(prep.f(TF), device=DEVICE)
     views = [torch.tensor(prep.v(TV), device=DEVICE)]
     if cfg["voice_view"] != "full":
@@ -288,7 +362,7 @@ def train_one(store, cfg, tr_idx, seed):
     V = torch.stack(views)                                       # (n_views, n, d)
     cls = {s: i for i, s in enumerate(np.unique(spk))}
     Y = torch.tensor([cls[s] for s in spk], device=DEVICE)
-    G = torch.tensor([store.gmap[s] == "m" for s in spk], device=DEVICE).long()
+    G = torch.tensor([store.gmap.get(s, "u") == "m" for s in spk], device=DEVICE).long()
 
     dann = cfg["dann_lang"] > 0
     if dann:
@@ -297,10 +371,20 @@ def train_one(store, cfg, tr_idx, seed):
         Dl = torch.tensor(isbn, device=DEVICE).long()
 
     net = Model(Ftr.shape[1], V.shape[2], len(cls), cfg).to(DEVICE)
-    opt = torch.optim.AdamW(net.parameters(), lr=cfg["lr"], weight_decay=cfg["wd"])
+    if init is not None:
+        net.load_state_dict({k: v for k, v in init.items() if k != "W"}, strict=False)
+    opt =torch.optim.AdamW(net.parameters(), lr=cfg["lr"], weight_decay=cfg["wd"])
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, cfg["epochs"])
     n, bs = len(spk), cfg["bs"]
-    steps = len(range(0, max(1, n - bs // 2), bs)) * cfg["epochs"]
+    pk = cfg["sampler"] == "pk"
+    if pk:
+        spk_idx = {s: np.where(np.asarray(spk) == s)[0] for s in np.unique(spk)}
+        P, K = min(cfg["pk_P"], len(spk_idx)), cfg["pk_K"]
+        gen = torch.Generator().manual_seed(seed)
+        steps = max(1, n // (P * K)) * cfg["epochs"]
+    else:
+        assert not cfg["w_proto"], "w_proto needs sampler='pk' (the loss needs K rows per speaker in a batch)"
+        steps = len(range(0, max(1, n - bs // 2), bs)) * cfg["epochs"]
     step = 0
     for ep in range(cfg["epochs"]):
         net.train()
@@ -311,8 +395,9 @@ def train_one(store, cfg, tr_idx, seed):
             vsel = rng.randint(0, len(V), size=n)
         else:
             vsel = np.zeros(n, dtype=int)
-        for s in range(0, max(1, n - bs // 2), bs):
-            b = order[s:s + bs]
+        batches = pk_batches(spk_idx, P, K, n, rng) if pk else \
+            [order[s:s + bs] for s in range(0, max(1, n - bs // 2), bs)]
+        for b in batches:
             bt = torch.tensor(b, device=DEVICE)
             vt = torch.tensor(vsel[b], device=DEVICE)
             u, w = net(Ftr[bt], V[vt, bt])
@@ -327,6 +412,8 @@ def train_one(store, cfg, tr_idx, seed):
                 loss = loss + cfg["w_mse"] * ((u - w) ** 2).sum(1).mean()
             if cfg["w_orth"]:
                 loss = loss + cfg["w_orth"] * orth(u, w, y)
+            if cfg["w_proto"]:
+                loss = loss + cfg["w_proto"] * proto_infonce(u, w, P, K, cfg["proto_min"], cfg["tau"], gen)
             lam = ramp(step / steps)
             if cfg["grl_gender"]:
                 e = GradReverse.apply(torch.cat([u, w]), cfg["grl_gender"] * lam)
@@ -341,8 +428,32 @@ def train_one(store, cfg, tr_idx, seed):
             opt.zero_grad(); loss.backward(); opt.step()
             step += 1
         sched.step()
+        if cfg["avg_from"] is not None and ep >= cfg["avg_from"]:
+            with torch.no_grad():
+                cur = {k: v.detach().clone().float() for k, v in net.state_dict().items() if v.dtype.is_floating_point}
+                n_avg = ep - cfg["avg_from"] + 1
+                avg = cur if n_avg == 1 else {k: avg[k] + (cur[k] - avg[k]) / n_avg for k in cur}
+    if cfg["avg_from"] is not None:
+        _load_average_and_update_bn(net, avg, Ftr, V[0], bs)
     net.eval()
     return net, prep
+
+
+@torch.no_grad()
+def _load_average_and_update_bn(net, avg, Ftr, Vtr, bs):
+    """Load averaged weights, then recompute BatchNorm running statistics with one pass over the training rows
+    (as torch.optim.swa_utils.update_bn: cumulative average, train mode, no gradient)."""
+    sd = net.state_dict()
+    sd.update({k: v.to(sd[k].dtype) for k, v in avg.items()})
+    net.load_state_dict(sd)
+    bns = [m for m in net.modules() if isinstance(m, nn.modules.batchnorm._BatchNorm)]
+    for m in bns:
+        m.reset_running_stats(); m.momentum = None
+    net.train()
+    for s in range(0, len(Ftr), bs):
+        net(Ftr[s:s + bs], Vtr[s:s + bs])
+    for m in bns:
+        m.momentum = 0.1
 
 
 @torch.no_grad()

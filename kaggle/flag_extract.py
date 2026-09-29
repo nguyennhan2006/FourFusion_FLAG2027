@@ -60,11 +60,14 @@ def resolve_split(root: Path, txt_name, wav_col, jpg_col, must_contain=None):
     raise FileNotFoundError(f"{txt_name}: {len(cands)} copies, none has its media beside it")
 
 
-def index_splits(root: Path):
-    S = {"train": resolve_split(root, "train_English.txt", 2, 3)}
+def index_splits(root: Path, roots=None):
+    """roots: optional {split: folder to search that split's txt in}; every split defaults to `root`."""
+    at = lambda k: (roots or {}).get(k, root)
+    S = {"train": resolve_split(at("train"), "train_English.txt", 2, 3)}
     for prot in ["no_gender", "gender"]:
         for lang in ["English", "Bangla"]:
-            S[f"{prot}/{lang}"] = resolve_split(root, f"{lang}_test.txt", 1, 2, must_contain=f"/{prot}/")
+            k = f"{prot}/{lang}"
+            S[k] = resolve_split(at(k), f"{lang}_test.txt", 1, 2, must_contain=f"/{prot}/")
     for k, v in S.items():
         v["dur"] = np.array([sf.info(str(v["root"] / p)).duration for p in v["wav"]], dtype=np.float32)
         log(f"{k:20s} {len(v['wav']):5d} rows | dur median {np.median(v['dur']):.1f}s max {v['dur'].max():.1f}s")
@@ -207,6 +210,22 @@ def load_audio(src):
 read_wav = load_audio
 
 
+def f0_stats(w, sr=TARGET_SR, fmin=60.0, fmax=400.0):
+    """Utterance pitch summary for the ATTR-01 falsification test (docs/PLAN_V4.md §1 B), not a model feature.
+    YIN F0 on frames whose RMS is above half the utterance median (a cheap voicing gate; pyin is ~50x slower).
+    Returns dict(log_f0_median, log_f0_iqr, voiced_frac); NaN when fewer than 10 voiced frames."""
+    import librosa
+    hop = 160
+    f0 = librosa.yin(w, fmin=fmin, fmax=fmax, sr=sr, frame_length=1024, hop_length=hop)
+    rms = librosa.feature.rms(y=w, frame_length=1024, hop_length=hop)[0][:len(f0)]
+    v = (rms > 0.5 * np.median(rms)) & (f0 > fmin * 1.05) & (f0 < fmax * 0.95)
+    if v.sum() < 10:
+        return dict(log_f0_median=np.nan, log_f0_iqr=np.nan, voiced_frac=float(v.mean()))
+    lf = np.log(f0[v])
+    q1, q2, q3 = np.percentile(lf, [25, 50, 75])
+    return dict(log_f0_median=float(q2), log_f0_iqr=float(q3 - q1), voiced_frac=float(v.mean()))
+
+
 def crop_plan(durs, target_durs, k, seed=0, min_sec=2.0):
     """k crops per utterance, length drawn from the dev-Bangla duration distribution.
     Returns (start_sec, len_sec) arrays of shape (k, n); an utterance shorter than the draw is kept whole."""
@@ -293,25 +312,29 @@ class ArcFace:
 
     def embed(self, path):
         import cv2
-        from insightface.utils import face_align
         img = cv2.imread(str(path))
         assert img is not None, path
-        faces = self.app.det_model.detect(img, max_num=0, metric="default")
-        bboxes, kpss = faces if isinstance(faces, tuple) else (faces, None)
-        if bboxes is not None and len(bboxes) and kpss is not None:
-            h, w = img.shape[:2]
-            ctr = np.array([w / 2, h / 2])
-            # prefer the big, central face: the crops are centred on the speaker
-            area = (bboxes[:, 2] - bboxes[:, 0]) * (bboxes[:, 3] - bboxes[:, 1])
-            dist = np.linalg.norm((bboxes[:, :2] + bboxes[:, 2:4]) / 2 - ctr, axis=1)
-            j = int(np.argmax(area - 2.0 * dist ** 2))
-            aimg = face_align.norm_crop(img, landmark=kpss[j], image_size=112)
-            ok, score = True, float(bboxes[j, 4])
-        else:
-            h, w = img.shape[:2]; m = int(min(h, w) * 0.15)
-            aimg = cv2.resize(img[m:h - m, m:w - m], (112, 112))
-            ok, score = False, 0.0
+        aimg, ok, score = align_face(self.app.det_model, img)
         return self.rec.get_feat(aimg).flatten().astype(np.float32), ok, score
+
+
+def align_face(det_model, img):
+    """BGR image -> (112x112 BGR crop on the ArcFace 5-point template, detected?, det score).
+    Also used by flag_models for AdaFace, so both recognisers see the same crop."""
+    import cv2
+    from insightface.utils import face_align
+    faces = det_model.detect(img, max_num=0, metric="default")
+    bboxes, kpss = faces if isinstance(faces, tuple) else (faces, None)
+    if bboxes is not None and len(bboxes) and kpss is not None:
+        h, w = img.shape[:2]
+        ctr = np.array([w / 2, h / 2])
+        # prefer the big, central face: the crops are centred on the speaker
+        area = (bboxes[:, 2] - bboxes[:, 0]) * (bboxes[:, 3] - bboxes[:, 1])
+        dist = np.linalg.norm((bboxes[:, :2] + bboxes[:, 2:4]) / 2 - ctr, axis=1)
+        j = int(np.argmax(area - 2.0 * dist ** 2))
+        return face_align.norm_crop(img, landmark=kpss[j], image_size=112), True, float(bboxes[j, 4])
+    h, w = img.shape[:2]; m = int(min(h, w) * 0.15)
+    return cv2.resize(img[m:h - m, m:w - m], (112, 112)), False, 0.0
 
 
 def extract_arcface(S, out: Path):
@@ -468,7 +491,7 @@ def extract_hub_voice(S, out: Path, short, model, crop_plan_file=None, max_minut
 #   face : VGGFace (Parkhi 2015) fc7 after ReLU, 224x224, BGR, minus the VGGFace channel means
 EXT_SOURCES = {   # name: (Google Drive file id, approx GB). No Bangla in any of them (FAME rule: no unheard language).
     "v3_train": ("1ZH3JVBEMtEmfKc24EZ7R1ZWXf4hZIkgq", 1.6),     # English + German, 50 ids
-    "v1_train": ("1TwjKmLp4zCYc0Cs_WmWBkOFuhlbVe8Iw", 11.0),    # English + Urdu, 64 ids
+    "v1_complete": ("1BrUmehrzY5Vl0p0tawc7TBZGIvTA3jdm", 11.0),  # English + Urdu, 70 ids + meta_v1.csv (names, gender)
     "v2_complete": ("1OY2x3G6JnA7g779CADhA3FCCrrrL0gSE", 13.0),  # English + Hindi, 84 ids
 }
 
@@ -529,10 +552,11 @@ class VGGFace:
         self._o = {}
         self.m.relu7.register_forward_hook(lambda mod_, i, o: self._o.__setitem__("x", o))
 
-    def prep(self, data: bytes):
+    def prep(self, data):
+        """jpg bytes or a PIL image -> BGR mean-subtracted CHW array, as the organiser's extractor."""
         import io
         from PIL import Image
-        im = Image.open(io.BytesIO(data)).convert("RGB")
+        im = (data if isinstance(data, Image.Image) else Image.open(io.BytesIO(data))).convert("RGB")
         if im.size != (224, 224):
             im = im.resize((224, 224), Image.BILINEAR)
         a = np.asarray(im, dtype=np.float32)[..., ::-1] - self.MEAN_BGR
@@ -555,14 +579,32 @@ def _parse(member):
     return None
 
 
+def _cap_per_speaker(wavs, cap):
+    """Keep at most `cap` utterances per speaker, taken round-robin over (language, video) so that both languages and
+    as many videos as possible are kept. Deterministic."""
+    by = {}
+    for w in wavs:
+        by.setdefault(w[1], {}).setdefault((w[2], w[3]), []).append(w)
+    keep = []
+    for spk_ in sorted(by):
+        groups = [sorted(g) for _, g in sorted(by[spk_].items())]
+        taken, k = [], 0
+        while len(taken) < cap and any(k < len(g) for g in groups):
+            taken += [g[k] for g in groups if k < len(g)]
+            k += 1
+        keep += taken[:cap]
+    return keep
+
+
 def extract_external(zpath, name, out: Path, voice_enc, face_enc, frames_per_video=8, max_padded_sec=240.0,
-                     max_bs=32, face_bs=64):
+                     max_bs=32, face_bs=64, max_wav_per_spk=None, max_sec=None):
     """ext_<name>_voice.npy (N,192 fp32) + _voice_meta.csv ; ext_<name>_face.npy (M,4096 fp16) + _face_meta.csv.
-    Faces: `frames_per_video` evenly spaced frames per video (consecutive frames are near-duplicates)."""
+    Faces: `frames_per_video` evenly spaced frames per video (consecutive frames are near-duplicates).
+    max_wav_per_spk: training later uses at most ext_cap rows per speaker, so extracting more is wasted time.
+    max_sec: centre-crop longer clips (the organiser's extractor has the same option, --max_seconds)."""
     import io
-    import zipfile
     fv, ff = out / f"ext_{name}_voice.npy", out / f"ext_{name}_face.npy"
-    z = zipfile.ZipFile(zpath)
+    z = open_archive(zpath)
     wavs, faces = [], {}
     for i in z.infolist():
         if i.is_dir():
@@ -576,12 +618,19 @@ def extract_external(zpath, name, out: Path, voice_enc, face_enc, frames_per_vid
             faces.setdefault(r[1:], []).append(i.filename)
     log(f"{name}: {len(wavs)} wav, {sum(map(len, faces.values()))} jpg in {len(faces)} videos, "
         f"{len({w[1] for w in wavs})} ids, langs {sorted({w[2] for w in wavs})}")
+    if max_wav_per_spk:
+        wavs = _cap_per_speaker(wavs, max_wav_per_spk)
+        log(f"  {name}: capped to {len(wavs)} wav ({max_wav_per_spk}/speaker, round-robin over language x video)")
+    crop = (lambda w: w) if not max_sec else         (lambda w: w if len(w) <= int(max_sec * 16000) else
+         w[(len(w) - int(max_sec * 16000)) // 2:(len(w) - int(max_sec * 16000)) // 2 + int(max_sec * 16000)])
     if not fv.exists():
         durs = np.array([z.getinfo(f).file_size / 32000 for f, *_ in wavs], dtype=np.float32)   # sort key only
+        if max_sec:
+            durs = np.minimum(durs, max_sec)
 
         rs0 = AUDIO_STATS["resampled"]
         res = run_batched(list(range(len(wavs))),
-                          lambda ii: voice_enc([load_audio(io.BytesIO(z.read(wavs[i][0]))) for i in ii]), durs,
+                          lambda ii: voice_enc([crop(load_audio(io.BytesIO(z.read(wavs[i][0])))) for i in ii]), durs,
                           max_padded_sec, max_bs, label=f"voice {name}")
         log(f"  {name}: {AUDIO_STATS['resampled'] - rs0} wav resampled to 16 kHz | audio so far {AUDIO_STATS}")
         np.save(fv, np.stack(res).astype(np.float32))
@@ -602,6 +651,40 @@ def extract_external(zpath, name, out: Path, voice_enc, face_enc, frames_per_vid
         pd.DataFrame(dict(path=[p[0] for p in pick], spk=[p[1] for p in pick], lang=[p[2] for p in pick],
                           video=[p[3] for p in pick])).to_csv(out / f"ext_{name}_face_meta.csv", index=False)
     log(name, "done:", np.load(fv, mmap_mode="r").shape, np.load(ff, mmap_mode="r").shape)
+
+
+def extract_ext_meta(zpath, name, out: Path, max_meta_mb=5.0, f0=True, log_every=2000):
+    """CPU pass over one external zip (FLAG_09): keep what extract_external throws away.
+      ext_<name>_zip_listing.csv   every non-media member (name, size)
+      ext_meta/<name>/<member>     non-media files up to max_meta_mb (identity lists, gender meta, readme ...)
+      ext_<name>_voice_f0.csv      path + f0_stats per wav, same `path` key as ext_<name>_voice_meta.csv"""
+    import io
+    import zipfile
+    z = zipfile.ZipFile(zpath)
+    media = (".wav", ".jpg", ".jpeg", ".png", ".mp4", ".m4a")
+    other = [i for i in z.infolist() if not i.is_dir() and not i.filename.lower().endswith(media)]
+    pd.DataFrame(dict(member=[i.filename for i in other], size=[i.file_size for i in other])).to_csv(
+        out / f"ext_{name}_zip_listing.csv", index=False)
+    md = out / "ext_meta" / name
+    for i in other:
+        if i.file_size <= max_meta_mb * 1e6 and "__MACOSX" not in i.filename:
+            p = md / i.filename
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_bytes(z.read(i))
+    log(f"{name}: {len(other)} non-media members kept -> {md}")
+    fcsv = out / f"ext_{name}_voice_f0.csv"
+    if f0 and not fcsv.exists():
+        wavs = [i.filename for i in z.infolist() if i.filename.lower().endswith(".wav") and _parse(i.filename)]
+        rows = []
+        for k, f in enumerate(wavs):
+            try:
+                rows.append(dict(path=f, **f0_stats(load_audio(io.BytesIO(z.read(f))))))
+            except Exception as e:                       # one bad file must not cost the whole pass
+                rows.append(dict(path=f, log_f0_median=np.nan, log_f0_iqr=np.nan, voiced_frac=np.nan, error=str(e)[:80]))
+            if k % log_every == 0:
+                log(f"  f0 {name} {k}/{len(wavs)}")
+        pd.DataFrame(rows).to_csv(fcsv, index=False)
+        log(f"{name}: F0 for {len(rows)} wav, {pd.DataFrame(rows).log_f0_median.notna().mean():.1%} valid | audio {AUDIO_STATS}")
 
 
 def fetch_zip(fids, dest: Path, min_free_gb):
@@ -632,3 +715,90 @@ def fetch_zip(fids, dest: Path, min_free_gb):
                 if b"quota" in head.lower():
                     break                                              # retrying the same id will not help
     raise RuntimeError(f"could not download any of {fids} (Drive quota?). Download manually and attach as a dataset.")
+
+
+def find_attached_zip(inp: Path, name):
+    """A zip for source `name` already attached as a Kaggle dataset (e.g. mavceleb_v1_complete-001.zip), or None.
+    Kaggle may also auto-extract an uploaded zip; then there is no zip to find and the source is downloaded."""
+    key = name.replace("_train", "_tran") if name == "v3_train" else name
+    norm = lambda t: t.lower().replace("-", "_")
+    hits = [p for p in inp.rglob("*.zip") if norm(key) in norm(p.name) or norm(name) in norm(p.name)]
+    return sorted(hits, key=lambda p: -p.stat().st_size)[0] if hits else None
+
+
+def write_speaker_meta(zpath, name, out: Path):
+    """Copy the release's own identity table (v1: meta_v1.csv = ids, name, split, gender) next to the features,
+    so duplicate ids of one person are merged and the real gender is used (flag_v2.ext_source)."""
+    if Path(zpath).is_dir():        # extracted: meta_v1.csv sits next to (or one level above) the data folder
+        metas = [p for d in (Path(zpath), Path(zpath).parent) for p in d.glob("*.csv") if "meta" in p.name.lower()]
+        if metas:
+            pd.read_csv(metas[0]).to_csv(out / f"ext_{name}_speakers.csv", index=False)
+            log(f"{name}: speaker table {metas[0].name} saved")
+        return
+    with open_archive(zpath) as z:
+        metas = [n for n in z.namelist() if n.lower().endswith(".csv") and "meta" in n.lower()]
+        if metas:
+            pd.read_csv(z.open(metas[0])).to_csv(out / f"ext_{name}_speakers.csv", index=False)
+            log(f"{name}: speaker table {metas[0]} saved")
+
+
+class DirArchive:
+    """Read-only zipfile.ZipFile look-alike over an extracted folder (Kaggle auto-extracts uploaded zips)."""
+
+    class _Info:
+        def __init__(self, root, p):
+            self.filename = p.relative_to(root).as_posix()
+            self.file_size = p.stat().st_size
+            self._dir = p.is_dir()
+
+        def is_dir(self):
+            return self._dir
+
+    def __init__(self, root):
+        self.root = Path(root)
+        self._infos = [self._Info(self.root, p) for p in sorted(self.root.rglob("*")) if p.is_file()]
+        self._by = {i.filename: i for i in self._infos}
+
+    def infolist(self):
+        return self._infos
+
+    def namelist(self):
+        return [i.filename for i in self._infos]
+
+    def getinfo(self, name):
+        return self._by[name]
+
+    def read(self, name):
+        return (self.root / name).read_bytes()
+
+    def open(self, name):
+        return open(self.root / name, "rb")
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+def open_archive(path):
+    import zipfile
+    return DirArchive(path) if Path(path).is_dir() else zipfile.ZipFile(path)
+
+
+def find_attached_source(inp: Path, name):
+    """Zip for `name` attached as a dataset, or the folder Kaggle extracted it into (the folder that holds
+    both voices/ and faces/, e.g. .../v1/ for v1_complete), or None."""
+    z = find_attached_zip(inp, name)
+    if z is not None:
+        return z
+    tag = {"v1_complete": "v1", "v2_complete": "v2", "v3_train": None}.get(name)
+    for d in sorted(inp.rglob("voices")):
+        root = d.parent
+        if not (root / "faces").is_dir():
+            continue
+        hint = root.as_posix().lower().replace("-", "_") + "/"      # Kaggle slugs use hyphens
+        if (tag and (f"/{tag}/" in hint or name in hint)) or (tag is None and name.split("_")[0] in hint):
+            return root
+    return None
+

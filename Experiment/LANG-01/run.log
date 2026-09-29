@@ -1,0 +1,59 @@
+09:24:58 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+09:24:58 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_ext | 6 arrays
+{'split': 1, 'variant': 'none', 'n_persons_dir': 0, 'v4_ng': 16.53, 'v4_g': 23.43, 'urdu_sample': 31.8, 'urdu_person': 28.33, 'hindi_sample': 34.73, 'hindi_person': 31.5}
+{'split': 1, 'variant': 'v1_complete->k1 a0.5', 'n_persons_dir': 55, 'v4_ng': 16.53, 'v4_g': 24.43, 'urdu_sample': 32.1, 'urdu_person': np.float64(28.33), 'hindi_sample': 34.53, 'hindi_person': 30.3}
+{'split': 1, 'variant': 'v1_complete->k1 a1.0', 'n_persons_dir': 55, 'v4_ng': 16.53, 'v4_g': 24.53, 'urdu_sample': 32.3, 'urdu_person': 28.33, 'hindi_sample': 34.6, 'hindi_person': 29.07}
+{'split': 1, 'variant': 'v1_complete->k3 a0.5', 'n_persons_dir': 55, 'v4_ng': 16.53, 'v4_g': 24.43, 'urdu_sample': 32.0, 'urdu_person': np.float64(26.83), 'hindi_sample': np.float64(34.27), 'hindi_person': 31.27}
+{'split': 1, 'variant': 'v1_complete->k3 a1.0', 'n_persons_dir': 55, 'v4_ng': 16.57, 'v4_g': 23.9, 'urdu_sample': np.float64(31.33), 'urdu_person': 24.83, 'hindi_sample': 34.0, 'hindi_person': 28.13}
+{'split': 1, 'variant': 'v2_complete->k1 a0.5', 'n_persons_dir': 67, 'v4_ng': 16.53, 'v4_g': 22.5, 'urdu_sample': 31.53, 'urdu_person': 28.23, 'hindi_sample': np.float64(34.4), 'hindi_person': 31.73}
+{'split': 1, 'variant': 'v2_complete->k1 a1.0', 'n_persons_dir': 67, 'v4_ng': 16.53, 'v4_g': 22.37, 'urdu_sample': 31.87, 'urdu_person': 28.17, 'hindi_sample': np.float64(34.47), 'hindi_person': 31.23}
+{'split': 1, 'variant': 'v2_complete->k3 a0.5', 'n_persons_dir': 67, 'v4_ng': 16.53, 'v4_g': 22.3, 'urdu_sample': 32.43, 'urdu_person': 28.33, 'hindi_sample': np.float64(34.47), 'hindi_person': 29.6}
+{'split': 1, 'variant': 'v2_complete->k3 a1.0', 'n_persons_dir': 67, 'v4_ng': 16.53, 'v4_g': 23.0, 'urdu_sample': 33.23, 'urdu_person': 29.4, 'hindi_sample': 34.4, 'hindi_person': np.float64(26.13)}
+{'split': 2, 'variant': 'none', 'n_persons_dir': 0, 'v4_ng': 24.13, 'v4_g': 34.3, 'urdu_sample': 37.53, 'urdu_person': 33.27, 'hindi_sample': 35.17, 'hindi_person': 28.9}
+{'split': 2, 'variant': 'v1_complete->k1 a0.5', 'n_persons_dir': 55, 'v4_ng': 24.13, 'v4_g': 34.83, 'urdu_sample': 36.37, 'urdu_person': 28.1, 'hindi_sample': 35.1, 'hindi_person': 28.9}
+{'split': 2, 'variant': 'v1_complete->k1 a1.0', 'n_persons_dir': 55, 'v4_ng': np.float64(24.8), 'v4_g': 33.9, 'urdu_sample': 35.53, 'urdu_person': 28.1, 'hindi_sample': np.float64(35.1), 'hindi_person': 28.9}
+{'split': 2, 'variant': 'v1_complete->k3 a0.5', 'n_persons_dir': 55, 'v4_ng': 24.73, 'v4_g': 35.5, 'urdu_sample': 36.17, 'urdu_person': 28.43, 'hindi_sample': np.float64(35.5), 'hindi_person': 28.9}
+{'split': 2, 'variant': 'v1_complete->k3 a1.0', 'n_persons_dir': 55, 'v4_ng': 25.37, 'v4_g': 35.17, 'urdu_sample': np.float64(35.4), 'urdu_person': 28.1, 'hindi_sample': 35.6, 'hindi_person': 28.9}
+{'split': 2, 'variant': 'v2_complete->k1 a0.5', 'n_persons_dir': 67, 'v4_ng': 24.07, 'v4_g': 35.27, 'urdu_sample': 37.17, 'urdu_person': 30.03, 'hindi_sample': np.float64(35.2), 'hindi_person': 28.9}
+{'split': 2, 'variant': 'v2_complete->k1 a1.0', 'n_persons_dir': 67, 'v4_ng': 24.2, 'v4_g': 33.2, 'urdu_sample': 36.93, 'urdu_person': 28.13, 'hindi_sample': 35.23, 'hindi_person': 28.9}
+{'split': 2, 'variant': 'v2_complete->k3 a0.5', 'n_persons_dir': 67, 'v4_ng': 23.27, 'v4_g': 28.6, 'urdu_sample': 37.33, 'urdu_person': 32.63, 'hindi_sample': np.float64(34.97), 'hindi_person': 28.67}
+{'split': 2, 'variant': 'v2_complete->k3 a1.0', 'n_persons_dir': 67, 'v4_ng': 23.43, 'v4_g': 28.4, 'urdu_sample': np.float64(37.0), 'urdu_person': 31.07, 'hindi_sample': 34.43, 'hindi_person': 26.4}
+{'split': 3, 'variant': 'none', 'n_persons_dir': 0, 'v4_ng': 34.43, 'v4_g': 41.17, 'urdu_sample': 33.53, 'urdu_person': 27.57, 'hindi_sample': 34.03, 'hindi_person': np.float64(29.13)}
+{'split': 3, 'variant': 'v1_complete->k1 a0.5', 'n_persons_dir': 55, 'v4_ng': 34.43, 'v4_g': 39.63, 'urdu_sample': 33.43, 'urdu_person': 26.43, 'hindi_sample': 33.93, 'hindi_person': 27.27}
+{'split': 3, 'variant': 'v1_complete->k1 a1.0', 'n_persons_dir': 55, 'v4_ng': 34.43, 'v4_g': 39.63, 'urdu_sample': 33.2, 'urdu_person': 25.37, 'hindi_sample': 33.83, 'hindi_person': 25.5}
+{'split': 3, 'variant': 'v1_complete->k3 a0.5', 'n_persons_dir': 55, 'v4_ng': 34.47, 'v4_g': 39.67, 'urdu_sample': 33.53, 'urdu_person': 25.93, 'hindi_sample': 34.23, 'hindi_person': 25.23}
+{'split': 3, 'variant': 'v1_complete->k3 a1.0', 'n_persons_dir': 55, 'v4_ng': 35.43, 'v4_g': 39.6, 'urdu_sample': 34.0, 'urdu_person': 24.07, 'hindi_sample': np.float64(34.17), 'hindi_person': 23.53}
+{'split': 3, 'variant': 'v2_complete->k1 a0.5', 'n_persons_dir': 67, 'v4_ng': 34.43, 'v4_g': 41.17, 'urdu_sample': 33.63, 'urdu_person': 26.17, 'hindi_sample': np.float64(33.67), 'hindi_person': np.float64(27.83)}
+{'split': 3, 'variant': 'v2_complete->k1 a1.0', 'n_persons_dir': 67, 'v4_ng': 34.43, 'v4_g': np.float64(41.13), 'urdu_sample': 33.77, 'urdu_person': np.float64(24.3), 'hindi_sample': 34.0, 'hindi_person': 27.3}
+{'split': 3, 'variant': 'v2_complete->k3 a0.5', 'n_persons_dir': 67, 'v4_ng': 34.43, 'v4_g': np.float64(40.4), 'urdu_sample': 34.07, 'urdu_person': 27.1, 'hindi_sample': 33.83, 'hindi_person': np.float64(24.7)}
+{'split': 3, 'variant': 'v2_complete->k3 a1.0', 'n_persons_dir': 67, 'v4_ng': np.float64(34.47), 'v4_g': 39.17, 'urdu_sample': 33.87, 'urdu_person': 27.17, 'hindi_sample': 34.03, 'hindi_person': 23.5}
+{'split': 4, 'variant': 'none', 'n_persons_dir': 0, 'v4_ng': 26.67, 'v4_g': 36.23, 'urdu_sample': 34.13, 'urdu_person': 26.33, 'hindi_sample': np.float64(29.63), 'hindi_person': np.float64(19.87)}
+{'split': 4, 'variant': 'v1_complete->k1 a0.5', 'n_persons_dir': 55, 'v4_ng': 26.67, 'v4_g': 39.67, 'urdu_sample': 34.2, 'urdu_person': np.float64(26.23), 'hindi_sample': 29.5, 'hindi_person': 20.23}
+{'split': 4, 'variant': 'v1_complete->k1 a1.0', 'n_persons_dir': 55, 'v4_ng': 26.7, 'v4_g': np.float64(40.3), 'urdu_sample': 34.43, 'urdu_person': np.float64(24.1), 'hindi_sample': 29.3, 'hindi_person': 20.27}
+{'split': 4, 'variant': 'v1_complete->k3 a0.5', 'n_persons_dir': 55, 'v4_ng': 26.67, 'v4_g': np.float64(38.8), 'urdu_sample': 34.37, 'urdu_person': 26.57, 'hindi_sample': 29.2, 'hindi_person': 18.63}
+{'split': 4, 'variant': 'v1_complete->k3 a1.0', 'n_persons_dir': 55, 'v4_ng': 26.67, 'v4_g': np.float64(39.0), 'urdu_sample': 34.57, 'urdu_person': 28.17, 'hindi_sample': 28.67, 'hindi_person': 18.2}
+{'split': 4, 'variant': 'v2_complete->k1 a0.5', 'n_persons_dir': 67, 'v4_ng': 26.67, 'v4_g': 38.07, 'urdu_sample': np.float64(34.4), 'urdu_person': 26.43, 'hindi_sample': 29.37, 'hindi_person': np.float64(19.87)}
+{'split': 4, 'variant': 'v2_complete->k1 a1.0', 'n_persons_dir': 67, 'v4_ng': 26.63, 'v4_g': 39.6, 'urdu_sample': np.float64(34.9), 'urdu_person': np.float64(26.23), 'hindi_sample': 29.1, 'hindi_person': 19.0}
+{'split': 4, 'variant': 'v2_complete->k3 a0.5', 'n_persons_dir': 67, 'v4_ng': 26.63, 'v4_g': 38.63, 'urdu_sample': 34.67, 'urdu_person': 29.17, 'hindi_sample': 29.57, 'hindi_person': 20.53}
+{'split': 4, 'variant': 'v2_complete->k3 a1.0', 'n_persons_dir': 67, 'v4_ng': np.float64(26.53), 'v4_g': 38.7, 'urdu_sample': np.float64(34.6), 'urdu_person': 29.07, 'hindi_sample': 29.73, 'hindi_person': np.float64(21.57)}
+{'split': 5, 'variant': 'none', 'n_persons_dir': 0, 'v4_ng': 27.27, 'v4_g': 33.2, 'urdu_sample': 41.93, 'urdu_person': 38.27, 'hindi_sample': 38.0, 'hindi_person': 33.9}
+{'split': 5, 'variant': 'v1_complete->k1 a0.5', 'n_persons_dir': 56, 'v4_ng': 27.0, 'v4_g': 34.43, 'urdu_sample': 41.7, 'urdu_person': 38.27, 'hindi_sample': 37.57, 'hindi_person': 33.9}
+{'split': 5, 'variant': 'v1_complete->k1 a1.0', 'n_persons_dir': 56, 'v4_ng': 27.33, 'v4_g': np.float64(37.9), 'urdu_sample': 41.93, 'urdu_person': 38.27, 'hindi_sample': 37.77, 'hindi_person': 33.9}
+{'split': 5, 'variant': 'v1_complete->k3 a0.5', 'n_persons_dir': 56, 'v4_ng': 28.27, 'v4_g': 34.63, 'urdu_sample': 41.93, 'urdu_person': 38.27, 'hindi_sample': np.float64(37.2), 'hindi_person': 33.83}
+{'split': 5, 'variant': 'v1_complete->k3 a1.0', 'n_persons_dir': 56, 'v4_ng': np.float64(29.13), 'v4_g': 37.53, 'urdu_sample': 42.1, 'urdu_person': 38.27, 'hindi_sample': 36.9, 'hindi_person': np.float64(34.4)}
+{'split': 5, 'variant': 'v2_complete->k1 a0.5', 'n_persons_dir': 68, 'v4_ng': 27.27, 'v4_g': 33.83, 'urdu_sample': np.float64(41.73), 'urdu_person': 38.27, 'hindi_sample': 37.37, 'hindi_person': 33.83}
+{'split': 5, 'variant': 'v2_complete->k1 a1.0', 'n_persons_dir': 68, 'v4_ng': 27.07, 'v4_g': 34.53, 'urdu_sample': 41.77, 'urdu_person': 38.27, 'hindi_sample': 37.33, 'hindi_person': 33.83}
+{'split': 5, 'variant': 'v2_complete->k3 a0.5', 'n_persons_dir': 68, 'v4_ng': 27.57, 'v4_g': 34.77, 'urdu_sample': 41.93, 'urdu_person': 38.27, 'hindi_sample': 37.63, 'hindi_person': 34.53}
+{'split': 5, 'variant': 'v2_complete->k3 a1.0', 'n_persons_dir': 68, 'v4_ng': np.float64(26.5), 'v4_g': 34.93, 'urdu_sample': 42.33, 'urdu_person': 36.83, 'hindi_sample': 37.4, 'hindi_person': 36.97}
+                      v4_ng   v4_g  urdu_sample  urdu_person  hindi_sample  hindi_person
+variant                                                                                 
+none                  25.81  33.67        35.79        30.75         34.31         28.66
+v1_complete->k1 a0.5  25.75  34.60        35.56        29.47         34.13         28.12
+v1_complete->k1 a1.0  25.96  35.25        35.48        28.83         34.12         27.53
+v1_complete->k3 a0.5  26.13  34.61        35.60        29.21         34.08         27.57
+v1_complete->k3 a1.0  26.63  35.04        35.48        28.69         33.87         26.63
+v2_complete->k1 a0.5  25.79  34.17        35.69        29.83         34.00         28.43
+v2_complete->k1 a1.0  25.77  34.17        35.85        29.02         34.03         28.05
+v2_complete->k3 a0.5  25.69  32.94        36.09        31.10         34.09         27.61
+v2_complete->k3 a1.0  25.49  32.84        36.21        30.71         34.00         26.91
+ALL DONE

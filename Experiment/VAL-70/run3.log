@@ -1,0 +1,40 @@
+10:53:31 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+10:53:31 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_ext | 6 arrays
+40 files: {('v1', 'english'): 444, ('v1', 'urdu'): 447, ('v2', 'english'): 441, ('v2', 'hindi'): 436}
+members loaded from cache
+lang     protocol  level 
+english  g         person    34.94
+                   sample    39.98
+         ng        person    26.15
+                   sample    31.58
+hindi    ng        person    26.87
+                   sample    31.89
+urdu     g         person    35.70
+                   sample    40.81
+         ng        person    24.75
+                   sample    30.63
+system                   AGE.1  AGE.25  FARL5+AGE.1  SET08  SET09  SET12  SET13  SET14
+lang    protocol level                                                                
+english g        person  -0.83   -0.56        -1.23  -1.31  -1.18  -8.32  -9.02  -8.24
+                 sample  -0.52   -0.97        -2.47  -0.95  -1.94  -6.13  -6.33  -6.52
+        ng       person  -0.03   -0.68        -2.71  -0.76  -2.41  -6.76  -6.86  -6.14
+                 sample  -0.46   -0.84        -3.46  -0.38  -3.06  -6.48  -6.76  -7.20
+hindi   ng       person  -1.42   -2.04        -2.31  -0.34  -1.63  -7.59  -7.76  -6.09
+                 sample  -0.45   -0.90        -3.13  -0.09  -2.64  -5.41  -5.71  -6.15
+urdu    g        person  -0.51   -1.70        -4.27  -1.83  -3.85  -7.00  -7.21  -7.54
+                 sample  -0.44   -0.91        -2.95  -1.07  -2.57  -5.67  -5.90  -6.50
+        ng       person  -0.21    0.32        -2.75  -1.17  -2.51  -5.69  -6.05  -5.49
+                 sample  -0.30   -0.77        -3.48  -0.95  -3.17  -6.20  -6.28  -6.91
+system                   AGE.1 AGE.25 FARL5+AGE.1  SET08  SET09  SET12  SET13  SET14
+lang    protocol level                                                              
+english g        person   7/10   6/10        7/10   7/10   7/10  10/10  10/10  10/10
+                 sample  10/10  10/10        9/10   9/10   9/10  10/10  10/10  10/10
+        ng       person  12/20  14/20       18/20  15/20  16/20  20/20  20/20  20/20
+                 sample  18/20  19/20       20/20  14/20  20/20  20/20  20/20  20/20
+hindi   ng       person   9/10   9/10        7/10   6/10   7/10  10/10  10/10  10/10
+                 sample  10/10  10/10       10/10   4/10  10/10  10/10  10/10  10/10
+urdu    g        person   5/10   8/10        9/10   7/10   9/10  10/10  10/10  10/10
+                 sample  10/10  10/10       10/10  10/10  10/10  10/10  10/10  10/10
+        ng       person   5/10   2/10        9/10   7/10   8/10  10/10  10/10  10/10
+                 sample   9/10   9/10       10/10   9/10  10/10  10/10  10/10  10/10
+EXIT 0

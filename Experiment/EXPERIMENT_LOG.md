@@ -33,6 +33,14 @@ Cột `Δ` = CB Overall − 42.17 (FOP 000c). Bản tốt nhất, code tự ch�
 | FUSE-01 | 2026-09-25 | 011 | **Rank fusion theo cell, không train**: English ← rank(007)+rank(010B), Bangla ← 003c. Chọn bằng pseudo-label SEL-01b | – | | | | **23.61** | 27.88 | **29.12** | 37.87 | **29.62** | **−12.55** | ✅ Dự đoán 29.5 → thật 29.62. g/En −1.84 (dự đoán −1.38), ng/En chỉ −0.20 (dự đoán −1.14). **Baseline hiện hành.** Leaderboard: 26.64 / 28.84 / 29.39 / **29.62** |
 | FUSE-02 | 2026-09-25 | FUSE-01 | FUSE-01 + Bangla ← rank(003c)+rank(r2_ecapa192_mix) (speechbrain ECAPA-192 + crop độ dài Bangla) | – | | | | 23.61 | **26.88** | 29.12 | **36.10** | **28.93** | **−13.24** | ✅ Dự đoán 28.8 → thật 28.93. ng/Bn −1.00 (dự đoán −0.95), g/Bn −1.77 (dự đoán −2.0…−2.5). **g/Bn 36.10 tốt nhất bảng** (hạng 1: 36.78). **Baseline hiện hành.** Leaderboard: 26.64 / 28.5 / 28.84 / **28.93** |
 | FUSE-03 | 2026-09-26 | FUSE-02 | FUSE-02 + g/Bn ← gate độ dài 2 tham số giữa 003c và r2_mix (w_003c = σ(0.5·log d − 1.5), nghiêng về r2_mix), chọn bằng OOF 5 fold theo pseudo-identity | – | | | | 23.61 | 26.88 | 29.12 | **35.15** | **28.69** | **−13.48** | ✅ Dự đoán g/Bn ≈ 35.3 → thật 35.15 (−0.95). **Hạng 3** lúc nộp (26.64 / 28.5 / **28.69** / 28.84). Transductive: tham số fit trên pseudo-label dev — khai báo. **Baseline hiện hành.** ⚠️ Cơ chế: đổi trọng số (~0.3/0.7 về r2_mix), **không** phải mô hình hóa độ dài — w_003c tăng theo d (0.24 ở 2 s → 0.44 ở 12 s) trong khi r2_mix mạnh nhất ở câu dài (nhật ký 29, 40) |
+| SET-02 | 2026-09-26 | FUSE-03 | **Gộp theo cụm lúc test**: gom cụm mặt (ArcFace) + giọng (ECAPA-192) trong từng file, không nhãn, không danh sách trial; score = trung bình khối (b=0.99) của ma trận đầy đủ; English s007+s010B, Bangla r2mix+s007 (local n=5) | – | 23.68¹ | 14.80¹ | | **12.50** | **21.34** | 28.31 | **24.59** | **21.68** | **−20.49** | ✅ −7.01. ¹internal nhãn thật (gender/no_gender). g/En gần như không đổi (dự đoán pseudo 20.2) → pseudo-label thiên vị hệ có gộp cụm. **Baseline hiện hành, hạng 2** |
+| EXT-03 | 2026-09-27 | SET-02 | Cầu nối train thêm **MAV-Celeb v1 + v2** (cap 150/người, id gộp theo tên) + **SetProto** (PK 32×8, w 0.5) = arm B3P; nhãn thật: v4 giữ ra 30 (mức cụm) + người Urdu/Hindi giữ ra | 15 ep (ext) · 40 (A) / 5 split | 22.36² | 30.84² | | | | | | | | ✅ trên validation: B3P − A = +3.45 [4/5] / +2.83 [3/5]; Urdu người +4.90 [5/5]; Hindi +4.88 [4/5]. ²v4 mức cụm (A: 25.81 / 33.67) |
+| SET-07 | 2026-09-27 | SET-02 + EXT-03 | SET-02 với s007 → **s007ext** (B3P, 70 người v4 + v1 + v2 bản đầy đủ, loại 2 người trùng) | 15 ep / n=5 | | | | 15.48 | **17.21** | **27.49** | 28.61 | **22.20** | −19.97 | ❌ +0.52 tổng, nhưng **ng/Bn −4.13, g/En −0.82**; ng/En +2.98, g/Bn +4.02. Pseudo-arc đoán 15.54 / 17.11 / 27.09 / 28.68 (sai ≤ 0.4) |
+| HYB-01 | 2026-09-27 | SET-02/07/08 | **Ghép per-cell 3 bản đã nộp**: ng/En ← SET-08, ng/Bn ← SET-07, g/En ← SET-07, g/Bn ← SET-02 | – | | | | 12.30 | 17.21 | 27.49 | 24.59 | **20.40** | **−21.77** | ✅ CB xác nhận đúng 20.40. **Tốt nhất trên bảng progress.** Zip: `HYB-01/submission_HYB01.zip`. Chọn theo CB, nên không mang sang Evaluation phase (cấu hình Evaluation vẫn là SET-02) |
+| LEAK-01 | 2026-09-27 | – | **Chẩn đoán** "Stage 54" (đếm trial nối cụm mặt ↔ cụm giọng) trên file mô phỏng từ v4 giữ ra, nhãn thật | 5 split × 3 | | | | | | | | | | không nộp. Giống dev (m=32, 50% positive): graph **2.10 / 2.50** so với SET-02 23.84 / 34.54; m=2: graph = SET-02 |
+| ARCH-01 | 2026-09-27 | EXP-007 | Dạng cầu nối: MLP / linear two-tower (bilinear hạng thấp, r 16, 128) / ridge-CCA k 8–64 / residual-CCA; nhãn thật, chấm như production | 40 ep / 5 split, n=2 | 25.43³ | 34.67³ | | | | | | | | ❌ không dạng nào trội; RCCA tệ hơn (−3…−6); CCA k ≥ 32 xấu nhanh. ³MLP alone, v4 mức cụm |
+| SET-08 | 2026-09-27 | SET-02 + ARCH-01b | s007 trộn lại: 0.5 MLP + 0.25 CCA-4 + **0.25 CCA-16** (F3) | – | | | | 12.30 | 21.34 | 28.72 | 26.84 | **22.30** | −19.87 | ❌ +0.62 so với SET-02, chủ yếu ở g/Bn (+2.25). Nhãn thật dự đoán thắng ở ng, nhưng pseudo-arc dự đoán đúng từng cell (xem (53)). CB suy ra từ ảnh kết quả, khớp per-cell với pseudo SET-08 |
+| LANG-01 | 2026-09-27 | EXP-007 | Chiếu bỏ hướng ngôn ngữ học từ v1 hoặc v2 (k ∈ {1,3}, α ∈ {0.5,1}) khỏi voice trước cầu nối | 40 ep / 5 split | | | | | | | | | | ❌ hòa: tốt nhất v2 k1 α1, Urdu người +1.73 [4/5], English −0.5 ở g; dev pseudo mức mẫu 31.16 so với 31.30 |
 | 009 | 2026-09-25 | 007 | **Công thức hạng 1 FAME26**: linear head + dropout 0.9 + AAM (shared centres) + emb192. 18 cấu hình × 3 split, tách từng biến | 40–200 ep / 1,2,3 | 21.94 | **30.53** (ours) | 26.24 | | | | | | | ❌ FAME1 gốc 32.56, không config nào thắng `ours` 30.53. `ours+aam` 30.66 (hòa) · drop .7 31.11 · 100ep 32.89 · 200ep 34.03 · **drop .9 trên MLP 37.82** · bỏ PCA face 37.67. Bảng: `EXP-009_fame1/out/grid.csv` |
 | 012 | 2026-09-25 | – | **H9 thử 1**: proxy không nhãn cho EER, tính **chỉ từ file score đã nộp** (GMM 2-mode, bimodality, kurtosis, dip, half-gap). Kiểm định trên **8 hệ × 4 cell = 32 điểm có EER thật từ CB** | – | | | | | | | | | | ❌ **Thất bại**: tương quan *trong từng cell* ≈ 0 (kurtosis −0.06, gmm_sep −0.04, half_gap +0.08, dip −0.30). Tương quan toàn cục (−0.70) là ảo — do khác biệt giữa các cell, không phải giữa các hệ |
 | 001 | | 000c | Internal val có gender-constrained, 3 split seed; đánh giá lại ckpt 000c; EDA-7 | | | | | | | | | | | không nộp — hạ ưu tiên: đã có `eda_utils.build_trials`; ckpt 000c chỉ để EDA-7 |
@@ -41,6 +49,251 @@ Cột `Δ` = CB Overall − 42.17 (FOP 000c). Bản tốt nhất, code tự ch�
 
 ## Nhật ký quyết định
 
+- **2026-09-29 (75)** — **SWA-01: trung bình trọng số epoch 31–40 không có tác dụng → đóng** ([SWA-01/](SWA-01/README.md)).
+  - 5 split × 10 seed, bản production: EER +0.03, độ lệch theo seed +1%, tổ hợp 10 mạng +0.02.
+  - Mạng đơn lẻ lệch 0.7–1.7 EER theo seed; tổ hợp 10 mạng tốt hơn mạng đơn khoảng 0.2–0.5 ở mức cụm v4 → giữ n = 15 cho Evaluation.
+  - Như vậy đã chạy xong mọi đề xuất CPU của deep-research-report (28/09): SetProto, SWA, IB-CCA đóng; dữ liệu ngoài chỉ còn ứng viên English; X1 chưa mở.
+
+- **2026-09-29 (74)** — **Chạy các đề xuất của deep-research-report (28/09): SetProto đóng, thêm người giúp cầu nối nhưng ImageBind đã che phần lớn, cổng VoxCeleb chưa đạt, IB-CCA đóng** ([EXTSCALE-01/](EXTSCALE-01/README.md), [IB-PROBE/](IB-PROBE/README.md)).
+  - **EXT-VAL70** (70 người v4 ± người v1/v2 của 4 fold, ± SetProto, cùng 1200 bước, fold người giữ ra, cặp dương khác video):
+    - SetProto ≈ 0; tương tác SetProto × thêm người ≈ 0.
+    - Người v1/v2 giúp cầu nối trần +1.4…+5.5.
+    - Ở bản production (+ ImageBind + tuổi) chỉ còn English g (cụm +2.33 [5/5]) và Hindi (+1.2 [3/5]); Urdu ≈ 0.
+  - **SCALE-ID** (10 → 161 người, P × K và số bước cố định):
+    - Cầu nối trần chưa bão hoà (mẫu, ext ng 45.2 → 27.1).
+    - Production: 40 → 161 người cho v4 g ở mức cụm −4.55 [5/5], Hindi −3.4 [4/5].
+    - Bước cuối 100 → 161 chỉ còn đạt ở v4 ng → chưa đủ để mở X1 VoxCeleb.
+  - **IB-PROBE:** CCA 4/16/64 trên ImageBind tệ hơn zero-shot (+2…+13); trộn ZS+CCA16 ±2, không qua cổng → đóng.
+  - **Ứng viên còn mở:** s007 train thêm người v1/v2, chỉ cho các cell English (English g +2.3…+4.6 [5/5] ở cả hai phần). Cần một lượt kiểm chứng riêng.
+  - **Hạ tầng:**
+    - `flag_v2.train_one(avg_from=...)` (trung bình trọng số + tính lại BN). Đường mặc định giống hệt từng bit khi dùng 10 luồng.
+    - Train CPU phụ thuộc số luồng (lệch khoảng 0.002 giữa 3 và 10 luồng).
+
+- **2026-09-28 (73)** — **FLAG_12 chạy trên Kaggle; E6 và STRESS-01 phần B xong: quy trình Evaluation đã chạy thử trọn, gom cụm an toàn ở mọi dạng file đã thử.**
+  - **FLAG_12:** ArcFace / ECAPA-192 / ECAPA-6144 / ImageBind / ViT-age khớp tuyệt đối mảng đang dùng (cosine 1.00000). v1/v2 có ArcFace + ECAPA.
+    - w2v2 lỗi: transformers 5.0 đọc `sys.modules[cls.__module__].__file__`, mà trong Jupyter `__main__` không có `__file__`.
+    - Đã sửa (gán `__module__` sang module wav2vec2) và kiểm chứng với đúng transformers 5.0.0 ở chế độ Jupyter (`run_notebook_local.py --jupyter`).
+  - **E6:** v6 với đặc trưng Kaggle → rank-corr 1.0000 với SET-13 / INDEP-01; chấm điểm 16.6 phút.
+  - **STRESS-01 B** (người v1/v2, thành phần production): L2 − L0 = −2.0…−6.5 ở Urdu, Hindi, English, file 60–150 người, 2 mẫu mỗi người.
+    - ARI mặt 0.99; ARI giọng 0.91 → 0.81 khi file đông lên.
+    - Cụm giọng / mặt 1.06–1.44: không gộp nhầm, cảnh báo không lần nào bật.
+
+- **2026-09-28 (72)** — **v6 n = 15 cho dev xong: ngang n = 5 (pseudo-arc 20.81 so với 20.96, mọi CI chứa 0); chẩn đoán cụm 4 file dev bình thường** ([BEST/v6_eval/README.md](../BEST/v6_eval/README.md)).
+  - Chạy lại n = 5 bằng code có `noclus`: vẫn rank-corr 1.0000 với SET-13 và INDEP-01.
+  - 45 mạng (3 thành phần × 15 seed) đã cache trong `BEST/v6_eval/_members/`. Trên dữ liệu Evaluation chỉ phần chấm điểm chạy lại, khoảng 15 phút.
+  - Zip dev n = 15: `BEST/v6_eval/_dev_n15/submission.zip` (= set13). Có thể nộp để xác nhận CB, không bắt buộc.
+
+- **2026-09-28 (71)** — **STRESS-01 phần A: gom cụm tốt hơn chấm từng cặp ở mọi dạng file đã thử; bản dự phòng đúng là `noclus`, không phải INDEP-01 (sửa lại (68))** ([STRESS-01/](STRESS-01/README.md)).
+  - 200 file mô phỏng, người v4 giữ ra, nhãn thật. 1–32 mẫu mỗi người, 5–30 người mỗi file, một người chiếm khoảng 26% file, 20% cặp dương.
+  - L2 − L0 từ −0.7 đến −11.2 ở mọi kịch bản. 15/200 file thua đều là file tí hon (30–120 trial), không dấu hiệu nào báo trước được.
+  - Hai quy tắc `auto` tạm thời gây hại (mất 2–6 EER) → bỏ. v6 `auto` = SET-13 cho mọi file, chỉ **cảnh báo** khi cụm giọng / cụm mặt < 0.8.
+  - L1 (thống kê file, không cụm) ≥ L0 (INDEP-01) ở gần hết kịch bản, nhất là file nhỏ (m1 ng −5.5, p5 g −5.2). Vì vậy dự phòng khi cụm gộp nhầm là `noclus`; INDEP-01 chỉ dùng khi có quy định cấm dùng mẫu test khác.
+  - Ngưỡng giọng tự thích nghi không hơn ngưỡng hiệu chỉnh trên train (±0.3) → không dùng.
+
+- **2026-09-28 (70)** — **Chuẩn bị Evaluation ([docs/PLAN_EVAL.md](../docs/PLAN_EVAL.md)): pipeline v6 + FLAG_12 xong; IB-ADAPT không qua cổng → hoãn LoRA.**
+  - **E1 [BEST/v6_eval/](../BEST/v6_eval/):** SET-13 và INDEP-01 từ cùng một bộ mạng (cache theo seed), `--mode auto`, `--n-models 15`.
+    - Với n = 5: rank-corr **1.0000** với SET-13 và với INDEP-01 đã nộp, ở cả 4 cell.
+    - Phép thử bất biến của INDEP đạt (chênh tối đa 5e-7).
+  - **E3 [kaggle/FLAG_12_features.ipynb](../kaggle/FLAG_12_features.ipynb):** code đầy đủ trong notebook. Chạy thử trên máy với dữ liệu mini: ArcFace, ECAPA, ImageBind, tuổi đều khớp mảng đang dùng (cosine ≥ 0.9995). Chạy tiếp sau lỗi hoạt động.
+  - **E5a [IB-ADAPT/](IB-ADAPT/README.md):** adapter tuyến tính trên ImageBind đông cứng.
+    - Chỉ v4: tệ hơn zero-shot (+0.6…+5.4).
+    - Thêm v1/v2: lẫn lộn (Hindi −2.3, Urdu ng −1.5, nhưng v4 g +3.8, English v1 +4.9).
+    - Không qua cổng → không làm notebook LoRA (E5) với dữ liệu hiện có.
+
+- **2026-09-28 (69)** — **Nhiễu seed trong VAL-70: n = 15 cùng kỳ vọng với n = 5 nhưng bỏ được phần rút thăm → dùng n = 15 cho Evaluation** ([VAL-70/NOTES.md](VAL-70/NOTES.md) §4).
+  - SET-13 mức người: chênh giữa 3 bộ seed n = 5 trên cùng file 1.0–2.1 EER (mức mẫu 0.4–0.5); n = 15 − trung bình n = 5: −0.21…+0.13.
+  - Gom cụm dồn lỗi về mức người, nên phương sai theo seed lộ rõ ở mức người: đúng hiện tượng g/Bn dao động 2.5–4.8 trên dev (61).
+
+- **2026-09-28 (68)** — **INDEP-01: mỗi cặp chấm độc lập (mức 0) ≈ mức 1; phần phụ thuộc test đáng giá duy nhất là gom cụm** ([INDEP-01/README.md](INDEP-01/README.md)).
+  - Cùng thành phần SET-13. Không trừ mean theo file, không z / hạng trong file, không gom cụm; mọi chuẩn hoá dùng hằng số từ 20 000 cặp train.
+  - **CB thật: 26.70** (19.05 / 26.32 / 27.09 / 34.33); pseudo-arc đoán 26.08. Mức 1 (`v5_set13 --b 0`, pseudo-arc) 26.70; mức 2 SET-13 CB 21.01 → gom cụm đáng 5.7 điểm.
+  - Điểm tốt nhất không dùng mẫu test nào khác (cũ: FUSE-03 28.69 mức 1, 000f 33.35 mức 0).
+  - Dự phòng cho Evaluation khi gom cụm không dùng được: INDEP-01 (không phụ thuộc số mẫu / cấu trúc file) thay vì `--b 0`. Zip `INDEP-01/out/submission_INDEP01.zip`.
+
+- **2026-09-28 (67)** — **SET-13 (SET-02 + ImageBind + tuổi) trên CB: 21.01**, hệ đơn lẻ tốt nhất (11.31 / 20.91 / 23.22 / 28.61). Đây là cấu hình Evaluation đề xuất ở (66).
+  - Chênh so với SET-02: −1.19 / −0.43 / −5.09 / +4.02 → −0.67.
+  - Chênh so với SET-12: −0.33 / −0.14 / +0.21 / −1.50 → −0.44: thêm tuổi giúp ở 3/4 cell, đúng chiều với cả hai validation.
+  - Pseudo-arc đoán −0.10; CB tốt hơn dự đoán.
+  - ng/En 11.31 là ô tốt nhất mới → **HYB-03** (ng/En ← SET-13, ng/Bn ← SET-07, g/En ← SET-12, g/Bn ← SET-02) = **19.03** dự kiến ([HYB-03/](HYB-03/)), chỉ dùng cho progress.
+
+- **2026-09-28 (66)** — **MODEL-01 lượt 3: mọi công thức ứng viên qua cổng; hai validation độc lập cùng chiều → đề xuất cấu hình Evaluation**.
+  - Kiểm tra tính đúng: R:SET12 = CTRL+IB.5 và R:SET10 = CTRL+AGE.1, trùng từng con số.
+  - **v4 giữ ra, mức cụm (ng / g):** SET-11 −2.15 / −2.04 · SET-12 −6.15 / −6.60 · **SET-13 −6.78 / −6.49 [5/5]** · SET-14 −5.91 / −5.46.
+  - **Mức người:**
+    - Urdu: SET-12 −8.09 / −7.61 · SET-13 −7.73 / −6.73 · SET-14 −6.95 / −5.01.
+    - Hindi: −7.27 / −7.81 / −7.89.
+  - **Trung bình ở mức nộp bài** (cụm + người): SET-12 −7.14 · SET-13 −7.11 · SET-14 −6.24. VAL-70 mức người: SET-12 −7.07 · **SET-13 −7.38** · SET-14 −6.70.
+  - **Đề xuất:**
+    - **SET-13 (SET-02 + ImageBind + tuổi) làm cấu hình Evaluation chính.** Nó ngang SET-12 ở v4, hơn ở VAL-70; phần tuổi không fit tham số nào.
+    - **SET-11 (FaRL + tuổi) làm bản dự phòng không ImageBind.**
+    - ImageBind dùng cho cả English lẫn Bangla: Urdu/Hindi thắng 10/10 file. g/Bn +5.5 trên dev là cell nhạy seed nhất (61), không đủ để loại.
+  - **Việc còn lại trước khi chốt:** giảm nhiễu seed; chạy thử `pipeline.py` trên dev với ImageBind + tuổi (FLAG_10 phải có trong bước trích của Evaluation); bản dự phòng không gom cụm cũng thêm ImageBind.
+
+- **2026-09-28 (65)** — **VAL-70 lượt 2–3: ImageBind thắng ở mọi file và mọi ô (−5.4…−9.0, 10/10); SET-13 (IB + tuổi) tốt nhất ở mức người** ([VAL-70/NOTES.md](VAL-70/NOTES.md) §3).
+  - Hướng S: FARL5+AGE.1 (SET-11) −1.2…−4.3; AGE.1 (SET-10) −0.0…−1.4.
+  - SET-12 / 13 / 14 ở mức người: English g −8.3 / **−9.0** / −8.2; Urdu g −7.0 / −7.2 / **−7.5**; Hindi −7.6 / **−7.8** / −6.1. Tất cả 10/10 file.
+  - Urdu, đại diện gần nhất cho Bangla, cũng thắng lớn → g/Bn +5.5 trên dev nhiều khả năng là nhiễu của cell đó (61), không phải ImageBind hại Bangla.
+  - Chờ MODEL-01 lượt 3 (v4 giữ ra) cho các công thức R:SET10…14 rồi chốt cấu hình Evaluation.
+
+- **2026-09-28 (64)** — **SET-12 (SET-02 + ImageBind, s007 → ½ z(s007) + ½ z(IB)) trên CB: 21.45**, hệ đơn lẻ tốt nhất (11.64 / 21.05 / **23.01** / 30.11).
+  - Chênh so với SET-02: −0.86 / −0.29 / **−5.30** / +5.52; tổng −0.23.
+  - Pseudo-arc đã đoán −1.13 / +1.02 / −5.29 / +5.80.
+  - **g/En 28.31 → 23.01**, cell tụt xa nhất; đúng như validation (v4 g cụm −6.60).
+  - g/Bn +5.52: đúng cell mà chỉ đổi seed s007 đã +2.5…+4.8 (61). Validation Urdu g người nói IB tốt hơn −7.6 → chờ VAL-70 lượt 3.
+  - Chẩn đoán SES-02: cặp đúng của dev không cùng buổi quay (P = 0.48–0.50 với ImageBind), nên mức lợi là ghép người thật.
+  - **HYB-02** (ng/En ← SET-12, ng/Bn ← SET-07, g/En ← SET-12, g/Bn ← SET-02) = **19.11** dự kiến, vượt pi-flag 19.13. Chỉ dùng cho progress: [HYB-02/submission_HYB02.zip](HYB-02/submission_HYB02.zip).
+
+- **2026-09-28 (63)** — **Luật (BTC trả lời, người dùng chuyển lại): mọi thứ đều được phép** — ImageBind, dữ liệu cặp ngoài, gom cụm lúc test.
+  - Ràng buộc duy nhất được nêu: ở Evaluation, **người và giọng không trùng** với train/dev.
+  - **Hệ quả:**
+    - ImageBind hết bị treo; nó là đòn bẩy lớn nhất (CTRL+IB.5: −5.5…−8 trên validation).
+    - Người dùng yêu cầu "thử hết" các hướng trong OPEN_DIRECTIONS.
+    - Khi có dữ liệu Evaluation: kiểm trùng danh tính giữa người Evaluation và mọi nguồn dữ liệu ngoài dùng để train (ArcFace + ECAPA, như SET-07/overlap.csv), rồi loại người trùng.
+
+- **2026-09-28 (62)** — **MODEL-01 lượt 2: so khớp tuổi tường minh (S2) qua cổng và cải thiện g ở mức cụm; AdaFace đóng hẳn; S3 / S4 cho lợi nhỏ** ([MODEL-01/NOTES.md](MODEL-01/NOTES.md)).
+  - **CTRL+AGE.1:** g mẫu −0.56 [5/5], **g cụm −1.35 [5/5]**, ng cụm −1.21 → qua.
+  - **AGE.25:** g mẫu −1.47, **g cụm −2.41 [4/5]**, nhưng trượt sát vì Urdu g người +0.53.
+  - **CTRL+btcfacefc6.25:** qua sát ngưỡng (g cụm +0.01).
+  - **SigLIP2:** mạnh ở ng và Urdu/Hindi, không giúp g → trượt.
+  - **AdaFace:** thay VGG thì +6…+12 → trượt.
+  - Lớp pooling 3072 của ECAPA, pool5, TTA: lợi < 0.5.
+  - **Luật:** audeering train trên Common Voice tiếng Đức + aGender + TIMIT + VoxCeleb2 → hướng S.
+  - **Hành động:** VAL-70 cho AGE.1 / AGE.25 / FaRL / FaRL + AGE.1 (đăng ký trước).
+
+- **2026-09-28 (61)** — **VAL-70 + nhiễu seed: chênh lệch SET-08 / SET-09 trên dev là nhiễu; dev bị winner's curse** ([VAL-70/](VAL-70/NOTES.md)).
+  (1) **VAL-70** (s007 train trên đủ 70 người v4, file giống dev từ người v1/v2, cặp đúng khác video, 10 file mỗi nguồn × ngôn ngữ):
+     - SET-09 − SET-02 tốt hơn ở **mọi** ô: English ng −3.06 / −2.41, g −1.94 / −1.18; Urdu ng −3.17 / −2.51, g −2.57 / −3.85; Hindi −2.64 / −1.63 (mẫu / người; 7–20 trên 10–20 file).
+     - SET-08 tốt hơn nhẹ (−0.1…−1.8).
+     - CodaBench nói ngược (+0.62 / +0.81) → VAL-70 không tái tạo dấu CB, nhưng đồng ý với v4 giữ ra (MODEL-01).
+  (2) **Nhiễu seed:** SET-02 dựng lại, chỉ đổi seed của s007 (3 bản).
+     - Dev (pseudo-arc, khớp CB ≤ 1 mỗi cell) tệ đi **+1.32 / +0.65 / +0.72**, g/Bn **+4.77 / +3.32 / +2.49**.
+     - SET-09 (+0.81, g/Bn +2.11) nằm trong khoảng này.
+     - ⇒ SET-02 gốc là một lần rút trúng trên dev: nó được chọn trên chính các file dev, nên điểm dev phồng (winner's curse), và mọi thay đổi đều trông tệ hơn.
+  **Quyết định phương pháp:**
+  - Dev CodaBench **không phân xử được chênh lệch < khoảng 1.3 EER tổng / khoảng 5 ở g/Bn**.
+  - Quyết định cho Evaluation dựa vào validation độc lập (v4 giữ ra + VAL-70). CB chỉ dùng để phát hiện hỏng nặng.
+  - Kỳ vọng SET-02 ở Evaluation kém hơn 21.68 khoảng 0.7–1.3.
+  - SET-09 là ứng viên hợp lệ cho Evaluation; việc chọn thuộc về nhóm.
+  - Việc tiếp theo: giảm phương sai theo seed (n lớn hơn / trung bình nhiều bộ seed), đo bằng VAL-70.
+
+- **2026-09-28 (60)** — **SET-09 (SET-02 + FaRL) trên CB: 22.49** (14.19 / 20.34 / 28.72 / 26.70), tệ hơn SET-02 0.81. Chênh theo cell: **+1.69 / −1.00 / +0.41 / +2.11**.
+  - Pseudo-arc (chỉ để cảnh báo) đoán +0.72 / 0.00 / −0.53 / +2.69: tổng +0.72 so với thực tế +0.80, sai ≤ 1 mỗi cell.
+  - Validation nhãn thật (v4 giữ ra, cầu nối train trên **40 người**) đoán English tốt hơn (mức cụm −0.95 / −1.37) → **sai chiều ở cả hai cell English**.
+  - Urdu mức người (g +0.43, ng −2.35) thì đúng chiều với Bangla (g/Bn tệ hơn, ng/Bn tốt hơn).
+  - **Lần thứ ba liên tiếp** (SET-07, 08, 09) proxy 40 người không chuyển sang hệ 70 người trên dev.
+  - g/Bn tệ hơn 2+ điểm cả ba lần có sửa s007 (SET-07 +4.02, SET-08 +2.25, SET-09 +2.11).
+  - HYB-01 không đổi (SET-09 không thắng cell nào so với bản tốt nhất).
+  - **Hành động:**
+    - Không dùng SET-09.
+    - Dựng **VAL-70**: validation với thành phần train trên đủ 70 người v4, như production; đánh giá trên các file giống dev dựng từ người v1/v2 (English + Urdu/Hindi, cặp đúng khác video, mức mẫu + mức người).
+    - Kiểm lại VAL-70 trên lịch sử CB (SET-02 / 08 / 09) trước khi dùng làm cổng cho Evaluation.
+
+- **2026-09-28 (59)** — **MODEL-01: ImageBind làm stream cho −5.5…−8 EER ở mọi ô; FaRL là stream hợp lệ đầu tiên qua cổng; ViT-age trượt ở g** ([MODEL-01/](MODEL-01/NOTES.md)).
+  - **Harness:** giao thức OPEN_DIRECTIONS §1, 5 split ghép cặp, mức mẫu là chính, cặp đúng Urdu/Hindi khác video. CTRL (s007) mức mẫu: v4 29.17 / 37.84, Urdu 33.02 / 43.05, Hindi 32.61.
+  - **CTRL+IB.5:** v4 −6.49 / −5.55 [5/5], Urdu −8.07 / −7.21, Hindi −5.97; mức cụm v4 −6.15 / −6.60. IB đứng riêng cũng hơn CTRL (−4.51 / −3.51). Qua cổng, nhưng **bị treo theo luật (câu 7)**.
+  - **CTRL+farl.5:** v4 −2.17 / −1.55 [5/5], Urdu −3.01 / −1.46, Hindi −2.89; mức cụm −0.95 / −1.37 → **qua**. CTRL+farl.25 và CATfarl cũng qua. FaRL thay hẳn VGG thì hoà.
+  - **ViT-age:** thắng ng và Urdu/Hindi, nhưng g của v4 không đạt (CTRL+vitage.25: g cụm +0.82; .5: g 3/5) → trượt. Thông tin tuổi dạng embedding chủ yếu lặp lại giới.
+  - **Hành động:**
+    - Dựng SET-09 = SET-02 với s007 → 0.5 z(s007) + 0.5 z(FaRL-s007) ([MODEL-01/build_set09.py](MODEL-01/build_set09.py)); 1 lượt CB để xác nhận.
+    - Gửi lại câu hỏi ImageBind cho BTC kèm bằng chứng.
+    - FLAG_10 lượt 2 (SigLIP2 / AdaFace / w2v2ag) và FLAG_11 (S3 / S4) đã có sẵn trong harness, tự chạy khi có feature.
+  - **Ghi chú dữ liệu:** `feats_ext_full` (giọng BTC của v1/v2) **không** cắt 12 s như `feats_ext`; khoảng 32% dòng (file > 12 s) khác nhau, có dòng cos chỉ 0.06. Harness dùng `feats_ext` và ghép với stream mới (có cắt 12 s) theo khoá media.
+
+- **2026-09-27 (58)** — **FLAG_10 lượt 1 trên Kaggle + IB-01: ImageBind zero-shot có tín hiệu thật, nhưng một phần là hiệu ứng buổi quay** ([IB-01/](IB-01/)).
+  (1) **FLAG_10 lượt 1** (bản notebook trước khi sửa, khoảng 55 phút trên T4, 35 mảng):
+     - Chạy được 4/7 encoder: vitage, farl, ibv, iba, cho cả v4 lẫn v1/v2 (7 580 + 8 953 mặt, 19 556 + 20 715 giọng).
+     - siglip2, adaface, w2v2ag lỗi vì transformers 5.x (xem (55) mục 9; đã sửa, chờ chạy tiếp để lấp phần thiếu).
+     - Cosine fp16/fp32 trên GPU ≥ 0.99997. Cell setup mất khoảng 2.5 phút (trước đó hơn 20 phút).
+     - EER nhận dạng (cùng modality, train): FaRL 8.4 / 11.4 · ImageBind mặt 5.4 / 7.8 · ViT-age 14.8 / 20.2 · ImageBind giọng 18.1 / 20.3 → không stream nào hỏng. Tuổi trung bình đoán từ mặt 37.7.
+  (2) **Probe v4 train:** ImageBind zero-shot 28.63 / 38.23 (thô), **23.73 / 34.02** (trừ mean). Nhưng v4 không có id video, nên cặp đúng có thể cùng video.
+  (3) **IB-01, v1/v2, cặp đúng khác video, trừ mean** (ng / g):
+     - v1 English 25.64 / 38.10 · Urdu 26.98 / 39.48 · v2 English 28.63 · Hindi 30.07.
+     - Cho phép cùng video thì tốt hơn 7–11 điểm → **hiệu ứng buổi quay lớn**; số trên v4 bị phồng.
+     - Tham chiếu: cầu nối production (ARCH-01, 40 người v4, mức mẫu, khác video) Urdu 33.02 / 43.05, Hindi 32.61. Tức ImageBind **chưa train đã tốt hơn khoảng 3–6 điểm ở Urdu/Hindi** (không ghép cặp, chỉ đọc chiều).
+     - Urdu/Hindi chỉ tệ hơn English 1.3–1.4 điểm → gần như không nhạy ngôn ngữ.
+  **Hành động:**
+  - P1 bước 1 qua. Bước tiếp theo là IB-02: trộn stream vào harness ARCH-01, w ∈ {0.25, 0.5}, đo mức mẫu, cặp đúng khác video.
+  - Chỉ nộp khi BTC trả lời câu 7.
+  - Chạy tiếp FLAG_10 (đính kèm output lượt 1) để có siglip2 / adaface / w2v2ag.
+
+- **2026-09-27 (57)** — **Nguyên tắc mới: tập trung vào embedding, giảm phụ thuộc vào tập test** ([../docs/PLAN_MODELS.md](../docs/PLAN_MODELS.md) §0b).
+  - Tiến bộ được đo ở **mức mẫu** (một cặp mặt–giọng, không dùng mẫu khác của file) trên nhãn thật. Mức cụm chỉ còn là ràng buộc "không tệ đi".
+  - SET-02 (gom cụm không dùng danh sách trial) được giữ làm lớp phía trên và khai báo, kèm một bản song song chỉ dùng mức 0–1.
+    **Người dùng xác nhận giữ SET-02**: không vi phạm luật hiện hành, và vì không đọc danh sách trial nên tái lập được trên dữ liệu Evaluation.
+  - Dừng dùng danh sách trial để chọn / trộn hệ: pseudo-arc thôi làm cổng, chỉ còn để cảnh báo. HYB-01 (chọn cell theo CB) đã chỉ dành cho progress.
+  - Cái giá: mất công cụ đoán CB tốt nhất (nhật ký 53). Bù lại, mỗi ứng viên qua cổng nhãn thật được 1 lượt CB để xác nhận.
+
+- **2026-09-27 (56)** — **Leaderboard 18:25, 26 đội:** susupro **3.22** (3.77 / 1.99 / 5.09 / 2.04) · Fight4Job 4.60 · pi-flag 19.13 · **ta 20.40 (HYB-01), hạng 4** · 24521254 22.92 (15.28 / 23.61 / **20.37** / 32.43, đội mới) · jeetu_sk 23.48 · nnnnn 24.90 · … · baseline FOP của BTC 36.92 (hạng 24).
+  - susupro, giống Fight4Job, nằm dưới trần oracle của ghép mặt–giọng (khoảng 13.9 / 22.8, ORA-01). Cả hai chỉ có thể đến từ cấu trúc danh sách trial hoặc nhãn (LEAK-01) → không so với hai đội này.
+  - Trong phần còn lại của bảng, ta tốt nhất ở ng/Bn (17.21) và g/Bn (24.59), thứ nhì ở ng/En (12.30 so với 11.51).
+  - **g/En 27.49 là cell tụt xa nhất**: đã có ba đội dưới 21 (18.13 / 19.35 / 20.37). Điều này xác nhận đích của S1 trong PLAN_MODELS: cầu nối ở protocol gender.
+
+- **2026-09-27 (55)** — **Kế hoạch model mới hai hướng ([../docs/PLAN_MODELS.md](../docs/PLAN_MODELS.md)) + notebook MODEL-01 ([../kaggle/FLAG_10_models.ipynb](../kaggle/FLAG_10_models.ipynb)).**
+  (1) **Luật.** Evaluation Plan FLAG 2027 ([arXiv 2609.17913](https://arxiv.org/abs/2609.17913)) chỉ có một câu về model: "A pretrained encoder for faces or voices is allowed". Văn bản không nói gì về dữ liệu ngoài hay Bengali.
+     Từ đó chia hai hướng: **S** = cầu nối chỉ train trên 70 người v4, encoder pretrained unimodal; **X** = thêm cặp mặt–giọng ngoài (VoxCeleb1 → 2 trong không gian feature BTC đã tái tạo), lọc Bengali bằng LID.
+  (2) **AdaFace / LVFace / TopoFR không dùng làm cầu nối.** Chúng cùng họ với ArcFace, mà ArcFace đã thua VGG ở mức người (010-D, EDA-002). AdaFace chỉ còn là đối chứng và ứng viên cho gom cụm (trần < 1 EER).
+     Tiêu chí chọn encoder mới là **giàu thuộc tính mềm**, dùng làm stream thêm bên cạnh VGG/ECAPA-BTC. Lý do: ORA-01 cho thấy cầu nối hiện tại, kể cả với cụm đúng, chỉ đạt khoảng 22.75 ở g.
+  (3) **Hạng 1 / hạng 2 FAME26 (đã kiểm với paper).**
+     - Hạng 1 = VGG 4096 + ViT tuổi–giới 768 ; ECAPA 6144 + ECAPA tuổi–giới 1536 ; linear → 192 ; AAM ; VoxCeleb2 5 994 người. Bài không có ablation bỏ stream tuổi–giới. Cross-attention 28.92 so với 23.99. Fine-tune MavCeleb hại heard (24.93 → 25.30), giúp unheard.
+     - Hạng 2 = ImageBind + LoRA. Trên dev: ImageBind + dữ liệu chính thức 37, + VoxBlink Arabic (6 059 người) 28, fusion 4 hệ 26.44. Không báo zero-shot.
+     - Cả hai đều dựa trên khoảng 6 000 người ngoài, nên hướng X đặt mục tiêu vào **số người**.
+  (4) **FLAG_10_models**, sinh bằng [../kaggle/build_models_notebook.py](../kaggle/build_models_notebook.py), code ở [../kaggle/flag_models.py](../kaggle/flag_models.py).
+     - Trích ViT-age (+ xác suất 9 nhóm tuổi), FaRL, SigLIP2, AdaFace (CVLFace, cùng crop SCRFD với ArcFace), ImageBind vision/audio và audeering w2v2 tuổi–giới cho v4 train + dev.
+     - Trích thêm cho đúng các dòng v1/v2 của `feats_ext_full` (join theo `path`).
+     - In bảng probe: EER nhận dạng từng stream, **EER zero-shot mặt↔giọng của ImageBind** (go/no-go của X3), kiểm tra thuộc tính.
+  (5) **Smoke test local** (CPU, v4 mini 4 người, v1 giả lập):
+     - 7/7 encoder chạy, cosine batch/đơn và fp16/fp32 ≥ 0.99999.
+     - Tách hàm `align_face` khỏi `ArcFace` cho ra ArcFace trùng bản Kaggle (cos 1.0000).
+     - Feature ext trùng feature train từng dòng (mặt cos 1.0000; giọng chỉ lệch ở file > 12 s, do cắt 12 s như BTC).
+     - AdaFace tách người ngang ArcFace (cos cùng người 0.69, khác người 0.00).
+     - Trên 4 người, tuổi đoán từ mặt và từ giọng cùng thứ tự: chỉ là chuyện vặt, chưa phải bằng chứng.
+  (6) **Sửa lỗi tiềm ẩn trong [../kaggle/agegender.py](../kaggle/agegender.py)** (chưa từng chạy). Cột giới của audeering là (female, male, child) theo `config.json`, không phải (child, female, male) như câu văn trong model card. Kiểm trên v4: nữ → cột 0, nam → cột 1, khớp 12/12 sau khi sửa.
+  (7) **ImageBind audio phủ cả file** (tối thiểu 3 đoạn 2 s như mặc định, thêm đoạn khi file dài hơn 6 s). Với 3 đoạn, hai bản cắt 12 s của cùng một câu chỉ giống nhau ở cos 0.79–0.87; phủ cả file đạt 0.95–0.97. File ≤ 6 s cho kết quả trùng mặc định.
+  (8) **Bỏ Vox-Profile** khỏi notebook vì code của nó phụ thuộc nội bộ transformers 4.46; stream tuổi của giọng đã có audeering.
+  (9) **Lượt Kaggle đầu:** cell setup mất hơn 20 phút vì notebook quét `/kaggle/input` khoảng 8 lần, kể cả thư mục v1/v2 đã giải nén → sửa thành quét một lần, bỏ qua `faces/` và `voices/`.
+     Kaggle dùng **transformers 5.x**, làm hỏng 3 encoder: w2v2ag và AdaFace thiếu `post_init()` (`all_tied_weights_keys`); `get_image_features` của SigLIP2 trả về object thay vì tensor.
+     Đã sửa và kiểm trên cả 5.17 lẫn 4.57; embedding trùng bản cũ (cos 1.000000). Thêm chế độ chạy tiếp: đính kèm output cũ thì chỉ encoder còn thiếu chạy lại.
+  **Hành động:** chạy FLAG_10 trên Kaggle → dataset `flag2027-feats-models` → harness S1 trên CPU (3 cách ghép: thay thế / nối stream PCA-32/64 / cầu nối riêng + fusion theo hạng; cổng đăng ký trước ở PLAN_MODELS §3). ImageBind chỉ để probe, chưa nộp cho tới khi BTC trả lời câu 7.
+
+- **2026-09-27 (54)** — **SET-07 trên CB: 22.20; ghép per-cell ra 20.40; dựng lại "Stage 54" xác nhận nó dùng cấu trúc trial; nhãn giả của ta thực chất gần bằng nhãn thật.**
+  (1) **SET-07** 15.48 / 17.21 / 27.49 / 28.61 = 22.20. Dữ liệu ngoài giúp ng/Bn **−4.13** và g/En −0.82, hại ng/En +2.98 và g/Bn +4.02. Hai cell Bangla ngược chiều nhau, nên đây nhiều khả năng là vài người bị đảo trong file khoảng 30 người, không phải một hiệu ứng ngôn ngữ nhất quán.
+  (2) **HYB-01**: mỗi cell là một file chấm độc lập, nên ghép file tốt nhất của mỗi cell từ SET-02/07/08 cho đúng **20.40** (12.30 / 17.21 / 27.49 / 24.59). Lựa chọn này dựa trên điểm CB của từng cell, nên chỉ có ý nghĩa cho bảng progress, **không** phải căn cứ chọn cấu hình cho Evaluation phase.
+  (3) **LEAK-01** ([LEAK-01/](LEAK-01/)): file mô phỏng giống dev từ v4 giữ ra (nhãn thật, 5 split × 3 lần lặp). "graph" = đếm leave-one-out số trial nối cụm mặt A ↔ cụm giọng B. Mỗi người m ảnh / m giọng, 50% positive:
+     - m = 2: graph 26.26 / 37.49 = SET-02 (không có lợi thế).
+     - m = 4: 7.34 / 8.45.
+     - m = 32 (giống dev): **2.10 / 2.50**, so với SET-02 23.84 / 34.54 và pairwise 30.08 / 39.05.
+     - 20% positive: vẫn 5.02 / 8.18.
+     - Bất biến: ghép lại các trial negative thì điểm các trial positive của SET-02 đổi **0.0000 SD**, của graph đổi tới 0.28 SD.
+
+     ⇒ Phần 23.8 → 2.1 hoàn toàn đến từ **cách ghép cặp trong danh sách trial**, không phải từ việc một người lặp lại (việc lặp lại chính là SET-02). Lời giải thích "nhiều nhân chứng" đúng về cơ chế, nhưng nhân chứng là cấu trúc đề của BTC.
+  (4) **Hệ quả cho chính ta:** SEL-01b cũng dựng nhãn từ cụm + đồng xuất hiện trong trial, nên nó gần như là nhãn thật: đoán CB của SET-02/08/07 sai ≤ 1.3 / ≤ 0.96 / ≤ 0.4 mỗi cell. Dùng nó để chọn hệ ở progress phase tương đương có thêm lượt CB. Nhưng **ở Evaluation phase không được dùng nó để chọn hệ hay trộn**, vì như thế cấu trúc danh sách trial sẽ gián tiếp quyết định bài nộp. Cấu hình Evaluation phải chốt từ dev trước khi có dữ liệu mới. Phải khai báo trong system description rằng ở dev ta dùng nhãn giả từ trial để chọn hệ; điều này cũng cho thấy câu 3 trong email cần hỏi cả việc dùng trial list để *chọn*, không chỉ để *chấm*.
+- **2026-09-27 (53)** — **SET-08 trên CB: 22.30** (12.30 / 21.34 / 28.72 / 26.84), tệ hơn SET-02 0.62. Chênh lệch theo cell so với SET-02 là −0.20 / 0.00 / +0.41 / **+2.25**. Pseudo-arc đã dự đoán −0.41 / +0.37 / +0.64 / **+2.90**: đúng dấu cả 4 cell, sai ≤ 0.65. Giá trị tuyệt đối pseudo so với CB: 12.04 / 20.38 / 28.36 / 26.95 so với 12.30 / 21.34 / 28.72 / 26.84 (sai ≤ 0.96). Ngược lại, validation nhãn thật qua proxy (v4 giữ ra với 40 người train, cộng Urdu/Hindi, và chỉ đo riêng thành phần s007) dự đoán thắng ở ng và **không thấy** g/Bn tệ đi.
+  **Bài học phương pháp:** với hệ có gộp cụm, pseudo-arc trên chính các file dev dự đoán CB tốt hơn proxy nhãn thật (2/2 hệ: SET-02, SET-08). CI bootstrap theo danh tính quá bảo thủ cho chênh lệch giữa hai hệ tương quan cao. Proxy nhãn thật vẫn cần để chặn quyết định dựa trên nhãn giả, nhưng **cổng cuối trước khi nộp là pseudo-arc, và chỉ chọn giữa ít hệ đăng ký trước** để không overfit dev. Hệ quả: SET-07 (pseudo 22.12, ng/En +3.1, g/Bn +4.6) nhiều khả năng cũng tệ hơn → không tốn lượt nộp.
+  **Ghi nhận ngoài:** một đội khác đạt 4.60 (5.16 / 2.70 / 5.50 / 5.04) bằng cách dùng quy luật của tập test (người dùng xác nhận). Con số này thấp hơn trần oracle-cụm của ghép mặt–giọng (ORA-01: khoảng 13.9 / 22.8), nên chỉ có thể đến từ cấu trúc danh sách trial hoặc nhãn. Đây đúng là câu 3 trong [../docs/email_organizers.md](../docs/email_organizers.md); ta không đi theo.
+- **2026-09-27 (52)** — **Dạng cầu nối không phải nút thắt; trộn thêm CCA-16 cho một cải thiện nhỏ nhưng đều (SET-08).**
+  (0) **Sửa (51):** khoảng tin cậy bootstrap theo danh tính cho chênh lệch tổng SET-07 − SET-02 là +0.17, 95% CI [−3.7, +3.2] (thành phần ở mức mẫu +0.33 [−1.8, +2.5]) → **hòa trong nhiễu, không phải "thua"**. Nhãn giả trên dev không phân giải được chênh lệch dưới khoảng 3 EER ở mức cụm, nên chỉ CB quyết được SET-07.
+  (1) **ARCH-01** ([ARCH-01/run.py](ARCH-01/run.py), nhãn thật, 5 split, chấm như production = khối trên ma trận đầy đủ; v4 giữ ra 30 mức cụm, Urdu/Hindi mức người): kiểm các dạng cầu nối trong đề xuất kiến trúc. MLP (production) alone 25.43 / 34.67. **Residual-CCA** (CCA cố định + α·MLP nhỏ, α tự tăng tới 0.25–0.33) tệ hơn: RCCA16 −3.3 / −4.9, RCCA32 −6.0 / −1.8. **Linear two-tower = bilinear hạng thấp**: LIN16 v4 ng +0.65, g −2.19, Urdu ng +2.05 [4/5]; LIN128 v4 g −3.72 → đổi chỗ, không thắng. **Ridge-CCA k=8** v4 g +2.24 [4/5] nhưng Urdu g −5.19. k ≥ 32 xấu nhanh (k64: −7…−16). ⇒ Trong các dạng đơn giản không dạng nào trội; thêm dung lượng thì mức người tệ đi. Phù hợp với việc chỉ có 70 danh tính giám sát ở mức người.
+  (2) **ARCH-01b** ([ARCH-01/fusion.py](ARCH-01/fusion.py), đăng ký trước 5 cách trộn sau split 1): **F3 = 0.5 MLP + 0.25 CCA-4 + 0.25 CCA-16** so với production (0.75 MLP + 0.25 CCA-4): mức cụm/người v4 ng **+1.53 [5/5]**, v4 g −0.23 (hòa), Urdu ng **+3.59 [5/5]**, Urdu g +0.26 [4/5], Hindi **+1.43 [4/5]**; mức mẫu +0.77…+1.30 (4–5/5). Qua quy tắc ở ng, hòa ở g. F1/F2 (bỏ CCA-4) và F4 (CCA-8) không qua.
+  (3) **SET-08** ([ARCH-01/build_set08.py](ARCH-01/build_set08.py)): SET-02 với s007 → s007F3. Phần MLP được khôi phục chính xác từ ma trận đã lưu. Rank-corr với SET-02 0.984–0.996. Dev pseudo-arc: thành phần mức mẫu tốt hơn s007 ở ng/En −1.75 (P 0.93), ng/Bn −0.73, g/En −0.64, tệ hơn g/Bn +1.11; hệ có gộp 21.93 so với 21.06 (g/Bn +2.90, CI [−2.1, +4.0]) → không kết luận được. Zip: `ARCH-01/out/submission_SET08.zip`.
+  **Hành động:** các họ kiến trúc tăng dung lượng (RelationNet, cross-attention, Set Transformer, VCCA, MoE) hạ ưu tiên. Aggregator học được (DeepSets, GhostVLAD, NAN) bị CEIL chặn trên < 1 EER. Hai câu hỏi còn lại chỉ CB trả lời được: SET-07 (dữ liệu ngoài ở quy mô 70 người) và SET-08 (trộn CCA).
+- **2026-09-27 (51)** — **Dữ liệu ngoài thắng trên validation nhãn thật nhưng không chuyển sang dev; chiếu bỏ ngôn ngữ hòa → giữ SET-02.**
+  (1) **EXT-03** ([EXT-03/](EXT-03/), 5 split ghép cặp, v4 train 40 người): B3P (v4 + v1 + v2 + SetProto) so với A (v4): v4 English mức cụm ng 25.81 → **22.36** (+3.45 [4/5]), g 33.67 → **30.84** (+2.83 [3/5]); Urdu mức người ng +4.90 [5/5]; Hindi +4.88 [4/5]. Chuyển sang ngôn ngữ chưa thấy: B1 (chỉ v1) → Hindi +3.13, B2 (chỉ v2) → Urdu +4.45. SetProto riêng lẻ (AP) chỉ +1.1 / +0.3. Kết quả này lật ấn tượng cũ "dữ liệu ngoài vô ích" (split 1, v3 châu Âu).
+  (2) **SET-07** ([SET-07/](SET-07/)): kiểm tra trùng người ngoài ↔ v4 bằng ArcFace + ECAPA ([SET-07/overlap.csv](SET-07/overlap.csv)) → loại `v1:shaukat_tarin` và `v2:id0073` (cos 0.898 với id039 của v4 train); không trùng dev. s007ext = B3P train trên đủ 70 người v4 + v1 + v2 bản đầy đủ từ Kaggle, n=5; lắp như SET-02. Zip hợp lệ, rank-corr với SET-02 0.93–0.97. **Nhưng dev (pseudo-arc) nói ngược**: thành phần ở mức mẫu 31.53 so với 31.30 (English tệ hơn 1.3 ở cả hai protocol, ng/Bn tốt hơn 2.5); hệ có gộp 07a 22.12 · 07b (thêm thành viên) 21.65 · 07c (chỉ Bangla) 22.08 so với SET-02 **21.03** → **không nộp**. Giả thuyết: với 40 người v4, dữ liệu ngoài bù chỗ thiếu người; với đủ 70 người, lợi ích biên nhỏ đi, còn phân phối v1/v2 (phỏng vấn cũ, Urdu/Hindi) kéo cầu nối lệch khỏi dev English.
+  (3) **Hiệu chỉnh selector:** pseudo-**arc** chấm zip SET-02 thật được 12.45 / 20.01 / 27.72 / 24.05 (21.06) so với CB 12.50 / 21.34 / 28.31 / 24.59 (21.68) → sai ≤ 1.3 mỗi cell. Con số 20.2 ở (44) là từ pseudo-**btc**. Vậy thiên vị nằm ở bộ nhãn btc, không phải ở mọi pseudo-label cho hệ có gộp → pseudo-arc dùng được làm **cổng thứ hai** cho hệ có gộp, vẫn sau nhãn thật.
+  (4) **LANG-01** ([LANG-01/](LANG-01/)): hướng ngôn ngữ = hiệu trung bình (bản ngữ − English) theo từng người, trong không gian voice BTC chuẩn hoá theo v4; chiếu bỏ trước cầu nối. Nhãn thật, 5 split: không biến thể nào qua quy tắc. Tốt nhất v2 k1 α1: Urdu mức người +1.73 [4/5] (ngôn ngữ chưa thấy), Hindi +0.61 [4/5], English ng +0.03 · g −0.50. Còn v1 k3 α1: Urdu/Hindi +2.1 / +2.0 [3/5] nhưng English −0.8 / −1.4 → hướng này mang cả thông tin danh tính. Mức mẫu chỉ +0.1…+0.5. Kiểm tra trên dev cho v2 k1 α1 ([LANG-01/dev_check.py](LANG-01/dev_check.py): cùng code có/không chiếu, nhánh đối chứng tái lập s007 với rank-corr 1.0): 31.16 so với 31.30 (ng/Bn −0.8, g/Bn +0.3) → **hòa, đóng**.
+  **Hành động:** giữ SET-02 làm bản nộp. Zip SET-07 chỉ để làm phép thử: chỉ nộp khi còn dư lượt ở progress phase (dự đoán ≈ 22), vì đó là cách duy nhất phân xử mâu thuẫn giữa nhãn thật trên v4 và nhãn giả trên dev.
+- **2026-09-27 (50)** — Bắt đầu vòng theo [../docs/PLAN_V5.md](../docs/PLAN_V5.md) + rà soát 3 tài liệu lớn (RESEARCH_DIRECTIONS_V6, PLAN_V6_FULL, deep-research report). **NOISE-01** ([NOISE-01/](NOISE-01/)): nhãn nhiễu train v4 thấp — mặt trỏ sang người khác 1.39%, giọng 1.25%, cả hai 0.08% → không làm sạch (id012: 25% ảnh mặt giống người khác, có thể lẫn người phỏng vấn). **CEIL** (từ dữ liệu có sẵn): cụm ước lượng so với cụm theo danh tính thật chỉ lệch ~0.9 (SET-01) và ~0–1 (SET-05 Urdu/Hindi) → khâu gom cụm hết dư địa; lỗi còn lại ở cầu nối mức người. **SetProto** thêm vào `flag_v2` (`sampler='pk'`, `w_proto`): InfoNCE giữa trung bình mặt và trung bình giọng của mỗi người, mỗi bên một tập con ngẫu nhiên 2–K; đường mặc định **giống hệt bit** bản commit. **EXT-03** ([EXT-03/](EXT-03/)) đang chạy: 6 nhánh (A, +v1, +v2, +v1+v2, A+SetProto, +v1+v2+SetProto) × 5 split ghép cặp, đánh giá v4 giữ ra 30 (mức mẫu + mức cụm), Urdu (v1 giữ ra) và Hindi (v2 giữ ra) theo người. **Pipeline Evaluation phase** [../BEST/v4_set02/pipeline.py](../BEST/v4_set02/pipeline.py): tái tạo SET-02 rank-corr 1.0000 (bước gom cụm + chấm với ma trận thành phần đã dùng).
+- **2026-09-27 (49)** — **SET-06 ràng buộc một-một (Sinkhorn trên ma trận cụm × cụm): không ổn định → tạm đóng** ([SET-06/](SET-06/), nhãn thật, v4 giữ ra 30). Trung bình 3 split: khối (SET-02) 25.34/33.07 · Sinkhorn τ=0.05 24.18/35.01 nhưng theo split ng −3.8/+4.0/+3.3, g **−7.4**/+1.8/−0.2 · trộn z(S)+0.5·z(logP) 24.38/32.92 (ng +0.4/+2.3/+0.1, g +0.9/−1.7/+1.3). Nguyên nhân: giả định 'một cụm mặt ↔ một cụm giọng' vỡ khi số cụm lệch (validation: ~54 cụm giọng so với ~38 cụm mặt cho 30 người; dev Bangla cũng tách 39–41). Phiên bản đúng là OT không cân bằng; lợi dự kiến nhỏ, rủi ro lớn với 15 lượt Evaluation phase.
+- **2026-09-27 (48)** — **SET-05: embedding gom cụm giọng KHÔNG phải đòn bẩy → giữ ECAPA-192** ([SET-05/](SET-05/), nhãn thật). A (v4 English, giữ ra 30 người): ECAPA-192 25.30/33.16 · ReDimNet2 vox2 25.12/32.84 · đa ngôn ngữ 25.23/32.87 (không gộp giọng 27.72/35.79) → chênh ≤ 0.3. B (Urdu v1 / Hindi v2, file 30 người, mặt gộp theo danh tính thật): ARI ReDimNet 0.935/0.938 > ECAPA 0.906/0.909, nhưng EER mức file như nhau (Urdu ng 26.77 vs 26.83; Hindi 30.51 vs 30.41); ngưỡng hiệu chỉnh trên English cho ARI gần ngưỡng tối ưu riêng từng ngôn ngữ → ngưỡng 0.70 ổn cho ngôn ngữ mới (rủi ro chỉ khi nới ngưỡng, SET-04). Gộp giọng vẫn −2…−3 ở Urdu/Hindi. Cầu nối v4 trên người Nam Á khác: ~27–30 (ng) → nút thắt vẫn là cầu nối mức người.
+- **2026-09-26 (47)** — **EDA-002: chọn embedding theo vai trò** ([EDA-002_roles/](EDA-002_roles/), nhãn thật, giữ ra 30 người, 3 split). Gom cụm mặt: ArcFace ARI 0.965 ≫ VGG 0.754. Gom cụm giọng: **ReDimNet2 vox2 0.947, ReDimNet2 đa ngôn ngữ 0.945** > ECAPA-192 tự trích 0.933 ≈ BTC 0.928 ≫ WavLM 0.70 / XLS-R 0.60 / 6144 0.57; trên dev ReDimNet2 đa ngôn ngữ cho 28–29 cụm ở Bangla (~30 người) trong khi ECAPA-192 tách thành 39–41. Cầu nối ở **mức người** (gộp theo danh tính thật): VGG+BTC-192 23.9/32.1 ≈ VGG+6144 24.4/32.1 < ECAPA-192 25.7/35.0 < ReDimNet 26.9/34.8 ≪ ArcFace 33–37/38–41. ⇒ encoder nhận dạng giỏi (ArcFace, ReDimNet) hợp khâu gom cụm; encoder BTC hợp khâu cầu nối. Kế hoạch mới: [../docs/PLAN_V5.md](../docs/PLAN_V5.md).
+- **2026-09-26 (46)** — **SET-04 (thành phần n=10 + ngưỡng giọng 0.8): không có lợi rõ → chưa nộp.** Ngưỡng 0.8 (chỉ được kiểm chứng trên English, SET-03) ở Bangla gộp ~30 người thành 24–26 cụm giọng và làm g/Bn tệ đi 4–6 (cả hai bộ nhãn) → ECAPA chưa quen Bangla nên giọng Bangla 'giống nhau' hơn; tách ngưỡng theo ngôn ngữ (En 0.8, Bn 0.7). Kiểm tra chéo so với SET-02 (btc): ng/En 15.32→15.17, ng/Bn 18.12→17.91, g/En 20.15→19.84, g/Bn 21.88→23.49 — thay đổi nhỏ trong mức nhiễu, riêng g/Bn tệ hơn (thành phần n=10 là một lần train khác). Kết luận: phần 'gộp' đã bão hoà với thành phần hiện có; lợi ích tiếp theo phải đến từ cầu nối tốt hơn ở mức người (σ_p²) → dữ liệu ngoài v1/v2.
+- **2026-09-26 (45)** — **SET-03 (nhãn thật, giữ ra 30 người như mật độ dev)**: gộp nhầm KHÔNG phải vấn đề — ngưỡng cụm giọng lỏng hơn tốt hơn: tv 0.6 / 0.7 / 0.8 → gender 34.7 / 33.2 / **30.8**, no_gender 25.5 / 25.3 / **24.5** (b=0.99; không gộp 38.5 / 31.3), dù ở 0.8 có 38% mẫu nằm trong cụm lẫn người. ⇒ g/En không cải thiện trên dev nhiều khả năng do lỗi ở mức cả người (ánh xạ sai), gộp chỉ khử nhiễu từng mẫu. Bước tiếp SET-04: thành phần n=10 (như bản nộp gốc) + tv=0.8, chọn hoàn toàn theo nhãn thật.
+- **2026-09-26 (44)** — **SET-02 trên CB: 21.68** (12.50 / 21.34 / 28.31 / 24.59) → **hạng 2** (pi-flag 19.13). g/Bn 24.59 tốt nhất bảng; ng/En 12.50 ngang nhóm đầu. **Nhưng g/En chỉ 29.12 → 28.31** dù pseudo-btc dự đoán 20.2: pseudo-label (dựng từ cụm) **thiên vị hệ có gộp cụm** → từ nay mọi quyết định về gộp cụm phải dùng validation nhãn thật (v4 giữ ra, EXT-02). Giả thuyết g/En: cụm giọng English gộp nhầm người cùng giới; protocol gender có toàn negative cùng giới nên bị phạt nặng nhất.
+- **2026-09-26 (43)** — **ORA-01 + SET-01/02: gộp theo cụm lúc test là đòn bẩy lớn nhất tới nay.** ORA-01 (người v4 bị giữ ra, **nhãn thật**): thay 1 ảnh bằng trung bình ảnh của người đó −3…−5 EER, tương tự phía giọng, cả hai −7…−12. SET-01 (nhãn thật, **cụm tự ước lượng**: ArcFace cho mặt, ECAPA-192 cho giọng, ngưỡng hiệu chỉnh trên người train, không dùng danh sách trial): gender 32.10 → **23.68**, no_gender 24.11 → **14.80** ở b=1 (oracle biết danh tính: 22.75 / 13.87) — ARI cụm mặt 0.98–0.995, giọng 0.86–0.96 đủ để lấy gần hết lợi ích. SET-02 trên dev (trung bình khối trong ma trận score đầy đủ, recipe local n=5: English s007+s010B, Bangla r2mix+s007), nhãn btc độc lập: 21.36/26.00/25.78/32.33 → 15.3/18.1/20.2/21.9 (b=0.99 để tránh điểm trùng). Luật (Evaluation Plan): chỉ quy định encoder pretrained + system description + công khai code; không cấm xử lý test phụ thuộc lẫn nhau. **Xếp hạng cuối ở Evaluation Phase (11–18/11, dữ liệu mới, 15 lượt)** → phương pháp này tổng quát được (không học thuộc dev). Phải khai báo: gom cụm không giám sát ảnh/giọng trong từng file test. `out/submission_SET02.zip`, dự đoán CB ≈ 21–23.
+- **2026-09-26 (42)** — **EXT-02 (validation song ngữ, nhãn thật) trên v3 + ATTR-01 pilot trên v4.** Hạ tầng: [../kaggle/flag_bilingual.py](../kaggle/flag_bilingual.py) (fold theo **người** sau khi gộp id trùng tên, trial 50% target, mặt của trial dương lấy từ video khác, chấm như bản nộp dev; cell `gender` tự bật khi nguồn có nhãn giới); `flag_v2.train_one` thêm `rows / prep / init` (mặc định cho kết quả **y hệt bit** trước khi sửa, đã kiểm). **EXT-02 v3** ([EXT-02_bilingual/NOTES.md](EXT-02_bilingual/NOTES.md)), người châu Âu held-out, En = heard / German = unheard: v4-only **42.99 / 42.11** (cầu nối v4 gần như không dùng được cho quần thể khác); `mix_en` **−6.65 / −6.65, 5/5 fold** (German chưa từng thấy vẫn tốt lên → chuyển giao cross-lingual thật); `mix_all` −9.20 / −11.76 (German đã thấy, lạc quan); `pt_en>ft` −4.51 / −3.00, `pt_all>ft` −3.84 / −4.83 → **MIX > PT→FT** trên người cùng quần thể với dữ liệu ngoài (so sánh thiên về MIX; với đích v4 phải xét lại bằng SEL-01b). Cùng với EXT-01 (v3 hại dev v4): **số người cùng quần thể là đòn bẩy của cầu nối** — v3 dạy cầu nối cho người châu Âu, không cho người Bangladesh. **ATTR-01 pilot** ([ATTR-01_f0/NOTES.md](ATTR-01_f0/NOTES.md)): F0 sanity đạt (AUC giới 0.959); mặt → log-F0 trong cùng giới: nam AUC 0.504 (p 0.35), nữ 0.553 (p 0.061), sensitivity không ổn định → không có bằng chứng, chưa bác bỏ với 70 người; không đưa vào score. Tiếp: EXT-02 + ATTR-01 trên v1/v2 khi feature/F0 có (zip đã ở local).
+- **2026-09-26 (42)** — **SES-01: không có thông tin 'cùng phiên ghi' trong feature BTC** ([SES-01_session/](SES-01_session/)). Model học positive = đúng đoạn audio (instance) phân biệt 'cùng đoạn' với 'cùng người, khác đoạn' trên người chưa thấy với AUC **0.502** (model thường 0.507) — đúng mức đoán mò, 3 split. Trên dev: với positive giả, P(score cặp trial > score với giọng khác của cùng người) = 0.47–0.54 → positive của dev **không** mang tín hiệu cùng phiên nào dùng được qua feature này. (Feature VGGFace/ECAPA được train để bỏ thông tin phiên; tín hiệu thô như ánh sáng/kênh âm thanh có thể còn trong media gốc nhưng không có trong feature.) Kết hợp ERR-01: lỗi là **người 'lệch kiểu'** (giọng không giống kiểu mà mặt gợi ý), không phải thiếu một feature theo trial → đòn bẩy còn lại là thêm nhiều người (EXT-01 v1/v2).
+- **2026-09-26 (41)** — **ERR-01: xem tận mắt lỗi của FUSE-03 trên dev** ([ERR-01/](ERR-01/), ảnh `err_*.png`). (1) **Lỗi dồn theo người**: 3 người tệ nhất = ~30% lỗi từ ~20% trial; tỉ lệ lỗi theo người p10/p50/p90 = 0 / 0.24–0.34 / 0.5–1.0. Ví dụ g/Bn: 4/8 ca bỏ sót tệ nhất là cùng một người, dù ảnh trial gần như trùng khung hình với ảnh đại diện. (2) **Giọng 'hub'**: một giọng bị ghép nhầm với nhiều khuôn mặt cùng kiểu (g/En: giọng một cô gái trẻ tóc đen với 3 cô gái khác). (3) **Câu ngắn**: tỉ lệ bỏ sót ở câu < 4 s gần gấp đôi câu ≥ 8 s (g/En 0.38 so với 0.20; g/Bn 0.36 so với 0.23). (4) Giới tính không phải nguồn lỗi chính: ở no_gender, negative khác giới bị nhận nhầm 7–10%, còn cùng giới 36–50%. Thử **CSLS** (trừ mức score top-k của mỗi mặt / mỗi giọng trên ma trận đầy đủ): mức hệ đơn lẻ có lợi ở Bangla với cả hai bộ nhãn (+0.9…+2.4), nhưng **ở mức fusion như sẽ nộp thì lợi ích biến mất** (g/En chỉ +1.9 theo nhãn arc, 0 theo nhãn btc; Bangla hòa) → không nộp.
+- **2026-09-26 (40)** — Người dùng tải v1_complete (70 id, **có meta_v1.csv: tên + giới tính**) và v2_complete về máy, đang upload thành dataset Kaggle. Meta v1 cho thấy **cùng một người có 2 id** (Imran Khan = id0001 và id0004) → `ext_rows` gộp theo tên và lấy giới tính thật. NB-5 giờ tự dùng nguồn đính kèm: zip `mavceleb_v*_complete*.zip`, hoặc thư mục Kaggle đã giải nén (`…/v1/` có voices/ + faces/), chỉ tải Drive khi không có. Test: đọc từ thư mục cho feature giống hệt đọc từ zip; 2 id cùng tên được gộp thành 1 người. Song song: trích v1/v2 trên CPU local (ước tính 5–6 giờ) ra `kaggle/output/feats_ext/`.
 - **2026-09-26 (41)** — **Rà soát deep-research report + đối chứng gate FUSE-03** ([FUSE-03/gate_controls.py](FUSE-03/gate_controls.py), output `gate_controls_out.txt`). g/Bn, OOF 5 fold theo pseudo-identity, gain so với 0.5/0.5: trọng số tĩnh **+1.09 (lưới simplex 0.05) / +0.76 (0.02) / −0.42 (lưới logit)**; gate độ dài +1.25 (4/5); độ dài **xáo trộn** +0.28 (trung bình 5 lần); gate theo độ bất đồng hai hệ +0.46. ng/Bn: độ dài xáo trộn (+0.62) **tốt hơn** độ dài thật (+0.30). ⇒ chỉ riêng cách chọn lưới đã làm OOF dao động ~1.5 EER; gate và trọng số tĩnh không phân biệt được; **gate không phải gain đã xác lập** (CB đã xác nhận một lần, giữ đóng băng). Quyết định (chi tiết [../docs/PLAN_V4.md](../docs/PLAN_V4.md)): (1) giữ ngân sách ≤ 2 tham số fit trên dev, không làm quality gate; (2) giữ luật chấp nhận PLAN_V4, thêm **vùng hòa ≤ ~0.4** (không xếp hạng, không nộp), bỏ ngưỡng −0.5 / P ≥ 0.8 / OOF ≥ 0.3 của report; (3) FLAG_08 build kế tiếp thêm PT(v1)→FT(v4), PT(v2)→FT(v4); **validation song ngữ v1/v2 có nhãn thật** (held-out identity: English = heard, Urdu/Hindi = unheard) là phép thử chính cho dữ liệu ngoài và phép kiểm độc lập của SEL-01b; (4) lịch theo trang challenge: progress đến 10/11 (150 lượt, 15/ngày), evaluation 11–18/11 (15 lượt), system description + link code 27/11; (5) ImageBind treo chờ BTC xác nhận luật (mô hình đã căn chỉnh image–audio sẵn, CC-BY-NC); (6) `rho_historical` là thuộc tính của selector; (7) `D_pitch` thay bằng phép thử bác bỏ face→log-F0 cross-fit trong cùng giới, chạy trên v1/v2 trước, không làm feature; (8) luật dừng dữ liệu ngoài xét cả heard lẫn unheard. Đóng: MSE/XM-ALIGN (trên embedding L2-norm chỉ là biến đổi affine của số hạng positive; XM-ALIGN 34.2 / 33.5 trên FAME 2026), shared center (đã thử ở 009 / NB-2), Dual-LoRA (cần LoRA trong backbone).
 - **2026-09-26 (40)** — **Hợp nhất tài liệu + hạ tầng theo trạng thái 28.69 → [../docs/PLAN_V4.md](../docs/PLAN_V4.md).** Triết lý v4: encoder unimodal đã đủ mạnh (ArcFace, ReDimNet2: nhận dạng tốt hơn ≠ ghép tốt hơn) → nút thắt là **cầu nối cross-modal**; còn 3 hướng: (A) dữ liệu cặp ngoài **khớp quần thể** (v1 Urdu / v2 Hindi; v3 đóng), (B) học cầu nối tốt hơn — chỉ khi A cho tín hiệu, (C) fusion hệ bổ sung + SEL-01b. Sửa các kết luận cũ còn sót: 010-C (encoder BTC), 010-D/E (ArcFace không phải lỗi alignment), cơ chế FUSE-03, header log (bỏ hạng). **Phát hiện khi viết lại `build_best.py`:** gate FUSE-03 cho 003c trọng số **tăng** theo độ dài (w = 0.24 ở 2 s, 0.33 ở 4.7 s, 0.44 ở 12 s), ngược với việc r2_mix đơn lẻ thắng lớn ở câu dài → gate chỉ là "nghiêng ~0.3/0.7 về r2_mix", không có bằng chứng cho cơ chế độ dài. Hạ tầng: `BEST/v3_28.69/build_best.py` đọc `BEST_CONFIG` + kiểm policy transductive (rank-corr 1.000000 cả 4 cell); `SEL-01_selector/pseudo_eval.py` (pseudo-EER + coverage + CI bootstrap theo identity + so sánh A−B + fold OOF; tái tạo đúng số FUSE-02/03); `flag_extract.load_audio` dùng chung cho v4 và dữ liệu ngoài (khớp `librosa.load(sr=16000, mono=True)`, sai khác 0.0; toàn bộ 11 349 wav v4 là 16 kHz mono nên không đổi feature v4); `fetch_zip` nhận danh sách id (bản sao riêng trước, id BTC sau). `FLAG_08_external.ipynb` **chưa build lại** vì đang chạy vòng v1/v2 — lần build sau phải smoke-test.
 - **2026-09-26 (39)** — Leaderboard 10:00: **pi-flag 19.13** (11.51 / 19.91 / 19.35 / 25.75; trước đó 28.5) · **jeetu_sk 23.48** (13.89 / 24.18 / 18.13 / 37.74; trước đó 26.41) · asp0178 27.60 · Fight4Job 28.50 · **ta 28.69 → hạng 5**. pi-flag giảm 9.4 điểm trong một lượt, g/Bn 39.24 → 25.75. Mức nhảy này ở **cả 4 cell cùng lúc** chỉ có hai khả năng: (a) dữ liệu cặp ngoài quy mô lớn (VoxCeleb2-cỡ) hoặc (b) **khai thác cấu trúc tập dev** — cụm mặt/giọng + việc cặp xuất hiện chung trong danh sách trial (chính là cơ chế SEL-01b của ta: pseudo-label trùng nhãn thật 96–99% trial, nộp thẳng sẽ cho EER gần 0). jeetu_sk: English cực tốt (13.89 / 18.13) nhưng g/Bn không đổi (37.74) → khả năng (a), mạnh ở English. Ta chủ động **không** nộp score dựa trên cấu trúc danh sách trial: đó là rò rỉ protocol, không phải ghép mặt–giọng, và sẽ không tồn tại ở test thật nếu BTC dựng test khác.

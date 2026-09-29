@@ -40,14 +40,14 @@ Every encoder swap failed (ArcFace, ReDimNet2): the bottleneck is the cross-moda
 | source | languages | ids | wav | size |
 |---|---|---:|---:|---:|
 | `v3_train` | English + German | 50 | 3.0k | 1.6 GB |
-| `v1_train` | English + Urdu | 64 | 18.0k | 11 GB |
+| `v1_complete` | English + Urdu | 70 (68 people: duplicate ids merged by name) | 19.6k | 11 GB |
 | `v2_complete` | English + Hindi | 84 | 20.7k | 13 GB |
 
 No Bangla anywhere (FAME rule: no pretraining on the unheard language).
 Features are extracted with the organisers' exact encoders (verified cos 1.0000 on v4 train):
 voice `yangwang825/ecapa-tdnn-vox2` (192-d), face VGGFace fc7 (4096-d). 8 frames per video.
 
-**Settings:** GPU T4, **Internet ON** (Drive + HF + VGGFace weights). **Inputs:** `flag2027-features`,
+**Settings:** GPU T4, **Internet ON** (HF + VGGFace weights; Drive only for sources not attached). If `mavceleb_v1_complete*.zip` / `mavceleb_v2_complete*.zip` are attached as a dataset they are used directly. **Inputs:** `flag2027-features`,
 `flag2027-feats-v2`. Zips are downloaded one at a time to local disk and deleted after extraction.
 Expected: download + extraction ~40-70 min (Drive speed dominates), training ~40 min.
 
@@ -88,12 +88,17 @@ for name, spec in SOURCES.items():
         print("skip (exists)", name); continue
     t0 = time.time()
     try:
+        attached = None if LOCAL else X.find_attached_source(IN, name)
         if LOCAL:
             zp = Path(os.environ["FLAG_EXT_MINI"])
+        elif attached is not None:                       # uploaded as a Kaggle dataset: no Drive download
+            zp = attached
+            print(f"{name}: using attached {zp}")
         else:
             fid, gb = spec
             zp = X.fetch_zip(fid, TMP / f"{name}.zip", min_free_gb=gb * 1.2 + 2)
-        X.extract_external(zp, name, OUTX, ve, fe, frames_per_video=8)
+        X.write_speaker_meta(zp, name, OUTX)
+        X.extract_external(zp, name, OUTX, ve, fe, frames_per_video=8, max_wav_per_spk=150, max_sec=12)   # training uses <=150 rows/speaker
     except (AssertionError, RuntimeError, OSError) as e:        # Drive quota / disk: skip this source, keep going
         print(f"SKIPPED {name}: {type(e).__name__}: {e}")
         continue
@@ -166,7 +171,7 @@ T = V.Table(WORKDIR / "ablation_ext.csv")
 T.run(store, "EXT", "A control (v4 only)", REC, **KW)
 # Round 1 showed v3 (European, En/German) HURTS every cell: face-voice mappings do not transfer across populations.
 # So the South-Asian sources are tested one at a time, then together, then with v3 for completeness.
-SA = tuple(x for x in ("v1_train", "v2_complete") if x in ALL)
+SA = tuple(x for x in ("v1_complete", "v2_complete") if x in ALL)
 VARIANTS = {}
 for x in SA:
     VARIANTS[f"B + {x}"] = dict(REC, ext=(x,), ext_exclude=EXCLUDE)

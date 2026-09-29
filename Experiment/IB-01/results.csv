@@ -1,0 +1,25 @@
+source,voice_lang,positive,protocol,score,eer,sd,trials
+v1_complete,english,other video,ng,raw,29.48,0.97,2058
+v1_complete,english,other video,ng,centred,25.64,0.96,2058
+v1_complete,english,other video,g,raw,39.57,0.52,2058
+v1_complete,english,other video,g,centred,38.1,0.84,2058
+v1_complete,english,same video,ng,raw,22.22,0.66,2058
+v1_complete,english,same video,ng,centred,18.5,1.0,2058
+v1_complete,english,same video,g,raw,30.05,0.74,2058
+v1_complete,english,same video,g,centred,27.31,0.54,2058
+v1_complete,urdu,other video,ng,raw,31.1,1.26,2064
+v1_complete,urdu,other video,ng,centred,26.98,1.7,2064
+v1_complete,urdu,other video,g,raw,40.89,0.78,2064
+v1_complete,urdu,other video,g,centred,39.48,0.81,2064
+v1_complete,urdu,same video,ng,raw,22.09,0.89,2064
+v1_complete,urdu,same video,ng,centred,18.78,1.24,2064
+v1_complete,urdu,same video,g,raw,30.17,0.63,2064
+v1_complete,urdu,same video,g,centred,28.1,0.54,2064
+v2_complete,english,other video,ng,raw,33.38,0.44,2502
+v2_complete,english,other video,ng,centred,28.63,0.7,2502
+v2_complete,english,same video,ng,raw,25.84,0.36,2502
+v2_complete,english,same video,ng,centred,21.29,0.52,2502
+v2_complete,hindi,other video,ng,raw,33.75,0.66,2440
+v2_complete,hindi,other video,ng,centred,30.07,0.68,2440
+v2_complete,hindi,same video,ng,raw,26.8,0.7,2440
+v2_complete,hindi,same video,ng,centred,20.89,0.66,2440

@@ -1,0 +1,70 @@
+23:14:05 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+23:14:05 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_ext | 6 arrays
+streams: ['vitage', 'farl'] | age: False | arms: ['CTRL', 'IB', 'CTRL+IB.25', 'CTRL+IB.5', 'vitage', 'CTRL+vitage.25', 'CTRL+vitage.5', 'CATvitage', 'farl', 'CTRL+farl.25', 'CTRL+farl.5', 'CATfarl']
+split 1 CTRL             | v4_en/ng/s 25.27 v4_en/ng/c 17.27 v4_en/g/s 34.07 v4_en/g/c 27.37 urdu/ng/s 28.33 urdu/ng/p 19.27 urdu/g/s 40.03 urdu/g/p 32.20 hindi/ng/s 30.97 hindi/ng/p 28.47
+split 1 IB               | v4_en/ng/s 25.37 v4_en/ng/c 18.07 v4_en/g/s 35.73 v4_en/g/c 26.27 urdu/ng/s 23.93 urdu/ng/p 14.17 urdu/g/s 36.07 urdu/g/p 23.27 hindi/ng/s 26.43 hindi/ng/p 18.10
+split 1 CTRL+IB.25       | v4_en/ng/s 22.50 v4_en/ng/c 14.70 v4_en/g/s 31.80 v4_en/g/c 26.03 urdu/ng/s 24.23 urdu/ng/p 14.60 urdu/g/s 37.30 urdu/g/p 26.73 hindi/ng/s 27.73 hindi/ng/p 23.70
+split 1 CTRL+IB.5        | v4_en/ng/s 20.90 v4_en/ng/c 14.83 v4_en/g/s 30.00 v4_en/g/c 21.53 urdu/ng/s 22.13 urdu/ng/p 13.97 urdu/g/s 33.83 urdu/g/p 23.53 hindi/ng/s 26.00 hindi/ng/p 19.37
+split 1 vitage           | v4_en/ng/s 28.30 v4_en/ng/c 23.33 v4_en/g/s 38.13 v4_en/g/c 33.17 urdu/ng/s 27.53 urdu/ng/p 20.33 urdu/g/s 39.20 urdu/g/p 32.53 hindi/ng/s 31.00 hindi/ng/p 27.10
+split 1 CTRL+vitage.25   | v4_en/ng/s 24.07 v4_en/ng/c 18.67 v4_en/g/s 33.53 v4_en/g/c 33.70 urdu/ng/s 25.80 urdu/ng/p 18.57 urdu/g/s 39.30 urdu/g/p 34.63 hindi/ng/s 29.13 hindi/ng/p 25.80
+split 1 CTRL+vitage.5    | v4_en/ng/s 24.70 v4_en/ng/c 19.00 v4_en/g/s 34.10 v4_en/g/c 29.87 urdu/ng/s 24.57 urdu/ng/p 18.90 urdu/g/s 38.27 urdu/g/p 28.33 hindi/ng/s 28.90 hindi/ng/p 25.17
+split 1 CATvitage        | v4_en/ng/s 24.70 v4_en/ng/c 22.30 v4_en/g/s 34.07 v4_en/g/c 28.87 urdu/ng/s 26.13 urdu/ng/p 18.83 urdu/g/s 39.83 urdu/g/p 28.93 hindi/ng/s 27.93 hindi/ng/p 25.23
+split 1 farl             | v4_en/ng/s 26.53 v4_en/ng/c 20.97 v4_en/g/s 36.07 v4_en/g/c 32.30 urdu/ng/s 27.93 urdu/ng/p 20.57 urdu/g/s 39.53 urdu/g/p 35.17 hindi/ng/s 28.63 hindi/ng/p 23.40
+split 1 CTRL+farl.25     | v4_en/ng/s 23.87 v4_en/ng/c 18.53 v4_en/g/s 33.33 v4_en/g/c 32.33 urdu/ng/s 26.63 urdu/ng/p 16.47 urdu/g/s 38.63 urdu/g/p 34.27 hindi/ng/s 28.17 hindi/ng/p 24.77
+split 1 CTRL+farl.5      | v4_en/ng/s 23.33 v4_en/ng/c 19.53 v4_en/g/s 32.93 v4_en/g/c 30.90 urdu/ng/s 25.53 urdu/ng/p 20.20 urdu/g/s 38.37 urdu/g/p 30.27 hindi/ng/s 27.13 hindi/ng/p 20.93
+split 1 CATfarl          | v4_en/ng/s 23.93 v4_en/ng/c 18.87 v4_en/g/s 32.83 v4_en/g/c 27.67 urdu/ng/s 25.53 urdu/ng/p 15.00 urdu/g/s 39.53 urdu/g/p 33.17 hindi/ng/s 27.37 hindi/ng/p 23.60
+== split 1 done in 421s
+split 2 CTRL             | v4_en/ng/s 29.53 v4_en/ng/c 25.27 v4_en/g/s 38.27 v4_en/g/c 35.50 urdu/ng/s 35.33 urdu/ng/p 29.50 urdu/g/s 40.23 urdu/g/p 35.37 hindi/ng/s 33.83 hindi/ng/p 28.97
+split 2 IB               | v4_en/ng/s 24.37 v4_en/ng/c 15.50 v4_en/g/s 33.83 v4_en/g/c 26.20 urdu/ng/s 26.97 urdu/ng/p 16.97 urdu/g/s 31.17 urdu/g/p 23.97 hindi/ng/s 30.60 hindi/ng/p 24.73
+split 2 CTRL+IB.25       | v4_en/ng/s 25.40 v4_en/ng/c 22.07 v4_en/g/s 35.00 v4_en/g/c 30.43 urdu/ng/s 29.57 urdu/ng/p 28.03 urdu/g/s 34.63 urdu/g/p 35.37 hindi/ng/s 30.23 hindi/ng/p 23.17
+split 2 CTRL+IB.5        | v4_en/ng/s 23.20 v4_en/ng/c 18.10 v4_en/g/s 32.53 v4_en/g/c 30.43 urdu/ng/s 26.30 urdu/ng/p 21.83 urdu/g/s 31.50 urdu/g/p 29.73 hindi/ng/s 28.53 hindi/ng/p 17.90
+split 2 vitage           | v4_en/ng/s 30.93 v4_en/ng/c 23.57 v4_en/g/s 40.07 v4_en/g/c 35.57 urdu/ng/s 37.50 urdu/ng/p 30.73 urdu/g/s 42.47 urdu/g/p 37.53 hindi/ng/s 34.90 hindi/ng/p 23.57
+split 2 CTRL+vitage.25   | v4_en/ng/s 28.33 v4_en/ng/c 24.03 v4_en/g/s 37.47 v4_en/g/c 33.63 urdu/ng/s 33.27 urdu/ng/p 28.03 urdu/g/s 39.13 urdu/g/p 35.37 hindi/ng/s 33.07 hindi/ng/p 26.77
+split 2 CTRL+vitage.5    | v4_en/ng/s 28.30 v4_en/ng/c 23.17 v4_en/g/s 37.67 v4_en/g/c 33.97 urdu/ng/s 32.87 urdu/ng/p 28.03 urdu/g/s 39.13 urdu/g/p 35.37 hindi/ng/s 32.90 hindi/ng/p 24.17
+split 2 CATvitage        | v4_en/ng/s 29.07 v4_en/ng/c 23.03 v4_en/g/s 39.23 v4_en/g/c 37.90 urdu/ng/s 34.13 urdu/ng/p 28.03 urdu/g/s 41.13 urdu/g/p 35.00 hindi/ng/s 32.90 hindi/ng/p 27.00
+split 2 farl             | v4_en/ng/s 31.03 v4_en/ng/c 24.87 v4_en/g/s 40.47 v4_en/g/c 35.07 urdu/ng/s 33.13 urdu/ng/p 28.03 urdu/g/s 38.20 urdu/g/p 32.17 hindi/ng/s 35.37 hindi/ng/p 27.77
+split 2 CTRL+farl.25     | v4_en/ng/s 28.30 v4_en/ng/c 23.97 v4_en/g/s 37.43 v4_en/g/c 34.53 urdu/ng/s 33.80 urdu/ng/p 28.03 urdu/g/s 39.00 urdu/g/p 31.27 hindi/ng/s 33.43 hindi/ng/p 27.33
+split 2 CTRL+farl.5      | v4_en/ng/s 28.17 v4_en/ng/c 22.37 v4_en/g/s 37.47 v4_en/g/c 37.10 urdu/ng/s 32.37 urdu/ng/p 28.03 urdu/g/s 37.40 urdu/g/p 28.03 hindi/ng/s 32.63 hindi/ng/p 26.30
+split 2 CATfarl          | v4_en/ng/s 28.10 v4_en/ng/c 24.83 v4_en/g/s 38.43 v4_en/g/c 36.20 urdu/ng/s 34.50 urdu/ng/p 28.03 urdu/g/s 39.77 urdu/g/p 32.93 hindi/ng/s 32.77 hindi/ng/p 28.57
+== split 2 done in 493s
+split 3 CTRL             | v4_en/ng/s 31.63 v4_en/ng/c 27.63 v4_en/g/s 41.70 v4_en/g/c 36.67 urdu/ng/s 30.97 urdu/ng/p 27.00 urdu/g/s 43.63 urdu/g/p 35.33 hindi/ng/s 33.27 hindi/ng/p 24.00
+split 3 IB               | v4_en/ng/s 24.43 v4_en/ng/c 13.90 v4_en/g/s 33.50 v4_en/g/c 21.13 urdu/ng/s 27.87 urdu/ng/p 13.47 urdu/g/s 41.03 urdu/g/p 26.33 hindi/ng/s 28.40 hindi/ng/p 23.27
+split 3 CTRL+IB.25       | v4_en/ng/s 26.63 v4_en/ng/c 20.97 v4_en/g/s 37.43 v4_en/g/c 30.33 urdu/ng/s 28.57 urdu/ng/p 21.53 urdu/g/s 41.70 urdu/g/p 35.33 hindi/ng/s 30.40 hindi/ng/p 24.47
+split 3 CTRL+IB.5        | v4_en/ng/s 23.47 v4_en/ng/c 17.00 v4_en/g/s 33.23 v4_en/g/c 24.93 urdu/ng/s 26.13 urdu/ng/p 21.53 urdu/g/s 40.13 urdu/g/p 28.30 hindi/ng/s 28.20 hindi/ng/p 22.87
+split 3 vitage           | v4_en/ng/s 29.37 v4_en/ng/c 27.83 v4_en/g/s 39.03 v4_en/g/c 38.93 urdu/ng/s 28.40 urdu/ng/p 27.27 urdu/g/s 41.23 urdu/g/p 35.30 hindi/ng/s 34.20 hindi/ng/p 33.83
+split 3 CTRL+vitage.25   | v4_en/ng/s 29.53 v4_en/ng/c 24.27 v4_en/g/s 40.30 v4_en/g/c 35.77 urdu/ng/s 28.40 urdu/ng/p 21.57 urdu/g/s 41.70 urdu/g/p 35.33 hindi/ng/s 31.90 hindi/ng/p 23.97
+split 3 CTRL+vitage.5    | v4_en/ng/s 28.47 v4_en/ng/c 26.13 v4_en/g/s 39.43 v4_en/g/c 32.47 urdu/ng/s 26.67 urdu/ng/p 20.83 urdu/g/s 40.63 urdu/g/p 35.33 hindi/ng/s 30.93 hindi/ng/p 28.83
+split 3 CATvitage        | v4_en/ng/s 28.70 v4_en/ng/c 25.23 v4_en/g/s 38.90 v4_en/g/c 28.07 urdu/ng/s 27.37 urdu/ng/p 20.10 urdu/g/s 40.70 urdu/g/p 31.53 hindi/ng/s 31.90 hindi/ng/p 24.87
+split 3 farl             | v4_en/ng/s 27.37 v4_en/ng/c 23.77 v4_en/g/s 36.13 v4_en/g/c 26.20 urdu/ng/s 30.47 urdu/ng/p 27.07 urdu/g/s 45.53 urdu/g/p 42.07 hindi/ng/s 32.27 hindi/ng/p 24.33
+split 3 CTRL+farl.25     | v4_en/ng/s 28.90 v4_en/ng/c 23.20 v4_en/g/s 39.37 v4_en/g/c 33.20 urdu/ng/s 29.30 urdu/ng/p 24.80 urdu/g/s 43.53 urdu/g/p 39.50 hindi/ng/s 32.07 hindi/ng/p 23.53
+split 3 CTRL+farl.5      | v4_en/ng/s 27.27 v4_en/ng/c 24.63 v4_en/g/s 37.00 v4_en/g/c 26.77 urdu/ng/s 27.97 urdu/ng/p 22.23 urdu/g/s 43.27 urdu/g/p 44.70 hindi/ng/s 31.13 hindi/ng/p 24.07
+split 3 CATfarl          | v4_en/ng/s 28.07 v4_en/ng/c 22.93 v4_en/g/s 37.80 v4_en/g/c 30.60 urdu/ng/s 28.47 urdu/ng/p 20.20 urdu/g/s 42.63 urdu/g/p 35.63 hindi/ng/s 32.43 hindi/ng/p 27.23
+== split 3 done in 699s
+split 4 CTRL             | v4_en/ng/s 29.53 v4_en/ng/c 23.53 v4_en/g/s 37.67 v4_en/g/c 38.70 urdu/ng/s 30.33 urdu/ng/p 21.20 urdu/g/s 41.13 urdu/g/p 32.50 hindi/ng/s 27.97 hindi/ng/p 17.87
+split 4 IB               | v4_en/ng/s 25.03 v4_en/ng/c 19.10 v4_en/g/s 35.60 v4_en/g/c 23.80 urdu/ng/s 21.70 urdu/ng/p 14.93 urdu/g/s 31.07 urdu/g/p 26.77 hindi/ng/s 30.07 hindi/ng/p 21.73
+split 4 CTRL+IB.25       | v4_en/ng/s 25.53 v4_en/ng/c 20.93 v4_en/g/s 35.67 v4_en/g/c 31.47 urdu/ng/s 25.37 urdu/ng/p 16.97 urdu/g/s 35.40 urdu/g/p 28.40 hindi/ng/s 24.83 hindi/ng/p 17.00
+split 4 CTRL+IB.5        | v4_en/ng/s 23.03 v4_en/ng/c 16.60 v4_en/g/s 33.83 v4_en/g/c 26.70 urdu/ng/s 21.83 urdu/ng/p 14.23 urdu/g/s 31.67 urdu/g/p 23.40 hindi/ng/s 24.30 hindi/ng/p 15.33
+split 4 vitage           | v4_en/ng/s 28.83 v4_en/ng/c 24.43 v4_en/g/s 41.47 v4_en/g/c 37.97 urdu/ng/s 28.97 urdu/ng/p 21.70 urdu/g/s 39.70 urdu/g/p 36.07 hindi/ng/s 26.80 hindi/ng/p 18.63
+split 4 CTRL+vitage.25   | v4_en/ng/s 28.17 v4_en/ng/c 22.97 v4_en/g/s 37.57 v4_en/g/c 37.17 urdu/ng/s 28.83 urdu/ng/p 18.53 urdu/g/s 39.40 urdu/g/p 32.23 hindi/ng/s 25.23 hindi/ng/p 18.03
+split 4 CTRL+vitage.5    | v4_en/ng/s 27.20 v4_en/ng/c 24.27 v4_en/g/s 38.57 v4_en/g/c 39.07 urdu/ng/s 27.73 urdu/ng/p 21.70 urdu/g/s 38.73 urdu/g/p 34.60 hindi/ng/s 24.43 hindi/ng/p 15.03
+split 4 CATvitage        | v4_en/ng/s 27.63 v4_en/ng/c 24.93 v4_en/g/s 38.60 v4_en/g/c 37.60 urdu/ng/s 28.33 urdu/ng/p 23.30 urdu/g/s 39.57 urdu/g/p 30.67 hindi/ng/s 24.10 hindi/ng/p 17.27
+split 4 farl             | v4_en/ng/s 28.57 v4_en/ng/c 23.50 v4_en/g/s 39.53 v4_en/g/c 36.40 urdu/ng/s 31.37 urdu/ng/p 28.50 urdu/g/s 41.30 urdu/g/p 38.27 hindi/ng/s 27.17 hindi/ng/p 23.57
+split 4 CTRL+farl.25     | v4_en/ng/s 27.70 v4_en/ng/c 22.40 v4_en/g/s 37.40 v4_en/g/c 36.67 urdu/ng/s 29.00 urdu/ng/p 21.60 urdu/g/s 39.83 urdu/g/p 34.00 hindi/ng/s 25.73 hindi/ng/p 17.00
+split 4 CTRL+farl.5      | v4_en/ng/s 27.17 v4_en/ng/c 22.50 v4_en/g/s 37.47 v4_en/g/c 37.10 urdu/ng/s 28.83 urdu/ng/p 23.40 urdu/g/s 39.37 urdu/g/p 35.73 hindi/ng/s 24.27 hindi/ng/p 17.27
+split 4 CATfarl          | v4_en/ng/s 26.87 v4_en/ng/c 25.17 v4_en/g/s 36.80 v4_en/g/c 38.37 urdu/ng/s 28.70 urdu/ng/p 19.07 urdu/g/s 38.67 urdu/g/p 30.87 hindi/ng/s 26.23 hindi/ng/p 17.23
+== split 4 done in 367s
+split 5 CTRL             | v4_en/ng/s 29.90 v4_en/ng/c 22.53 v4_en/g/s 37.50 v4_en/g/c 27.93 urdu/ng/s 40.13 urdu/ng/p 34.83 urdu/g/s 50.23 urdu/g/p 46.00 hindi/ng/s 37.03 hindi/ng/p 32.60
+split 5 IB               | v4_en/ng/s 24.13 v4_en/ng/c 15.77 v4_en/g/s 33.00 v4_en/g/c 24.07 urdu/ng/s 25.93 urdu/ng/p 18.00 urdu/g/s 37.70 urdu/g/p 31.20 hindi/ng/s 24.50 hindi/ng/p 14.80
+split 5 CTRL+IB.25       | v4_en/ng/s 25.53 v4_en/ng/c 20.60 v4_en/g/s 33.97 v4_en/g/c 27.10 urdu/ng/s 33.93 urdu/ng/p 22.37 urdu/g/s 46.20 urdu/g/p 43.60 hindi/ng/s 32.10 hindi/ng/p 26.57
+split 5 CTRL+IB.5        | v4_en/ng/s 22.83 v4_en/ng/c 18.97 v4_en/g/s 31.87 v4_en/g/c 29.57 urdu/ng/s 28.37 urdu/ng/p 19.77 urdu/g/s 42.07 urdu/g/p 38.37 hindi/ng/s 26.17 hindi/ng/p 20.10
+split 5 vitage           | v4_en/ng/s 29.40 v4_en/ng/c 22.23 v4_en/g/s 38.07 v4_en/g/c 37.50 urdu/ng/s 34.87 urdu/ng/p 29.60 urdu/g/s 48.47 urdu/g/p 41.83 hindi/ng/s 30.00 hindi/ng/p 20.87
+split 5 CTRL+vitage.25   | v4_en/ng/s 28.07 v4_en/ng/c 21.27 v4_en/g/s 36.50 v4_en/g/c 30.00 urdu/ng/s 38.03 urdu/ng/p 29.60 urdu/g/s 49.70 urdu/g/p 37.30 hindi/ng/s 34.93 hindi/ng/p 29.53
+split 5 CTRL+vitage.5    | v4_en/ng/s 27.30 v4_en/ng/c 20.03 v4_en/g/s 36.17 v4_en/g/c 30.33 urdu/ng/s 35.67 urdu/ng/p 29.60 urdu/g/s 48.97 urdu/g/p 37.00 hindi/ng/s 31.33 hindi/ng/p 23.63
+split 5 CATvitage        | v4_en/ng/s 29.07 v4_en/ng/c 22.13 v4_en/g/s 37.53 v4_en/g/c 36.73 urdu/ng/s 37.17 urdu/ng/p 27.80 urdu/g/s 50.70 urdu/g/p 45.60 hindi/ng/s 33.57 hindi/ng/p 29.07
+split 5 farl             | v4_en/ng/s 30.87 v4_en/ng/c 23.43 v4_en/g/s 38.57 v4_en/g/c 32.00 urdu/ng/s 36.57 urdu/ng/p 30.27 urdu/g/s 49.23 urdu/g/p 46.43 hindi/ng/s 31.70 hindi/ng/p 29.03
+split 5 CTRL+farl.25     | v4_en/ng/s 28.93 v4_en/ng/c 22.83 v4_en/g/s 36.83 v4_en/g/c 27.87 urdu/ng/s 37.70 urdu/ng/p 29.60 urdu/g/s 50.73 urdu/g/p 43.00 hindi/ng/s 35.57 hindi/ng/p 29.43
+split 5 CTRL+farl.5      | v4_en/ng/s 29.07 v4_en/ng/c 22.47 v4_en/g/s 36.57 v4_en/g/c 27.47 urdu/ng/s 35.33 urdu/ng/p 26.17 urdu/g/s 49.57 urdu/g/p 44.80 hindi/ng/s 33.47 hindi/ng/p 25.73
+split 5 CATfarl          | v4_en/ng/s 28.90 v4_en/ng/c 22.27 v4_en/g/s 36.70 v4_en/g/c 28.47 urdu/ng/s 35.23 urdu/ng/p 23.33 urdu/g/s 49.20 urdu/g/p 41.03 hindi/ng/s 34.73 hindi/ng/p 27.67
+== split 5 done in 343s
+ALL DONE
+EXIT 0

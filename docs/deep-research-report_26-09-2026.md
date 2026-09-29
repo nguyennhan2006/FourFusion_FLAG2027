@@ -1,5 +1,7 @@
 # FLAG 2027 Deep Research Report: Methods That Best Fit the Problem Logic
 
+> **Lịch sử (26/09, trước SET-02). Nhiều đề xuất kiến trúc ở đây đã được thử và đóng; xem OPEN_DIRECTIONS §4.** Trạng thái hiện hành (29/09, nhật ký tới mục 75): cấu hình Evaluation là **SET-13 (CB 21.01) qua `BEST/v6_eval`**; xem [DECISIONS.md](DECISIONS.md) và [OPEN_DIRECTIONS.md](OPEN_DIRECTIONS.md).
+
 ## Executive Summary
 
 FLAG 2027 is not a conventional face–voice matching problem. It combines three constraints that fundamentally change which methods are likely to work: the training set is very small and **English-only**; Bengali is an **unlabeled target language**; and half of the evaluation removes the easiest demographic cue by forcing impostors to have the **same gender**. The official challenge explicitly frames this as a test of whether models learn speaker-specific cross-modal traits rather than language and gender shortcuts. citeturn7academia15turn7search1

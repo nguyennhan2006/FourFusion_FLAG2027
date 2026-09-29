@@ -1,0 +1,688 @@
+\documentclass[11pt,a4paper,oneside]{report}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{Consolas}[Scale=0.9]
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,array,multirow,longtable}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=3pt}
+\definecolor{accent}{HTML}{1F5FA8}
+\definecolor{muted}{HTML}{555555}
+\definecolor{good}{HTML}{1E7B34}
+\definecolor{bad}{HTML}{B03A2E}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\chaptername}{Chương}
+\renewcommand{\appendixname}{Phụ lục}
+\newcommand{\key}[1]{\textbf{\color{accent}#1}}
+\newcommand{\up}[1]{\textbf{\color{good}#1}}
+\newcommand{\down}[1]{\textbf{\color{bad}#1}}
+\newcommand{\id}[1]{\texttt{#1}}
+
+% ---- khung cho mỗi thí nghiệm: Lí do / Thí nghiệm / Kết quả / Vì sao
+\newtcolorbox{expbox}[1]{enhanced, breakable, colback=white, colframe=accent!70, coltitle=white,
+  colbacktitle=accent!85, fonttitle=\bfseries, title={#1}, boxrule=0.6pt, arc=2pt,
+  left=6pt, right=6pt, top=3pt, bottom=4pt, before skip=8pt, after skip=8pt}
+\newcommand{\field}[1]{\par\smallskip\textbf{\color{accent}#1.}~}
+\newtcolorbox{knowledge}[1]{enhanced, breakable, colback=gray!4, colframe=gray!55, coltitle=black,
+  colbacktitle=gray!18, fonttitle=\bfseries, title={#1}, boxrule=0.4pt, arc=2pt, left=6pt, right=6pt}
+\newtcolorbox{principle}[1]{enhanced, breakable, colback=green!3, colframe=good!80, coltitle=white,
+  colbacktitle=good!85, fonttitle=\bfseries, title={#1}, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt}
+\newtcolorbox{lesson}{enhanced, breakable, colback=accent!4, colframe=accent!40, boxrule=0.4pt, arc=2pt,
+  left=6pt, right=6pt, top=3pt, bottom=3pt}
+\newtcolorbox{warnbox}[1]{enhanced, breakable, colback=red!3, colframe=bad!80, coltitle=white,
+  colbacktitle=bad!85, fonttitle=\bfseries, title={#1}, boxrule=0.5pt, arc=2pt, left=6pt, right=6pt}
+
+\title{\textbf{Ghép khuôn mặt với giọng nói}\\[6pt]
+\Large Một chương học viết từ nhật ký thực nghiệm của nhóm FourFusion\\ tại cuộc thi FLAG 2027}
+\author{Nhóm FourFusion}
+\date{27/09/2026 --- tổng kết tuần đầu của progress phase}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Ghép khuôn mặt với giọng nói: một tuần thực nghiệm}
+
+Chương này kể lại, theo đúng thứ tự thời gian, khoảng bốn mươi thí nghiệm mà nhóm đã làm trong tuần đầu của cuộc thi FLAG 2027. Điểm trung bình của nhóm đi từ \textbf{42.17\%} EER (lượt nộp đầu tiên) xuống \textbf{20.40\%} (hạng 2 bảng progress). Mục đích của chương không phải khoe con số, mà dùng một câu chuyện có thật và có đủ số liệu để dạy cách làm nghiên cứu thực nghiệm: đặt giả thuyết, dựng phép thử, đọc kết quả, và nhất là hiểu \emph{vì sao} một thay đổi làm điểm tăng hay giảm.
+
+\section*{Mục tiêu của chương}
+Sau khi học xong, người đọc có thể:
+\begin{enumerate}
+\item Mô tả bài toán xác minh khuôn mặt--giọng nói xuyên ngôn ngữ và cách chấm bằng EER theo từng tệp.
+\item Giải thích các kiến thức nền dùng trong chương: embedding, CCA, học tương phản InfoNCE, chuẩn hoá miền, trộn hệ, gom cụm, suy luận transductive, và ra quyết định có thống kê.
+\item Với mỗi thí nghiệm: nêu lí do làm, cách làm, kết quả, và cơ chế khiến điểm tăng hoặc giảm.
+\item Rút ra các nguyên lý dùng lại được cho những bài toán có ít dữ liệu và có dịch chuyển miền.
+\item Phân biệt việc khai thác hợp lệ dữ liệu kiểm thử không nhãn với việc rò rỉ cấu trúc của bộ đề.
+\end{enumerate}
+
+\section*{Cách đọc chương}
+Mục~\ref{sec:task} mô tả bài toán; Mục~\ref{sec:knowledge} là kiến thức nền, nên đọc trước nếu bạn mới làm học máy. Các Mục~\ref{sec:p0}--\ref{sec:p7} đi qua bảy giai đoạn. Mỗi thí nghiệm được trình bày trong một khung gồm bốn phần: \key{Lí do} (vì sao làm), \key{Thí nghiệm} (làm gì), \key{Kết quả} (con số), \key{Vì sao} (cơ chế làm điểm tăng hoặc giảm). Mục~\ref{sec:why} tổng hợp các cơ chế tăng và giảm điểm, Mục~\ref{sec:principles} là các nguyên lý, Mục~\ref{sec:exercises} là câu hỏi ôn tập. Phụ lục có bảng mọi lượt nộp, bảng thuật ngữ và bản đồ mã nguồn.
+
+Quy ước: mọi con số là EER tính bằng phần trăm, \emph{càng thấp càng tốt}. ``CB'' là điểm chính thức trên CodaBench. Bốn tệp kiểm thử được viết tắt là \id{ng/En}, \id{ng/Bn}, \id{g/En}, \id{g/Bn} (giải thích ở Mục~\ref{sec:task}). Chênh lệch ``$-x$'' nghĩa là EER giảm $x$ điểm (tốt hơn).
+
+% =====================================================================================
+\section{Bài toán}
+\label{sec:task}
+
+\subsection{Một phép thử (trial)}
+Mỗi \key{trial} gồm đúng một ảnh khuôn mặt và một đoạn giọng nói. Hệ thống trả về một số thực cho biết hai thứ này có thuộc cùng một người hay không. Đây là bài toán \emph{xác minh} (verification), không phải \emph{nhận dạng} (identification): ta không cần biết người đó là ai, chỉ cần biết có khớp hay không. Người trong tập kiểm thử \emph{chưa từng xuất hiện} trong tập huấn luyện.
+
+\subsection{Dữ liệu}
+\begin{table}[h]
+\centering\small
+\caption{Dữ liệu của cuộc thi (bộ MAV-Celeb v4).}
+\label{tab:data}
+\begin{tabular}{>{\raggedright}p{3.2cm}>{\raggedright\arraybackslash}p{11.6cm}}
+\toprule
+Tập huấn luyện & 70 người, \textbf{chỉ tiếng Anh}. Có ảnh (.jpg), âm thanh (.wav) và đặc trưng trích sẵn của ban tổ chức: khuôn mặt bằng VGGFace (vector 4096 chiều), giọng bằng ECAPA-TDNN (192 chiều). \\
+Tập dev (dùng làm bảng progress) & 4 tệp = 2 giao thức $\times$ 2 ngôn ngữ. Mỗi tệp khoảng 30 người, 982--1468 trial, \textbf{đúng 50\% là cặp cùng người}. Mỗi ảnh và mỗi đoạn giọng xuất hiện đúng một lần. Cùng những người đó xuất hiện ở cả tệp English và tệp Bangla. \\
+Giao thức \id{no\_gender} & Cặp khác người có thể khác giới tính (nên đoán giới tính đã giúp được nhiều). \\
+Giao thức \id{gender} & Cặp khác người \textbf{luôn cùng giới tính}: giới tính không còn là manh mối. \\
+English (\emph{heard}) & Ngôn ngữ đã có trong tập huấn luyện. \\
+Bangla (\emph{unheard}) & Ngôn ngữ \textbf{không có} trong tập huấn luyện; câu nói ngắn hơn (trung vị 4.7 s so với khoảng 6 s). \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cách chấm và các giai đoạn}
+Điểm của mỗi tệp là \key{EER} (định nghĩa ở khung K2, Mục~\ref{sec:knowledge}), điểm cuối cùng là trung bình bốn EER. Cuộc thi có hai giai đoạn: \emph{progress phase} (đến 10/11, chấm trên tập dev, 150 lượt nộp, tối đa 15 lượt/ngày) và \emph{evaluation phase} (11--18/11, \textbf{dữ liệu mới}, chỉ 15 lượt). Xếp hạng cuối cùng dựa trên evaluation phase, nên mọi thứ ``học thuộc'' tập dev đều không có giá trị lâu dài. Hạn nộp mô tả hệ thống và mã nguồn là 27/11.
+
+\subsection{Luật chơi (theo Evaluation Plan và bảng luật nhóm tổng hợp)}
+Được dùng bộ mã hoá đã huấn luyện sẵn (pretrained encoder); phải nộp mô tả hệ thống và công khai mã nguồn; được dùng dữ liệu ngoài nếu khai báo. \textbf{Cấm} dùng nhãn cùng/khác người của tập kiểm thử và cấm xem ảnh, nghe giọng rồi sửa điểm bằng tay. Việc dùng cấu trúc của danh sách trial chưa được quy định; nhóm đã gửi câu hỏi cho ban tổ chức (Mục~\ref{sec:p7}).
+
+\subsection{Từ vựng của chương}
+Ta gọi mô hình chiếu khuôn mặt và giọng nói vào chung một không gian là \key{cầu nối} (bridge). Một cầu nối cụ thể, huấn luyện bằng một công thức cụ thể, được gọi là một \key{thành phần} (member). Bảng~\ref{tab:members} liệt kê các thành phần xuất hiện nhiều lần.
+
+\begin{table}[h]
+\centering\small
+\caption{Các thành phần chính (tên giữ nguyên như trong mã nguồn).}
+\label{tab:members}
+\begin{tabular}{>{\raggedright}p{3.6cm}>{\raggedright}p{2.6cm}>{\raggedright\arraybackslash}p{8.2cm}}
+\toprule
+Tên & Khuôn mặt & Giọng nói \\
+\midrule
+\id{s007} (công thức EXP-007) & VGGFace 4096 & ECAPA-192 của ban tổ chức \\
+\id{s010B} & VGGFace 4096 & ECAPA 6144 chiều (lớp gộp thống kê, tự trích) \\
+\id{r2mix} & VGGFace 4096 & ECAPA-192 của speechbrain (tự trích), huấn luyện trên đoạn cắt theo độ dài Bangla \\
+\id{003c} & VGGFace 4096 & ECAPA-192 của ban tổ chức, phiên bản cầu nối cũ hơn \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =====================================================================================
+\section{Nền tảng tri thức cần nắm}
+\label{sec:knowledge}
+
+Mục này gom mọi khái niệm mà các thí nghiệm phía sau dùng tới. Mỗi khung trả lời ba câu: nó là gì, công thức nào, và nó xuất hiện ở đâu trong chương.
+
+\begin{knowledge}{K1. Embedding, cosine, và xác minh}
+Một \emph{bộ mã hoá} (encoder) biến một ảnh hay một đoạn âm thanh thành một vector $z\in\mathbb{R}^d$ gọi là \emph{embedding}. Hai embedding được so bằng độ tương tự cosine $\cos(z_1,z_2)=\frac{z_1^\top z_2}{\|z_1\|\|z_2\|}$. Xác minh \emph{cùng modality} (ảnh--ảnh, giọng--giọng) rất dễ vì bộ mã hoá được huấn luyện đúng cho việc đó: trên dữ liệu này, ArcFace đạt EER 1.70\% cho ảnh--ảnh, ECAPA đạt 4.33\% cho giọng--giọng. Xác minh \emph{chéo modality} (ảnh--giọng) khó hơn nhiều, vì hai embedding nằm ở hai không gian khác nhau; ta phải học một cầu nối $\phi$ cho ảnh và $\psi$ cho giọng rồi chấm $s(f,v)=\cos(\phi(f),\psi(v))$. Sự bất đối xứng ``trong một modality thì dễ, giữa hai modality thì khó'' là chìa khoá của bước ngoặt ở Mục~\ref{sec:p5}.
+\end{knowledge}
+
+\begin{knowledge}{K2. EER và quy ước chiều điểm}
+Với một ngưỡng $t$, \emph{tỷ lệ chấp nhận nhầm} FAR$(t)$ là tỷ lệ cặp khác người bị cho là cùng người; \emph{tỷ lệ từ chối nhầm} FRR$(t)$ là tỷ lệ cặp cùng người bị cho là khác người. Tăng $t$ thì FAR giảm, FRR tăng. \key{EER} là giá trị tại ngưỡng mà FAR $=$ FRR. EER không phụ thuộc vào việc chọn ngưỡng và chỉ phụ thuộc \emph{thứ tự} của các điểm, nên mọi phép biến đổi đơn điệu (nhân hằng số dương, cộng hằng số, lấy thứ hạng) không đổi EER. EER 50\% là đoán mò; EER 20\% nghĩa là ở ngưỡng cân bằng, cứ 5 cặp thì sai 1.
+
+EER được tính \emph{riêng cho từng tệp}. Hệ quả: điểm của tệp này không cần hiệu chỉnh cùng thang với tệp kia, và ta có thể dùng hệ khác nhau cho từng tệp (Mục~\ref{sec:p1}). Mỗi bộ chấm cũng có \emph{quy ước chiều}: điểm cao nghĩa là ``cùng người'' hay ``khác người''. Nộp ngược chiều sẽ cho EER $100-x$ thay vì $x$.
+\end{knowledge}
+
+\begin{knowledge}{K3. Validation không trùng người}
+Để ước lượng hiệu năng trên người \emph{chưa thấy}, ta chia 70 người huấn luyện thành hai nhóm rời nhau: huấn luyện trên nhóm này, đánh giá trên nhóm kia (\emph{speaker-disjoint split}). Nếu chia theo mẫu thay vì theo người, mô hình sẽ gặp lại người đã học và điểm validation lạc quan giả tạo. Ta cũng phải dựng trial validation giống giao thức thật (ví dụ: cặp khác người cùng giới cho giao thức \id{gender}). Một điểm yếu cố hữu: \textbf{validation dựng từ tập huấn luyện chỉ có tiếng Anh}, nên nó không thể nói gì về tệp Bangla. Chương này sẽ nhiều lần gặp hậu quả của điểm yếu đó.
+\end{knowledge}
+
+\begin{knowledge}{K4. CCA: phân tích tương quan chính tắc}
+Cho hai view $x\in\mathbb{R}^{p}$ (ảnh) và $y\in\mathbb{R}^{q}$ (giọng) của cùng một mẫu, CCA tìm các hướng $w_x,w_y$ sao cho $\operatorname{corr}(w_x^\top x,\,w_y^\top y)$ lớn nhất, rồi lặp lại cho $k$ hướng trực giao. Lời giải là SVD của $C_{xx}^{-1/2}C_{xy}C_{yy}^{-1/2}$. Bản \emph{ridge} thêm $\lambda I$ vào $C_{xx},C_{yy}$ để ổn định khi ít mẫu; thường giảm chiều bằng PCA trước. $k$ nhỏ nghĩa là chỉ giữ vài hướng tương quan mạnh nhất --- ở đây là các thuộc tính chung giữa mặt và giọng như giới tính, tuổi. CCA không có tham số huấn luyện lặp, ít có khả năng học thuộc, nên rất hợp khi chỉ có 70 người.
+\end{knowledge}
+
+\begin{knowledge}{K5. Học tương phản InfoNCE (mô hình hai tháp)}
+Hai mạng nhỏ $\phi$ (ảnh) và $\psi$ (giọng) chiếu vào cùng không gian, chuẩn hoá độ dài. Trong một batch có $B$ cặp $(f_i,v_i)$, ma trận điểm $S_{ij}=\phi(f_i)^\top\psi(v_j)/\tau$. Hàm mất mát
+\[
+\mathcal{L}=-\frac{1}{2B}\sum_i\Big[\log\frac{e^{S_{ii}}}{\sum_j e^{S_{ij}}}+\log\frac{e^{S_{ii}}}{\sum_j e^{S_{ji}}}\Big]
+\]
+kéo cặp cùng người lại gần và đẩy các cặp khác ra xa. Khi nhiều mẫu trong batch cùng một người, ta dùng bản \emph{multi-positive}: mọi cặp cùng người đều là positive. $\tau$ là nhiệt độ (ở đây 0.07). Cầu nối chính của nhóm là hai MLP (512 nút ẩn, embedding 128 chiều, dropout 0.3) huấn luyện bằng InfoNCE.
+\end{knowledge}
+
+\begin{knowledge}{K6. Dịch chuyển miền và các phép chuẩn hoá}
+Khi phân phối dữ liệu kiểm thử khác dữ liệu huấn luyện (ngôn ngữ khác, kênh thu khác), ta gọi đó là \emph{dịch chuyển miền}. Có ba nhóm cách xử lý được thử trong chương:
+\begin{itemize}
+\item \textbf{Căn trung bình theo tệp} (moment bậc 1): trừ trung bình của tệp kiểm thử, cộng trung bình của tập huấn luyện. An toàn vì trung bình của một tệp gồm 30 người không mang thông tin phân biệt ai với ai.
+\item \textbf{CORAL} (moment bậc 2): làm trắng hiệp phương sai của tệp kiểm thử rồi tô lại bằng hiệp phương sai huấn luyện. Nguy hiểm, vì trong một tệp nhiều người, hiệp phương sai chính là cấu trúc \emph{giữa các người} (Mục~\ref{sec:p2}).
+\item \textbf{Chuẩn hoá điểm theo cohort} (AS-norm): trừ trung bình và chia độ lệch của điểm giữa mỗi mẫu với một tập mẫu tham chiếu. Chỉ đúng khi cohort lúc validation giống cohort lúc kiểm thử.
+\end{itemize}
+\end{knowledge}
+
+\begin{knowledge}{K7. Trộn hệ (fusion)}
+Trộn điểm của nhiều hệ thường tốt hơn từng hệ, \emph{nếu lỗi của chúng không trùng nhau}. Hai cách: \emph{z-fusion} (chuẩn hoá z từng hệ rồi lấy trung bình có trọng số) và \emph{rank fusion} (đổi điểm thành thứ hạng rồi lấy trung bình), cách sau bền với thang điểm lệch nhau. Trọng số phải được đặt \emph{tường minh}: nếu lấy trung bình đều $n$ thành viên, mỗi thành viên nhận $1/n$ --- tăng số thành viên có thể vô tình làm loãng một thành viên quan trọng (Mục~\ref{sec:p2}).
+\end{knowledge}
+
+\begin{knowledge}{K8. Gom cụm và chỉ số ARI}
+\emph{Gom cụm phân cấp} (agglomerative) bắt đầu với mỗi mẫu là một cụm, rồi lần lượt gộp hai cụm gần nhất; với liên kết trung bình (average linkage), khoảng cách hai cụm là trung bình khoảng cách cosine giữa mọi cặp mẫu. Dừng khi khoảng cách vượt một \emph{ngưỡng}. Chất lượng cụm so với danh tính thật đo bằng \emph{ARI} (Adjusted Rand Index): 1 là khớp hoàn toàn, 0 là ngẫu nhiên. Ngưỡng được chọn bằng cách tối đa ARI trên người của \emph{tập huấn luyện}, không bao giờ trên tập kiểm thử.
+\end{knowledge}
+
+\begin{knowledge}{K9. Suy luận transductive và rò rỉ}
+Mô hình \emph{inductive} chấm mỗi trial độc lập. Mô hình \emph{transductive} dùng thêm các mẫu \emph{không nhãn} khác của tập kiểm thử (ví dụ: gom cụm tất cả ảnh của tệp). Transductive là kỹ thuật chính đáng nếu luật không cấm và được khai báo. \emph{Rò rỉ} (leakage) là khi hệ dùng thông tin mà ở ứng dụng thật không có: nhãn kiểm thử, hoặc \emph{cấu trúc của bộ đề} --- ví dụ cặp nào được ban tổ chức ghép chung trong danh sách trial. Phép thử phân biệt đơn giản: \key{nếu ghép lại các trial khác theo cách khác mà điểm của một cặp (ảnh, giọng) thay đổi, hệ đang dùng cấu trúc bộ đề} (Mục~\ref{sec:p7}).
+\end{knowledge}
+
+\begin{knowledge}{K10. Ra quyết định có thống kê}
+\begin{itemize}
+\item \textbf{So sánh ghép cặp} (paired): hai hệ phải được đánh giá trên \emph{cùng} các tập giữ ra; báo cáo chênh lệch trung bình và \emph{số split thắng} (ví dụ $+1.5$ [4/5]).
+\item \textbf{Nhiều split}: xếp hạng từ một seed không đáng tin (Mục~\ref{sec:p2}: cấu hình đứng đầu ở seed 1 chỉ hạng 12/16 khi lấy trung bình 3 seed).
+\item \textbf{Bootstrap theo danh tính}: khi ước lượng khoảng tin cậy, lấy mẫu lại theo \emph{người} chứ không theo trial, vì các trial của cùng một người không độc lập.
+\item \textbf{Vùng hòa}: chênh $|\Delta|\le0.4$ coi là hòa, không xếp hạng.
+\item \textbf{Lời nguyền người thắng} (winner's curse): chọn cấu hình tốt nhất trong nhiều cấu hình trên cùng một tập đo sẽ ước lượng lạc quan; càng thử nhiều càng lạc quan.
+\item \textbf{Đăng ký trước}: viết ra các biến thể sẽ so \emph{trước} khi nhìn kết quả.
+\end{itemize}
+Quy tắc quyết định của nhóm: một thay đổi được chấp nhận khi cải thiện $\ge0.5$, thắng ở $\ge4/5$ split, và cùng chiều trên các tập kiểm tra độc lập.
+\end{knowledge}
+
+\begin{knowledge}{K11. Phân rã nhiễu của một phép lấy trung bình}
+Viết điểm của cặp (ảnh $f$ của người $p$, giọng $v$ của người $q$) là $s=\mu(p,q)+\varepsilon_f+\eta_v$, với $\mu$ là độ hợp ở cấp người và $\varepsilon,\eta$ là nhiễu riêng của từng ảnh, từng câu. Gọi $\sigma_p^2$ là phương sai của sai số cấp người (cầu nối đánh giá sai độ hợp của cả một người). Trung bình trên $n_f$ ảnh và $n_v$ câu cùng người có phương sai
+\[
+\sigma_p^2+\frac{\sigma_f^2}{n_f}+\frac{\sigma_v^2}{n_v}.
+\]
+Lấy trung bình xoá được hai số hạng sau nhưng \emph{không chạm tới} $\sigma_p^2$. Công thức này giải thích cả bước ngoặt lớn nhất (Mục~\ref{sec:p5}) lẫn giới hạn của nó.
+\end{knowledge}
+
+% =====================================================================================
+\section{Giai đoạn 0 --- Hiểu bộ chấm trước khi tối ưu (21/09)}
+\label{sec:p0}
+
+\begin{expbox}{EXP-000c --- Hệ tham chiếu FOP và phép thử chiều điểm}
+\field{Lí do} Cần một hệ tham chiếu chạy được từ đầu đến cuối, và cần biết chắc bộ chấm hiểu điểm theo chiều nào.
+\field{Thí nghiệm} Tái tạo hệ FOP của ban tổ chức (phân loại danh tính + orthogonal projection loss, cổng trộn hai modality), huấn luyện lại trên 70 người. Nộp \emph{cùng một} checkpoint hai lần: một lần với điểm $+d^2$, một lần với $-d^2$ ($d$ là khoảng cách giữa hai embedding).
+\field{Kết quả} $+d^2$: \textbf{42.17}; $-d^2$: \textbf{57.83} ($=100-42.17$). Hệ FOP của ban tổ chức: 36.92.
+\field{Vì sao} Bộ chấm của CodaBench coi \emph{điểm thấp là cùng người}, ngược với câu chữ của Evaluation Plan. Hai lượt nộp là một thí nghiệm có đối chứng: chỉ đổi đúng một biến (dấu). Về sau, một lần review notebook đề xuất ``sửa'' dấu theo tài liệu; bằng chứng này đã chặn một lỗi làm 30.90 thành khoảng 69.
+\end{expbox}
+
+\begin{lesson}
+\textbf{Bài học.} Tài liệu có thể sai; bộ chấm thật là trọng tài cuối cùng. Kiểm tra quy ước của bộ chấm bằng một phép thử có đối chứng trước khi tối ưu bất cứ thứ gì.
+\end{lesson}
+
+% =====================================================================================
+\section{Giai đoạn 1 --- Mô hình tuyến tính và chọn theo tệp (21--22/09)}
+\label{sec:p1}
+
+\begin{expbox}{EDA-000 --- Khám phá dữ liệu}
+\field{Lí do} Trước khi huấn luyện, cần biết dữ liệu dev khác dữ liệu huấn luyện ở đâu.
+\field{Thí nghiệm} Bảy phân tích: phân phối đặc trưng, lệch tâm giữa train và dev, cùng người giữa tệp English và Bangla, hàng trùng lặp, và một CCA tuyến tính làm mốc.
+\field{Kết quả} Dev lệch train chủ yếu ở \emph{tâm} (trung bình); English và Bangla của dev là cùng người, dịch chuyển ngôn ngữ chỉ nằm ở phía giọng; 38\% hàng giọng trong tập train bị trùng. CCA tuyến tính $k=32$ đã đạt validation 29.1 / 34.9 (no\_gender / gender).
+\field{Vì sao} Kết quả gợi ý: (i) căn trung bình theo tệp sẽ rẻ và hiệu quả; (ii) vấn đề của FOP là học quá khớp, không phải thiếu đặc trưng.
+\end{expbox}
+
+\begin{expbox}{EXP-000d, 000e, 000f --- CCA tuyến tính và ghép theo giao thức}
+\field{Lí do} Nếu một mô hình tuyến tính không huấn luyện lặp đã tốt hơn FOP, thì cái cần trước tiên là \emph{điều chuẩn}, không phải mạng lớn.
+\field{Thí nghiệm} 000d: ridge CCA $k=32$. 000e: CCA $k=4$ (chỉ vài hướng mạnh nhất --- gần như chỉ giới tính). 000f: dùng $k=4$ cho hai tệp \id{no\_gender}, $k=32$ cho hai tệp \id{gender}.
+\field{Kết quả} 000d \up{35.79} (đã tốt hơn FOP của ban tổ chức 36.92, không cần học sâu). 000e \up{34.46}: tốt hơn ở \id{no\_gender}, tệ hơn ở \id{gender} (+3.0 / +1.4). 000f \up{33.35}, đúng bằng dự đoán 33.36.
+\field{Vì sao} Với 70 người, một ánh xạ tuyến tính có điều chuẩn khái quát tốt hơn một mạng được huấn luyện quá khớp. CCA $k=4$ nắm gần như chỉ giới tính: rất có ích khi cặp sai có thể khác giới (\id{no\_gender}), vô dụng khi cặp sai luôn cùng giới (\id{gender}). Vì bốn tệp được chấm độc lập, chọn hệ theo từng tệp là hợp lệ và cộng dồn chính xác.
+\end{expbox}
+
+\begin{lesson}
+\textbf{Bài học.} (1) Luôn có một đường cơ sở đơn giản, có điều chuẩn; nó thường mạnh hơn ta nghĩ. (2) Khi điểm là trung bình của các phần chấm độc lập, hãy báo cáo và tối ưu \emph{từng phần}.
+\end{lesson}
+
+% =====================================================================================
+\section{Giai đoạn 2 --- Cầu nối học sâu và các phép chuẩn hoá (22--25/09)}
+\label{sec:p2}
+
+\begin{expbox}{EXP-003, 003b --- Cầu nối InfoNCE + CCA}
+\field{Lí do} CCA chỉ học quan hệ tuyến tính; một cầu nối phi tuyến có thể nắm thêm thuộc tính chung.
+\field{Thí nghiệm} Quét 15 cấu hình $\times$ 3 seed: phân loại + OPL (kiểu FOP), InfoNCE, InfoNCE chỉ với cặp sai cùng giới. Hệ nộp (003b): 3 mô hình InfoNCE + CCA $k=4$, căn trung bình theo tệp, thêm AS-norm.
+\field{Kết quả} InfoNCE thắng CCA ở cả hai giao thức validation; kiểu FOP thua cả CCA. CB 003b: \up{31.96} (25.79 / 28.88 / 33.81 / 39.37).
+\field{Vì sao} InfoNCE tối ưu trực tiếp việc xếp cặp đúng lên trên cặp sai, đúng với cách EER được tính; hàm mất mát phân loại của FOP học phân biệt 70 người đã biết, không tổng quát sang người mới. Nhưng gần như toàn bộ lợi ích dồn vào English; khoảng cách English--Bangla \emph{tăng} lên.
+\end{expbox}
+
+\begin{expbox}{EXP-003c --- Bỏ AS-norm}
+\field{Lí do} Kiểm tra từng thành phần của hệ vừa nộp.
+\field{Thí nghiệm} Giữ nguyên mọi thứ, chỉ bỏ AS-norm.
+\field{Kết quả} CB \up{31.34}, tốt hơn 003b ở 3/4 tệp. Validation lại dự đoán AS-norm \emph{tốt hơn} 2.4 điểm --- sai dấu.
+\field{Vì sao} Cohort lúc validation là 14 người $\times$ khoảng 90 mẫu (nhiều mẫu cùng người trong cohort); cohort trên dev là các mẫu của tệp, mỗi mẫu xuất hiện một lần và 50\% là cặp đúng. Thống kê của hai cohort khác nhau nên phép chuẩn hoá hoạt động khác nhau. Chuẩn hoá điểm phụ thuộc vào đúng phân phối của tập kiểm thử --- thứ mà validation không mô phỏng được.
+\end{expbox}
+
+\begin{expbox}{EXP-004, 006c --- CORAL: căn moment bậc hai}
+\field{Lí do} Bangla lệch tiếng Anh ở phía giọng; căn cả hiệp phương sai của dev về train có thể xoá dịch chuyển ngôn ngữ.
+\field{Thí nghiệm} 004: CORAL đầy đủ cho cả hai modality. 006c: CORAL từng phần với hệ số $\alpha$ từ 0 đến 0.5.
+\field{Kết quả} 004: \down{41.36} (tệ hơn 10 điểm). Khoảng cách ngôn ngữ \emph{có} giảm, nhưng mọi tệp đều tệ đi. 006c: xấu đi đơn điệu theo $\alpha$ (30.48 $\to$ 36.95).
+\field{Vì sao} Trong một tệp khoảng 30 người, hiệp phương sai của các embedding chủ yếu là \emph{phương sai giữa các người}. Làm trắng nó về hiệp phương sai của train nghĩa là xoá cấu trúc danh tính --- chính thứ ta cần giữ. Chỉ moment bậc 1 (trung bình) là an toàn.
+\end{expbox}
+
+\begin{expbox}{EXP-005, 006 --- Quét siêu tham số, kiến trúc, tăng cường dữ liệu}
+\field{Lí do} Tìm cấu hình tốt nhất cho cầu nối.
+\field{Thí nghiệm} 005: 16 cấu hình $\times$ 3 ngân sách epoch $\times$ 3 split trên CPU. 006: trên GPU Kaggle, 28 kiến trúc, 14 kiểu tăng cường, 4 cỡ ensemble.
+\field{Kết quả} Chênh lệch giữa các cấu hình tốt chỉ khoảng 0.5. Không loại bỏ hàng giọng trùng lại \emph{tốt hơn} (32.26 so với 33.02). Không kiểu tăng cường nào thắng ``không tăng cường''. Cấu hình \id{hid=1024} đứng đầu ở seed 1 nhưng chỉ hạng 12/16 khi lấy trung bình 3 seed.
+\field{Vì sao} Với 70 người, cầu nối đã bão hoà: không gian cấu hình phẳng, và nhiễu giữa các seed lớn hơn khác biệt giữa các cấu hình. Hàng giọng trùng hoạt động như ``nhiều ảnh cho cùng một giọng'', giúp học liên kết.
+\end{expbox}
+
+\begin{expbox}{EXP-006d, 007 --- Nghịch lý ensemble}
+\field{Lí do} 006 cho thấy ensemble \emph{lớn hơn lại tệ hơn} (3 mô hình 30.48, 10 mô hình 31.12) --- trái với trực giác.
+\field{Thí nghiệm} Giả thuyết: hệ trộn lấy trung bình đều $n$ mô hình sâu và 1 CCA, nên CCA bị loãng từ $1/4$ ($n=3$) xuống $1/11$ ($n=10$). Tách trọng số: $(1-w)\cdot\text{trung bình mô hình sâu}+w\cdot\text{CCA}$.
+\field{Kết quả} $w=0.25$ tối ưu ở mọi $n$; $n=10$, $w=0.25$: validation 30.42 (so với 31.05 trung bình đều). CB 007: \up{30.90}, lợi ích dồn vào \id{g/En} (\up{$-3.05$}), hai tệp Bangla tệ đi nhẹ.
+\field{Vì sao} Nghịch lý không nằm ở ensemble mà ở trọng số ngầm. CCA mang thông tin khác mô hình sâu (đóng góp 1.3 điểm); để nó bị pha loãng là mất thông tin.
+\end{expbox}
+
+\begin{expbox}{EXP-009 --- Công thức của đội thắng FAME 2026}
+\field{Lí do} Đội hạng 1 cuộc thi tiền nhiệm (FAME 2026, EER 23.99) dùng đầu tuyến tính, dropout 0.9, hàm mất mát AAM, embedding 192 chiều.
+\field{Thí nghiệm} 18 cấu hình, tách từng thành phần.
+\field{Kết quả} Không cấu hình nào thắng cầu nối của nhóm (30.53). AAM $\approx$ InfoNCE (30.66). \down{Dropout 0.9 là thủ phạm chính}: áp lên MLP của nhóm, validation tụt từ 30.53 xuống 37.82. Huấn luyện lâu hơn còn tệ hơn.
+\field{Vì sao} Lợi thế của họ đến từ \emph{dữ liệu} (VoxCeleb2, hàng nghìn người) và nhánh tuổi--giới, không phải từ kiến trúc. Một công thức điều chuẩn mạnh hợp với dữ liệu lớn sẽ làm mô hình không học được gì khi chỉ có 70 người.
+\end{expbox}
+
+\begin{lesson}
+\textbf{Bài học.} (1) Khi mọi cấu hình cho kết quả gần như nhau, nút thắt không nằm ở cấu hình. (2) Chỉ căn moment bậc 1. (3) Đặt trọng số trộn tường minh. (4) Công thức hay ở chế độ dữ liệu này có thể hỏng ở chế độ dữ liệu khác. (5) Một seed không phải bằng chứng.
+\end{lesson}
+
+% =====================================================================================
+\section{Giai đoạn 3 --- Đổi bộ mã hoá và ghép theo tệp (25--26/09)}
+\label{sec:p3}
+
+\begin{expbox}{EXP-010, NB-1, NB-2 --- Trích lại đặc trưng từ dữ liệu gốc}
+\field{Lí do} Giả thuyết ``nút thắt là đặc trưng 192 chiều'': lấy lớp giàu thông tin hơn (ECAPA 6144 chiều) hoặc bộ mã hoá mặt mạnh hơn (ArcFace).
+\field{Thí nghiệm} Trích lại từ ảnh và âm thanh gốc (được phép theo luật), thay đúng một biến mỗi lần. Đo cả EER trong một modality và EER chéo modality.
+\field{Kết quả} ECAPA 6144 (\id{010B}): validation tốt hơn 1.3, nhưng CB \down{31.71} (tệ hơn 30.90). Riêng \id{ng/En} đạt 23.81 --- tốt nhất tới lúc đó --- còn ba tệp kia tệ hơn 1.4--1.85; khoảng cách ngôn ngữ ở \id{no\_gender} tăng từ 3.42 lên 7.06. ArcFace: ảnh--ảnh 1.70 (VGGFace 7.77) nhưng chéo modality \down{33.92} (VGGFace 26.16), kể cả khi đã căn chỉnh khuôn mặt đúng chuẩn.
+\field{Vì sao} Đặc trưng giàu hơn mang theo nhiều thông tin \emph{phi danh tính} (ngôn ngữ, kênh, phiên), nên vừa phân biệt người tốt hơn trong cùng miền vừa nhạy hơn với dịch chuyển miền. ArcFace được huấn luyện để tách từng danh tính (70 cụm gần trực giao); nó vứt bỏ những thuộc tính chung như giới tính, tuổi, dáng mặt --- đúng những thứ giọng nói dự đoán được. Nhận dạng tốt trong một modality \emph{không} đồng nghĩa với ghép tốt giữa hai modality. Về sau (NB-4), ReDimNet2 --- bộ mã hoá giọng tốt hơn --- cũng cho cùng kết cục.
+\end{expbox}
+
+\begin{expbox}{EXP-011 --- Ghép theo tệp từ ba hệ}
+\field{Lí do} Mỗi hệ thắng ở một tệp khác nhau.
+\field{Thí nghiệm} \id{ng/En} lấy từ 010B, \id{g/En} từ 007, hai tệp Bangla từ 003c.
+\field{Kết quả} CB \up{30.13}, đúng dự đoán.
+\field{Vì sao} Tệp nào cũng được chấm độc lập (khung K2).
+\end{expbox}
+
+\begin{warnbox}{Một hình mẫu lặp lại năm lần}
+Qua 003b, 003c, 007, 010B và \id{sub\_base} (31.95), validation nội bộ (chỉ có tiếng Anh) đều chọn những thay đổi \emph{mua điểm English và trả giá ở Bangla}. Validation không có dịch chuyển ngôn ngữ thì không thể chọn đúng cho tệp có dịch chuyển ngôn ngữ. Đây là lý do giai đoạn sau phải tìm một cách đo trực tiếp trên dev.
+\end{warnbox}
+
+% =====================================================================================
+\section{Giai đoạn 4 --- Đo trên dev không nhãn, và trộn hệ (25--26/09)}
+\label{sec:p4}
+
+\begin{expbox}{H9 --- Đo chất lượng chỉ từ phân phối điểm}
+\field{Lí do} Mỗi tệp dev có 50\% cặp đúng; một hệ tốt phải cho phân phối điểm hai đỉnh rõ. Nếu đo được độ ``hai đỉnh'' thì chọn được hệ không cần nhãn.
+\field{Thí nghiệm} Năm thước đo (GMM hai thành phần, độ nhọn, dip test, \dots) trên 8 hệ $\times$ 4 tệp có CB thật.
+\field{Kết quả} \down{Thất bại.} Tương quan \emph{toàn cục} trông rất tốt ($-0.70$), nhưng tương quan \emph{trong từng tệp} xấp xỉ 0. Trên \id{ng/Bn}, CORAL (EER 37.84) có chỉ số gần bằng 003c (27.88).
+\field{Vì sao} Tương quan toàn cục chỉ phản ánh khác biệt \emph{giữa các tệp}; việc cần làm là so các hệ \emph{trong cùng một tệp}. Và phân phối hai đỉnh có thể đến từ việc tách giới tính hay ngôn ngữ, không phải tách danh tính.
+\end{expbox}
+
+\begin{expbox}{SEL-01a, SEL-01b --- Nhãn giả từ cụm}
+\field{Lí do} Cần một thước đo trên chính các tệp dev.
+\field{Thí nghiệm} Gom cụm ảnh và gom cụm giọng trong từng tệp (không nhãn), rồi nối cụm ảnh với cụm giọng qua việc chúng xuất hiện chung trong các trial; từ đó gán nhãn giả cùng/khác người cho mỗi trial. SEL-01a dùng đặc trưng của ban tổ chức; SEL-01b dùng ArcFace (mặt) và ECAPA tự trích (giọng).
+\field{Kết quả} SEL-01b gán nhãn cho 96--99\% trial; trên 9 hệ có CB, tương quan thứ hạng 0.95--0.996 và sai số tuyệt đối trung bình $\le0.9$ mỗi tệp. Nhóm đặt luật: chỉ dùng để \emph{chọn} giữa vài hệ đăng ký trước, không huấn luyện trên nhãn giả.
+\field{Vì sao} Gom cụm trong một modality gần như hoàn hảo (ArcFace ARI 0.991). Phần ``nối cụm qua trial'' --- như Mục~\ref{sec:p7} sẽ cho thấy --- chính là cấu trúc của bộ đề, nên nhãn giả gần như là nhãn thật. Đây là một công cụ mạnh, và cũng là một vùng xám về liêm chính.
+\end{expbox}
+
+\begin{expbox}{FUSE-01, FUSE-02, FUSE-03 --- Trộn theo thứ hạng}
+\field{Lí do} Có nhiều hệ với lỗi khác nhau; nay đã có cách đo trên dev để chọn tổ hợp.
+\field{Thí nghiệm} Danh sách ứng viên cố định trước. FUSE-01: English $=$ rank(007) $+$ rank(010B). FUSE-02: thêm Bangla $=$ rank(003c) $+$ rank(\id{r2mix}). FUSE-03: ở \id{g/Bn} dùng một cổng 2 tham số theo độ dài câu.
+\field{Kết quả} CB lần lượt \up{29.62}, \up{28.93}, \up{28.69}; mỗi lần sai so với dự đoán $\le0.9$ mỗi tệp.
+\field{Vì sao} 007 và 010B dùng hai đặc trưng giọng khác nhau nên lỗi bù nhau. Hai bộ mã hoá 192 chiều có hồ sơ ngôn ngữ \emph{ngược nhau}: bản của ban tổ chức hợp English, bản của speechbrain hợp Bangla (nhất là câu Bangla dài). Còn cổng độ dài: khi kiểm tra lại bằng đối chứng (xáo trộn độ dài), nó chỉ tương đương ``nghiêng trọng số về \id{r2mix}''; riêng cách chọn lưới tham số đã làm kết quả dao động khoảng 1.5 điểm. Cơ chế ``độ dài'' không được xác lập.
+\end{expbox}
+
+\begin{expbox}{GEN-01 --- Thêm điểm khớp giới tính tường minh}
+\field{Lí do} Một đội vượt lên nhờ \id{ng/En}; giả thuyết là họ khai thác giới tính mạnh hơn.
+\field{Kết quả} Không đơn điệu, dao động $\pm1$ --- ở mức nhiễu.
+\field{Vì sao} Embedding của nhóm đã chứa giới tính (bộ phân loại tuyến tính đọc ra 93\%). Thêm lại tường minh không mang thông tin mới.
+\end{expbox}
+
+\begin{lesson}
+\textbf{Bài học.} (1) Phân biệt tương quan giữa nhóm với tương quan trong nhóm. (2) Một thước đo proxy chỉ đáng tin sau khi được hiệu chỉnh trên các điểm có đáp án. (3) Khi fit tham số trên dev, dùng đối chứng (xáo trộn biến giải thích) để biết cơ chế có thật không.
+\end{lesson}
+
+% =====================================================================================
+\section{Giai đoạn 5 --- Bước ngoặt: gộp theo cụm lúc kiểm thử (26/09)}
+\label{sec:p5}
+
+Đến 28.69, mọi hướng ``làm cho mỗi phép chấm đơn lẻ tốt hơn'' đều chững. Giai đoạn này bắt đầu bằng việc nhìn tận mắt các lỗi.
+
+\begin{expbox}{ERR-01, SES-01 --- Xem lỗi, và tìm thông tin theo phiên}
+\field{Lí do} Hiểu lỗi trước khi sửa.
+\field{Thí nghiệm} Đặt các ca sai tệ nhất cạnh nhau; thống kê lỗi theo người và theo độ dài câu. SES-01: tìm xem đặc trưng có mang dấu vết ``cùng phiên ghi'' không.
+\field{Kết quả} Lỗi dồn theo người: 3 người tệ nhất chiếm khoảng 30\% lỗi dù chỉ có 20\% trial. Có ``giọng trung tâm'' bị ghép nhầm với nhiều khuôn mặt cùng kiểu. Câu dưới 4 giây bị bỏ sót gần gấp đôi câu trên 8 giây. SES-01: AUC 0.502 --- không có thông tin phiên.
+\field{Vì sao} Một khung hình, một câu nói là \emph{ước lượng ồn} của con người đứng sau nó. Và có những người mà cầu nối đoán sai ngay ở cấp người.
+\end{expbox}
+
+\begin{expbox}{ORA-01 --- Thí nghiệm oracle: nếu biết trước ai là ai?}
+\field{Lí do} Định lượng xem nhiễu theo mẫu gây hại bao nhiêu.
+\field{Thí nghiệm} Trên người giữ ra (có nhãn thật): thay embedding của một ảnh bằng trung bình của mọi ảnh cùng người; tương tự với giọng; và cả hai.
+\field{Kết quả} Giao thức \id{gender}, 3 split: không thay 29.83 / 33.37 / 31.83; thay cả hai \up{17.77 / 25.40 / 22.73} --- giảm 7--12 điểm.
+\field{Vì sao} Không thay đổi kiến trúc nào trước đó cho được con số này. Câu hỏi còn lại là thực tế: ta không biết ai là ai trong tệp kiểm thử. Nhưng --- nhờ khung K1 --- ta \emph{đoán} được rất chính xác.
+\end{expbox}
+
+\begin{expbox}{SET-01, SET-02 --- Gộp theo cụm ước lượng}
+\field{Lí do} Thay danh tính thật của oracle bằng cụm do máy tự gom.
+\field{Thí nghiệm} Với mỗi tệp: (1) tính ma trận điểm đầy đủ $M_{ij}=s(f_i,v_j)$ cho \emph{mọi} ảnh $\times$ \emph{mọi} giọng; (2) gom cụm ảnh bằng ArcFace, gom cụm giọng bằng ECAPA-192, ngưỡng chọn trên người của tập train (0.75 / 0.70); (3) điểm mới
+\[
+s'(f,v)=(1-b)\,M_{fv}+b\cdot\frac{1}{|C(f)||D(v)|}\sum_{i\in C(f)}\sum_{j\in D(v)}M_{ij},\qquad b=0.99,
+\]
+với $C(f)$, $D(v)$ là cụm chứa $f$, $v$; (4) trộn theo thứ hạng như trước (English: \id{s007}$+$\id{s010B}; Bangla: \id{r2mix}$+$\id{s007}).
+\field{Kết quả} SET-01 (nhãn thật, người giữ ra): gender 32.10 $\to$ \up{23.68}, no\_gender 24.11 $\to$ \up{14.80}; oracle 22.75 / 13.87. CB SET-02: \up{21.68} (12.50 / 21.34 / 28.31 / 24.59), \textbf{giảm 7.01 điểm}, lên hạng 2.
+\field{Vì sao} Nếu $M_{ij}=\langle\phi(f_i),\psi(v_j)\rangle$ thì do tính song tuyến, \emph{trung bình của các điểm chính là điểm của các trung bình}: trung bình khối bằng tích vô hướng giữa ``ảnh trung bình của cụm'' và ``giọng trung bình của cụm'' --- đúng phép thay của oracle. Theo khung K11, lấy trung bình trên hàng chục mẫu xoá gần hết $\sigma_f^2/n_f+\sigma_v^2/n_v$. Kỹ thuật này dùng phần \emph{dễ} (nhận ra ai là ai trong một modality) để khử nhiễu cho phần \emph{khó} (ghép hai modality). Nó không dùng nhãn, và không dùng việc cặp nào xuất hiện trong danh sách trial.
+\end{expbox}
+
+\begin{expbox}{SET-03, GRAPH-01 --- Gộp nhầm có sao không? Gộp một phần có đủ không?}
+\field{Lí do} Hai lo ngại: gom nhầm hai người vào một cụm; và liệu làm mượt nhẹ theo láng giềng (đã thử trước đó, GRAPH-01) có tương đương.
+\field{Kết quả} SET-03: nới ngưỡng cụm giọng 0.6 $\to$ 0.8 làm 38\% mẫu nằm trong cụm lẫn người, nhưng EER \id{gender} lại giảm 34.7 $\to$ 30.8. GRAPH-01 (làm mượt theo 3--10 láng giềng, trọng số $\le0.3$): lợi nhỏ, English còn tệ hơn.
+\field{Vì sao} Cầu nối vốn chấm theo ``kiểu người'' (giới, tuổi, dáng); gộp hai người cùng kiểu vẫn khử nhiễu tốt hơn giữ một mẫu ồn. Lợi ích tỷ lệ với số mẫu được gộp: vài láng giềng với trọng số nhỏ chỉ lấy được một phần nhỏ so với hàng chục mẫu với trọng số gần 1.
+\end{expbox}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[every node/.style={font=\small},
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=0.95cm, minimum width=2.4cm, fill=#1!8}, box/.default=accent,
+  arr/.style={-{Stealth[length=2mm]}, thick, color=muted}]
+\node[box] (F) at (0, 1.5) {Ảnh của tệp};
+\node[box] (V) at (0,-1.5) {Giọng của tệp};
+\node[box=green] (CF) at (3.8, 1.5) {Gom cụm ảnh\\(ArcFace)};
+\node[box=green] (CV) at (3.8,-1.5) {Gom cụm giọng\\(ECAPA-192)};
+\node[box=orange] (M) at (3.8, 0) {Ma trận mọi ảnh $\times$ mọi giọng\\(cầu nối VGG + ECAPA)};
+\node[box=red] (B) at (8.2, 0) {Trung bình khối\\cụm $\times$ cụm};
+\node[box] (O) at (11.4, 0) {Điểm\\của trial};
+\draw[arr] (F) -- (CF); \draw[arr] (V) -- (CV);
+\draw[arr] (F.south east) -- (M.north west); \draw[arr] (V.north east) -- (M.south west);
+\draw[arr] (CF.east) -- (B.north west); \draw[arr] (CV.east) -- (B.south west); \draw[arr] (M) -- (B); \draw[arr] (B) -- (O);
+\end{tikzpicture}
+\caption{SET-02 cho một tệp kiểm thử. Khối xanh lá chỉ dùng thông tin trong \emph{một} modality; không khối nào đọc danh sách trial.}
+\end{figure}
+
+\begin{lesson}
+\textbf{Bài học.} (1) Nhìn lỗi tận mắt trước khi đoán nguyên nhân. (2) Thí nghiệm oracle cho biết trần của một ý tưởng trước khi đầu tư. (3) Khi bài toán có một phần dễ và một phần khó, dùng lời giải phần dễ làm ràng buộc cho phần khó. (4) Đổi \emph{đơn vị} của phép chấm (từ mẫu sang người) có thể quan trọng hơn mọi cải tiến mô hình.
+\end{lesson}
+
+% =====================================================================================
+\section{Giai đoạn 6 --- Tìm nút thắt tiếp theo (26--27/09)}
+\label{sec:p6}
+
+Theo khung K11, sau SET-02 phần lỗi còn lại là $\sigma_p^2$: cầu nối đánh giá sai độ hợp ở cấp người. Giai đoạn này kiểm tra lần lượt: khâu gom cụm còn dư địa không, nhãn có bẩn không, dữ liệu ngoài có giúp không, và hình dạng của cầu nối có quan trọng không.
+
+\begin{expbox}{EDA-002, SET-05, SET-06, NOISE-01, CEIL --- Khâu gom cụm đã hết dư địa}
+\field{Thí nghiệm và kết quả} EDA-002: ArcFace gom cụm ảnh tốt nhất (ARI 0.965, VGG 0.754); ReDimNet2 gom giọng tốt nhất (0.947), ECAPA-192 sát sau (0.933); còn cho cầu nối ở cấp người, VGG $+$ ECAPA của ban tổ chức tốt nhất (23.9 / 32.1), ArcFace tệ nhất (33--37 / 38--41). SET-05: đổi bộ mã hoá dùng để gom giọng chỉ chênh $\le0.3$. SET-06 (ép mỗi cụm ảnh ứng với đúng một cụm giọng bằng Sinkhorn): dao động từ $-7.4$ đến $+4.0$ giữa các split. NOISE-01: chỉ 1.39\% ảnh và 1.25\% giọng trong tập train có vẻ gán nhầm người. CEIL: cụm ước lượng chỉ kém cụm theo danh tính thật khoảng 0.9 điểm.
+\field{Vì sao} \emph{Chọn bộ mã hoá theo vai trò}: bộ nhận dạng giỏi cho khâu gom cụm, bộ giữ thuộc tính chung cho khâu cầu nối. Ép ràng buộc một--một thất bại vì số cụm ảnh và cụm giọng thường lệch nhau (38 so với 54 cho 30 người). Khâu gom cụm và chất lượng nhãn không còn là nút thắt.
+\end{expbox}
+
+\begin{expbox}{EXT-01, EXT-02, EXT-03 --- Dữ liệu ngoài}
+\field{Lí do} $\sigma_p^2$ chỉ giảm khi cầu nối thấy nhiều người hơn. Các bộ MAV-Celeb cũ có sẵn: v1 (English/Urdu), v2 (English/Hindi), v3 (English/German). Nhóm tái tạo chính xác bộ mã hoá của ban tổ chức (cos 1.0000) để đặc trưng ngoài nằm đúng không gian.
+\field{Thí nghiệm} EXT-01: thêm v3 (người châu Âu). EXT-02: validation song ngữ có nhãn thật. EXT-03: thêm v1 $+$ v2 (người Nam Á), kèm \emph{SetProto} --- một hàm mất mát InfoNCE giữa \emph{trung bình} ảnh và \emph{trung bình} giọng của mỗi người, để huấn luyện ở đúng cấp mà hệ được chấm; đánh giá trên 30 người v4 giữ ra (40 người để train) và trên người Urdu/Hindi giữ ra, 5 split ghép cặp.
+\field{Kết quả} v3: \down{tệ hơn ở cả 4 tệp}. EXT-03 (v1$+$v2$+$SetProto so với chỉ v4): v4 mức cụm \up{$-3.45$} [4/5] / \up{$-2.83$} [3/5]; Urdu $-4.90$; Hindi $-4.88$; chuyển được sang ngôn ngữ chưa thấy.
+\field{Vì sao} Ánh xạ mặt--giọng \emph{phụ thuộc quần thể}: dạy cầu nối trên người châu Âu không giúp cho người Bangladesh. Người Nam Á gần quần thể đích hơn nhiều.
+\end{expbox}
+
+\begin{expbox}{SET-07 --- Đưa dữ liệu ngoài vào hệ nộp}
+\field{Thí nghiệm} SET-02, với thành phần \id{s007} được huấn luyện lại trên 70 người v4 $+$ v1 $+$ v2 (đã loại 2 người trùng với v4) và SetProto.
+\field{Kết quả} CB \down{22.20}: \id{ng/Bn} \up{$-4.13$}, \id{g/En} \up{$-0.82$}, nhưng \id{ng/En} \down{$+2.98$}, \id{g/Bn} \down{$+4.02$}. Nhãn giả đã dự đoán 22.10, sai $\le0.4$ mỗi tệp.
+\field{Vì sao} Hai kiểm chứng không cùng điều kiện với hệ nộp: EXT-03 huấn luyện trên 40 người v4, SET-07 trên 70; lợi ích của dữ liệu ngoài lớn khi thiếu người và nhỏ đi khi đủ người. Mỗi tệp dev chỉ có khoảng 30 người, nên đảo vài người đã đổi EER một tệp 3--4 điểm; hai tệp Bangla ngược chiều nhau cho thấy đây nhiều khả năng là nhiễu cấp người chứ không phải một hiệu ứng ngôn ngữ nhất quán.
+\end{expbox}
+
+\begin{expbox}{LANG-01 --- Chiếu bỏ hướng ngôn ngữ}
+\field{Thí nghiệm} Học ``hướng ngôn ngữ'' từ hiệu (trung bình giọng bản ngữ $-$ trung bình giọng English) của từng người song ngữ trong v1/v2 --- danh tính triệt tiêu trong phép trừ --- rồi chiếu bỏ 1--3 hướng đó khỏi mọi đặc trưng giọng.
+\field{Kết quả} Không biến thể nào qua quy tắc quyết định; trên dev hòa (31.16 so với 31.30).
+\field{Vì sao} Hướng học được còn lẫn thông tin danh tính (chiếu mạnh làm English tệ đi), và phần dịch chuyển ngôn ngữ mà cầu nối nhạy cảm không nằm gọn trong vài hướng tuyến tính.
+\end{expbox}
+
+\begin{expbox}{ARCH-01, SET-08 --- Hình dạng của cầu nối}
+\field{Lí do} Một đề xuất cho rằng MLP ``quá tự do'' và cần kiến trúc khác: CCA có phần dư phi tuyến, bilinear hạng thấp, \dots
+\field{Thí nghiệm} So MLP (hệ đang dùng), hai tháp tuyến tính (tương đương bilinear hạng 16 và 128), ridge CCA $k=8$--$64$, CCA $+$ phần dư MLP; nhãn thật, 5 split, chấm đúng như hệ nộp (mức cụm). Rồi đăng ký trước 5 cách trộn MLP với CCA.
+\field{Kết quả} Không dạng nào trội: CCA $+$ phần dư \down{tệ hơn 3--6}; hai tháp tuyến tính chỉ đổi chỗ (tốt hơn ở Urdu, tệ hơn ở English); CCA $k\ge32$ xấu nhanh. Cách trộn $0.5\,\text{MLP}+0.25\,\text{CCA-4}+0.25\,\text{CCA-16}$ thắng đều ở \id{no\_gender} ($-1.53$ [5/5] trên v4, $-3.59$ [5/5] trên Urdu) và hòa ở \id{gender}. Đưa vào hệ nộp (SET-08): CB \down{22.30}, \id{g/Bn} $+2.25$ --- nhãn giả đã dự đoán đúng dấu cả 4 tệp.
+\field{Vì sao} Với 70 danh tính giám sát ở cấp người, thêm dung lượng làm kết quả cấp người tệ đi; các dạng đơn giản tương đương nhau. Kiểm chứng proxy (người v4 giữ ra, Urdu/Hindi) đã \emph{lạc quan} so với dev, trong khi nhãn giả trên chính các tệp dev dự đoán đúng.
+\end{expbox}
+
+\begin{expbox}{HYB-01 --- Ghép theo tệp ba bản đã nộp}
+\field{Thí nghiệm} \id{ng/En} từ SET-08 (12.30), \id{ng/Bn} từ SET-07 (17.21), \id{g/En} từ SET-07 (27.49), \id{g/Bn} từ SET-02 (24.59).
+\field{Kết quả} CB \up{20.40}, đúng như tính trước (tốt nhất của nhóm, hạng 2).
+\field{Vì sao} Mỗi tệp chấm độc lập nên kết quả biết trước chính xác. Nhưng lựa chọn dựa vào điểm CB của từng tệp nên chỉ có giá trị cho bảng progress; nó không phải căn cứ để chọn cấu hình cho evaluation phase.
+\end{expbox}
+
+\begin{lesson}
+\textbf{Bài học.} (1) Kiểm chứng phải cùng điều kiện với hệ sẽ nộp (số người huấn luyện, cách chấm, tổ hợp thành phần). (2) Khi proxy và thước đo gần đích bất đồng, tin thước đo gần đích hơn. (3) Biết mức nhiễu của thước đo: với tệp 30 người, $\pm3$--4 điểm ở một tệp có thể chỉ là vài người. (4) Ít danh tính thì ít dung lượng.
+\end{lesson}
+
+% =====================================================================================
+\section{Giai đoạn 7 --- Liêm chính: con số 4.60 của một đội khác (27/09)}
+\label{sec:p7}
+
+Một đội khác báo EER trung bình \textbf{4.60} (5.16 / 2.70 / 5.50 / 5.04), thấp hơn đội đứng đầu bảng (19.13) gần 15 điểm. Họ giải thích: một người xuất hiện nhiều lần trong tệp; hệ gom ảnh A1, A2, A3 thành cụm mặt A, gom giọng A1, A2, A3 thành cụm giọng A, và ``có nhiều cặp cùng xác nhận quan hệ A $\leftrightarrow$ A nên hệ rất tự tin''.
+
+\begin{expbox}{LEAK-01 --- Dựng lại để chẩn đoán (không nộp)}
+\field{Lí do} Tách hai nguồn thông tin mà lời giải thích gộp làm một: (a) một người lặp lại nhiều lần trong tệp; (b) cặp nào được ghép chung trong danh sách trial.
+\field{Thí nghiệm} Tạo tệp mô phỏng giống dev từ người v4 giữ ra (có nhãn thật): mỗi ảnh và giọng xuất hiện một lần, 50\% cặp đúng, mỗi người $m$ ảnh và $m$ giọng. So ba cách chấm dùng chung các cụm: cầu nối từng cặp; SET-02 (dùng (a)); ``graph'' --- đếm số trial \emph{khác} nối cụm mặt A với cụm giọng B (dùng (b)).
+\field{Kết quả} (EER no\_gender / gender, 5 split $\times$ 3 lần lặp)
+
+\smallskip
+{\centering\small
+\begin{tabular}{lccc}
+\toprule
+Mỗi người có & Cầu nối từng cặp & SET-02 & Graph \\
+\midrule
+$m=2$ (gần như xuất hiện một lần) & 30.0 / 37.8 & 26.3 / 37.5 & 26.3 / 37.5 \\
+$m=4$ & 30.5 / 39.9 & 27.0 / 36.7 & 7.3 / 8.5 \\
+$m=32$ (giống dev) & 30.1 / 39.1 & 23.8 / 34.5 & \textbf{2.1 / 2.5} \\
+$m=32$, chỉ 20\% cặp đúng & 29.8 / 38.9 & 24.2 / 34.8 & 5.0 / 8.2 \\
+\bottomrule
+\end{tabular}
+\par}
+\smallskip
+Phép thử bất biến: ghép lại các trial khác (giữ nguyên tập ảnh và tập giọng) thì điểm của SET-02 đổi \textbf{0.0000} độ lệch chuẩn, của graph đổi tới 0.28.
+\field{Vì sao} Việc một người lặp lại chỉ mang lại 30 $\to$ 24 --- đó chính là SET-02. Phần 24 $\to$ 2 đến hoàn toàn từ cách ban tổ chức ghép trial: vì 50\% trial là cặp đúng, cụm mặt A gặp cụm giọng của chính người đó trong khoảng một nửa số trial của A, còn mỗi cụm giọng khác chỉ gặp A khoảng 0--1 lần. ``Nhiều nhân chứng'' là có thật, nhưng nhân chứng là \emph{đề thi}, không phải mô hình nhận ra mặt với giọng. Thêm một dấu hiệu: ở hệ của đội kia, Bangla lại dễ hơn English --- điều không hệ ghép mặt--giọng thật nào cho thấy.
+\end{expbox}
+
+\begin{warnbox}{Hệ quả cho chính nhóm}
+Nhãn giả SEL-01b của nhóm cũng nối cụm qua trial --- cùng cơ chế --- nên gần như là nhãn thật (dự đoán CB sai $\le0.4$ mỗi tệp cho SET-07). Nhóm tự đặt ba quy tắc:
+\begin{enumerate}
+\item Không bao giờ dùng cấu trúc danh sách trial để tạo điểm nộp.
+\item Ở progress phase, nhãn giả chỉ dùng để chọn giữa vài hệ đăng ký trước (tương đương có thêm lượt nộp), và phải khai báo trong mô tả hệ thống.
+\item Ở evaluation phase, \textbf{không} dùng nhãn giả để chọn hay trộn hệ: cấu hình phải chốt từ dev trước khi có dữ liệu mới.
+\end{enumerate}
+Nhóm đã gửi câu hỏi cho ban tổ chức về việc dùng danh sách trial; câu trả lời có thể thay đổi cả bảng xếp hạng.
+\end{warnbox}
+
+% =====================================================================================
+\section{Tổng hợp: vì sao điểm tăng, vì sao điểm giảm}
+\label{sec:why}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=15.5cm, height=6.6cm, ymin=18, ymax=44, ylabel={EER trung bình (\%)},
+  xtick={1,...,18}, xticklabels={000c,000d,000e,000f,003b,003c,004,007,010B,011,sub\_base,FUSE-01,FUSE-02,FUSE-03,SET-02,SET-08,SET-07,HYB-01},
+  x tick label style={rotate=55, anchor=east, font=\scriptsize}, ymajorgrids, grid style={gray!25},
+  legend style={at={(0.98,0.97)}, anchor=north east, font=\footnotesize}]
+\addplot[mark=*, color=accent, thick] coordinates {(1,42.17)(2,35.79)(3,34.46)(4,33.35)(5,31.96)(6,31.34)(7,41.36)(8,30.90)(9,31.71)(10,30.13)(11,31.95)(12,29.62)(13,28.93)(14,28.69)(15,21.68)(16,22.30)(17,22.20)(18,20.40)};
+\addplot[const plot, color=good, thick, dashed] coordinates {(1,42.17)(2,35.79)(3,34.46)(4,33.35)(5,31.96)(6,31.34)(7,31.34)(8,30.90)(9,30.90)(10,30.13)(11,30.13)(12,29.62)(13,28.93)(14,28.69)(15,21.68)(16,21.68)(17,21.68)(18,20.40)};
+\addplot[color=muted, dotted, thick, domain=1:18] {36.92};
+\legend{Mỗi lượt nộp, Tốt nhất đến lúc đó, FOP của ban tổ chức (36.92)}
+\end{axis}
+\end{tikzpicture}
+\caption{Điểm CodaBench của các lượt nộp theo thời gian (21--27/09). Không tính lượt nộp đảo dấu 57.83.}
+\label{fig:timeline}
+\end{figure}
+
+\subsection{Các cơ chế làm điểm tăng}
+\begin{center}
+\begin{tabular}{>{\raggedright}p{4.2cm}>{\raggedright}p{6.9cm}>{\raggedright\arraybackslash}p{3.6cm}}
+\toprule
+Cơ chế & Giải thích & Bằng chứng (CB) \\
+\midrule
+Khớp đúng bộ chấm & Nộp đúng chiều điểm. & 57.83 $\to$ 42.17 \\
+Điều chuẩn, ít dung lượng & 70 người thì mô hình tuyến tính hoặc MLP nhỏ, dropout thấp, khái quát tốt hơn mô hình lớn. & 000d 35.79 \\
+Chọn theo tệp & Tệp chấm độc lập $\Rightarrow$ chọn hệ tốt nhất cho từng tệp. & 000f, 011, HYB-01 \\
+Hàm mất mát đúng mục tiêu & InfoNCE tối ưu thứ tự cặp đúng/sai, giống EER. & 003b 31.96 \\
+Bỏ phép chuẩn hoá sai & AS-norm có cohort khác với lúc kiểm thử. & 003c 31.34 \\
+Trọng số trộn tường minh & Không để CCA bị pha loãng. & 007 30.90 \\
+Thành phần bổ sung, trộn theo thứ hạng & Hai đặc trưng giọng có lỗi khác nhau, có hồ sơ ngôn ngữ ngược nhau. & FUSE-01/02: 29.62, 28.93 \\
+\textbf{Dùng cấu trúc trong modality để khử nhiễu} & Gộp theo cụm người: trung bình của điểm $=$ điểm của trung bình; xoá nhiễu theo mẫu. & \textbf{SET-02: $-7.01$} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Các cơ chế làm điểm giảm}
+\begin{center}
+\begin{tabular}{>{\raggedright}p{4.2cm}>{\raggedright}p{6.9cm}>{\raggedright\arraybackslash}p{3.6cm}}
+\toprule
+Cơ chế & Giải thích & Bằng chứng \\
+\midrule
+Căn moment bậc 2 & Hiệp phương sai của một tệp là cấu trúc giữa các người; làm trắng nó xoá danh tính. & CORAL 41.36 \\
+Chuẩn hoá theo cohort lệch & Thống kê cohort validation khác cohort kiểm thử. & AS-norm (003b) \\
+Bộ mã hoá quá chuyên danh tính & Vứt bỏ thuộc tính chung mà modality kia dự đoán được. & ArcFace 33.92, ReDimNet2 \\
+Đặc trưng giàu nhưng không bất biến & Mang theo ngôn ngữ, kênh; nhạy dịch chuyển miền. & 010B 31.71 \\
+Validation lệch điều kiện kiểm thử & Validation chỉ tiếng Anh; proxy 40 người thay vì 70. & 5 lần sai ở Bangla; SET-07/08 \\
+Dữ liệu ngoài khác quần thể & Ánh xạ mặt--giọng phụ thuộc quần thể. & v3 tệ hơn 4/4 tệp \\
+Công thức của chế độ dữ liệu khác & Điều chuẩn cực mạnh cần dữ liệu lớn. & dropout 0.9: 37.82 (val.) \\
+Thêm dung lượng ở cấp người & Ít danh tính, dạng phức tạp học nhiễu. & ARCH-01: $+3$--6 \\
+Nhiễu của tệp nhỏ & 30 người mỗi tệp: vài người đảo $\Rightarrow$ $\pm3$--4 điểm một tệp. & SET-07 \id{g/Bn} $+4.02$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =====================================================================================
+\section{Nguyên lý học được}
+\label{sec:principles}
+
+\begin{principle}{1. Hiểu trọng tài trước khi thi đấu}
+Kiểm tra quy ước của bộ chấm bằng một phép thử có đối chứng (EXP-000c). Tài liệu có thể sai.
+\end{principle}
+
+\begin{principle}{2. Validation phải mang cùng dịch chuyển với tập kiểm thử}
+Validation chỉ tiếng Anh đã chọn sai năm lần cho Bangla; proxy 40 người đã lạc quan cho hệ 70 người. Nếu không dựng được validation cùng điều kiện, hãy biết rõ nó mù ở đâu.
+\end{principle}
+
+\begin{principle}{3. Đo ở đúng cấp mà hệ được chấm}
+Khi hệ chấm theo cụm người, kết quả mức mẫu không còn phản ánh đúng. ARCH-01 và EXT-03 đều đánh giá ở mức cụm/người.
+\end{principle}
+
+\begin{principle}{4. Dùng phần dễ để ràng buộc phần khó}
+Nhận ra ai là ai trong một modality gần như chắc chắn; ghép hai modality thì khó. SET-02 dùng cái trước để khử nhiễu cái sau và giảm 7 điểm mà không đổi mô hình.
+\end{principle}
+
+\begin{principle}{5. Chọn bộ mã hoá theo vai trò}
+Nhận dạng tốt $\ne$ ghép tốt. Bộ mã hoá chuyên danh tính (ArcFace, ReDimNet) hợp khâu gom cụm; bộ giữ thuộc tính chung (VGGFace, ECAPA của ban tổ chức) hợp khâu cầu nối.
+\end{principle}
+
+\begin{principle}{6. Ít danh tính thì ít dung lượng}
+Với 70 người, không gian cấu hình phẳng, dung lượng thêm vào học nhiễu. Nút thắt là số danh tính cùng quần thể, không phải kiến trúc.
+\end{principle}
+
+\begin{principle}{7. Chỉ căn những gì không mang thông tin phân biệt}
+Trung bình của một tệp nhiều người không mang danh tính, nên căn được; hiệp phương sai thì mang, nên không được căn.
+\end{principle}
+
+\begin{principle}{8. Trọng số phải tường minh}
+Trung bình đều nhiều thành viên là một lựa chọn trọng số ngầm và có thể pha loãng thành viên quan trọng.
+\end{principle}
+
+\begin{principle}{9. Quyết định bằng so sánh ghép cặp, nhiều split, có vùng hòa và đăng ký trước}
+Một seed, một split, hay một bảng chọn hạng 1 từ nhiều biến thể đều không phải bằng chứng.
+\end{principle}
+
+\begin{principle}{10. Biết mức nhiễu của thước đo}
+Tệp 30 người: chênh 3--4 điểm một tệp có thể chỉ là vài người. Ước lượng khoảng tin cậy bằng bootstrap theo người, không theo trial.
+\end{principle}
+
+\begin{principle}{11. Dự đoán trước khi nộp, và hiệu chỉnh công cụ dự đoán}
+Mọi lượt nộp đều có dự đoán ghi trước; nhờ đó biết selector sai bao nhiêu và khi nào tin được nó.
+\end{principle}
+
+\begin{principle}{12. Phân biệt transductive hợp lệ với rò rỉ bộ đề}
+Dùng các ảnh và giọng không nhãn của tệp (gom cụm) là transductive, phải khai báo. Dùng việc cặp nào được ghép chung trong danh sách trial là đọc đáp án từ cách ra đề. Phép thử: ghép lại các trial khác mà điểm một cặp đổi $\Rightarrow$ đang dùng bộ đề.
+\end{principle}
+
+% =====================================================================================
+\section{Câu hỏi ôn tập và bài tập}
+\label{sec:exercises}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item Vì sao nộp $-d^2$ lại cho đúng $100-42.17$? Chứng minh rằng EER của điểm đảo dấu bằng $100$ trừ EER của điểm gốc.
+\item Trong giao thức \id{gender}, vì sao CCA $k=4$ gần như vô dụng còn ở \id{no\_gender} thì có ích?
+\item Giải thích bằng lời và bằng công thức vì sao CORAL xoá thông tin danh tính trong một tệp nhiều người, còn căn trung bình thì không.
+\item Một ensemble 10 mô hình sâu $+$ 1 CCA lấy trung bình đều. Trọng số thực của CCA là bao nhiêu? Nếu biết CCA tối ưu ở $w=0.25$, bạn sửa thế nào?
+\item Chứng minh: nếu $M_{ij}=\phi_i^\top\psi_j$ thì trung bình của $M$ trên khối $C\times D$ bằng $\bar\phi_C^\top\bar\psi_D$. Điều này còn đúng không khi điểm là cosine? Khi đó thứ tự có được giữ không?
+\item Dùng công thức phân rã nhiễu (khung K11) để giải thích vì sao oracle không đưa EER về 0.
+\item Tương quan toàn cục $-0.70$ nhưng tương quan trong từng tệp $\approx0$ (H9). Hãy dựng một ví dụ số nhỏ có hiện tượng này.
+\item Vì sao ArcFace, tốt hơn VGGFace gấp bốn lần về nhận dạng khuôn mặt, lại tệ hơn khi ghép với giọng? Đề xuất một thí nghiệm để kiểm tra lời giải thích.
+\item EXT-03 cho $-3.45$ trên v4 giữ ra nhưng SET-07 tệ hơn trên CB. Liệt kê ba khác biệt về điều kiện giữa hai phép đo và thiết kế một thí nghiệm tách từng khác biệt.
+\item Với tệp 30 người, mỗi người khoảng 34 trial, 50\% là cặp đúng: một cụm mặt gặp cụm giọng của chính người đó trung bình bao nhiêu lần, và gặp mỗi cụm giọng khác bao nhiêu lần? Từ đó giải thích con số 4.60.
+\item Thiết kế phép thử bất biến cho một hệ bất kỳ để chứng minh với ban tổ chức rằng hệ không dùng cấu trúc danh sách trial.
+\item Giả sử evaluation phase mỗi người chỉ có 2 ảnh và 2 giọng. SET-02 còn lợi bao nhiêu (dựa vào bảng LEAK-01)? Bạn sẽ chuẩn bị gì cho tình huống đó?
+\end{enumerate}
+
+% =====================================================================================
+\appendix
+\chapter{Tư liệu tham khảo}
+
+\section{Mọi lượt nộp CodaBench}
+\begin{longtable}{llrrrrr>{\raggedright\arraybackslash}p{4.3cm}}
+\toprule
+Ngày & Hệ & ng/En & ng/Bn & g/En & g/Bn & \textbf{TB} & Thay đổi chính \\
+\midrule\endhead
+21/09 & 000c ($-d^2$) & & & & & 57.83 & đảo dấu, phép thử chiều \\
+21/09 & 000c & 36.31 & 38.98 & 43.38 & 50.00 & 42.17 & FOP tái tạo \\
+22/09 & 000d & 33.73 & 34.00 & 34.42 & 41.01 & 35.79 & CCA $k=32$ \\
+22/09 & 000e & 28.97 & 29.02 & 37.47 & 42.37 & 34.46 & CCA $k=4$ \\
+22/09 & 000f & 28.97 & 29.02 & 34.42 & 41.01 & 33.35 & ghép theo giao thức \\
+22/09 & 003b & 25.79 & 28.88 & 33.81 & 39.37 & 31.96 & InfoNCE $+$ CCA $+$ AS-norm \\
+25/09 & 003c & 25.60 & 27.88 & 34.01 & 37.87 & 31.34 & bỏ AS-norm \\
+25/09 & 004 & 37.30 & 37.84 & 43.99 & 46.32 & 41.36 & CORAL \\
+25/09 & 007 & 25.60 & 29.02 & 30.96 & 38.01 & 30.90 & trọng số CCA tường minh \\
+25/09 & 010B & 23.81 & 30.87 & 32.38 & 39.78 & 31.71 & ECAPA 6144 \\
+25/09 & 011 & 23.81 & 27.88 & 30.96 & 37.87 & 30.13 & ghép theo tệp \\
+25/09 & sub\_base & 24.80 & 31.29 & 32.18 & 39.51 & 31.95 & 6144 $+$ AAM \\
+25/09 & FUSE-01 & 23.61 & 27.88 & 29.12 & 37.87 & 29.62 & rank fusion English \\
+25/09 & FUSE-02 & 23.61 & 26.88 & 29.12 & 36.10 & 28.93 & $+$ rank fusion Bangla \\
+26/09 & FUSE-03 & 23.61 & 26.88 & 29.12 & 35.15 & 28.69 & cổng 2 tham số \id{g/Bn} \\
+26/09 & \textbf{SET-02} & 12.50 & 21.34 & 28.31 & 24.59 & \textbf{21.68} & gộp theo cụm \\
+27/09 & SET-08 & 12.30 & 21.34 & 28.72 & 26.84 & 22.30 & $+$ CCA-16 \\
+27/09 & SET-07 & 15.48 & 17.21 & 27.49 & 28.61 & 22.20 & $+$ dữ liệu ngoài v1/v2 \\
+27/09 & \textbf{HYB-01} & 12.30 & 17.21 & 27.49 & 24.59 & \textbf{20.40} & ghép theo tệp 3 bản \\
+\midrule
+\multicolumn{2}{l}{\color{muted}FOP ban tổ chức} & \color{muted}32.54 & \color{muted}38.12 & \color{muted}32.99 & \color{muted}44.01 & \color{muted}36.92 & \\
+\multicolumn{2}{l}{\color{muted}Hạng 1 (pi-flag, 26/09)} & \color{muted}11.51 & \color{muted}19.91 & \color{muted}19.35 & \color{muted}25.75 & \color{muted}19.13 & \\
+\bottomrule
+\end{longtable}
+
+So với hạng 1, HYB-01 đã tốt hơn ở hai tệp Bangla và gần ngang ở \id{ng/En}; toàn bộ khoảng cách còn lại nằm ở \id{g/En} (27.49 so với 19.35) --- tệp không có dịch chuyển ngôn ngữ và không cho dùng giới tính, tức đo thuần chất lượng ghép danh tính. Đó là bài toán mở cho chặng tiếp theo.
+
+\section{Thuật ngữ}
+\begin{center}
+\begin{tabular}{>{\raggedright}p{3.6cm}>{\raggedright\arraybackslash}p{11.2cm}}
+\toprule
+Thuật ngữ & Nghĩa trong chương \\
+\midrule
+Trial & Một cặp (ảnh, giọng) cần chấm. \\
+Tệp / cell & Một trong bốn tệp kiểm thử (giao thức $\times$ ngôn ngữ), chấm EER riêng. \\
+Heard / unheard & Ngôn ngữ đã có / chưa có trong tập huấn luyện. \\
+EER & Tỷ lệ lỗi tại ngưỡng mà FAR $=$ FRR. \\
+Embedding & Vector biểu diễn một ảnh hay một đoạn giọng. \\
+Cầu nối (bridge) & Mô hình chiếu ảnh và giọng vào chung một không gian. \\
+Thành phần (member) & Một cầu nối cụ thể dùng trong hệ nộp. \\
+Fusion & Trộn điểm của nhiều thành phần (theo z-score hoặc thứ hạng). \\
+Oracle & Thí nghiệm giả định biết trước thông tin mà thực tế không có, để đo trần. \\
+ARI & Chỉ số đo mức khớp giữa cụm và danh tính thật. \\
+Nhãn giả & Nhãn cùng/khác người do hệ tự suy ra trên dev, không phải nhãn thật. \\
+Transductive & Dùng các mẫu không nhãn khác của tập kiểm thử khi chấm. \\
+Rò rỉ (leakage) & Dùng thông tin không có ở ứng dụng thật (nhãn, cấu trúc bộ đề). \\
+Proxy & Thước đo thay thế khi không đo được trực tiếp trên đích. \\
+Split ghép cặp & Các hệ được so trên cùng tập giữ ra để chênh lệch có nghĩa. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Bản đồ mã nguồn}
+\begin{itemize}
+\item Nhật ký đầy đủ mọi quyết định: \id{Experiment/EXPERIMENT\_LOG.md} (54 mục).
+\item Thư viện huấn luyện và đánh giá: \id{kaggle/flag\_v2.py}; trích đặc trưng: \id{kaggle/flag\_extract.py}.
+\item Mỗi thí nghiệm có thư mục riêng \id{Experiment/<mã>/} (ví dụ \id{SET-01/}, \id{ARCH-01/}, \id{LEAK-01/}).
+\item Hệ SET-02 tái tạo được và dùng cho evaluation phase: \id{BEST/v4\_set02/pipeline.py}.
+\item Báo cáo chi tiết về SET-02: \id{docs/report\_SET02/report\_set02.pdf}.
+\end{itemize}
+
+\end{document}

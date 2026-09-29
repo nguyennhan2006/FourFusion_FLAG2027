@@ -1,0 +1,24 @@
+16:23:09 feature dir: ..\..\kaggle\output\feats_v2 | 33 arrays
+16:23:09 feature dir: ..\..\kaggle\output\feats_models | 70 arrays
+16:23:09 polarity: internal scores are higher = same; write_submission writes -score (LOWER = same, measured on CodaBench: -d2 57.83 vs +d2 42.17 with one checkpoint, docs/DATA.md)
+16:23:14 members: {'s007': 5, 's010B': 5, 'r2mix': 5}
+16:29:21 cluster thresholds (train-calibrated): face 0.75 voice 0.70
+16:34:03 no_gender/English  set13  | 29 face / 41 voice clusters for 1008 rows | median size 51 / 71 | clusters look normal
+16:36:27 no_gender/Bangla   set13  | 32 face / 39 voice clusters for 1406 rows | median size 76 / 87 | clusters look normal
+16:41:11 gender/English     set13  | 33 face / 40 voice clusters for 982 rows | median size 54 / 72 | clusters look normal
+16:43:34 gender/Bangla      set13  | 29 face / 41 voice clusters for 1468 rows | median size 80 / 90 | clusters look normal
+16:43:35 invariance self-test on no_gender/English: max |diff| 4.99e-07 -> PASSED
+16:43:35 zip OK: _dev_n5\submission_set13.zip
+16:43:35 zip OK: _dev_n5\submission_noclus.zip
+16:43:35 zip OK: _dev_n5\submission_indep.zip
+16:43:35 zip OK: _dev_n5\submission.zip
+16:43:35 set13  no_gender/sub_score_v4_English_heard.txt      rank-corr with submission_SET13.zip: 1.0000
+16:43:35 set13  no_gender/sub_score_v4_Bangla_unheard.txt     rank-corr with submission_SET13.zip: 1.0000
+16:43:35 set13  gender/sub_score_v4_English_heard.txt         rank-corr with submission_SET13.zip: 1.0000
+16:43:35 set13  gender/sub_score_v4_Bangla_unheard.txt        rank-corr with submission_SET13.zip: 1.0000
+16:43:35 indep  no_gender/sub_score_v4_English_heard.txt      rank-corr with submission_INDEP01.zip: 1.0000
+16:43:35 indep  no_gender/sub_score_v4_Bangla_unheard.txt     rank-corr with submission_INDEP01.zip: 1.0000
+16:43:35 indep  gender/sub_score_v4_English_heard.txt         rank-corr with submission_INDEP01.zip: 1.0000
+16:43:35 indep  gender/sub_score_v4_Bangla_unheard.txt        rank-corr with submission_INDEP01.zip: 1.0000
+16:43:35 chosen per file: {'no_gender/English': 'set13', 'no_gender/Bangla': 'set13', 'gender/English': 'set13', 'gender/Bangla': 'set13'} -> _dev_n5\submission.zip
+EXIT 0

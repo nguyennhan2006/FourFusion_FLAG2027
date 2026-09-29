@@ -1,5 +1,7 @@
 # Các problem cần giải — để tìm đúng paper
 
+> **Lịch sử (25/09). Các problem PB-1…6 đã được xử lý qua các vòng sau; nút thắt hiện tại được mô tả trong DECISIONS §0 và OPEN_DIRECTIONS §0.** Trạng thái hiện hành (29/09, nhật ký tới mục 75): cấu hình Evaluation là **SET-13 (CB 21.01) qua `BEST/v6_eval`**; xem [DECISIONS.md](DECISIONS.md) và [OPEN_DIRECTIONS.md](OPEN_DIRECTIONS.md).
+
 Lập 2026-09-25, sau 13 lượt nộp CodaBench và NB-2 v2. Mục đích: mỗi problem có **phát biểu, bằng chứng, câu hỏi nghiên cứu, từ khóa** và **tiêu chí lọc paper**. Nhờ vậy việc tìm tài liệu nhắm đúng chỗ đang mất điểm, không tìm lan man.
 Nguồn số liệu: [../Experiment/EXPERIMENT_LOG.md](../Experiment/EXPERIMENT_LOG.md), [PLAN_KAGGLE.md](PLAN_KAGGLE.md), [RESEARCH_DIRECTIONS.md](RESEARCH_DIRECTIONS.md).
 

@@ -1,5 +1,7 @@
 # Kế hoạch v3 — hợp nhất từ PROBLEMS.md và bản đề xuất bên ngoài
 
+> **Lịch sử (26/09). Đã thay bởi PLAN_V4 → PLAN_V5 → PLAN_MODELS / PLAN_EVAL.** Trạng thái hiện hành (29/09, nhật ký tới mục 75): cấu hình Evaluation là **SET-13 (CB 21.01) qua `BEST/v6_eval`**; xem [DECISIONS.md](DECISIONS.md) và [OPEN_DIRECTIONS.md](OPEN_DIRECTIONS.md).
+
 > **Đã thay bằng [PLAN_V4.md](PLAN_V4.md) (2026-09-26).** Giữ lại làm lịch sử; các mục ATTR / SSL-01 / GRAPH-01 / duration gate
 > bên dưới đã được xử lý hoặc chuyển sang PLAN_V4.
 
