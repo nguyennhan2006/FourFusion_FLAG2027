@@ -1,0 +1,7 @@
+seed,model,auc_sameclip_vs_otherclip,n,int_g
+1,instance (same clip),0.501,849,32.97
+1,speaker (usual),0.508,849,31.47
+2,instance (same clip),0.497,899,39.57
+2,speaker (usual),0.506,899,34.07
+3,instance (same clip),0.507,663,36.5
+3,speaker (usual),0.508,663,33.33

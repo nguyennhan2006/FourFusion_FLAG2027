@@ -1,0 +1,34 @@
+﻿14:05:05 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\NB5 | 2 arrays
+14:05:05 v3_train: 50 persons (50 ids), languages ['english', 'german'], cells ['no_gender']
+14:07:54 v3_train fold 0 v4         no/eng 47.73 no/ger 50.07  (169s)
+14:10:43 v3_train fold 0 mix_en     no/eng 38.47 no/ger 42.67  (169s)
+14:13:52 v3_train fold 0 mix_all    no/eng 36.27 no/ger 34.93  (188s)
+14:15:48 v3_train fold 0 pt_en>ft   no/eng 41.67 no/ger 49.53  (116s)
+14:18:15 v3_train fold 0 pt_all>ft  no/eng 39.20 no/ger 45.13  (147s)
+14:18:19 v3_train fold 1 v4         no/eng 38.00 no/ger 41.20  (1s)
+14:21:45 v3_train fold 1 mix_en     no/eng 34.53 no/ger 38.33  (207s)
+14:25:36 v3_train fold 1 mix_all    no/eng 36.20 no/ger 35.40  (231s)
+14:27:27 v3_train fold 1 pt_en>ft   no/eng 39.07 no/ger 42.00  (111s)
+14:29:43 v3_train fold 1 pt_all>ft  no/eng 41.13 no/ger 38.73  (136s)
+14:29:46 v3_train fold 2 v4         no/eng 41.20 no/ger 43.00  (1s)
+14:33:22 v3_train fold 2 mix_en     no/eng 26.93 no/ger 30.60  (216s)
+14:37:30 v3_train fold 2 mix_all    no/eng 25.33 no/ger 25.73  (248s)
+14:39:34 v3_train fold 2 pt_en>ft   no/eng 30.53 no/ger 33.73  (124s)
+14:41:51 v3_train fold 2 pt_all>ft  no/eng 32.27 no/ger 33.67  (138s)
+14:41:56 v3_train fold 3 v4         no/eng 46.00 no/ger 35.33  (2s)
+14:45:20 v3_train fold 3 mix_en     no/eng 44.07 no/ger 33.93  (204s)
+14:48:51 v3_train fold 3 mix_all    no/eng 36.93 no/ger 30.27  (211s)
+14:50:38 v3_train fold 3 pt_en>ft   no/eng 45.00 no/ger 37.07  (107s)
+14:52:32 v3_train fold 3 pt_all>ft  no/eng 47.53 no/ger 35.80  (114s)
+14:52:34 v3_train fold 4 v4         no/eng 42.00 no/ger 40.93  (1s)
+14:55:24 v3_train fold 4 mix_en     no/eng 37.67 no/ger 31.73  (170s)
+14:58:53 v3_train fold 4 mix_all    no/eng 34.20 no/ger 25.40  (209s)
+15:00:54 v3_train fold 4 pt_en>ft   no/eng 36.13 no/ger 33.20  (121s)
+15:03:06 v3_train fold 4 pt_all>ft  no/eng 35.60 no/ger 33.07  (131s)
+
+     src      cell       arm  heard  d_heard  sd_heard folds_better_heard  unheard  d_unheard  sd_unheard folds_better_unheard  verdict
+v3_train no_gender        v4  42.99     0.00      0.00                0/5    42.11       0.00        0.00                  0/5  control
+v3_train no_gender    mix_en  36.33    -6.65      5.06                5/5    35.45      -6.65        4.53                  5/5 transfer
+v3_train no_gender   mix_all  33.79    -9.20      5.16                5/5    30.35     -11.76        5.84                  5/5 transfer
+v3_train no_gender  pt_en>ft  38.48    -4.51      4.63                4/5    39.11      -3.00        5.11                  3/5 transfer
+v3_train no_gender pt_all>ft  39.15    -3.84      5.74                3/5    37.28      -4.83        3.97                  4/5 transfer

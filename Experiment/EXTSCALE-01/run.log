@@ -1,0 +1,175 @@
+23:14:19 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+23:14:19 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_models | 70 arrays
+23:14:19 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_ext_full | 6 arrays
+part1 split 1 R              ids   70 rows   6485 steps  1200 267s
+part1 split 1 P              ids   70 rows   6485 steps  1200 165s
+part1 split 1 XR             ids  190 rows  22323 steps  1218 208s
+part1 split 1 XP             ids  190 rows  22323 steps  1218 157s
+part1 split 2 R              ids   70 rows   6485 steps  1200 112s
+part1 split 2 P              ids   70 rows   6485 steps  1200 128s
+part1 split 2 XR             ids  191 rows  22177 steps  1204 200s
+part1 split 2 XP             ids  191 rows  22177 steps  1204 155s
+part1 split 3 R              ids   70 rows   6485 steps  1200 109s
+part1 split 3 P              ids   70 rows   6485 steps  1200 125s
+part1 split 3 XR             ids  191 rows  22403 steps  1218 200s
+part1 split 3 XP             ids  191 rows  22403 steps  1218 156s
+part1 split 4 R              ids   70 rows   6485 steps  1200 110s
+part1 split 4 P              ids   70 rows   6485 steps  1200 126s
+part1 split 4 XR             ids  191 rows  22646 steps  1232 203s
+part1 split 4 XP             ids  191 rows  22646 steps  1232 163s
+part1 split 5 R              ids   70 rows   6485 steps  1200 111s
+part1 split 5 P              ids   70 rows   6485 steps  1200 128s
+part1 split 5 XR             ids  191 rows  22328 steps  1218 209s
+part1 split 5 XP             ids  191 rows  22328 steps  1218 157s
+
+==== part1: mean EER over splits
+arm                                   P      R     XP     XR
+variant level   data    protocol                            
+member  cluster english g         37.53  37.55  34.89  34.42
+                        ng        24.41  23.91  21.74  22.50
+                hindi   ng        27.84  27.26  24.15  23.29
+                urdu    g         35.69  35.67  35.66  35.16
+                        ng        24.81  26.15  26.81  25.92
+        person  english g         37.75  37.91  34.40  34.51
+                        ng        23.34  23.34  21.24  21.09
+                hindi   ng        25.98  25.94  22.97  22.38
+                urdu    g         36.05  36.14  35.76  35.05
+                        ng        24.68  24.88  24.41  24.26
+        sample  english g         41.40  41.25  37.32  37.43
+                        ng        30.12  30.20  27.56  27.22
+                hindi   ng        33.71  33.32  28.42  27.78
+                urdu    g         39.39  40.85  38.65  39.11
+                        ng        30.98  30.90  28.42  28.89
+prod    cluster english g         33.02  33.35  30.68  31.02
+                        ng        19.82  19.49  19.09  19.10
+                hindi   ng        21.64  21.90  20.86  20.69
+                urdu    g         32.05  32.21  32.19  32.48
+                        ng        19.56  19.34  19.82  19.80
+        person  english g         31.27  31.24  29.82  29.73
+                        ng        18.33  18.09  18.10  18.26
+                hindi   ng        21.02  20.93  18.66  18.94
+                urdu    g         31.06  31.59  31.16  31.66
+                        ng        18.01  18.20  18.27  18.46
+        sample  english g         35.23  35.55  33.35  33.63
+                        ng        24.54  24.88  23.27  23.20
+                hindi   ng        25.97  26.36  24.65  24.79
+                urdu    g         37.33  37.19  36.72  38.04
+                        ng        23.67  23.86  24.45  23.64
+part2 split 1 v4_10          ids   10 rows    628 steps  1503 41s
+part2 split 1 v4_10_SP       ids   10 rows    628 steps  1503 50s
+part2 split 1 v4_20          ids   20 rows   1700 steps  1508 49s
+part2 split 1 v4_20_SP       ids   20 rows   1700 steps  1508 54s
+part2 split 1 v4_30          ids   30 rows   2565 steps  1520 64s
+part2 split 1 v4_30_SP       ids   30 rows   2565 steps  1520 62s
+part2 split 1 v4_40          ids   40 rows   3473 steps  1512 79s
+part2 split 1 v4_40_SP       ids   40 rows   3473 steps  1512 69s
+part2 split 1 v4_40_e25      ids   70 rows   7415 steps  1495 138s
+part2 split 1 v4_40_e25_SP   ids   70 rows   7415 steps  1495 101s
+part2 split 1 v4_40_e50      ids  100 rows  11304 steps  1584 135s
+part2 split 1 v4_40_e50_SP   ids  100 rows  11304 steps  1584 103s
+part2 split 1 v4_40_e100     ids  160 rows  19311 steps  1505 166s
+part2 split 1 v4_40_e100_SP  ids  160 rows  19311 steps  1505 119s
+part2 split 2 v4_10          ids   10 rows    945 steps  1498 43s
+part2 split 2 v4_10_SP       ids   10 rows    945 steps  1498 50s
+part2 split 2 v4_20          ids   20 rows   1900 steps  1508 51s
+part2 split 2 v4_20_SP       ids   20 rows   1900 steps  1508 56s
+part2 split 2 v4_30          ids   30 rows   2670 steps  1517 66s
+part2 split 2 v4_30_SP       ids   30 rows   2670 steps  1517 63s
+part2 split 2 v4_40          ids   40 rows   3742 steps  1508 83s
+part2 split 2 v4_40_SP       ids   40 rows   3742 steps  1508 73s
+part2 split 2 v4_40_e25      ids   70 rows   7793 steps  1452 117s
+part2 split 2 v4_40_e25_SP   ids   70 rows   7793 steps  1452 90s
+part2 split 2 v4_40_e50      ids  100 rows  11761 steps  1464 134s
+part2 split 2 v4_40_e50_SP   ids  100 rows  11761 steps  1464 99s
+part2 split 2 v4_40_e100     ids  161 rows  19434 steps  1515 169s
+part2 split 2 v4_40_e100_SP  ids  161 rows  19434 steps  1515 118s
+part2 split 3 v4_10          ids   10 rows    750 steps  1496 41s
+part2 split 3 v4_10_SP       ids   10 rows    750 steps  1496 50s
+part2 split 3 v4_20          ids   20 rows   1811 steps  1512 50s
+part2 split 3 v4_20_SP       ids   20 rows   1811 steps  1512 54s
+part2 split 3 v4_30          ids   30 rows   2921 steps  1485 68s
+part2 split 3 v4_30_SP       ids   30 rows   2921 steps  1485 64s
+part2 split 3 v4_40          ids   40 rows   3705 steps  1482 82s
+part2 split 3 v4_40_SP       ids   40 rows   3705 steps  1482 72s
+part2 split 3 v4_40_e25      ids   70 rows   7867 steps  1464 143s
+part2 split 3 v4_40_e25_SP   ids   70 rows   7867 steps  1464 140s
+part2 split 3 v4_40_e50      ids  100 rows  11829 steps  1472 212s
+part2 split 3 v4_40_e50_SP   ids  100 rows  11829 steps  1472 156s
+part2 split 3 v4_40_e100     ids  161 rows  19623 steps  1530 262s
+part2 split 3 v4_40_e100_SP  ids  161 rows  19623 steps  1530 186s
+part2 split 4 v4_10          ids   10 rows   1114 steps  1496 69s
+part2 split 4 v4_10_SP       ids   10 rows   1114 steps  1496 80s
+part2 split 4 v4_20          ids   20 rows   1892 steps  1508 79s
+part2 split 4 v4_20_SP       ids   20 rows   1892 steps  1508 88s
+part2 split 4 v4_30          ids   30 rows   2934 steps  1485 104s
+part2 split 4 v4_30_SP       ids   30 rows   2934 steps  1485 102s
+part2 split 4 v4_40          ids   40 rows   3857 steps  1500 131s
+part2 split 4 v4_40_SP       ids   40 rows   3857 steps  1500 116s
+part2 split 4 v4_40_e25      ids   70 rows   7696 steps  1440 180s
+part2 split 4 v4_40_e25_SP   ids   70 rows   7696 steps  1440 137s
+part2 split 4 v4_40_e50      ids  100 rows  11912 steps  1488 210s
+part2 split 4 v4_40_e50_SP   ids  100 rows  11912 steps  1488 156s
+part2 split 4 v4_40_e100     ids  161 rows  20018 steps  1560 261s
+part2 split 4 v4_40_e100_SP  ids  161 rows  20018 steps  1560 189s
+part2 split 5 v4_10          ids   10 rows   1184 steps  1494 70s
+part2 split 5 v4_10_SP       ids   10 rows   1184 steps  1494 82s
+part2 split 5 v4_20          ids   20 rows   2061 steps  1504 80s
+part2 split 5 v4_20_SP       ids   20 rows   2061 steps  1504 87s
+part2 split 5 v4_30          ids   30 rows   2821 steps  1496 102s
+part2 split 5 v4_30_SP       ids   30 rows   2821 steps  1496 98s
+part2 split 5 v4_40          ids   40 rows   3790 steps  1475 129s
+part2 split 5 v4_40_SP       ids   40 rows   3790 steps  1475 111s
+part2 split 5 v4_40_e25      ids   70 rows   7679 steps  1547 185s
+part2 split 5 v4_40_e25_SP   ids   70 rows   7679 steps  1547 151s
+part2 split 5 v4_40_e50      ids  100 rows  11700 steps  1456 207s
+part2 split 5 v4_40_e50_SP   ids  100 rows  11700 steps  1456 152s
+part2 split 5 v4_40_e100     ids  161 rows  19633 steps  1530 261s
+part2 split 5 v4_40_e100_SP  ids  161 rows  19633 steps  1530 184s
+
+==== part2: mean EER over splits
+arm                               v4_10  v4_10_SP  v4_20  v4_20_SP  v4_30  v4_30_SP  v4_40  v4_40_SP  v4_40_e100  v4_40_e100_SP  v4_40_e25  v4_40_e25_SP  v4_40_e50  v4_40_e50_SP
+variant level   data    protocol                                                                                                                                                 
+member  cluster english g         46.33     46.46  44.04     43.83  42.35     43.05  38.97     39.67       35.53          35.08      37.57         37.49      36.16         35.75
+                        ng        41.61     41.44  32.02     31.97  30.93     29.59  27.55     27.11       21.18          21.19      21.86         22.53      22.02         22.13
+                hindi   ng        42.94     42.98  33.32     33.80  34.45     33.22  31.15     30.88       22.65          22.82      27.94         27.89      24.80         25.00
+                urdu    g         45.85     45.71  37.75     37.92  38.21     37.49  36.05     37.53       32.74          31.94      34.37         34.38      32.32         33.10
+                        ng        41.46     41.37  29.64     28.96  28.39     26.68  23.98     23.98       23.38          24.16      26.05         26.05      23.98         24.17
+                v4      g         46.20     46.73  37.85     37.33  36.25     35.87  34.72     33.98       34.08          34.26      34.79         34.03      32.80         33.73
+                        ng        39.55     39.17  28.58     28.19  26.03     26.57  23.33     23.33       20.44          20.78      22.24         22.05      20.85         20.86
+        person  english g         46.80     46.71  43.27     43.23  41.55     42.05  39.50     39.89       33.67          33.42      35.85         35.93      34.86         35.03
+                        ng        42.20     42.02  31.38     31.05  30.38     29.45  26.97     27.11       20.68          20.26      21.62         22.04      20.94         21.38
+                hindi   ng        41.91     42.53  33.51     34.27  34.33     33.81  29.89     29.90       21.60          22.38      28.29         28.41      23.62         23.15
+                urdu    g         45.57     44.79  37.08     37.51  36.68     36.99  35.52     35.85       32.30          32.30      33.71         33.29      32.08         31.91
+                        ng        42.02     40.61  29.29     29.71  26.03     24.49  23.02     23.02       22.05          22.69      23.73         23.94      22.71         23.58
+                v4      g         46.40     47.37  38.88     38.88  35.94     35.83  34.04     33.70       33.22          34.13      34.73         33.31      31.94         32.16
+                        ng        39.81     39.24  27.61     27.39  25.10     25.57  22.05     22.12       20.08          19.85      20.72         20.39      19.57         20.04
+        sample  english g         47.19     46.91  44.56     44.46  44.54     44.50  44.02     43.43       37.85          37.55      39.86         39.61      39.04         39.38
+                        ng        43.94     44.02  35.72     35.78  34.29     34.29  32.14     32.48       26.19          26.44      28.12         28.79      27.10         27.43
+                hindi   ng        45.79     44.86  40.54     40.35  35.74     35.51  34.58     34.24       28.34          28.22      30.04         30.14      27.43         27.90
+                urdu    g         47.35     46.46  41.23     41.37  42.70     41.35  40.29     40.73       36.94          38.11      37.74         39.16      38.51         38.97
+                        ng        45.98     45.22  35.05     34.64  34.03     34.05  33.04     32.67       26.84          26.72      29.90         29.97      28.74         28.74
+                v4      g         48.30     48.27  42.16     42.15  40.26     39.92  36.96     37.34       34.78          34.86      35.76         35.70      35.95         36.15
+                        ng        43.00     42.51  34.36     34.20  32.33     32.64  29.35     29.13       24.51          24.51      26.60         26.75      25.77         25.94
+prod    cluster english g         35.95     36.12  35.67     35.36  33.77     33.49  32.51     32.76       31.38          31.27      32.75         33.32      30.87         31.10
+                        ng        23.69     23.68  22.43     22.51  20.43     20.67  19.86     19.76       18.10          18.52      18.36         18.35      17.94         17.76
+                hindi   ng        27.01     26.15  23.21     23.63  22.40     23.04  22.63     22.80       19.23          19.23      19.52         19.54      19.69         19.24
+                urdu    g         36.83     35.90  33.05     33.23  33.08     33.75  31.99     32.66       32.50          31.97      32.53         32.53      32.41         32.39
+                        ng        25.20     24.01  21.71     22.07  20.04     20.01  20.43     20.23       19.15          19.03      21.33         20.83      20.43         20.40
+                v4      g         33.72     34.56  29.66     29.76  29.36     29.64  28.86     28.65       24.32          24.47      26.10         26.07      26.30         26.28
+                        ng        21.83     22.00  18.98     19.15  18.72     18.81  17.19     17.55       15.53          15.88      16.57         16.62      17.07         16.90
+        person  english g         35.77     35.50  34.59     34.69  33.24     33.41  31.18     31.59       30.29          30.57      32.41         32.74      29.66         29.51
+                        ng        22.10     21.93  21.16     21.17  19.68     19.34  19.00     19.18       18.02          17.69      17.69         17.87      17.36         17.20
+                hindi   ng        25.83     25.59  23.67     23.26  21.62     22.03  21.68     21.89       17.92          18.44      18.56         18.21      17.60         17.74
+                urdu    g         34.92     33.96  31.27     32.47  32.11     31.78  30.42     30.20       30.55          31.21      32.13         32.27      29.65         29.65
+                        ng        23.37     22.95  19.89     20.08  19.50     18.99  18.22     17.85       17.52          17.73      20.34         20.01      19.12         19.69
+                v4      g         32.57     33.39  28.79     27.96  29.60     29.83  27.61     27.96       24.07          24.55      24.93         25.10      25.01         25.16
+                        ng        21.16     21.05  17.05     16.94  17.38     17.38  15.62     15.71       14.40          14.84      15.12         15.46      15.04         15.28
+        sample  english g         38.46     38.59  38.32     37.91  37.81     37.84  37.02     37.05       33.44          33.52      35.14         34.91      34.91         34.76
+                        ng        29.70     29.62  26.13     26.55  26.37     26.29  25.10     25.37       21.84          22.11      24.20         24.18      22.70         23.01
+                hindi   ng        31.13     31.64  30.40     30.54  26.87     27.47  28.08     28.35       25.39          25.21      24.76         24.60      23.84         24.01
+                urdu    g         40.25     39.33  37.34     37.62  38.55     38.35  39.29     38.53       35.60          36.13      38.90         38.90      36.37         36.38
+                        ng        30.31     29.35  25.06     25.07  24.42     24.23  24.82     25.05       23.31          22.94      23.57         23.38      23.41         23.44
+                v4      g         37.55     37.22  34.34     34.01  33.72     33.78  32.28     32.17       31.12          30.93      31.47         31.43      31.64         31.48
+                        ng        27.80     28.12  23.97     23.87  23.63     23.52  21.48     21.81       20.34          19.95      20.06         19.79      19.54         19.49
+ALL DONE
+EXIT 0

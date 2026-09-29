@@ -1,0 +1,12 @@
+﻿utterances with F0: 6485/6485; speakers 70 (40 m / 30 f)
+sanity: median F0 m 138 Hz, f 205 Hz, AUC(F0 -> female) 0.959
+
+pre-registered (k=16, alpha=10):
+  m: {'n': 40, 'spearman_pred_vs_f0': 0.096, 'pair_auc': 0.504, 'null_auc_mean': 0.494, 'null_auc_p95': 0.543, 'p_value': 0.3457}
+  f: {'n': 30, 'spearman_pred_vs_f0': 0.446, 'pair_auc': 0.553, 'null_auc_mean': 0.488, 'null_auc_p95': 0.558, 'p_value': 0.0609}
+
+sensitivity (200 permutations each):
+  k16_a1.0: m auc 0.512 p 0.2289 | f auc 0.574 p 0.0448
+  k16_a100.0: m auc 0.499 p 0.2886 | f auc 0.5 p 0.2239
+  k8_a10.0: m auc 0.538 p 0.0597 | f auc 0.524 p 0.1592
+  k32_a10.0: m auc 0.491 p 0.4826 | f auc 0.501 p 0.2139

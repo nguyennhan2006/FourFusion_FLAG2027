@@ -1,0 +1,24 @@
+
+../INDEP-01/out/submission_INDEP01.zip  (labels: arc)
+   cell  pseudo_eer  coverage  ci_lo  ci_hi
+  ng/En       18.11     0.964  13.72  22.81
+  ng/Bn       26.10     0.981  18.56  34.55
+   g/En       26.03     0.962  20.19  31.18
+   g/Bn       34.07     0.986  27.82  42.37
+overall       26.08       NaN    NaN    NaN
+
+../../BEST/v5_set13/_dryrun_b0/submission.zip  (labels: arc)
+   cell  pseudo_eer  coverage  ci_lo  ci_hi
+  ng/En       19.03     0.964  14.88  23.37
+  ng/Bn       25.74     0.981  18.78  35.25
+   g/En       26.56     0.962  21.29  31.32
+   g/Bn       35.45     0.986  28.69  43.78
+overall       26.70       NaN    NaN    NaN
+
+A - B (negative = A better)
+ cell  delta  ci_lo  ci_hi  P_A_better
+ng/En  -0.92  -2.87   0.95        0.83
+ng/Bn   0.36  -1.86   1.44        0.55
+ g/En  -0.53  -3.29   3.01        0.48
+ g/Bn  -1.38  -3.63   0.83        0.87
+DONE

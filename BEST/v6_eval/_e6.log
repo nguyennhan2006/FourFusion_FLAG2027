@@ -1,0 +1,28 @@
+20:33:41 feature dir: ..\..\kaggle\output\feats_eval | 48 arrays
+20:33:41 feature dir: ..\..\kaggle\output\feats_models | 70 arrays
+20:33:41 polarity: internal scores are higher = same; write_submission writes -score (LOWER = same, measured on CodaBench: -d2 57.83 vs +d2 42.17 with one checkpoint, docs/DATA.md)
+20:33:47 members: {'s007': 5, 's010B': 5, 'r2mix': 5}
+20:38:39 cluster thresholds (train-calibrated): face 0.75 voice 0.70
+20:41:57 no_gender/English  set13  | 29 face / 41 voice clusters for 1008 rows | median size 51 / 71 | clusters look normal
+20:43:49 no_gender/Bangla   set13  | 32 face / 39 voice clusters for 1406 rows | median size 76 / 87 | clusters look normal
+20:47:48 gender/English     set13  | 33 face / 40 voice clusters for 982 rows | median size 54 / 72 | clusters look normal
+20:49:54 gender/Bangla      set13  | 29 face / 41 voice clusters for 1468 rows | median size 80 / 90 | clusters look normal
+20:49:55 invariance self-test on no_gender/English: max |diff| 3.57e-07 -> PASSED
+20:49:55 zip OK: _e6_feats_eval\submission_set13.zip
+20:49:55 zip OK: _e6_feats_eval\submission_noclus.zip
+20:49:55 zip OK: _e6_feats_eval\submission_indep.zip
+20:49:56 zip OK: _e6_feats_eval\submission.zip
+20:49:56 set13  no_gender/sub_score_v4_English_heard.txt      rank-corr with submission_SET13.zip: 1.0000
+20:49:56 set13  no_gender/sub_score_v4_Bangla_unheard.txt     rank-corr with submission_SET13.zip: 1.0000
+20:49:56 set13  gender/sub_score_v4_English_heard.txt         rank-corr with submission_SET13.zip: 1.0000
+20:49:56 set13  gender/sub_score_v4_Bangla_unheard.txt        rank-corr with submission_SET13.zip: 1.0000
+20:49:56 indep  no_gender/sub_score_v4_English_heard.txt      rank-corr with submission_INDEP01.zip: 1.0000
+20:49:56 indep  no_gender/sub_score_v4_Bangla_unheard.txt     rank-corr with submission_INDEP01.zip: 1.0000
+20:49:56 indep  gender/sub_score_v4_English_heard.txt         rank-corr with submission_INDEP01.zip: 1.0000
+20:49:56 indep  gender/sub_score_v4_Bangla_unheard.txt        rank-corr with submission_INDEP01.zip: 1.0000
+20:49:56 chosen per file: {'no_gender/English': 'set13', 'no_gender/Bangla': 'set13', 'gender/English': 'set13', 'gender/Bangla': 'set13'} -> _e6_feats_eval\submission.zip
+
+real	16m38.845s
+user	0m0.062s
+sys	0m0.031s
+EXIT 0

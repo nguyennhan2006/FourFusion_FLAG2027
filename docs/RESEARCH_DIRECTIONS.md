@@ -1,5 +1,7 @@
 # Hướng nghiên cứu tiếp theo — FLAG 2027
 
+> **Lịch sử (25/09, mốc 30.90). Hướng H1–H9 đã được làm qua các vòng sau.** Trạng thái hiện hành (29/09, nhật ký tới mục 75): cấu hình Evaluation là **SET-13 (CB 21.01) qua `BEST/v6_eval`**; xem [DECISIONS.md](DECISIONS.md) và [OPEN_DIRECTIONS.md](OPEN_DIRECTIONS.md).
+
 Lập 2026-09-25, sau khi đạt **30.90** và đọc phương pháp của 2 đội đầu FAME 2026.
 
 > **⚠️ Tài liệu lịch sử — kế hoạch hiện hành là [PLAN_V4.md](PLAN_V4.md) (2026-09-26, mốc 28.69).**

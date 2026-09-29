@@ -1,5 +1,7 @@
 # Kế hoạch v4 — sau mốc 28.69
 
+> **Lịch sử (26/09, trước SET-02). Đã thay bởi PLAN_V5 → PLAN_MODELS / PLAN_EVAL. Luật transductive ở §3 vẫn đúng và được giữ trong DECISIONS (E4); "hướng A: dữ liệu ngoài v1/v2" nay chỉ còn ứng viên hẹp cho English (74).** Trạng thái hiện hành (29/09, nhật ký tới mục 75): cấu hình Evaluation là **SET-13 (CB 21.01) qua `BEST/v6_eval`**; xem [DECISIONS.md](DECISIONS.md) và [OPEN_DIRECTIONS.md](OPEN_DIRECTIONS.md).
+
 Lập 2026-09-26, cập nhật cùng ngày sau khi rà soát [deep-research-report_26-09-2026.md](deep-research-report_26-09-2026.md).
 Thay [PLAN_V3.md](PLAN_V3.md) (giữ làm lịch sử). Nguồn số liệu: [../Experiment/EXPERIMENT_LOG.md](../Experiment/EXPERIMENT_LOG.md).
 
@@ -153,7 +155,9 @@ Thực thi trong code: `build_best.py::check_policy` chỉ chấp nhận combine
 | `Experiment/FUSE-03/gate_controls.py` — đối chứng gate (lưới tĩnh, độ dài thật / xáo, bất đồng) | ✅ |
 | `kaggle/flag_extract.load_audio` — một hàm đọc audio cho v4 và dữ liệu ngoài, khớp `librosa.load(sr=16000, mono=True)` | ✅ |
 | `kaggle/flag_extract.fetch_zip` — danh sách id (bản sao riêng → id BTC); zip xóa sau khi trích thành công | ✅ |
-| A2 validation song ngữ + A3 PT→FT | ☐ build sau khi có kết quả vòng MIX; cần nhãn giới v1/v2 |
+| A2 validation song ngữ + A3 PT→FT — `kaggle/flag_bilingual.py`, `Experiment/EXT-02_bilingual/run.py` (CPU local) | ✅ harness; v3 xong (log 42: `mix_en` −6.65 / −6.65, 5/5; MIX > PT→FT); ☐ v1/v2 chờ feature |
+| ATTR-01 face → F0 — `Experiment/ATTR-01_f0/run_v4.py`, `flag_extract.f0_stats` / `extract_ext_meta` | ✅ pilot v4: không có bằng chứng (nữ p 0.061); ☐ v1/v2 |
+| NB-6 `FLAG_09_ext_meta.ipynb` (metadata + F0, CPU) | ✅ smoke test; chỉ cần nếu zip không có ở local |
 | Build lại `FLAG_08_external.ipynb` với lib mới + smoke test local | ☐ cùng lúc với A3 |
 | `FUSE-03/common.py` dùng lại `pseudo_eval` | ☐ khi có FUSE-05 (tên FUSE-04 đã dùng cho ReDimNet) |
 

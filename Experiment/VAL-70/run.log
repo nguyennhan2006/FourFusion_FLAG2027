@@ -1,0 +1,40 @@
+06:54:12 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+06:54:12 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_ext | 6 arrays
+40 files: {('v1', 'english'): 444, ('v1', 'urdu'): 447, ('v2', 'english'): 441, ('v2', 'hindi'): 436}
+members trained in 2452s
+lang     protocol  level 
+english  g         person    34.94
+                   sample    39.98
+         ng        person    26.15
+                   sample    31.58
+hindi    ng        person    26.87
+                   sample    31.89
+urdu     g         person    35.70
+                   sample    40.81
+         ng        person    24.75
+                   sample    30.63
+system                   SET08  SET09
+lang    protocol level               
+english g        person  -1.31  -1.18
+                 sample  -0.95  -1.94
+        ng       person  -0.76  -2.41
+                 sample  -0.38  -3.06
+hindi   ng       person  -0.34  -1.63
+                 sample  -0.09  -2.64
+urdu    g        person  -1.83  -3.85
+                 sample  -1.07  -2.57
+        ng       person  -1.17  -2.51
+                 sample  -0.95  -3.17
+system                   SET08  SET09
+lang    protocol level               
+english g        person   7/10   7/10
+                 sample   9/10   9/10
+        ng       person  15/20  16/20
+                 sample  14/20  20/20
+hindi   ng       person   6/10   7/10
+                 sample   4/10  10/10
+urdu    g        person   7/10   9/10
+                 sample  10/10  10/10
+        ng       person   7/10   8/10
+                 sample   9/10  10/10
+EXIT 0

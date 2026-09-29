@@ -53,7 +53,7 @@ def build_voice_age_gender(device):
             self.wav2vec2 = Wav2Vec2Model(config)
             self.age = _Head(config, 1)
             self.gender = _Head(config, 3)
-            self.init_weights()
+            self.post_init()        # not init_weights(): transformers >= 5 sets all_tied_weights_keys here
 
         def forward(self, input_values):
             h = self.wav2vec2(input_values)[0].mean(dim=1)       # mean-pool over time -> 1024-d
@@ -119,7 +119,8 @@ def face_age_embed(model, proc, paths, root, device, bs=32):
 def gender_agreement(gen_probs, gender_labels):
     """Sanity check against our own labels: the model's male/female call should mostly agree.
 
-    gen_probs columns are (child, female, male) per the model card.
+    gen_probs columns are (female, male, child): config.json id2label. The model card's prose says
+    "child, female, or male", but the config and our v4 check (f -> column 0, m -> column 1) agree.
     """
-    pred = np.where(gen_probs[:, 2] >= gen_probs[:, 1], "m", "f")
+    pred = np.where(gen_probs[:, 1] >= gen_probs[:, 0], "m", "f")
     return float((pred == np.asarray(gender_labels)).mean())

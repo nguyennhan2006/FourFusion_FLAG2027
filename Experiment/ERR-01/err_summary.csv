@@ -1,0 +1,5 @@
+cell,eer,dur_err,dur_ok,FN_rate_short,FN_rate_long,neg_gender_mismatch_FP_rate,neg_same_gender_FP_rate
+no_gender_English,22.42,6.16,5.88,0.24,0.221,0.098,0.36
+gender_English,28.04,5.76,6.46,0.381,0.195,0.151,0.307
+gender_Bangla,34.62,4.56,4.96,0.361,0.231,0.114,0.375
+no_gender_Bangla,26.32,4.8,4.8,0.293,0.212,0.066,0.498

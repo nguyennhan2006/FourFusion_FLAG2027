@@ -12,39 +12,86 @@ Bài toán: cho một cặp (face, voice) → chấm điểm "có cùng một ng
 
 `gender` = negative bị ép cùng giới tính với positive → không thể dùng giới tính làm shortcut.
 
-## Trạng thái hiện tại (2026-09-26)
+## Đọc gì trước (thứ tự nguồn)
+
+1. **[Experiment/EXPERIMENT_LOG.md](Experiment/EXPERIMENT_LOG.md)**: bằng chứng gốc, tới mục (75), ngày 29/09.
+2. **[docs/DECISIONS.md](docs/DECISIONS.md)**: mọi quyết định, bằng chứng, trạng thái, những gì đã bị đảo ngược. Đồng bộ với nhật ký.
+3. **[docs/OPEN_DIRECTIONS.md](docs/OPEN_DIRECTIONS.md)**: hướng còn mở, luật validation chung, danh sách đã đóng.
+4. **[docs/PLAN_EVAL.md](docs/PLAN_EVAL.md)**: chuẩn bị Evaluation phase (11–18/11).
+
+Các kế hoạch cũ (PLAN_V3 … V6, RESEARCH_*, các báo cáo deep research) là hồ sơ lịch sử; mỗi file có ghi chú ở đầu về những gì đã lỗi thời.
+
+## Trạng thái hiện tại (2026-09-29)
+
+**Cấu hình Evaluation: SET-13 qua [BEST/v6_eval/](BEST/v6_eval/README.md)** (`--mode auto`, 15 mạng mỗi thành phần).
+- Chọn bằng validation độc lập: v4 giữ ra, mức cụm −6.8 / −6.5 (5/5); VAL-70, mức người −7.4 (10/10 file).
+- Quy trình từ ảnh / giọng gốc → [kaggle/FLAG_12_features](kaggle/FLAG_12_features.ipynb) → pipeline → zip đã chạy thử trọn: rank-corr 1.0000 với bản đã nộp.
 
 | | Overall | ng/En | ng/Bn | g/En | g/Bn |
 |---|---:|---:|---:|---:|---:|
 | EXP-000c (baseline ban đầu của nhóm) | 42.17 | 36.31 | 38.98 | 43.38 | 50.00 |
 | Organizer FOP reference | 36.92 | 32.54 | 38.12 | 32.99 | 44.01 |
 | EXP-011 (ghép per-cell 3 hệ) | 30.13 | 23.81 | 27.88 | 30.96 | 37.87 |
-| FUSE-01 (rank fusion English) | 29.62 | 23.61 | 27.88 | 29.12 | 37.87 |
-| FUSE-02 (+ rank fusion Bangla) | 28.93 | 23.61 | 26.88 | 29.12 | 36.10 |
-| **FUSE-03 — bản tốt nhất hiện tại** | **28.69** | **23.61** | **26.88** | **29.12** | **35.15** |
+| FUSE-03 (trộn theo hạng) | 28.69 | 23.61 | 26.88 | 29.12 | 35.15 |
+| SET-02 (gom cụm lúc test) | 21.68 | 12.50 | 21.34 | 28.31 | 24.59 |
+| SET-08 (s007 + CCA-16) | 22.30 | 12.30 | 21.34 | 28.72 | 26.84 |
+| SET-07 (s007 + dữ liệu ngoài v1/v2) | 22.20 | 15.48 | 17.21 | 27.49 | 28.61 |
+| SET-09 (s007 + stream FaRL) | 22.49 | 14.19 | 20.34 | 28.72 | 26.70 |
+| SET-12 (s007 + ImageBind) | 21.45 | 11.64 | 21.05 | 23.01 | 30.11 |
+| **SET-13 (s007 + ImageBind + tuổi) — cấu hình Evaluation** | **21.01** | **11.31** | 20.91 | 23.22 | 28.61 |
+| [INDEP-01](Experiment/INDEP-01/README.md) (SET-13 chấm từng cặp: không thống kê file, không gom cụm; đo năng lực mô hình) | 26.70 | 19.05 | 26.32 | 27.09 | 34.33 |
+| HYB-01 (ghép cell SET-08 / 07 / 07 / 02, chỉ cho bảng progress) | 20.40 | 12.30 | 17.21 | 27.49 | 24.59 |
+| HYB-03 (ghép cell SET-13 / 07 / 12 / 02, chỉ cho bảng progress) | 19.03 (dự kiến, chưa nộp) | 11.31 | 17.21 | 23.01 | 24.59 |
 
-**−13.48 so với baseline nhóm. Hạng 5** (leaderboard 2026-09-26 10:00):
+**Dev CodaBench không phân xử được chênh lệch cỡ ±1 EER** (chỉ đổi seed đã làm dev dịch 0.65–1.32; nhật ký 61). Bản ghép cell theo CB chỉ dùng cho bảng progress; mọi quyết định cho Evaluation dựa vào validation nhãn thật.
+
+**Bảng xếp hạng 27/09 18:25** (lần chụp gần nhất):
 
 | # | Đội | Overall | ng/En | ng/Bn | g/En | g/Bn |
 |---|---|---:|---:|---:|---:|---:|
-| 1 | pi-flag | 19.13 | 11.51 | 19.91 | 19.35 | 25.75 |
-| 2 | jeetu_sk | 23.48 | 13.89 | 24.18 | 18.13 | 37.74 |
-| 3 | asp0178 | 27.60 | 24.60 | 22.90 | 32.38 | 30.52 |
-| 4 | Fight4Job | 28.50 | 23.02 | 25.60 | 27.49 | 37.87 |
-| **5** | **FourFusion** | **28.69** | 23.61 | 26.88 | 29.12 | 35.15 |
+| 1 | susupro | 3.22 | 3.77 | 1.99 | 5.09 | 2.04 |
+| 2 | Fight4Job | 4.60 | 5.16 | 2.70 | 5.50 | 5.04 |
+| 3 | pi-flag | 19.13 | 11.51 | 19.91 | 19.35 | 25.75 |
+| **4** | **FourFusion (nguyennhan2006, HYB-01)** | **20.40** | 12.30 | **17.21** | 27.49 | **24.59** |
+| 5 | 24521254 | 22.92 | 15.28 | 23.61 | 20.37 | 32.43 |
+| 6 | jeetu_sk | 23.48 | 13.89 | 24.18 | 18.13 | 37.74 |
+| 24 | mmosc (= baseline FOP của BTC) | 36.92 | 32.54 | 38.12 | 32.99 | 44.01 |
 
-`g/Bn` 35.15 tốt thứ ba bảng. Khoảng cách lớn nhất nằm ở English (ng/En −12.1, g/En −9.8 so với hạng 1).
-Tái tạo + tài liệu: **[BEST/v3_28.69/](BEST/v3_28.69/)** (`python build_best.py`, khớp zip đã nộp rank-corr 1.000000).
-Nhật ký chi tiết mọi quyết định: [Experiment/EXPERIMENT_LOG.md](Experiment/EXPERIMENT_LOG.md). Kế hoạch hiện hành: **[docs/PLAN_V4.md](docs/PLAN_V4.md)**.
+- **Hai đội đầu (3.22, 4.60) thấp hơn trần oracle của ghép mặt–giọng.** Mức đó chỉ đạt được bằng cấu trúc danh sách trial: LEAK-01 cho 2.10 / 2.50 chỉ bằng cách đếm trial nối cụm. Ta không đi theo hướng này.
+- **g/En đã từ 27.49 xuống 23.22 nhờ ImageBind (SET-13).** Cell tệ nhất giờ là **g/Bn (28.61)**.
 
-**Hướng đi từ v4.** Encoder unimodal đã đủ mạnh: ArcFace và ReDimNet2 nhận dạng tốt hơn hẳn nhưng ghép mặt–giọng
-không tốt hơn. Nút thắt là **cầu nối cross-modal** học từ 70 người, và cầu nối này phụ thuộc quần thể. Vì vậy chỉ còn
-ba hướng: (A) dữ liệu cặp ngoài khớp quần thể (MAV-Celeb v1 Urdu / v2 Hindi), (B) học cầu nối tốt hơn nếu A có tín hiệu,
-(C) fusion các hệ bổ sung, chọn bằng selector SEL-01b. Các hướng đã đóng: [PLAN_V4 §2](docs/PLAN_V4.md).
+## Những gì đã học (tóm tắt, chi tiết trong DECISIONS)
 
-⚠️ **Phải khai báo trong system description:** dev không nhãn được dùng (transductive) để *chọn* model và fit 2 tham số fusion
-(pseudo-label SEL-01b); nếu bản cuối dùng EXT-01 thì khai báo MAV-Celeb v1–v3 là dữ liệu train ngoài. Không train trên
-pseudo-label, không sinh score từ cấu trúc danh sách trial ([PLAN_V4 §3](docs/PLAN_V4.md)).
+- **Bốn bước nhảy:**
+  - CCA / InfoNCE thay FOP: 42.17 → 31.34;
+  - trộn theo hạng: → 28.69;
+  - gom cụm lúc test: → 21.68;
+  - ImageBind + tuổi: → 21.01. Trên validation độc lập lợi lớn hơn nhiều (−5…−9).
+- **Gom cụm an toàn và gần trần.** STRESS-01 (280 file mô phỏng có nhãn): gom cụm tốt hơn ở mọi dạng file đã thử, kể cả Urdu / Hindi, 150 người mỗi file, 1–2 mẫu mỗi người. Chỉ cách cụm theo danh tính thật 0.1–2 EER.
+- **Đã đóng:**
+  - encoder nhận dạng mạnh cho cầu nối;
+  - cầu nối lớn hơn;
+  - CORAL / AS-norm;
+  - SetProto;
+  - SWA;
+  - chỉnh ImageBind (adapter, CCA; LoRA hoãn);
+  - dùng danh sách trial.
+- **Còn mở:**
+  - v1/v2 cho các cell English (O1);
+  - g/Bn (O2);
+  - Speech2Face (O3);
+  - VoxCeleb chỉ khi có lý do mới (O4).
+
+  Xem [docs/OPEN_DIRECTIONS.md](docs/OPEN_DIRECTIONS.md).
+
+⚠️ **Phải khai báo trong system description:**
+- gom cụm không giám sát ảnh / giọng trong từng file test;
+- trừ mean theo file;
+- mọi encoder kèm licence (ImageBind CC-BY-NC 4.0, audeering CC-BY-NC-SA 4.0);
+- dữ liệu ngoài nếu dùng;
+- ở progress phase đã dùng pseudo-label trên dev để chọn hệ (FUSE-01…03).
+
+Không train trên pseudo-label, không sinh điểm từ cấu trúc danh sách trial.
 
 ### Đường đi
 
@@ -56,16 +103,13 @@ pseudo-label, không sinh score từ cấu trúc danh sách trial ([PLAN_V4 §3]
 | 003c | InfoNCE ×3 seed + CCA + centering, bỏ AS-norm | 31.34 |
 | 004 | + full CORAL dev→train | 41.36 ❌ |
 | 007 | fusion có trọng số (CCA w=0.25), n=10 | 30.90 |
-| 009 | công thức hạng 1 FAME26 (linear + dropout .9 + AAM) | ❌ không thắng |
 | 010B | re-extract voice ECAPA 6144-d | 31.71 (nhưng ng/En 23.81) |
 | 011 | ghép per-cell 3 nguồn | 30.13 |
-| SEL-01b | **selector pseudo-identity trên dev** (ArcFace + ECAPA), sai số ≤ 0.9 EER/cell so với CB | – (hạ tầng) |
-| FUSE-01 | English ← rank(007) + rank(010B) | 29.62 |
-| FUSE-02 | Bangla ← rank(003c) + rank(r2_ecapa192_mix) | 28.93 |
-| **FUSE-03** | **g/Bn ← gate 2 tham số (003c / r2_mix)** — thực chất đổi trọng số ~0.3/0.7, không phải hiệu ứng độ dài | **28.69** |
-| NB-4 | ReDimNet2 voice (vox2 / đa ngôn ngữ) | ❌ nhận giọng tốt hơn, ghép mặt–giọng không tốt hơn |
-| GRAPH-01 | làm mượt score bằng đồ thị kNN unimodal | ❌ English tệ hơn |
-| EXT-01 | + MAV-Celeb v3 (En/German) | ❌ hại mọi cell; v1/v2 (Nam Á) đang chạy lại |
+| FUSE-01 / 02 / 03 | trộn theo hạng từng cell (+ gate 2 tham số ở g/Bn) | 29.62 / 28.93 / **28.69** |
+| SET-02 | gom cụm mặt (ArcFace) / giọng (ECAPA-192) trong từng file, trung bình khối | **21.68** |
+| SET-12 | + ImageBind zero-shot vào s007 | 21.45 |
+| **SET-13** | + so khớp tuổi (ViT-age / w2v2 age) | **21.01** |
+| INDEP-01 | SET-13 chấm từng cặp (không phụ thuộc test) | 26.70 |
 
 ## Cấu trúc thư mục
 
@@ -73,46 +117,47 @@ pseudo-label, không sinh score từ cấu trúc danh sách trial ([PLAN_V4 §3]
 FLAG_2027_FourFusion/
 ├── README.md                     ← file này
 ├── BEST/
-│   ├── v3_28.69/                 ← **bản tốt nhất**: build_best.py (BEST_CONFIG + check_policy), components/, README
-│   ├── README.md, reproduce.py   (bản cũ 31.34, tái tạo bằng 1 file ~3 phút CPU)
-│   └── submission_best.zip
+│   ├── v6_eval/                  ← **pipeline Evaluation**: SET-13 / noclus / INDEP-01, chẩn đoán cụm, 45 mạng đã cache (_members/)
+│   ├── v5_set13/                 (SET-13, 5 mạng; tài liệu công thức + khai báo)
+│   ├── v4_set02/                 (SET-02)
+│   └── v3_28.69/                 (FUSE-03)
 ├── kaggle/                       ← notebook GPU (Kaggle T4); xem kaggle/README.md
-│   ├── flag_lib.py, flag_v2.py   (train / chấm, nhúng vào notebook)
-│   ├── flag_extract.py           (trích feature: encoder BTC, ECAPA, ArcFace, SSL; load_audio, fetch_zip)
-│   ├── build_*_notebook(s).py    (sinh notebook từ lib; FLAG_04…08)
-│   └── NB3/ NB4/ NB5/ output/    (kết quả tải về từ Kaggle)
-├── kaggle_upload/                ← feature CSV đã giải nén phẳng (train/ + dev/)
+│   ├── FLAG_12_features.ipynb    ← **trích mọi đặc trưng cho Evaluation**, code đầy đủ trong cell (build_eval_notebooks.py)
+│   ├── run_notebook_local.py     (chạy thử notebook trên máy; --jupyter giả lập Jupyter)
+│   ├── flag_lib.py, flag_v2.py   (train / chấm)
+│   ├── flag_extract.py, flag_models.py, agegender.py   (trích feature cho các notebook cũ)
+│   └── output/                   (feats_v2, feats_models, feats_layers, feats_ext_full, feats_eval: tải về từ Kaggle)
+├── kaggle_upload/                ← feature CSV của BTC đã giải nén phẳng (train/ + dev/)
 ├── docs/
-│   ├── PLAN_V4.md                ← **kế hoạch hiện hành**: 3 hướng mở, danh sách đóng, luật transductive
-│   ├── PROBLEMS.md               (các problem PB-1…6 và trạng thái)
-│   ├── PLAN_V3.md, PLAN_KAGGLE.md, RESEARCH_DIRECTIONS.md, RESEARCH_PLAN.md   (lịch sử)
-│   └── DATA.md                   ← mô tả dữ liệu, format file, các lưu ý (score orientation...)
+│   ├── DECISIONS.md              ← **quyết định + trạng thái** (đồng bộ nhật ký)
+│   ├── OPEN_DIRECTIONS.md        ← **hướng còn mở, luật validation, danh sách đã đóng**
+│   ├── PLAN_EVAL.md              ← **chuẩn bị Evaluation**
+│   ├── PLAN_MODELS.md            (kế hoạch model 27/09, có bảng kết quả ở đầu)
+│   ├── DATA.md                   (dữ liệu, format file, chiều điểm)
+│   ├── email_organizers.md       (câu hỏi gửi BTC)
+│   └── PLAN_V3…V6, RESEARCH_*, PROBLEMS, PLAN_KAGGLE, deep-research-report_*   (lịch sử)
 ├── Input/                        ← dữ liệu gốc, KHÔNG sửa, KHÔNG commit
-│   ├── train_set.zip             (1.4 GB: features CSV + ảnh/wav thô, 70 id, English)
-│   ├── dev_set.zip               (990 MB: 4 protocol, features CSV + ảnh/wav thô)
-│   └── meta_file_train_set.csv   (giới tính 70 speaker train: 40 m / 30 f)
 └── Experiment/
-    ├── EXPERIMENT_LOG.md         ← sổ ghi toàn bộ thí nghiệm (1 dòng / run, có kết quả CodaBench)
-    ├── templates/EXPERIMENT_TEMPLATE.md
-    ├── EDA-000_raw/              ← EDA-0→6 + eda_utils.py (hàm dùng chung cho mọi EXP)
-    ├── EXP-000c_fop_baseline/    ← FOP baseline 42.17
-    ├── EXP-000d_cca_linear/      ← CCA tuyến tính 35.79 / 34.46 / hybrid 33.35
-    ├── EXP-002_cca_centering/    ← Pipeline E: centering + AS-norm
-    ├── EXP-003_deep/             ← sweep loss A/B/C + ensemble → 31.96 / 31.34
-    ├── EXP-004_domain/           ← CORAL (kết quả âm tính, 41.36)
-    ├── EXP-005_tune/ … EXP-012_proxy/
-    ├── SEL-01_selector/          ← **pseudo_eval.py**: chấm dev local (pseudo-EER, coverage, CI, A−B, fold OOF)
-    └── FUSE-01 … FUSE-04/, GEN-01/, GRAPH-01/
+    ├── EXPERIMENT_LOG.md         ← sổ ghi toàn bộ thí nghiệm
+    ├── SEL-01_selector/          (pseudo_eval.py: chấm dev local; từ 28/09 chỉ để cảnh báo)
+    ├── MODEL-01/, VAL-70/        ← hai harness validation nhãn thật (v4 giữ ra; người v1/v2)
+    ├── STRESS-01/                ← gom cụm có hỏng khi file Evaluation khác dev không
+    ├── EXTSCALE-01/              ← khung validation fold người v1/v2, chấm bản production ở 3 mức
+    ├── INDEP-01/, IB-ADAPT/, IB-PROBE/, SWA-01/, …
+    └── EXP-000c … FUSE-04, SET-01 … SET-07, …   (các thí nghiệm trước)
 ```
-
-Chấm một zip trên dev không tốn lượt nộp: `cd Experiment/SEL-01_selector && python pseudo_eval.py A.zip [B.zip]`.
 
 ## Quy ước làm việc
 
-1. **Mỗi thí nghiệm = 1 thư mục** `Experiment/EXP-NNN_<slug>/` chứa: notebook/code, `NOTES.md` (từ template), `out/` (submission zip, checkpoint nhỏ, metadata json).
-2. **Ghi vào `Experiment/EXPERIMENT_LOG.md` ngay khi có số** — trước khi làm thí nghiệm tiếp theo.
-3. **Model selection hai tầng.** Internal speaker-disjoint (56/14, English-only, ≥ 3 split) cho quyết định representation/cfg; **mọi quyết định đụng dev/Bangla dùng `pseudo_eval.py` (SEL-01b)** — internal đã chọn sai 5/5 lần ở Bangla. Báo cáo pseudo-EER 4 cell + coverage + CI bootstrap theo identity; kiểm chéo nhãn `--labels=btc`. CodaBench là xác nhận cuối; score normalization chỉ validate bằng CodaBench (internal sai dấu với AS-norm).
-4. **Score orientation**: CodaBench chấm *lower = same speaker* → nộp **+d²** (hoặc `−cosine`). Đã kiểm chứng: −d² cho 57.83, +d² cho 42.17. Local sklearn dùng dấu ngược. Xem [docs/DATA.md](docs/DATA.md).
-7. **Submission cuối = ghép per-cell tốt nhất**; mỗi EXP chỉ cần thắng ở ít nhất một cell và phải báo cáo đủ 4 cell, không so overall.
-5. Đổi **một biến / thí nghiệm** so với baseline gần nhất, luôn ghi rõ `parent` experiment.
-6. `FAST_DEV_RUN=True` chỉ để test code, không bao giờ nộp.
+1. **Mỗi thí nghiệm = 1 thư mục** `Experiment/<ID>/` chứa code, `README.md` hoặc `NOTES.md` (thiết kế, kết quả, kết luận), và file kết quả.
+2. **Ghi vào `Experiment/EXPERIMENT_LOG.md` ngay khi có số**, rồi cập nhật [docs/DECISIONS.md](docs/DECISIONS.md) nếu quyết định thay đổi.
+3. **Chọn hệ bằng validation nhãn thật**:
+   - v4 giữ ra (5 split) và người v1/v2 giữ ra theo fold, với cặp dương khác video;
+   - so sánh ghép cặp, cùng số bước tối ưu, đăng ký nhánh trước;
+   - **thước đo chính là mức người / mức cụm của bản production.**
+
+   Khung sẵn: [Experiment/EXTSCALE-01/run.py](Experiment/EXTSCALE-01/run.py). Dev CodaBench chỉ để phát hiện hỏng nặng; pseudo-label chỉ để cảnh báo.
+4. **Chiều điểm**: CodaBench chấm *lower = same* → nộp **−score** (tức +d²). Đã kiểm chứng: −d² cho 57.83, +d² cho 42.17. Ở Evaluation, nếu lượt đầu ra EER > 50 thì đảo dấu ngay. Xem [docs/DATA.md](docs/DATA.md).
+5. **Một biến mỗi thí nghiệm**, ghi rõ đối chứng.
+6. **Notebook Kaggle mới:** code đầy đủ trong cell; chạy thử bằng `kaggle/run_notebook_local.py --jupyter` với đúng phiên bản transformers của Kaggle trước khi giao.
+7. **Chỉ nộp từ tài khoản của đội** (nguyennhan2006); hai người cộng tác là đội độc lập, không dùng chung feature, bài nộp hay checkpoint.

@@ -1,0 +1,5 @@
+file,mode,why,rows,face_clusters,voice_clusters,voice_face_ratio,face_median_size,voice_median_size,face_singletons,voice_singletons,largest_share
+no_gender/English,set13,clusters look normal,1008,29,41,1.414,51.0,71.0,6,11,0.106
+no_gender/Bangla,set13,clusters look normal,1406,32,39,1.219,76.0,87.0,7,8,0.092
+gender/English,set13,clusters look normal,982,33,40,1.212,54.0,72.0,6,7,0.1
+gender/Bangla,set13,clusters look normal,1468,29,41,1.414,80.0,90.0,2,10,0.092

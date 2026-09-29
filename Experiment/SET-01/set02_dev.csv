@@ -1,0 +1,21 @@
+cell,cand,n_face_cl,n_voice_cl,arc,btc
+no_gender/English,FUSE-03 (submitted),29,41,22.42,21.36
+no_gender/English,agg b=0.5,29,41,17.28,17.03
+no_gender/English,agg b=0.75,29,41,14.61,16.43
+no_gender/English,agg b=0.99,29,41,12.45,15.81
+no_gender/English,agg b=1.0,29,41,11.21,17.26
+gender/English,FUSE-03 (submitted),33,40,28.04,25.78
+gender/English,agg b=0.5,33,40,26.45,21.56
+gender/English,agg b=0.75,33,40,26.03,20.78
+gender/English,agg b=0.99,33,40,27.62,20.15
+gender/English,agg b=1.0,33,40,26.43,22.41
+no_gender/Bangla,FUSE-03 (submitted),32,39,26.32,26.0
+no_gender/Bangla,agg b=0.5,32,39,23.42,23.52
+no_gender/Bangla,agg b=0.75,32,39,21.9,19.53
+no_gender/Bangla,agg b=0.99,32,39,20.01,18.12
+no_gender/Bangla,agg b=1.0,32,39,19.8,18.44
+gender/Bangla,FUSE-03 (submitted),29,41,34.62,32.33
+gender/Bangla,agg b=0.5,29,41,32.55,30.32
+gender/Bangla,agg b=0.75,29,41,29.72,26.71
+gender/Bangla,agg b=0.99,29,41,24.05,21.88
+gender/Bangla,agg b=1.0,29,41,23.49,24.19

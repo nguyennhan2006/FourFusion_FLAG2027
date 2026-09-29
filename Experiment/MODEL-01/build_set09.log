@@ -1,0 +1,11 @@
+23:54:26 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_v2 | 33 arrays
+23:54:26 feature dir: D:\Sinh viên CNhan\FLAG_2027_FourFusion\kaggle\output\feats_models | 35 arrays
+23:54:26 polarity: internal scores are higher = same; write_submission writes -score (LOWER = same, measured on CodaBench: -d2 57.83 vs +d2 42.17 with one checkpoint, docs/DATA.md)
+member f007 (FaRL + organiser 192): 88s
+23:55:55 zip OK: D:\Sinh viên CNhan\FLAG_2027_FourFusion\Experiment\MODEL-01\out\submission_SET09.zip
+no_gender/sub_score_v4_English_heard.txt      rank-corr with SET-02: 0.9931
+no_gender/sub_score_v4_Bangla_unheard.txt     rank-corr with SET-02: 0.9883
+gender/sub_score_v4_English_heard.txt         rank-corr with SET-02: 0.9858
+gender/sub_score_v4_Bangla_unheard.txt        rank-corr with SET-02: 0.9807
+wrote D:\Sinh viên CNhan\FLAG_2027_FourFusion\Experiment\MODEL-01\out\submission_SET09.zip
+EXIT 0
