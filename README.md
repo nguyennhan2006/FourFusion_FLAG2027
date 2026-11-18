@@ -121,12 +121,14 @@ sessions run in parallel.
 
 - **L0 checks pass**: all 93 stages rebuild from their original notebooks / scripts (`python runner/check_stage.py`), the stage graph
   has no cycle or unresolved input (`python runner/ffrun.py dag`).
-- **Mode (c)**: logic verified on the team machine (the four member files are reproduced byte for byte by the same scripts); the ten
-  input files are not yet in `FF_DATA/05_scores/` (team decision on public / private repository).
-- **Mode (b)**: not run end to end. Before it can finish, the team must (i) download two artifacts that exist only on Kaggle
-  (`thanhhuyen11/flag2027-rfsfxfvb-art-p`, output of `thanhhuyen11/flag-2027-nb-192-fvbx3`; commands in
-  `tools/PULL_MISSING_RUNS.md`), (ii) run `dp_train` once on its machine to save the DP towers (`dp_towers.pt`, ~12 CPU minutes), and
-  (iii) upload the DP feature arrays and the checkpoints to the Drive folder.
+- **Mode (c)**: run 19/11 with `python assembly/assemble_exact.py` on the ten stored score files laid out as `FF_DATA/05_scores/`:
+  the four member files are byte-identical to the submission, and with the submitted ZipInfo fields the whole zip has the submitted
+  sha256. The ten files go to the Drive folder (not to this public tree).
+- **Mode (b)**: not run end to end. On 19/11 the two artifacts that existed only on Kaggle were downloaded
+  (`thanhhuyen11/flag2027-rfsfxfvb-art-p`, output of `thanhhuyen11/flag-2027-nb-192-fvbx3`), and `dp_train` was run once on the
+  team machine (`tools/dp_train_local.py`): its constants and English scores are bit-identical to the submission run, and stage
+  `dp_score` scores the four files bit-identically from the saved towers `dp_towers.pt`. What is left is the upload of the DP
+  feature arrays and the checkpoints to the Drive folder.
   The FVBIND stages (`t189_b2`, `t192_fvbx`) unpack the organisers' `train_set.zip` in their input view when no extracted copy
   is mounted (fixed 19/11 after the second integration review; `dev_set.zip` is never opened).
 - **Mode (a)**: never run.

@@ -124,7 +124,7 @@ The requirement-1 exceptions (consumed artifacts without a producing stage) are 
 | `notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval` | run_output | `04_run_outputs/flag-2027-nb-112f1sx-eval` | e112f1sx | yes |  | a_factor, a_fvbind |
 | `notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval` | run_output | `04_run_outputs/flag-2027-nb-163i-rfsfxc5rl-eval` | e163i | yes |  | a_factor |
 | `notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval` | run_output | `04_run_outputs/flag-2027-nb-163i-rfsfxfvb-eval` | e163i_fvb | yes |  | a_fvbind |
-| `notebooks/thanhhuyen11/flag-2027-nb-192-fvbx3` | run_output | `04_run_outputs/flag-2027-nb-192-fvbx3` | t192_fvbx | yes |  | e163i_fvb, t163p_fvb |
+| `notebooks/thanhhuyen11/flag-2027-nb-192-fvbx3` | run_output | `04_run_outputs/flag-2027-nb-192-fvbx3` | t192_fvbx | yes | `fvbx_out/eval/index_gender_Bangla.txt` `997806bbce4ccbf0…` | e163i_fvb, t163p_fvb |
 | `notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval` | run_output | `04_run_outputs/flag-2027-nb-47rs-screen2-eval` | e47rs | yes |  | e112f1sx, e163i, e163i_fvb, t192_fvbx |
 | `notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval` | run_output | `04_run_outputs/flag-2027-nb-50cc-e2e-eval` | e50cc | yes |  | a_factor, a_fvbind, e112f0sx, e112f1sx |
 | `notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval` | run_output | `04_run_outputs/flag-2027-nb-65xbs-b3sx-eval` | e65xbs | yes |  | e112f0sx, e112f1sx |

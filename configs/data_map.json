@@ -780,24 +780,33 @@
    "producer": "t163p_fvb",
    "private": true,
    "voxblink": true,
-   "status": "not downloaded (only on Kaggle, account thanhhuyen11)",
-   "todo": [
-    "kaggle datasets download thanhhuyen11/flag2027-rfsfxfvb-art-p; check lora_C1.pt = b97372e3..."
-   ]
+   "status": "downloaded 19/11/2026 (kaggle datasets download, account thanhhuyen11); lora_C1.pt = ORIGINAL C1 b97372e3...; manifest_final.json lists the same sha256 for final_params.npz / lora_C1.pt / projector_Q.pt; copy for the Drive in the team folder FLAG2027_drive_upload/FourFusion_FLAG2027_data_dot2/03_checkpoints/rfx_fvb/",
+   "files": {
+    "final_params.npz": "7e205a5349586b7b5cf1696a6e545b455e7844cad828d15ea7b9e39f3dc43950",
+    "fuse_report.json": "312d812e526adabd69b02c78068d802bfbf0e6506897bede2ae6bb5bbb50bab8",
+    "lora_C1.pt": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c",
+    "manifest_final.json": "866030d6d8136a32bc369ad3a66124dd9283ea11a94ff496e9dd20e58247ef7e",
+    "projector_Q.pt": "8a27d4642d803a2162c3aebf458982accabce387213d818168c4155c5174c206",
+    "split.json": "97be1d64b930ec1581b63dbf1386ec74a2fab55a7023b0875b5a5afd8f052bc0"
+   }
   },
   "notebooks/ff/dp_train": {
    "path": "03_checkpoints/dp_towers",
    "class": "checkpoint",
    "producer": "dp_train",
    "private": true,
-   "status": "does not exist yet (DESIGN G5: xjf.py never saved the two towers)",
+   "status": "made 19/11/2026 on the team machine (tools/dp_train_local.py, ~13 CPU-minutes): consts and the six English arrays bit-identical to the submission run; stage dp_score on this dp_towers.pt gives bit-identical z for all four files (dp_score_compare.json); copy for the Drive in FLAG2027_drive_upload/FourFusion_FLAG2027_data_dot2/03_checkpoints/dp_towers/",
    "files": {
-    "xjf_scores.npz (English only)": "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779",
-    "consts.json": "356242de47674dfb0c3a245bf3c504ee9f37417e6928040313b155d6bade6324"
+    "out/dp_towers.pt": "b2fe1287e462fdee1c3a6873f631b6a203c93c7f5a99b6fd31b98ada45b6336a",
+    "out/xjf_scores.npz": "6a039fafe5c0f82003601fffa17615548498d8ee733ba6cf1e4d244356193980",
+    "out/consts.json": "356242de47674dfb0c3a245bf3c504ee9f37417e6928040313b155d6bade6324"
    },
    "required_files": [
     "out/dp_towers.pt"
-   ]
+   ],
+   "submission_reference": {
+    "xjf_scores.npz (English-only file used by the submission; the arrays equal those of out/xjf_scores.npz)": "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779"
+   }
   },
   "notebooks/phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4": {
    "path": "03_checkpoints/sigma_source",
@@ -911,10 +920,23 @@
    "producer": "t192_fvbx",
    "private": true,
    "voxblink": true,
-   "status": "not downloaded (only on Kaggle)",
-   "todo": [
-    "kaggle kernels output thanhhuyen11/flag-2027-nb-192-fvbx3 (v_fvb block)"
-   ]
+   "status": "downloaded 19/11/2026 (kaggle kernels output, account thanhhuyen11): fvbx_out/ (v_fvb block of the RFS bundle rows, v4 train voices and the four Evaluation lists); the kernel output also lists an empty imagebind_huge.pth (0 bytes, placeholder), not kept; copy for the Drive in FLAG2027_drive_upload/FourFusion_FLAG2027_data_dot2/04_run_outputs/",
+   "files": {
+    "fvbx_out/eval/index_gender_Bangla.txt": "997806bbce4ccbf003bcf5e50879a0420d838f8fc4e4ad5e297c4dad0eec4762",
+    "fvbx_out/eval/index_gender_English.txt": "f925f8519c107a1b9320e584696307688b4d46406cc92097ea48810ffa2b56f4",
+    "fvbx_out/eval/index_no_gender_Bangla.txt": "6632052a5d2b1b77167b098da8ecab09541cd46814b909e54bf18e6c4430ddec",
+    "fvbx_out/eval/index_no_gender_English.txt": "e626e5c384e6d6a121cf107c14e796e8a0770d8ba5c2fe7d62fc73f65ff7315d",
+    "fvbx_out/eval/voice_fvb_gender_Bangla.npy": "670d713c63c737e6dc048d7ab2640bdc6a9fa2dab7e334cbb7aaa8702133dc1f",
+    "fvbx_out/eval/voice_fvb_gender_English.npy": "9fc908425eac009d755f4875cc6f96b68ac24acceaecb7ab5705699267cfcffc",
+    "fvbx_out/eval/voice_fvb_no_gender_Bangla.npy": "82ef03f4583ccdb7a758c5af3edb6b529b1c46c2c6f8ccf855c882f4c1ac9da6",
+    "fvbx_out/eval/voice_fvb_no_gender_English.npy": "7f38b564c44842b8cb587c0d59d869b2a89dc63a46a59750a5e1d67b04506c4f",
+    "fvbx_out/ext_v1_complete_voice_fvb.npy": "0497157655567691949c685a1dec16c1aee17e7b5ae512254ba5931a8bbc2510",
+    "fvbx_out/ext_v2_complete_voice_fvb.npy": "51985d0d43d1822d90ff4d2899de9a268c8e66254e924a7f9f64c800b9d56133",
+    "fvbx_out/vb/voice_fvb.npy": "dba586f01de1baebef6c4624f80031bb82157f9dccb05e8907343f30d7a242aa",
+    "fvbx_out/voice_fvb_train.npy": "427d20249322ec38af2f9936a5024c146265e8831f9e86f9329f870f2731e50a",
+    "fvbx_out/vox/voice_fvb.npy": "c385ad5f6c47fe4d5c725c459c16ac60d42ff6f66951cbf07f654c356cf3f449",
+    "fvbx_out/vox2b/voice_fvb.npy": "6cd969f8fffbc08280a06f428ee6dd88d7a6cb3854fe70f83eff8118549cd5a0"
+   }
   },
   "notebooks/locnguyentruongan/flag-2027-nb-112s-f0s": {
    "path": "04_run_outputs/flag-2027-nb-112s-f0s",

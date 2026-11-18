@@ -10,12 +10,12 @@ outside git, and checks that need a GPU run.
 
 | # | item | needed by | how |
 |---|---|---|---|
-| 1 | Ten per-pair score files of mode (c) (≈ 18 MB, list and sha256 in `assembly/inputs/README.md`) | (c) | copy them to `FF_DATA/05_scores/` on the Drive, or into `assembly/inputs/` of a private copy of the repository (`.gitignore` keeps them out of the public tree) |
+| 1 | **Staged 19/11 and mode (c) run on them: byte-identical (upload left).** Ten per-pair score files of mode (c) (≈ 18 MB, list and sha256 in `assembly/inputs/README.md`) | (c) | copy them to `FF_DATA/05_scores/` on the Drive, or into `assembly/inputs/` of a private copy of the repository (`.gitignore` keeps them out of the public tree) |
 | 2 | Drive link | all | populate the Drive folder (`DATA.md`; batch 1 = raw / collected data, batch 2 = checkpoints, batch 3 = intermediates and per-pair scores), share it only with the organisers' addresses, and put the link at the top of `README.md` |
-| 3 | RFX′ artifact `thanhhuyen11/flag2027-rfsfxfvb-art-p` and the output of `thanhhuyen11/flag-2027-nb-192-fvbx3` (exist only on Kaggle, DESIGN G4) | (b) gender/Bangla | commands in `tools/PULL_MISSING_RUNS.md` §2; store as `FF_DATA/03_checkpoints/rfx_fvb/` and `FF_DATA/04_run_outputs/flag-2027-nb-192-fvbx3/`; record the sha256 in `configs/data_map.json` and regenerate `CHECKPOINTS.md` (`python tools/build_docs.py`) |
-| 4 | `dp_towers.pt` (DESIGN G5: the original DP script saved scores only) | (b) English | run stage `dp_train` once on the team machine (≈ 12 CPU minutes, `python runner/ffrun.py run --only dp_train`), check that its English scores equal `xjf_scores.npz` (`686c1188…`), upload to `FF_DATA/03_checkpoints/dp_towers/` |
-| 5 | The 20 DP feature arrays (DESIGN G13) | (b) English | upload from the team machine to the Drive path given in `DATA.md` |
-| 6 | Checkpoints of `CHECKPOINTS.md` §2 whose status is "saved copy expected on Drive" | (b) | upload the team copies (batch 2) |
+| 3 | **Done 19/11 (downloaded; upload left).** RFX′ artifact `thanhhuyen11/flag2027-rfsfxfvb-art-p` and the output of `thanhhuyen11/flag-2027-nb-192-fvbx3` (exist only on Kaggle, DESIGN G4) | (b) gender/Bangla | commands in `tools/PULL_MISSING_RUNS.md` §2; store as `FF_DATA/03_checkpoints/rfx_fvb/` and `FF_DATA/04_run_outputs/flag-2027-nb-192-fvbx3/`; record the sha256 in `configs/data_map.json` and regenerate `CHECKPOINTS.md` (`python tools/build_docs.py`) |
+| 4 | **Done 19/11 (made, bit-identical; upload left).** `dp_towers.pt` (DESIGN G5: the original DP script saved scores only) | (b) English | run stage `dp_train` once on the team machine (≈ 12 CPU minutes, `python runner/ffrun.py run --only dp_train`), check that its English scores equal `xjf_scores.npz` (`686c1188…`), upload to `FF_DATA/03_checkpoints/dp_towers/` |
+| 5 | **Staged 19/11 (`tools/stage_scores_and_dp_features.py`, sha256 checked; upload left).** The 20 DP feature arrays (DESIGN G13) | (b) English | upload from the team machine to the Drive path given in `DATA.md` |
+| 6 | **Staged 19/11 (`tools/stage_checkpoints.py`: 13 / 13 match; upload left).** Checkpoints of `CHECKPOINTS.md` §2 whose status is "saved copy expected on Drive" | (b) | upload the team copies (batch 2) |
 
 ## 2. Decisions recorded as exceptions (accept or close)
 

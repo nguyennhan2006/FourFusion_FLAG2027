@@ -2894,6 +2894,7 @@ cells. The patches applied before that push (`patch_163i_eval.py --data-root …
 | inputs | `chnnhnnguyn/external-data-mavceleb` and `ngnnguynchn/flag2027-raw-v4-p` stay attached as in the run, although they may be unused once `DATA_ROOT` is set (DESIGN G25; to test by smoke later) | none |
 | runner rewrite inside `CORE_SOURCE` | under `ffrun` the runner's string rewrite of `/kaggle/input` (`runner/ffcore.py` `stage_code`, `count_sub("/kaggle/input", vin)`) also hits one docstring line of the `CORE_SOURCE` literal (core line 1220: 'a recursive search of /kaggle/input with the 28.9 GB external tree'). The core module written to disk (`module_path.write_bytes(CORE_SOURCE.encode())`) then differs from the one that ran, so `FLAG_RF_E2E/run_report.json` `code_sha256` of a re-run is not `3cad7b8a83d3817c…` (the value of the saved run_report and of `stage.json` `origin.builder`). Not a change of `stage.ipy`; WP-A may skip rewrites inside `CORE_SOURCE`. | none: docstring only, no assert compares `code_sha256` |
 | variant pins in train mode | `variant.require_files` (sha256 of `lora_C1.pt`, `manifest_final.json`) now carry `applies_to: [saved, attached]`; an artifact made in the session (FF_MODE=train re-learns C1 and the projector) is checked by provenance (`variant.made_check`: made by `t163p_c5rl` from `t163l_orig`'s 210-clip / 70-person C1, `RFS_LORA_FIX` unset). Needs the runner to honour `applies_to` (WP-A todo). | none |
+| C1 policy (19/11, INTEGRATION_r2 M3) | `variant.made_check` rewritten: every C1 consumer is `resolve: saved_only` (r1 fixer), so an artifact made in the session carries the saved original `lora_C1.pt` (`b97372e3...`); the earlier requirement "C1 of a `t163l_orig` run made in the same session" was unreachable and is removed. `configs/variant_1354.json` `file_checks[lora_c1].rule` says the same. | none |
 | markdown | markdown cell 0 is the teammate's text about their RF-092 notebook (LoRA "C1c", 19 122 clips / 5 929 persons). Kept verbatim; it does not describe the artifact used here (original C1: 210 MAV-Celeb clips of 70 persons). | none (not executed) |
 
 ## e47rs
@@ -3314,6 +3315,15 @@ Every change against the code of the original run (fields: type, where, old, new
 - why: INTEGRATION_r1 M2 (one C1 for both Bangla files of 13.54)
 - effect on numbers: none for the 13.54 chain (the original run attached this very dataset)
 
+#### 8. raw-v4: unpack train_set.zip in the input view when no extracted view is mounted (19/11/2026 (integration fixer r2))
+
+- type: `path`
+- where: stage.ipy cell 2, after `def find_all(name)`; stage.json patch 3; raw-v4 input gets `"exclude": ["dev_set.zip", "dev_set"]`
+- old: the os.walk for `train_English.txt` next to `faces/` assumed the extracted Kaggle view; with FF_DATA (zips as delivered) modes (a) and (b) stopped at `assert v4, "thieu raw-v4 ..."` (hidden in smoke, the walk is under `if not SMOKE`)
+- new: when `train_English.txt` is absent and one `train_set.zip` is present, unpack it beside itself in the input view (dev_set.zip excluded, never opened); nothing happens when an extracted view is mounted
+- why: INTEGRATION_r2 B1; the same block as WP-F's t163b / t163l_orig
+- effect on numbers: none
+
 #### Not changed (deliberately)
 
 - FVB_ARMS=B2,IB0 (kapi parameter cell kept verbatim; IB0 runs after B2 is saved, about 8 minutes, not needed for 13.54).
@@ -3385,6 +3395,15 @@ Every change against the code of the original run (fields: type, where, old, new
 - new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t183_p*, t213_p*, t216_p3
 - why: INTEGRATION_r1 M2 (one C1 for both Bangla files of 13.54)
 - effect on numbers: none for the 13.54 chain (the original run attached this very dataset)
+
+#### 7. raw-v4: unpack train_set.zip in the input view when no extracted view is mounted (19/11/2026 (integration fixer r2))
+
+- type: `path`
+- where: stage.ipy cell 1, after `def find_all(name)`; stage.json patch 3; raw-v4 input gets `"exclude": ["dev_set.zip", "dev_set"]`
+- old: the os.walk for `train_English.txt` next to `faces/` assumed the extracted Kaggle view; with FF_DATA (zips as delivered) modes (a) and (b) stopped at `assert v4, "thieu raw-v4 ..."` (hidden in smoke, the walk is under `if not SMOKE`)
+- new: when `train_English.txt` is absent and one `train_set.zip` is present, unpack it beside itself in the input view (dev_set.zip excluded, never opened); nothing happens when an extracted view is mounted
+- why: INTEGRATION_r2 B1; the same block as WP-F's t163b / t163l_orig
+- effect on numbers: none
 
 #### Not changed (deliberately)
 
