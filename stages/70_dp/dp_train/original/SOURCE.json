@@ -1,0 +1,183 @@
+{
+ "stage": "dp_train",
+ "exactness": "local-script",
+ "local_run": {
+  "where": "team machine, Windows 11, CPU (torch CPU)",
+  "when": "2026-11-16 02:11:06 - 02:21:32 (+07:00)",
+  "command": "python Experiment/XJF-01/xjf.py",
+  "log": "original/xjf.log",
+  "rerun": "2026-11-16 21:52:01 - 22:03:44, same command after Bangla features existed (original/xjf_bn.log)"
+ },
+ "files": [
+  {
+   "path": "original/xjf.py",
+   "bytes": 11942,
+   "mtime": "2026-11-16 02:10:52",
+   "md5": "2c8c22e3b9ace778295b0cb029bd18fe",
+   "sha256": "cb93cd5276cf38678b4a08887de48b75437d79b800c276064f7340ff239c38da",
+   "git": "untracked (??) in the team repo",
+   "note": "mtime 02:10:52, runs 02:11:06 and 21:52:01: the version that ran",
+   "copied_from": "Experiment/XJF-01/xjf.py"
+  },
+  {
+   "path": "original/xjf.log",
+   "bytes": 1552,
+   "mtime": "2026-11-16 02:21:36",
+   "md5": "23ffd59176a79911a322f0a4c19db449",
+   "sha256": "24be09db27942fca704ba3a0e46ba1bcae92c0e9e96e0f6b55367bedf3f3522f",
+   "note": "console log of the run whose scores made the zip (English only)",
+   "copied_from": "Experiment/XJF-01/xjf.log",
+   "unredacted": {
+    "bytes": 1610,
+    "md5": "1050e3dcc277b64f7cbccbd14adcc5e9",
+    "sha256": "db23f92fe74ded417b81a6480ca79df8c889329c63e456d9fadcfda8d650df7c",
+    "kept_at": "team machine only (Experiment/XJF-01/xjf.log); not published"
+   },
+   "redaction": {
+    "why": "public repository hygiene: local user profile and drive layout of the team machine",
+    "rule": "byte-level replace, in this order, everything else unchanged",
+    "replacements": [
+     {
+      "new": "<team-repo>\\",
+      "old_description": "absolute path of the team repository folder on the team machine (drive letter and the user's folder name)",
+      "old_utf8_bytes": 41,
+      "old_utf8_sha256": "664ed80ec12af1a37f755263b420067b1798cc39df8cb96346484a06b0ea9368"
+     },
+     {
+      "new": "<python-site>\\",
+      "old_description": "user site-packages folder of Python 3.14 on the team machine (Windows user profile path)",
+      "old_utf8_bytes": 61,
+      "old_utf8_sha256": "db1545a1f6ab5e1e7408e27f2ed5ad337bc1042ff7c079e4aa713ac9fd8ed84f"
+     }
+    ],
+    "counts": {
+     "<team-repo>\\": 2,
+     "<python-site>\\": 0
+    },
+    "verify": "apply the replacements to the unredacted file to get these bytes",
+    "note": "the replaced strings are not written here (they are what is being hidden); their sha256 lets the team verify the redaction from the unredacted file"
+   }
+  },
+  {
+   "path": "original/xjf_bn.log",
+   "bytes": 1572,
+   "mtime": "2026-11-16 22:03:52",
+   "md5": "c1dd1b4bc8d061d20955cb85614942ef",
+   "sha256": "9b239119dd7a232563b40178be314d94898d2138764c26b7dab811702ed96739",
+   "note": "re-run 21:52-22:03 with the Bangla features too: same losses / EER; English scores bit-identical (S7 0.1, S8 K6)",
+   "copied_from": "Experiment/XJF-01/xjf_bn.log",
+   "unredacted": {
+    "bytes": 1630,
+    "md5": "8e739a7f387aabf24d040ee212a2376d",
+    "sha256": "a54d4c88c8c33845a7c255f55066b3d6daa69131ceb14a766aeed22687c56171",
+    "kept_at": "team machine only (Experiment/XJF-01/xjf_bn.log); not published"
+   },
+   "redaction": {
+    "why": "public repository hygiene: local user profile and drive layout of the team machine",
+    "rule": "byte-level replace, in this order, everything else unchanged",
+    "replacements": [
+     {
+      "new": "<team-repo>\\",
+      "old_description": "absolute path of the team repository folder on the team machine (drive letter and the user's folder name)",
+      "old_utf8_bytes": 41,
+      "old_utf8_sha256": "664ed80ec12af1a37f755263b420067b1798cc39df8cb96346484a06b0ea9368"
+     },
+     {
+      "new": "<python-site>\\",
+      "old_description": "user site-packages folder of Python 3.14 on the team machine (Windows user profile path)",
+      "old_utf8_bytes": 61,
+      "old_utf8_sha256": "db1545a1f6ab5e1e7408e27f2ed5ad337bc1042ff7c079e4aa713ac9fd8ed84f"
+     }
+    ],
+    "counts": {
+     "<team-repo>\\": 2,
+     "<python-site>\\": 0
+    },
+    "verify": "apply the replacements to the unredacted file to get these bytes",
+    "note": "the replaced strings are not written here (they are what is being hidden); their sha256 lets the team verify the redaction from the unredacted file"
+   }
+  },
+  {
+   "path": "original/report_english_run.txt",
+   "bytes": 1146,
+   "mtime": "2026-11-16 21:05:42",
+   "md5": "20ce4cb0d05aef81e7510041d775a560",
+   "sha256": "ba89e772a8809fc6b5c4bda0e4b00c5dbe91669bdbdc1b12eb1b25bbfa4ee28e",
+   "note": "report.txt of the 02:11 run (saved in out/bak_english_only/)",
+   "copied_from": "Experiment/XJF-01/out/bak_english_only/report.txt"
+  },
+  {
+   "path": "original/consts.json",
+   "bytes": 136,
+   "mtime": "2026-11-16 21:05:42",
+   "md5": "8b4650c4b9cf9d16ab2002757ad11bb1",
+   "sha256": "356242de47674dfb0c3a245bf3c504ee9f37417e6928040313b155d6bade6324",
+   "note": "out-of-fold z constants (identical in both runs)",
+   "copied_from": "Experiment/XJF-01/out/bak_english_only/consts.json"
+  }
+ ],
+ "stage_files": {
+  "xjf.py": {
+   "sha256": "4d177a9b6e46a5458aeea2fcf3e4e4b93051353aeea6cfa8df8e4a9dcacd08d9",
+   "from": "original/xjf.py + script_patches XJ1-XJ8"
+  }
+ },
+ "outputs_of_the_run": {
+  "xjf_scores.npz (English only, used by blend.py for the zip)": {
+   "bytes": 33960,
+   "sha256": "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779",
+   "arrays": {
+    "ids_no_gender_English": {
+     "dtype": "<U8",
+     "shape": [
+      392
+     ],
+     "sha256_tobytes": "113a8942f76cbdb2f937b38fcf349c008dd5e2004bf08581613a2f7993a4b752"
+    },
+    "cos_no_gender_English": {
+     "dtype": "float32",
+     "shape": [
+      392
+     ],
+     "sha256_tobytes": "3bed37e7ab8dc91509a4967961adc593d4347b6c714f128f71dfcf6626c8196b"
+    },
+    "z_no_gender_English": {
+     "dtype": "float32",
+     "shape": [
+      392
+     ],
+     "sha256_tobytes": "60c70ee55e06e428f74e9089e48e51b9d836d977466a0c8708ee7e7efb94ba03"
+    },
+    "ids_gender_English": {
+     "dtype": "<U8",
+     "shape": [
+      416
+     ],
+     "sha256_tobytes": "5b50b4caeb116b8022531b89f972623266a2882f947e9f5374647170086f2c4f"
+    },
+    "cos_gender_English": {
+     "dtype": "float32",
+     "shape": [
+      416
+     ],
+     "sha256_tobytes": "2f29551e3692d822cd746d0c61b07500f0c2f1456dc0b57686a3b4542feeff54"
+    },
+    "z_gender_English": {
+     "dtype": "float32",
+     "shape": [
+      416
+     ],
+     "sha256_tobytes": "65b089571a113c578a2c229e2b937583a924f7fae9c8b030ce6792fdd9fa4a78"
+    }
+   }
+  },
+  "xjf_scores.npz (re-run with Bangla keys; same English arrays)": {
+   "bytes": 96286,
+   "sha256": "6a039fafe5c0f82003601fffa17615548498d8ee733ba6cf1e4d244356193980"
+  },
+  "consts.json": {
+   "sha256": "356242de47674dfb0c3a245bf3c504ee9f37417e6928040313b155d6bade6324"
+  },
+  "towers": "NOT saved by the original script (gap G5); XJ8 adds out/dp_towers.pt"
+ }
+}

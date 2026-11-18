@@ -1,0 +1,111 @@
+{
+ "stage": "e112f1sx",
+ "run": "thanhhuyen11/flag-2027-nb-112f1sx-eval",
+ "exactness": "exact-package",
+ "files": [
+  {
+   "path": "06_flag-2027-nb-112f1sx-eval_redacted.ipynb",
+   "role": "exact executed notebook of the team package with the dev-score payload removed (tool ../../_tools/redact_dev_refs.py; see CHANGES.md)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/06_flag-2027-nb-112f1sx-eval.ipynb -> _tools/redact_dev_refs.py e112f1sx",
+   "bytes": 308886,
+   "md5": "52b38f25f1d839f66dcaf9571827a773",
+   "sha256": "1d3ee6080b1a7fcbc9201d20cf2bbb1fb7983306b83d84d66a711e4fb27e1628"
+  },
+  {
+   "path": "06_flag-2027-nb-112f1sx-eval.log",
+   "role": "Kaggle log of the run (team package)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/06_flag-2027-nb-112f1sx-eval.log",
+   "bytes": 24698,
+   "md5": "a8e315dd4d6b41c40765cc9b974a890b",
+   "sha256": "34cf5d230f17e33794a3aa0ac5aa7f22fceb2567a8b5e5d2c5c443ffdf8c2998"
+  },
+  {
+   "path": "kernel-metadata.json",
+   "role": "kernel-metadata.json of the exact push (kapi staging folder)",
+   "copied_from": "NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-112f1sx-eval_yjhyf1ze/kernel-metadata.json (from C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-112f1sx-eval_yjhyf1ze)",
+   "bytes": 1162,
+   "md5": "ec0a69c8705d7e33f2db340f0f9d0c52",
+   "sha256": "5b72610270a2c3616e9b07262ac402a19870099f44590b4332d4082296c834be"
+  }
+ ],
+ "push_witness": {
+  "time_utc+7": "2026-11-12 00:52",
+  "kapi_runs_line": 1485,
+  "staging_notebook": "_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-112f1sx-eval_yjhyf1ze/flag-2027-nb-112f1sx-eval.ipynb",
+  "staging_notebook_md5": "681eb47b0d70589baae3e5295565880f",
+  "staging_notebook_sha256": "c8f54248517b87fb34cf33e343d655dac487d66b57be974aed516b3551430f8e",
+  "md5_matches_kapi_runs": true,
+  "is_last_push_of_kernel": true,
+  "code_cells_identical_to_package_copy": true,
+  "original_temp_folder": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-112f1sx-eval_yjhyf1ze"
+ },
+ "package_runs_json_entry": {
+  "file": "notebooks/2_eval/06_flag-2027-nb-112f1sx-eval.ipynb",
+  "gpu": false,
+  "internet": false,
+  "datasets": [
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-cc5-oof-p",
+   "ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+   "ngnnguynchn/flag2027-dsel02-oof-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-evalu-f1s-p",
+   "ngnnguynchn/flag2027-facelora03-tables-p",
+   "dnq1209/flag2027-feats-tap01-voice-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "ngnnguynchn/flag2027-lab-avfull-p",
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-lab-vb-p"
+  ],
+  "kernel_inputs": [
+   "thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+   "thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+   "thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+   "thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+   "thanhhuyen11/flag-2027-nb-112f0sx-eval"
+  ],
+  "outputs": "outputs/flag-2027-nb-112f1sx-eval/",
+  "status": "thanhhuyen11/flag-2027-nb-112f1sx-eval has status \"KernelWorkerStatus.COMPLETE\""
+ },
+ "release_e2e_code": {
+  "path": "release/flag2027_e2e/code/e112f1sx.ipy",
+  "sha256": "54ef89e453ee3a7b3a19ba00ea758cb1b0b0e5f7aa1dbbd0500211ab5371dc53",
+  "equal_to_stage_ipy": false,
+  "equal_to_code_of_exact_notebook_with_patches": true
+ },
+ "redaction": {
+  "tool": "stages/50_eval/_tools/redact_dev_refs.py",
+  "exact_notebook": {
+   "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/06_flag-2027-nb-112f1sx-eval.ipynb",
+   "bytes": 386844,
+   "md5": "6c01fa8daeac294320b2f671de2eaf44",
+   "sha256": "4b746a07ce9b72e12cc253e364e5b4b5400a2c230e479e4e6eaccaf12b6b74ad",
+   "kept_privately_at": [
+    "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/06_flag-2027-nb-112f1sx-eval.ipynb",
+    "NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-112f1sx-eval_yjhyf1ze/ (pushed bytes, md5 681eb47b0d70589baae3e5295565880f, git-ignored)"
+   ],
+   "not_in_repo_because": "it embeds dev-phase score data (user rule: no dev data in the repository)"
+  },
+  "report": {
+   "cell": "print(\"[cell] 03 embedded code (= the local files, md5 below) - /kaggle/worki\", flush=True)",
+   "removed_member": "Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip",
+   "removed_md5": "ae902d1c7e87783bf88e345b459e39f2",
+   "code_zip_sha256_before": "d40f3b8606531936a45a815c01b5345ab42f1f343d1ebbaf262619fa15469cd3",
+   "code_zip_sha256_after": "b70f04635b0c5d9b299cec99828ef5478da5bf31db5dac76919015a50aa2f53a",
+   "members_kept": 38,
+   "stage": "e112f1sx",
+   "exact_sha256": "4b746a07ce9b72e12cc253e364e5b4b5400a2c230e479e4e6eaccaf12b6b74ad",
+   "exact_md5": "6c01fa8daeac294320b2f671de2eaf44",
+   "redacted_sha256": "1d3ee6080b1a7fcbc9201d20cf2bbb1fb7983306b83d84d66a711e4fb27e1628",
+   "redacted_md5": "52b38f25f1d839f66dcaf9571827a773"
+  }
+ },
+ "stage_ipy": {
+  "sha256": "a197100fc4b96a6aff5c7c46503c063c41c16750e53ed55fd0e00ee93b3f4ac9",
+  "code_cells": 8,
+  "built_from": "original/06_flag-2027-nb-112f1sx-eval_redacted.ipynb",
+  "algorithm": "code cells with non-empty source, CRLF -> LF, patches of stage.json applied (each must hit exactly `count` times), each cell rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' (= release/flag2027_e2e/build_notebook.py stage_cells)"
+ },
+ "exact_notebook_code_sha256": "54ef89e453ee3a7b3a19ba00ea758cb1b0b0e5f7aa1dbbd0500211ab5371dc53"
+}

@@ -1,0 +1,181 @@
+{
+ "id": "c37_vox2",
+ "group": "11_collect",
+ "title": "VoxCeleb2 identity list + sample keys of FLAG_37 (4 877 speakers; 29 251 face tracks, 38 345 voice clips)",
+ "kind": "collect",
+ "role_in_1354": "score",
+ "modes": {
+  "train": "not run by default: collect stages run only when forced (configs/modes.json collect_kind_runs_only_when_forced) and every collected dataset is read from FF_DATA/01_collected (class 'collected' is in always_saved_classes). Re-collecting: force the whole collect closure in ONE run, with a fresh FF_WORK and FF_USE_SAVED=collected (README.md of 11_collect): FF_FORCE=c37_vox2,c53_vox2b,c46_voxblink,c45_frames_vox2,c_frames_index,c63_frames,c87_frames_bridge,c63v_audio_cache. Forcing this stage alone mixes its new rows with the old frames / audio cache (sampling is not deterministic).",
+  "infer": "not run",
+  "assemble": "not run"
+ },
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "accelerator": "T4",
+  "minutes_original": 118,
+  "internet": true,
+  "secrets": [
+   "HF_TOKEN"
+  ],
+  "note": "minutes = the executed session shown in the notebook (12:34 -> 14:32 + install); earlier sessions: none seen (face chunks 0-12 and the voice tars all ran in this session). HF_TOKEN: only for the gated repo, optional at the time"
+ },
+ "origin": {
+  "run": "unknown slug (Kaggle 'fork of flag-2027-nb-37', executed 2026-10-06; run before kapi logged pushes)",
+  "exactness": "exact-executed-copy",
+  "source_file": "Experiment/VOX2-01/fork-of-flag-2027-nb-37.ipynb",
+  "builder": "kaggle/build_vox2_notebook.py (untracked) -> kaggle/FLAG_37_vox2_feats.ipynb (regenerated 12/11 with the HF ImageBind URL: code identical to the executed copy except that line)"
+ },
+ "inputs": [],
+ "outputs": {
+  "kernel": "notebooks/ff/c37_vox2",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-vox2-keys": {
+    "face_meta.csv": "feats_vox2/face_meta.csv",
+    "voice_meta.csv": "feats_vox2/voice_meta.csv"
+   }
+  }
+ },
+ "env": {
+  "VOX_NF": "6",
+  "VOX_NV": "8",
+  "FLAG_LOCAL": "0"
+ },
+ "env_note": "FLAG_LOCAL pinned to \"0\" so a value left in the caller's environment cannot switch the notebook into its local / smoke mode during a real run (smoke_env sets \"1\" under FF_SMOKE=1). FLAG_IN / FLAG_OUT would also bypass the runner's /kaggle paths if set by the caller and cannot be pinned here (a fixed value would be wrong): WP-A drops them from the inherited environment; never export them.",
+ "smoke_env": {
+  "FLAG_LOCAL": "1",
+  "VOX_SMOKE_IDS": "2",
+  "VOX_SMOKE_STUB_IB": "1"
+ },
+ "patches": [
+  {
+   "id": "imagebind_url",
+   "old": "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "new": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+   "count": 1,
+   "why": "Meta's ImageBind link is dead since 12/11/2026; pinned HF mirror of the same file (sha256 d6f6c22bedcc90708448d5d2fbb7b2db9c73f505dc89bd0b2e09b23af1b62157), as release/flag2027_e2e GLOBAL_PATCHES and the 12/11 builder",
+   "type": "url",
+   "effect": "none (same weights; FLAG_37's ImageBind arrays are not used by 13.54 anyway)"
+  },
+  {
+   "id": "hf_revision",
+   "old": "ZIP_PATH = \"datasets/ProgramComputer/voxceleb/vox2/vox2_mp4_{}.zip\"\nZIP_URL = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/main/vox2/vox2_mp4_{}.zip\"\nVOICE_URL = \"https://huggingface.co/datasets/gaunernst/voxceleb2-dev-wds/resolve/main/voxceleb2-dev-{:04d}.tar\"\nMETA_URL = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/main/vox2/vox2_meta.csv\"",
+   "new": "# [FF pin] HF revision parameter added for the reproduction repo (CHANGES.md): FF_HF_REVS = JSON {\"<repo id>\": \"<commit>\"};\n# unset, or a repo not listed -> \"main\" = the original behaviour (the original run read resolve/main, unpinned).\nFF_HF_REV = lambda repo: __import__(\"json\").loads(__import__(\"os\").environ.get(\"FF_HF_REVS\") or \"{}\").get(repo, \"main\")\nFF_HF_AT = lambda repo: \"\" if FF_HF_REV(repo) == \"main\" else \"@\" + FF_HF_REV(repo)   # [FF pin] HfFileSystem form of the same revision\n# [FF url] ProgramComputer/voxceleb became gated (auto-approved terms) after the run: token from the environment only, never\n# printed; no HF_TOKEN -> {} = the original anonymous request.\nFF_HF_HDR = {\"Authorization\": \"Bearer \" + __import__(\"os\").environ[\"HF_TOKEN\"]} if __import__(\"os\").environ.get(\"HF_TOKEN\") else {}\nZIP_PATH = \"datasets/ProgramComputer/voxceleb\" + FF_HF_AT(\"ProgramComputer/voxceleb\") + \"/vox2/vox2_mp4_{}.zip\"\nZIP_URL = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/\" + FF_HF_REV(\"ProgramComputer/voxceleb\") + \"/vox2/vox2_mp4_{}.zip\"\nVOICE_URL = \"https://huggingface.co/datasets/gaunernst/voxceleb2-dev-wds/resolve/\" + FF_HF_REV(\"gaunernst/voxceleb2-dev-wds\") + \"/voxceleb2-dev-{:04d}.tar\"\nMETA_URL = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/\" + FF_HF_REV(\"ProgramComputer/voxceleb\") + \"/vox2/vox2_meta.csv\"",
+   "count": 1,
+   "why": "HF revision parameter (gap G27) + the token header used by the two patches below; with FF_HF_REVS / HF_TOKEN unset every string equals the original",
+   "type": "pin",
+   "effect": "none"
+  },
+  {
+   "id": "auth_meta",
+   "old": "meta_f.write_bytes(get_retry(META_URL).content)",
+   "new": "meta_f.write_bytes(get_retry(META_URL, headers=FF_HF_HDR).content)",
+   "count": 1,
+   "why": "vox2_meta.csv of the gated repo: send the token (no HF_TOKEN = original anonymous request)",
+   "type": "url",
+   "effect": "none"
+  },
+  {
+   "id": "auth_resolve",
+   "old": "requests.get(ZIP_URL.format(k), headers={\"Range\": \"bytes=0-0\"}, allow_redirects=True, timeout=120, stream=True)",
+   "new": "requests.get(ZIP_URL.format(k), headers={\"Range\": \"bytes=0-0\", **FF_HF_HDR}, allow_redirects=True, timeout=120, stream=True)",
+   "count": 1,
+   "why": "resolve(): signed CDN URL of vox2_mp4_<k>.zip from the gated repo: send the token (the range reads on the signed URL need none)",
+   "type": "url",
+   "effect": "none"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "verify": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-vox2-keys",
+   "file": "face_meta.csv",
+   "sha256": "abf8cb53cd22415606393962a9f0c6ee5731843e8dc3ebee6e1366eb98ca4da2",
+   "mode": "informational"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-vox2-keys",
+   "file": "voice_meta.csv",
+   "sha256": "3db779d3e58e1bdda05ea460335b808c5e17b66d67aab32dc6adeb4fb84cdfa4",
+   "mode": "informational"
+  },
+  {
+   "artifact": "notebooks/ff/c37_vox2",
+   "file": "feats_vox2/feats_manifest.json",
+   "mode": "informational",
+   "expect": {
+    "identities": 4877,
+    "faces": 29251,
+    "voices": 38345,
+    "settings": {
+     "NF": 6,
+     "NV": 8,
+     "PER_VIDEO": 2,
+     "MAX_TARS": 260,
+     "CLIP_SEC": 12.0
+    }
+   }
+  }
+ ],
+ "external_sources": [
+  {
+   "repo": "gaunernst/voxceleb2-dev-wds",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": false,
+   "what": "VoxCeleb2 dev audio (AAC m4a) as 779 WebDataset tars",
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); licence text of this mirror's card not recorded (todo, WP-K LICENSES.md)"
+  },
+  {
+   "repo": "ProgramComputer/voxceleb",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": true,
+   "what": "VoxCeleb2 face tracks: vox2/vox2_mp4_{2..6}.zip (FLAG_37), official split archives vox2/vox2_dev_mp4_parta[a-i], vox2_dev_aac_parta[a-h], vox2_test_{mp4,aac}.zip, vox2/vox2_meta.csv",
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded (todo, WP-K LICENSES.md)"
+  }
+ ],
+ "models": [
+  "speechbrain/spkrec-ecapa-voxceleb (unpinned); licence: licence per model card, not re-checked",
+  "nateraw/vit-age-classifier (unpinned); licence: licence per model card, not re-checked",
+  "audeering/wav2vec2-large-robust-24-ft-age-gender (unpinned); licence: CC BY-NC-SA 4.0",
+  "ImageBind-huge (patched URL, sha256 d6f6c22b…); licence: weights CC BY-NC-SA 4.0",
+  "yangwang825/ecapa-tdnn-vox2 (organiser-space ECAPA, unpinned); licence: licence per model card, not re-checked",
+  "VGG-Face dag (robots.ox.ac.uk/~albanie, unverified link); licence: licence not recorded (research release), not re-checked",
+  "note: none of FLAG_37's arrays (vgg, btc, ibv, iba, ecapa192, w2v2*) enters 13.54; only the two key lists do"
+ ],
+ "run_policy": "Sampling is not deterministic (broken tar streams / failed range reads are skipped, spares fill in): a re-collection gives other rows than the arrays every later stage was trained on, so the 13.54 chain ALWAYS uses the collected data (skip_with). 11 face range reads failed in the original run (feats_manifest.json 'broken').",
+ "private": true,
+ "private_why": "VoxCeleb2-derived keys and features; aligned with configs/data_map.json (vox2-keys private) and the private FF_DATA share",
+ "todo": [
+  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
+  "ProgramComputer/voxceleb is gated (auto-approved terms; 403 with the team token on 18/11, team run log, internal provenance): a re-collection needs HF_TOKEN of an account that accepted the terms. 13.54 itself never needs it (collected data are the raw input).",
+  "Original account / slug unknown (forked notebook, pushed by hand before kapi logging); the id rule for runs with an unknown slug: notebooks/ff/c37_vox2 used. The 4 datasetVersion ids in the notebook metadata (19835728, 20013233, 20060374, 20374888) were attached but the code reads /kaggle/input only to resume from an earlier feats_vox2 output.",
+  "The original dataset flag2027-vox2-keys also held a hand-written README.md (309 B); the only copy of the dataset is kaggle_upload/flag2027-vox2-keys/ (README.md, face_meta.csv, voice_meta.csv) on the team machine: WP-A should point the data_map entry at it (source for FF_DATA/01_collected/voxceleb2_flag37_keys). The export carries only the two csv files."
+ ],
+ "notes": [
+  "Inert settings of the FLAG_12 cell copied into cell 1 (SPLIT_FILTER, EXT_SOURCES, ZIP_PREFIXES, ONLY_UNDER) are never read by this notebook: no organiser or dev data is touched.",
+  "Downstream: l42_vox2_lid, f41_t3enc_vox2 (via flag2027-vox2-keys), b_lab_data (packs feats_vox2/{face,voice}_meta.csv), c53 (reads the keys through lab-data), c45 / c63v (through lab-data).",
+  "No skip_with: the runner serves skip_with as a saved copy of the stage's KERNEL output, and no such copy exists (the FF_DATA/01_collected folders hold the exported datasets, which configs/data_map.json maps by their own ids). The stage is skipped by default because collect stages run only when forced.",
+  "feats_manifest.json 'broken.image' is a list of 11 failed face range reads (not a number): not compared by verify.",
+  "vox2_meta.csv (official VoxCeleb2 meta, HF ProgramComputer/voxceleb vox2/vox2_meta.csv) is downloaded into FLAG_CACHE (stage.ipy line 561), not into the output; c53 reads it into memory only. The copy under FF_DATA (configs/data_map.json raw/voxceleb2_vox2_meta, sha256 9a4f437f…, team copy Experiment/SCALE-CC-01/vox2_meta.csv) is therefore raw input with no producing stage by design; it is not proven to be byte-identical to the file read on 06/10 (c37) or 12/10 (c53), whose manifests record only the URL."
+ ],
+ "stage_ipy": {
+  "sha256": "aa7534c8d828940529c47929c2212f7eee13685be2af613f18c2fb5bc79b3b89",
+  "cells": 9,
+  "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
+  "original": "original/fork-of-flag-2027-nb-37.ipynb"
+ },
+ "smoke_prerequisite": {
+  "why": "smoke uses the notebook's own local mode (FLAG_LOCAL=1 skips the !pip cell; VOX_SMOKE_IDS applies only with it), so the packages of the install cell must be present beforehand. No Docker needed.",
+  "install": [
+   "pip install -U \"speechbrain>=1.1.1\" iopath ftfy omegaconf fvcore av",
+   "pip install --no-deps \"git+https://github.com/facebookresearch/ImageBind\"   (the run was unpinned; the pinned image uses @53680b02d7e37b19b124fa37bae4b6c98c38f5be)"
+  ]
+ }
+}

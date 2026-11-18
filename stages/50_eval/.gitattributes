@@ -1,0 +1,3 @@
+# Keep every byte as built: sha256 of stage.ipy, original/*, tree/* and the stage.json / SOURCE.json files are recorded in
+# stage.json, SOURCE.json and repo_map/build/WP-G.md; two tree/ files are CRLF on purpose (byte copies of what ran).
+* -text

@@ -1,0 +1,109 @@
+{
+ "id": "c_frames_index",
+ "group": "11_collect",
+ "title": "Pack the frame-fetch index ngnnguynchn/flag2027-frames-index-p (FLAG_46 selection / timestamps / shard_listing / face_meta; FLAG_53 listing_{dev,test}_mp4.parquet / face_meta)",
+ "kind": "collect",
+ "role_in_1354": "score",
+ "modes": {
+  "train": "not run by default: collect stages run only when forced (configs/modes.json collect_kind_runs_only_when_forced) and every collected dataset is read from FF_DATA/01_collected (class 'collected' is in always_saved_classes). Re-collecting: force the whole collect closure in ONE run, with a fresh FF_WORK and FF_USE_SAVED=collected (README.md of 11_collect): FF_FORCE=c37_vox2,c53_vox2b,c46_voxblink,c45_frames_vox2,c_frames_index,c63_frames,c87_frames_bridge,c63v_audio_cache. Forcing this stage alone mixes its new rows with the old frames / audio cache (sampling is not deterministic). c_frames_index reads the kernel output of c53_vox2b (listing_{dev,test}_mp4.parquet): it runs in the same run as c53, or from FF_DATA/01_collected/voxceleb2_flag53 once that folder also holds the two listing parquets (c53 skip_with).",
+  "infer": "not run",
+  "assemble": "not run"
+ },
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "accelerator": "none",
+  "minutes_original": null,
+  "internet": false,
+  "secrets": [],
+  "note": "seconds"
+ },
+ "origin": {
+  "run": "none (packed by hand on 12/10/2026; the packing script is not kept)",
+  "exactness": "new",
+  "source_file": null,
+  "builder": null
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/ff/c46_voxblink"
+  },
+  {
+   "artifact": "notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/c_frames_index",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-frames-index-p": "frames_index"
+  }
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "verify": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p",
+   "file": "vb/selection.csv",
+   "sha256": "93aedb71809d328d8ce4dc1a1f9698f358d66bb79d01d5ea1b9bd056a7db7900",
+   "mode": "informational (the stage compares the 7 sha256 itself; FRAMES_INDEX_STRICT=1 makes a mismatch fatal)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p",
+   "file": "vb/timestamps.csv",
+   "sha256": "119e953cf430251ecea1b33c049eb6379b7cea9f041edbad3dac5792ca56f279",
+   "mode": "informational (the stage compares the 7 sha256 itself; FRAMES_INDEX_STRICT=1 makes a mismatch fatal)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p",
+   "file": "vb/shard_listing.csv",
+   "sha256": "538a68f57651f8d134d2eec225c3ba9d4a7a1b37eb2e970606101adf00046003",
+   "mode": "informational (the stage compares the 7 sha256 itself; FRAMES_INDEX_STRICT=1 makes a mismatch fatal)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p",
+   "file": "vb/face_meta.csv",
+   "sha256": "60ee5ca25cc918656be5422e27d997480c89178415053045238754a67f57ecd5",
+   "mode": "informational (the stage compares the 7 sha256 itself; FRAMES_INDEX_STRICT=1 makes a mismatch fatal)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p",
+   "file": "vox2b/listing_dev_mp4.parquet",
+   "sha256": "49ac66949802fb5bbdf4512719e87e13b424973ca569ba54e4f80235e28822bd",
+   "mode": "informational (the stage compares the 7 sha256 itself; FRAMES_INDEX_STRICT=1 makes a mismatch fatal)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p",
+   "file": "vox2b/listing_test_mp4.parquet",
+   "sha256": "6b560e7733249460b01c11b87876674c26f2510f7ef30fdf07a5b8044d29fb2e",
+   "mode": "informational (the stage compares the 7 sha256 itself; FRAMES_INDEX_STRICT=1 makes a mismatch fatal)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p",
+   "file": "vox2b/face_meta.csv",
+   "sha256": "2a06d5204f5c6719862c53dcab07f0ac495268eef2efdfb2a8faedbf465593ac",
+   "mode": "informational (the stage compares the 7 sha256 itself; FRAMES_INDEX_STRICT=1 makes a mismatch fatal)"
+  }
+ ],
+ "external_sources": [],
+ "models": [],
+ "run_policy": "Deterministic copy. Equal to the published dataset when its inputs are the collected FLAG_46 / FLAG_53 outputs.",
+ "private": true,
+ "todo": [
+  "Runs from collected data only when FF_DATA/01_collected/voxceleb2_flag53/feats_vox2b/ also holds listing_dev_mp4.parquet and listing_test_mp4.parquet (c53 skip_with_requires) and configs/data_map.json has a separate entry for notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid (WP-A); otherwise run it in the same run as c53_vox2b (closure)."
+ ],
+ "notes": [
+  "Published zip kaggle/flag2027-frames-index-p.zip: 25 860 062 B, sha256 a9be8284b387c5c92ae7082f0c9b827d3bac756f992dc922a2173a72ef33f735, 7 members (vb/ dated 2026-10-10 08:03, vox2b/ 2026-10-12 12:20-12:33).",
+  "No skip_with: the runner serves skip_with as a saved copy of the stage's KERNEL output, and no such copy exists (the FF_DATA/01_collected folders hold the exported datasets, which configs/data_map.json maps by their own ids). The stage is skipped by default because collect stages run only when forced."
+ ],
+ "stage_ipy": {
+  "sha256": "dc0379730b7dafa43640476015121c713ade1e97a7f8bd03011c05c96c2654af",
+  "cells": 2,
+  "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
+  "original": null
+ }
+}

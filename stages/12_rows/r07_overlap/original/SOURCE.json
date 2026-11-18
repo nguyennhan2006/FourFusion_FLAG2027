@@ -1,0 +1,57 @@
+{
+ "copied_from": {
+  "Experiment/SET-07/overlap.py": "git a89a071 (unchanged since)",
+  "lib/flag_v2.py": "git show a89a071:kaggle/flag_v2.py (LF; the working copy differs only by CRLF line ends)",
+  "lib/flag_lib.py": "git show a89a071:kaggle/flag_lib.py (= 8544b3b)"
+ },
+ "original_output": {
+  "Experiment/SET-07/overlap.csv": "153 persons; flagged v1_complete:shaukat_tarin (max_cos_v4train 0.650) and v2_complete:id0073 (0.898); highest not flagged 0.621; not copied (identity-linkage table)"
+ },
+ "stage": "r07_overlap",
+ "files": [
+  {
+   "path": "original/overlap.py",
+   "bytes": 2712,
+   "md5": "529d57a96e4cbf83ca6c9faea2a4b534",
+   "sha256": "3e2da18c48f20b20e1ab8d501f012df7b45ad2cdaab931877e9e5cf3d211fce2"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/00_data.py",
+   "bytes": 2724,
+   "md5": "745fcda656e140fb53f566ac6ea564bc",
+   "sha256": "c7a224f86d98bd147a86bb360cf680295225ee51be848d5245eee8179968f960"
+  },
+  {
+   "path": "cells/01_overlap.py",
+   "bytes": 3909,
+   "md5": "3c6a4534721ebbebdb021eaa9cdba029",
+   "sha256": "29c7721ccc690232b33b1c75d5d2baea3b3788b98443d9f265e625debdc96fdb"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 1020,
+   "md5": "6406b72eb636e56f7d07acb885a4fba7",
+   "sha256": "62105ee52b72ad9782fd68a35b098ade87062b5f234db9880d4e447dc496fc0c"
+  },
+  {
+   "path": "lib/flag_lib.py",
+   "bytes": 16737,
+   "md5": "a028937c8ebaa701437490899bd9effd",
+   "sha256": "6941a07811bca54575f06bec5a1e67776e9d13dda887a8e6efa8fb9b6d104bc6"
+  },
+  {
+   "path": "lib/flag_v2.py",
+   "bytes": 30815,
+   "md5": "5cb9ab7cf4b45d2024677d8961f3d864",
+   "sha256": "306114d38412d8029e12465784fe5ed5ba25bab6a0ebd379f84c88f181ae8691"
+  },
+  {
+   "path": "overlap.py",
+   "bytes": 5922,
+   "md5": "0eac5b83906cbc8769065ff03d5d9151",
+   "sha256": "20b7b847f3c20bb2e379500815a8206c3db0ec5b2340506dab54e21ec49bc226"
+  }
+ ]
+}

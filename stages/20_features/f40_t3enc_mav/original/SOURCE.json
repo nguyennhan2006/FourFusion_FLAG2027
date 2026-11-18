@@ -1,0 +1,18 @@
+{
+ "stage": "f40_t3enc_mav",
+ "files": [
+  {
+   "copy": "original/flag-2027-nb-40-t3enc-01.ipynb",
+   "source": "Experiment/T3ENC-01/flag-2027-nb-40-t3enc-01.ipynb",
+   "obtained_by": "copy of the executed notebook (with outputs) downloaded by the team (not in git)",
+   "bytes": 108716,
+   "md5": "7c337af288430dbf175c7d082a7c6849",
+   "sha256": "8ae72d898e46bdebf84ec314c1c54d2ce7fd8aba2d167d2a187af5f158accfcf"
+  }
+ ],
+ "run": "slug unknown (run 7/10/2026; dataSources 19835728, 20013233, 20060374 in the notebook metadata)",
+ "evidence": [
+  "Its 8 code cells are identical to kaggle/FLAG_40_t3enc_mav.ipynb (builder output, md5 113505bc...).",
+  "The Evaluation run 50cc re-extracted the train rows with the same encoders: t3_drift cos [1.0, 1.0] for all four arrays (e2e_manifest.json of 50cc, S2 A07)."
+ ]
+}

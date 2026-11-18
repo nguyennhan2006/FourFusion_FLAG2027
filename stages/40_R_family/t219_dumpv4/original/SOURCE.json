@@ -1,0 +1,133 @@
+{
+ "stage": "t219_dumpv4",
+ "run": "phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4",
+ "files": [
+  {
+   "path": "t219_dumpv4/original/flag-2027-nb-219-fusenet-dumpv4.redacted.ipynb",
+   "bytes": 424441,
+   "sha256": "c1340f59cfd43768d9d0a7363beee5e87b0d9b06514d3cf176925c69dcaff97a",
+   "md5": "6fdf2cb8beaa303a52090447e7873971",
+   "role": "rebuild source of stage.ipy (redacted copy of the exact Kaggle push staging notebook)",
+   "derived_from": {
+    "path": "NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-219-fusenet-dumpv4_a1nyz4zf/flag-2027-nb-219-fusenet-dumpv4.ipynb",
+    "temp_original": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-219-fusenet-dumpv4_a1nyz4zf/flag-2027-nb-219-fusenet-dumpv4.ipynb",
+    "bytes": 502889,
+    "md5": "6ad5b31c797b6323120eec0cc4dd727d",
+    "sha256": "7a84b0ccaad7beea633e7cbd291c91067e1b44515493c151409a05622bac22d8",
+    "md5_equals_kapi_runs": true
+   },
+   "redactions": [
+    {
+     "cell": 4,
+     "kind": "dev-exclusion",
+     "what": "member Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip removed from the code zip CODE_B64 (other members copied byte for byte)",
+     "original_literal_chars": 366708,
+     "original_literal_sha256": "7e736b66eedd540537b647cef6e15fe32844f8363b7cca43e515ff601ff73328",
+     "original_zip_sha256": "41a6e0b66b14fc53c25ddeac6b4d98ff1ccda1dca39ca710ff59eb811aa4a3f3",
+     "removed_member_sha256": "b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d",
+     "removed_member_md5": "ae902d1c7e87783bf88e345b459e39f2",
+     "removed_member_bytes": 91043,
+     "new_zip_sha256": "1b3c2de9b49625706711a9981e76470ac9a071efba3d6b2340c716ef284e9f8b",
+     "new_literal_chars": 288260,
+     "new_literal_sha256": "2f0831611890f22c3eb1483d616d56fed60f9bc9c9ff50e8df00d0f55902dce6"
+    }
+   ]
+  },
+  {
+   "path": "t219_dumpv4/original/kernel-metadata.json",
+   "bytes": 1257,
+   "sha256": "af4df8dbaeb941bc68a00a03a16ba9bdcc4e7ba13a6468dd110dc691c42b5702",
+   "md5": "d04b37660e24d83cc4e7b1a6b17b88e1",
+   "role": "kernel-metadata.json of the push (verbatim)",
+   "copied_from": "NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-219-fusenet-dumpv4_a1nyz4zf/kernel-metadata.json"
+  },
+  {
+   "path": "t219_dumpv4/original/run_output/flag-2027-nb-219-fusenet-dumpv4.log",
+   "bytes": 21581,
+   "sha256": "7f5cf32531c79ff2549ab98f5a2fe93e99a43a12d6e61e4195fa22a3e43f1152",
+   "md5": "29cec60655691d3fcf325f42ca7f9429",
+   "role": "output of the original run (verbatim copy)",
+   "copied_from": "Experiment/XJF-01/out/dumpv4/flag-2027-nb-219-fusenet-dumpv4.log"
+  },
+  {
+   "path": "t219_dumpv4/original/run_output/xjfdump_report.txt",
+   "bytes": 1154,
+   "sha256": "f48ab778076cec322dfd90f7f82c5878aaec1366ddf6085a6f3c8412fd52e96a",
+   "md5": "d51f36aa7b180533d07f1fecf08f9dd7",
+   "role": "output of the original run (verbatim copy)",
+   "copied_from": "Experiment/XJF-01/out/dumpv4/sp/out/safe04/xjfdump_report.txt"
+  },
+  {
+   "path": "t219_dumpv4/original/OUTPUTS.sha256",
+   "bytes": 600,
+   "sha256": "8b09d3ad09c83d9c4d7e2c148ddcc49ca76132681e3d7c7eace085ac3f8c8579",
+   "md5": "a015bb3c4d430ab422bf1c1cc71d598a",
+   "role": "expected / saved output hashes (evidence)"
+  }
+ ],
+ "kapi_runs": {
+  "file": "kaggle/kapi_runs.jsonl",
+  "line": 1887,
+  "time": "2026-11-16 11:00",
+  "account": "phantrnhuyntrn",
+  "source": "kaggle/FLAG_219_fusenet_report.ipynb",
+  "notebook_md5_pushed": "6ad5b31c797b6323120eec0cc4dd727d",
+  "gpu": false,
+  "datasets": [
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-lab-vb-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-e2e-dev-p",
+   "ngnnguynchn/flag2027-cc5-oof-p",
+   "ngnnguynchn/flag2027-dsel02-oof-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "phanvnhtrng/flag2027-feats-ls-b3s-p",
+   "ngnnguynchn/flag2027-facelora03-tables-p",
+   "ngnnguynchn/flag2027-lab-avfull-p",
+   "quynhnhu82/flag2027-feats-ls-c5s-p",
+   "dnq1209/flag2027-feats-tap01-voice-p",
+   "ngnnguynchn/flag2027-feats-screen2-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+   "ngnnguynchn/flag2027-t3s01-tables-p"
+  ],
+  "kernels": [
+   "phantrnhuyntrn/flag-2027-nb-213-seedrep-p1",
+   "phantrnhuyntrn/flag-2027-nb-213-seedrep-p2",
+   "phantrnhuyntrn/flag-2027-nb-216-seedrep3"
+  ],
+  "is_last_push_of_kernel": true
+ },
+ "kernel_metadata": {
+  "id": "phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4",
+  "enable_gpu": false,
+  "enable_internet": false,
+  "machine_shape": "",
+  "is_private": true,
+  "dataset_sources": [
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-lab-vb-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-e2e-dev-p",
+   "ngnnguynchn/flag2027-cc5-oof-p",
+   "ngnnguynchn/flag2027-dsel02-oof-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "phanvnhtrng/flag2027-feats-ls-b3s-p",
+   "ngnnguynchn/flag2027-facelora03-tables-p",
+   "ngnnguynchn/flag2027-lab-avfull-p",
+   "quynhnhu82/flag2027-feats-ls-c5s-p",
+   "dnq1209/flag2027-feats-tap01-voice-p",
+   "ngnnguynchn/flag2027-feats-screen2-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+   "ngnnguynchn/flag2027-t3s01-tables-p"
+  ],
+  "kernel_sources": [
+   "phantrnhuyntrn/flag-2027-nb-213-seedrep-p1",
+   "phantrnhuyntrn/flag-2027-nb-213-seedrep-p2",
+   "phantrnhuyntrn/flag-2027-nb-216-seedrep3"
+  ]
+ }
+}

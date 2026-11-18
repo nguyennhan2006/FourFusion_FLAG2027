@@ -1,0 +1,25 @@
+{
+ "mavceleb_v1_complete-001.zip": [
+  12245623417,
+  "2082a9ee5f7d3634f687d682e98cd223606a5b01debc90c3e7ab566a9f86512b"
+ ],
+ "mavceleb_v2_complete-002.zip": [
+  13477476090,
+  "daff513527d7cea698243594a18795cab6d47aea64d64c3c74035154abd6246c"
+ ],
+ "counts": {
+  "mavceleb_v1_complete-001": {
+   "jpg": 302492,
+   "wav": 19556,
+   "csv": 1,
+   "files": 322049
+  },
+  "mavceleb_v2_complete-002": {
+   "jpg": 371626,
+   "wav": 20715,
+   "csv": 0,
+   "files": 392341
+  }
+ },
+ "mavceleb_v1_complete-001/meta_v1.csv": "3b311af585dd3e02050c551bcc889cbc47f742f7893e6ac48281d0ca85a8da53"
+}

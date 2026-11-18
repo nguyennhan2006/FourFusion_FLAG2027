@@ -1,0 +1,22 @@
+21:52:01 FLAG train (6485, 5120) (6485, 6528) persons 70
+21:52:02 MAV v1: ArcFace cos same speaker 0.539 / other 0.028 (7580 faces, 19556 voices)
+21:52:14 MAV v1: dropped 13 voice files flagged Bengali
+21:52:14 MAV v2: ArcFace cos same speaker 0.561 / other 0.027 (8953 faces, 20715 voices)
+21:52:28 MAV v2: dropped 45 voice files flagged Bengali
+21:52:29 external (16533, 5120) (40213, 6528) persons 154 voice rows with a face 40213
+<team-repo>\Experiment\XJF-01\xjf.py:128: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:839.)
+  return f, v, float(loss)
+21:54:05 fold 0: 14 held-out persons, last loss 1.054
+21:55:19 fold 1: 14 held-out persons, last loss 1.312
+21:56:15 fold 2: 14 held-out persons, last loss 0.990
+21:57:21 fold 3: 14 held-out persons, last loss 1.291
+21:58:23 fold 4: 14 held-out persons, last loss 1.174
+21:58:23 OOF FLAG train no_gender: EER 25.67 | mean 0.2396 sd 0.2452 (30000 trials)
+21:58:23 OOF FLAG train gender: EER 34.64 | mean 0.2915 sd 0.2184 (30000 trials)
+22:03:41 final models: 10 last losses [1.24, 1.008, 1.104]
+22:03:43 Evaluation no_gender_English: 392 trials scored
+22:03:43 Evaluation no_gender_Bangla: 802 trials scored
+22:03:44 Evaluation gender_English: 416 trials scored
+22:03:44 Evaluation gender_Bangla: 716 trials scored
+22:03:44 saved <team-repo>\Experiment\XJF-01\out\xjf_scores.npz

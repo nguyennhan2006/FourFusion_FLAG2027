@@ -1,0 +1,20 @@
+{
+ "stage": "dp_score",
+ "exactness": "new",
+ "what": "No original: on the team machine xjf.py scored the Evaluation trials in memory right after training (lines 166-173). dp_score.py scores them from the checkpoint that the repo copy of xjf.py now saves (script patch XJ8 of stage dp_train).",
+ "verbatim_from": {
+  "file": "Experiment/XJF-01/xjf.py (sha256 cb93cd5276cf38678b4a08887de48b75437d79b800c276064f7340ff239c38da)",
+  "lines": {
+   "28-45": "l2, csv_feats, face_cat, voice_cat",
+   "94": "T",
+   "100-105": "Tower",
+   "131-133": "cos",
+   "166-173": "scoring loop (re-written around the loaded towers)"
+  }
+ },
+ "stage_files": {
+  "dp_score.py": {
+   "sha256": "34d3f7342a60c1a43755eb716bddd2320f893b5a32caf6e05579345d27196487"
+  }
+ }
+}

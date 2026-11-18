@@ -1,0 +1,308 @@
+[{"stream_name":"stderr","time":7.423197589,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.423253139,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":8.51295236,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.51298656,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.51299126,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.512995319,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.153402556,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.153441806,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.153446396,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.153449876,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":10.341381433,"data":"[cell] 01 run parameters (kapi --env): environment variables of this r\n"}
+,{"stream_name":"stdout","time":10.368573782,"data":"[boot] FLAG_184_factor_report | python 3.13.18 | start 2026-11-13 03:05:04\n"}
+,{"stream_name":"stdout","time":10.369183452,"data":"[cell] env\n"}
+,{"stream_name":"stdout","time":22.392271144,"data":"03:05:16 [ 0.0h] experiment CLEANTUNE-01 (ct01r2) | folds [] | split dev (/kaggle/input/datasets/ngnnguynchn/flag2027-e2e-dev-p/e2edev, built 2026-10-10 21:00) | lab data built 2026-10-08 21:02 | eda 2026-09-29 08:06 | GPUs ['none (CPU: slow)'] | CPUs 4 | torch 2.11.0+cpu | budget 10.5 h\n"}
+,{"stream_name":"stdout","time":22.51205485,"data":"[cell] setup: code + data links\n"}
+,{"stream_name":"stdout","time":23.899411749,"data":"  e2f63ea92aa5c62e66a034a20a5ab493  kaggle/build_l0_notebooks.py\n"}
+,{"stream_name":"stdout","time":23.899454539,"data":"  e288a49c7f77f9a22e9cce00aead459b  Experiment/SAFE-04/lab_streams.py\n"}
+,{"stream_name":"stdout","time":23.899459579,"data":"  7166b20f70f25f342a22bfcadc5883ac  Experiment/SAFE-04/rel_sweep.py\n"}
+,{"stream_name":"stdout","time":23.899463359,"data":"  75899e4caf38b38bbf953da6b5b62a04  Experiment/SAFE-04/rel_sweep2.py\n"}
+,{"stream_name":"stdout","time":23.899466529,"data":"  557afcb255ab4f1b4696296633d87a88  Experiment/SAFE-04/rel_sweep5.py\n"}
+,{"stream_name":"stdout","time":23.899470269,"data":"  402aaf561639e75409f2ead79d78a939  Experiment/SAFE-04/rel.py\n"}
+,{"stream_name":"stdout","time":23.899473499,"data":"  e3260d3276cfdca8eb08dbcfd26f19aa  Experiment/VOX2-01/run_bridge.py\n"}
+,{"stream_name":"stdout","time":23.899476639,"data":"  fd780c6f94762c24b9d9cf4db49df181  Experiment/T3ENC-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899479699,"data":"  413e0779662fc2be0b5fb75930129e5b  Experiment/ALLNEG-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899483029,"data":"  f2a9a4f099496905ea93d9cf44025860  Experiment/BIGB-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899485999,"data":"  2e2913fb5310c53191ead982de51582e  Experiment/SCALE-VB/run.py\n"}
+,{"stream_name":"stdout","time":23.899488999,"data":"  2e99d3b90dc56675ca4b36ded1a83e96  Experiment/VBSEL-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899509169,"data":"  37f4e8670949bc32f086003a593f9036  Experiment/VBSEL-01/vox2_sa_speakers.json\n"}
+,{"stream_name":"stdout","time":23.899512929,"data":"  4a40fb17c9585c2f66b177f5b529b777  Experiment/ENBASE-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899516029,"data":"  db5d4fbbd5917d4813bd96797aa61058  Experiment/SAFE-04/stream_gate.py\n"}
+,{"stream_name":"stdout","time":23.899519449,"data":"  fa8ce8f652bf3ee13597e872fda40b83  Experiment/SAFE-04/lab_fuse.py\n"}
+,{"stream_name":"stdout","time":23.899522789,"data":"  3709cf4c175e60945144ec7c4198dbd0  Experiment/STACK-02/run.py\n"}
+,{"stream_name":"stdout","time":23.899526329,"data":"  cd867144bf43f0283003a8f1ba685cc0  Experiment/STACK-02/pools.py\n"}
+,{"stream_name":"stdout","time":23.899529869,"data":"  bbab2a531702ab631652d21e25a825d2  Experiment/STACK-02/eligible.json\n"}
+,{"stream_name":"stdout","time":23.899533549,"data":"  aede157945600732e0f8a8337b8df0b5  Experiment/STACK-02/fold_persons.json\n"}
+,{"stream_name":"stdout","time":23.899536999,"data":"  f8efa92934ba217d2b1e6c665815a729  Experiment/E2E/e2e_lib.py\n"}
+,{"stream_name":"stdout","time":23.899540729,"data":"  634b708ef21f63d4366f0bafc6daaaaa  Experiment/CLEANTUNE-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899544179,"data":"  ebc0836826d71cf539ece938cbbb7ea5  Experiment/VOICELORA-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899547689,"data":"  9be8d927c170cbb439e466041259b762  Experiment/FACELORA-05/run.py\n"}
+,{"stream_name":"stdout","time":23.899551149,"data":"  c4d09a9fa645ab5094cc78654bc535ac  Experiment/FACELORA-03/run.py\n"}
+,{"stream_name":"stdout","time":23.899554559,"data":"  900fe3e223b7edff837c579c817fd13a  Experiment/AUXP-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899557599,"data":"  73869739d0eaa9b842741269545f122e  Experiment/SCALE-CC-02/run.py\n"}
+,{"stream_name":"stdout","time":23.899651569,"data":"  e7be3e2bfa47c0e0af30e51daaa6400d  Experiment/SCALE-CC-01/run.py\n"}
+,{"stream_name":"stdout","time":23.899655469,"data":"  57092daac915915414588062dff6caff  Experiment/SCALE-CC-01/vox2b_groups.json\n"}
+,{"stream_name":"stdout","time":23.899658749,"data":"  950a8ba9c44e60db1e9bb5b8aac8d4b7  Experiment/SCALE-CC-01/vox2_gender.json\n"}
+,{"stream_name":"stdout","time":23.899664069,"data":"  54da2a723624ff1b9ce320e47edc8074  Experiment/DSEL-03/run.py\n"}
+,{"stream_name":"stdout","time":23.899667739,"data":"  97acc6c949ecc0f146d6009a5f1929ee  Experiment/DSEL-02/run.py\n"}
+,{"stream_name":"stdout","time":23.901435849,"data":"  13cfbd6f8a5cc445b025de740c4bf1fb  Experiment/T3RECIPE-01/run.py\n"}
+,{"stream_name":"stdout","time":23.901446949,"data":"  ba1034827f4d2c62a0afd3a3f6b8fe1f  Experiment/T3RECIPE-01/t3r.py\n"}
+,{"stream_name":"stdout","time":23.901451089,"data":"  70bc17d11d4d9c2ec29c8404f5e60e66  Experiment/DSEL-01/vox2_groups.json\n"}
+,{"stream_name":"stdout","time":23.901454519,"data":"  88ad33959014aff7855643001712af41  Experiment/EN-T3-01/run.py\n"}
+,{"stream_name":"stdout","time":23.901457839,"data":"  ae902d1c7e87783bf88e345b459e39f2  Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip\n"}
+,{"stream_name":"stdout","time":23.901460899,"data":"  21fa1fb37978e72c910f24ab6d0c364d  Experiment/CLEANTUNE-01/ct_round2.json\n"}
+,{"stream_name":"stdout","time":23.901464339,"data":"  969ad42a47449a3a239cd9323a455f5a  lab_entry.py\n"}
+,{"stream_name":"stdout","time":23.901468249,"data":"03:05:18 [ 0.0h] lab ready at /kaggle/working/lab: 39 code files; data: ['kaggle/output/feats_av', 'kaggle/output/feats_eval', 'kaggle/output/feats_models', 'Experiment/T3ENC-01/feats_t3enc', 'Experiment/T3ENC-01/feats_vox2t3', 'Experiment/T3ENC-01/feats_vox2lid', 'Experiment/VOX2-01/feats_vox2', 'Experiment/SCALE-VB/feats_vb', 'Experiment/CAFUSE-EN/feats_av_full']; 32 SAFE-04 reference tables\n"}
+,{"stream_name":"stdout","time":23.927469158,"data":"[cell] resume\n"}
+,{"stream_name":"stdout","time":25.661568765,"data":"[cell] gather T3S job tables\n"}
+,{"stream_name":"stdout","time":26.941293898,"data":"03:05:21 [ 0.0h] gathered ct01r2b3s_fold1.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.051914154,"data":"03:05:21 [ 0.0h] gathered ct01r2b3s_fold2.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.128786351,"data":"03:05:21 [ 0.0h] gathered ct01r2b3s_fold3.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.198029719,"data":"03:05:21 [ 0.0h] gathered ct01r2b3s_fold4.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.265947696,"data":"03:05:21 [ 0.0h] gathered ct01r2b3s_fold5.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.346055443,"data":"03:05:21 [ 0.0h] gathered ct01r2c5s_fold1.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.410667751,"data":"03:05:21 [ 0.0h] gathered ct01r2c5s_fold2.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.487255368,"data":"03:05:22 [ 0.0h] gathered ct01r2c5s_fold3.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.614340604,"data":"03:05:22 [ 0.0h] gathered ct01r2c5s_fold4.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.696829991,"data":"03:05:22 [ 0.0h] gathered ct01r2c5s_fold5.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.762042239,"data":"03:05:22 [ 0.0h] gathered ct01r2clip_fold1.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.825435296,"data":"03:05:22 [ 0.0h] gathered ct01r2clip_fold2.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":27.901985513,"data":"03:05:22 [ 0.0h] gathered ct01r2clip_fold3.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":28.012227749,"data":"03:05:22 [ 0.0h] gathered ct01r2clip_fold4.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":28.076827577,"data":"03:05:22 [ 0.0h] gathered ct01r2clip_fold5.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":28.160797014,"data":"03:05:22 [ 0.0h] gathered ct01r2farl_fold1.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":28.236930351,"data":"03:05:22 [ 0.0h] gathered ct01r2farl_fold2.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":28.298579249,"data":"03:05:22 [ 0.0h] gathered ct01r2farl_fold3.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":28.391035575,"data":"03:05:22 [ 0.0h] gathered ct01r2farl_fold4.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":28.454270273,"data":"03:05:22 [ 0.0h] gathered ct01r2farl_fold5.parquet from /kaggle/input/datasets/ngnnguynchn/flag2027-t3s01-tables-p/tables\n"}
+,{"stream_name":"stdout","time":28.672165305,"data":"03:05:23 [ 0.0h] jobs done ['fold1b3s', 'fold1c5s', 'fold1clip', 'fold1farl', 'fold2b3s', 'fold2c5s', 'fold2clip', 'fold2farl', 'fold3b3s', 'fold3c5s', 'fold3clip', 'fold3farl', 'fold4b3s', 'fold4c5s', 'fold4clip', 'fold4farl', 'fold5b3s', 'fold5c5s', 'fold5clip', 'fold5farl']; FACELORA-03 B3 reference tables 5\n"}
+,{"stream_name":"stdout","time":28.692695234,"data":"[cell] smoke stand-ins (SMOKE only)\n"}
+,{"stream_name":"stdout","time":28.713916454,"data":"[cell] RFSTUNE tables\n"}
+,{"stream_name":"stdout","time":33.000618688,"data":"03:05:27 [ 0.0h] RFSTUNE tables copied 75; missing []\n"}
+,{"stream_name":"stdout","time":33.036828756,"data":"[cell] RFSTUNE-01 report\n"}
+,{"stream_name":"stdout","time":34.630917978,"data":"LOCAL | device cpu | steps 1200 | nets 3 | folds [1, 2, 3, 4, 5] | arms ['CTRL']\n"}
+,{"stream_name":"stdout","time":34.631607918,"data":"03:05:29 bundle: /kaggle/input/datasets/ngnnguynchn/flag2027-eda-bundle-p/eda_bundle | 2026-09-29 08:06\n"}
+,{"stream_name":"stdout","time":39.962321254,"data":"03:05:34 LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":39.990934313,"data":"03:05:34 v4 6485 rows / 70 persons / 4029 distinct voices | v1+v2 faces 16533, voices 40271, persons 151\n"}
+,{"stream_name":"stdout","time":41.953200103,"data":"03:05:36 extra arrays: v4 {'aclf': (6485, 1024), 'aclv': (6485, 1024), 'lbf': (6485, 768), 'lbv': (6485, 768), 'ibal': (6485, 1024), 'vgen': (6485, 3)} | ext {'aclf': (16533, 1024), 'aclv': (40271, 1024), 'lbf': (16533, 768), 'lbv': (40271, 768), 'ibal': (16533, 1024), 'vgen': (40271, 3)}\n"}
+,{"stream_name":"stdout","time":46.770350446,"data":"CLEANTUNE-01 ct01r2: BN42=1, framework g3, arms ['CA', 'T3S_farl_sim', 'T3S_farl_r293', 'T3S_farl_ecapa', 'T3S_farl_cat4', 'T3S_farl_wsv', 'T3S_farl_rdn', 'T3S_clip_sim', 'T3S_clip_r293', 'T3S_clip_ecapa', 'T3S_clip_cat4', 'T3S_clip_wsv', 'T3S_clip_rdn', 'T3S_b3s_sim', 'T3S_b3s_r293', 'T3S_b3s_ecapa', 'T3S_b3s_cat4', 'T3S_b3s_wsv', 'T3S_b3s_rdn', 'T3S_c5s_sim', 'T3S_c5s_r293', 'T3S_c5s_ecapa', 'T3S_c5s_cat4', 'T3S_c5s_wsv', 'T3S_c5s_rdn'], spec {'CA': ('C5CAT4', ('T', 'AIp'))}\n"}
+,{"stream_name":"stdout","time":47.025691368,"data":"T3S-01 merged fold 1: 4 job tables, 7406 rows, 25 columns\n"}
+,{"stream_name":"stdout","time":47.066281656,"data":"T3S-01 merged fold 2: 4 job tables, 7658 rows, 25 columns\n"}
+,{"stream_name":"stdout","time":47.106359363,"data":"T3S-01 merged fold 3: 4 job tables, 7598 rows, 25 columns\n"}
+,{"stream_name":"stdout","time":47.145188741,"data":"T3S-01 merged fold 4: 4 job tables, 7176 rows, 25 columns\n"}
+,{"stream_name":"stdout","time":47.185567429,"data":"T3S-01 merged fold 5: 4 job tables, 7272 rows, 25 columns\n"}
+,{"stream_name":"stdout","time":48.523076132,"data":"merged factor: arms ['a0', 'ALL', 'c5', 'F1', 'farl', 'ALLlo', 'pel', 'F1lo', 'rl', 'ALLhi', 'sf', 'F1hi', 'ibv', 'c5rl', 'c5x']\n"}
+,{"stream_name":"stdout","time":50.942171154,"data":"== factor: 37110 trials, folds [1, 2, 3, 4, 5], arms ['a0', 'ALL', 'c5', 'F1', 'farl', 'ALLlo', 'pel', 'F1lo', 'rl', 'ALLhi', 'sf', 'F1hi', 'ibv', 'c5rl', 'c5x']; F1s streams ['XALL_deep0', 'XALL_cca', 'XALL_ib', 'XALL_age', 'anP512_deep', 'anP512_cca', 'trCA']\n"}
+,{"stream_name":"stdout","time":50.943060415,"data":"  coverage rfxa0_t3: 100.0 % finite\n"}
+,{"stream_name":"stdout","time":50.943931684,"data":"  coverage rfxa0_nf: 100.0 % finite\n"}
+,{"stream_name":"stdout","time":50.944726354,"data":"  coverage rfxa0_nv: 100.0 % finite\n"}
+,{"stream_name":"stdout","time":55.09303841,"data":"\n"}
+,{"stream_name":"stdout","time":55.09412382,"data":"== STEP 0 atlas (a): standalone EER per stream (oof, mean of folds; '-' = the stream ranks reversed, shown as 100 - EER)\n"}
+,{"stream_name":"stdout","time":55.414524332,"data":"cell         en_ext g  en_ext ng  hindi ng  urdu g  urdu ng   v4 g  v4 ng sign\n"}
+,{"stream_name":"stdout","time":55.415167852,"data":"XALL_deep0      41.23      30.31     30.40   41.77    30.55  37.74  27.72    +\n"}
+,{"stream_name":"stdout","time":55.415872812,"data":"XALL_cca        38.13      26.37     28.02   37.95    27.29  36.73  27.27    +\n"}
+,{"stream_name":"stdout","time":55.416615841,"data":"XALL_ib         36.98      27.04     30.00   38.85    27.87  33.81  24.85    +\n"}
+,{"stream_name":"stdout","time":55.417263291,"data":"XALL_age        44.47      43.32     43.50   46.14    45.10  41.45  42.03    +\n"}
+,{"stream_name":"stdout","time":55.417945521,"data":"anP512_deep     31.29      21.88     20.75   32.45    21.82  26.72  18.40    +\n"}
+,{"stream_name":"stdout","time":55.418636771,"data":"anP512_cca      35.40      23.07     23.48   36.40    23.01  34.55  21.79    +\n"}
+,{"stream_name":"stdout","time":55.419270221,"data":"trCA            26.14      20.30     19.73   28.79    21.64  24.50  17.34    +\n"}
+,{"stream_name":"stdout","time":55.419921571,"data":"trRFS_a0        29.33      21.45     24.30   33.81    21.68  24.60  16.63    +\n"}
+,{"stream_name":"stdout","time":55.4205339,"data":"rfxa0_t3        29.15      21.53     24.37   33.91    22.78  24.70  16.78    +\n"}
+,{"stream_name":"stdout","time":55.4211463,"data":"rfxa0_nf        51.28      50.17     49.78   49.38    47.95  50.69  49.47    -\n"}
+,{"stream_name":"stdout","time":55.42170803,"data":"rfxa0_nv        50.00      50.00     50.00   50.00    50.00  50.00  50.00    +\n"}
+,{"stream_name":"stdout","time":55.42229557,"data":"\n"}
+,{"stream_name":"stdout","time":55.422891719,"data":"== STEP 0 atlas (b): drop one stream from the F1s fuser (CA-FUSE nested + purged), F1s level and U level (with R_a0)\n"}
+,{"stream_name":"stdout","time":75.616752457,"data":"  arm F1s          7 streams [20s]\n"}
+,{"stream_name":"stdout","time":77.970629541,"data":"  arm R_a0         1 streams [2s]\n"}
+,{"stream_name":"stdout","time":95.436699369,"data":"  arm F1s-XALL_deep0 6 streams [17s]\n"}
+,{"stream_name":"stdout","time":113.594923593,"data":"  arm F1s-XALL_cca 6 streams [18s]\n"}
+,{"stream_name":"stdout","time":132.113405164,"data":"  arm F1s-XALL_ib  6 streams [19s]\n"}
+,{"stream_name":"stdout","time":149.124019903,"data":"  arm F1s-XALL_age 6 streams [17s]\n"}
+,{"stream_name":"stdout","time":165.827030575,"data":"  arm F1s-anP512_deep 6 streams [17s]\n"}
+,{"stream_name":"stdout","time":184.350393282,"data":"  arm F1s-anP512_cca 6 streams [18s]\n"}
+,{"stream_name":"stdout","time":205.718895536,"data":"  arm F1s-trCA     6 streams [21s]\n"}
+,{"stream_name":"stdout","time":206.132203505,"data":"  without XALL_deep0   F1s g f1 -0.16, f2 -0.38, f3 -0.47, f4 +0.10, f5 +0.09 | mean -0.16, 2/5\n"}
+,{"stream_name":"stdout","time":206.132914685,"data":"                       U   g f1 -0.27, f2 +0.09, f3 -0.19, f4 -0.16, f5 -0.21 | mean -0.15, 1/5 | held-out {'hold_urdu': -0.006, 'hold_hindi': -0.071}   (\u003c 0 = the stream helps)\n"}
+,{"stream_name":"stdout","time":206.493599966,"data":"  without XALL_cca     F1s g f1 +0.04, f2 -0.35, f3 -0.00, f4 +0.14, f5 +0.34 | mean +0.03, 3/5\n"}
+,{"stream_name":"stdout","time":206.494284786,"data":"                       U   g f1 +0.28, f2 -0.18, f3 +0.01, f4 +0.35, f5 -0.08 | mean +0.07, 3/5 | held-out {'hold_urdu': -0.114, 'hold_hindi': -0.343}   (\u003c 0 = the stream helps)\n"}
+,{"stream_name":"stdout","time":206.869879521,"data":"  without XALL_ib      F1s g f1 -0.92, f2 -0.54, f3 -0.97, f4 -0.36, f5 -1.58 | mean -0.87, 0/5\n"}
+,{"stream_name":"stdout","time":206.870721561,"data":"                       U   g f1 -0.64, f2 -0.76, f3 -0.25, f4 +0.35, f5 -0.83 | mean -0.42, 1/5 | held-out {'hold_urdu': -0.029, 'hold_hindi': -0.151}   (\u003c 0 = the stream helps)\n"}
+,{"stream_name":"stdout","time":207.439548791,"data":"  without XALL_age     F1s g f1 -0.19, f2 -0.46, f3 -0.72, f4 -0.06, f5 -0.04 | mean -0.29, 0/5\n"}
+,{"stream_name":"stdout","time":207.440189151,"data":"                       U   g f1 +0.37, f2 +0.19, f3 -0.27, f4 -0.18, f5 +0.01 | mean +0.03, 3/5 | held-out {'hold_urdu': 0.045, 'hold_hindi': -0.2}   (\u003c 0 = the stream helps)\n"}
+,{"stream_name":"stdout","time":207.833573999,"data":"  without anP512_deep  F1s g f1 -0.05, f2 -0.86, f3 -0.01, f4 -0.14, f5 +0.13 | mean -0.18, 1/5\n"}
+,{"stream_name":"stdout","time":207.834254518,"data":"                       U   g f1 -0.00, f2 -0.52, f3 -0.14, f4 -0.27, f5 -0.42 | mean -0.27, 0/5 | held-out {'hold_urdu': 0.033, 'hold_hindi': -0.205}   (\u003c 0 = the stream helps)\n"}
+,{"stream_name":"stdout","time":208.227977885,"data":"  without anP512_cca   F1s g f1 +0.25, f2 -0.38, f3 -0.15, f4 +0.11, f5 +0.13 | mean -0.01, 3/5\n"}
+,{"stream_name":"stdout","time":208.228519475,"data":"                       U   g f1 -0.10, f2 -0.05, f3 -0.04, f4 +0.15, f5 -0.33 | mean -0.07, 1/5 | held-out {'hold_urdu': -0.029, 'hold_hindi': -0.374}   (\u003c 0 = the stream helps)\n"}
+,{"stream_name":"stdout","time":208.624929911,"data":"  without trCA         F1s g f1 -4.37, f2 -2.35, f3 -3.08, f4 -2.50, f5 -1.99 | mean -2.86, 0/5\n"}
+,{"stream_name":"stdout","time":208.625257331,"data":"                       U   g f1 -2.16, f2 -1.90, f3 -1.85, f4 -2.27, f5 -1.15 | mean -1.87, 0/5 | held-out {'hold_urdu': -1.589, 'hold_hindi': -1.667}   (\u003c 0 = the stream helps)\n"}
+,{"stream_name":"stdout","time":208.625874971,"data":"\n"}
+,{"stream_name":"stdout","time":208.62649591,"data":"== STEP 0 atlas (c): within-class Spearman on the g cells (mean over folds x cells x classes)\n"}
+,{"stream_name":"stdout","time":208.712177523,"data":"             XALL_deep0  XALL_cca  XALL_ib  XALL_age  anP512_deep  anP512_cca  trCA  trRFS_a0\n"}
+,{"stream_name":"stdout","time":208.713024402,"data":"XALL_deep0         1.00      0.47     0.21      0.12         0.30        0.30  0.32      0.33\n"}
+,{"stream_name":"stdout","time":208.713873042,"data":"XALL_cca           0.47      1.00     0.19      0.19         0.36        0.39  0.35      0.37\n"}
+,{"stream_name":"stdout","time":208.714730302,"data":"XALL_ib            0.21      0.19     1.00      0.13         0.26        0.24  0.31      0.36\n"}
+,{"stream_name":"stdout","time":208.715351551,"data":"XALL_age           0.12      0.19     0.13      1.00         0.13        0.19  0.15      0.16\n"}
+,{"stream_name":"stdout","time":208.716067601,"data":"anP512_deep        0.30      0.36     0.26      0.13         1.00        0.59  0.63      0.68\n"}
+,{"stream_name":"stdout","time":208.716663241,"data":"anP512_cca         0.30      0.39     0.24      0.19         0.59        1.00  0.41      0.50\n"}
+,{"stream_name":"stdout","time":208.71727303,"data":"trCA               0.32      0.35     0.31      0.15         0.63        0.41  1.00      0.59\n"}
+,{"stream_name":"stdout","time":208.717884051,"data":"trRFS_a0           0.33      0.37     0.36      0.16         0.68        0.50  0.59      1.00\n"}
+,{"stream_name":"stdout","time":208.71846275,"data":"\n"}
+,{"stream_name":"stdout","time":208.71907301,"data":"== STEP 2 fused arms (CA-FUSE C = 1, nested + purged, 3 regimes)\n"}
+,{"stream_name":"stdout","time":211.502879198,"data":"  arm R_ALL        1 streams [3s]\n"}
+,{"stream_name":"stdout","time":214.48587031,"data":"  arm R_c5         1 streams [3s]\n"}
+,{"stream_name":"stdout","time":217.31138385,"data":"  arm R_F1         1 streams [3s]\n"}
+,{"stream_name":"stdout","time":220.191330986,"data":"  arm R_farl       1 streams [3s]\n"}
+,{"stream_name":"stdout","time":223.187393362,"data":"  arm R_ALLlo      1 streams [3s]\n"}
+,{"stream_name":"stdout","time":226.151131731,"data":"  arm R_pel        1 streams [3s]\n"}
+,{"stream_name":"stdout","time":229.123453287,"data":"  arm R_F1lo       1 streams [3s]\n"}
+,{"stream_name":"stdout","time":232.220696678,"data":"  arm R_rl         1 streams [3s]\n"}
+,{"stream_name":"stdout","time":235.073259777,"data":"  arm R_ALLhi      1 streams [3s]\n"}
+,{"stream_name":"stdout","time":237.971305285,"data":"  arm R_sf         1 streams [3s]\n"}
+,{"stream_name":"stdout","time":240.843035825,"data":"  arm R_F1hi       1 streams [3s]\n"}
+,{"stream_name":"stdout","time":243.86328942,"data":"  arm R_ibv        1 streams [3s]\n"}
+,{"stream_name":"stdout","time":246.821828132,"data":"  arm R_c5rl       1 streams [3s]\n"}
+,{"stream_name":"stdout","time":249.814917819,"data":"  arm R_c5x        1 streams [3s]\n"}
+,{"stream_name":"stdout","time":250.603634122,"data":"EER (oof, mean of folds):\n"}
+,{"stream_name":"stdout","time":250.604198722,"data":"cell     en_ext g  en_ext ng  hindi ng  urdu g  urdu ng   v4 g  v4 ng\n"}
+,{"stream_name":"stdout","time":250.605234522,"data":"F1s         26.02      18.59     18.24   27.18    19.34  23.11  16.11\n"}
+,{"stream_name":"stdout","time":250.606022101,"data":"U_a0        26.19      18.02     19.06   29.38    19.17  22.37  14.82\n"}
+,{"stream_name":"stdout","time":250.606935881,"data":"U_ALL       25.71      18.03     18.70   28.71    18.53  21.57  14.31\n"}
+,{"stream_name":"stdout","time":250.607700211,"data":"U_c5        26.02      17.86     18.95   29.10    18.85  22.15  14.56\n"}
+,{"stream_name":"stdout","time":250.60844264,"data":"U_F1        25.91      17.97     19.11   28.67    18.63  22.03  14.47\n"}
+,{"stream_name":"stdout","time":250.60914166,"data":"U_farl      25.99      18.08     19.02   29.18    19.03  22.31  14.69\n"}
+,{"stream_name":"stdout","time":250.60997357,"data":"U_ALLlo     25.48      18.17     18.58   28.40    18.63  22.10  14.54\n"}
+,{"stream_name":"stdout","time":250.610721379,"data":"U_pel       26.05      17.66     19.12   28.76    18.93  22.12  14.75\n"}
+,{"stream_name":"stdout","time":250.611477319,"data":"U_F1lo      25.74      18.08     18.51   28.17    18.47  22.31  14.47\n"}
+,{"stream_name":"stdout","time":250.612125499,"data":"U_rl        26.05      17.88     18.93   28.94    19.09  22.33  14.85\n"}
+,{"stream_name":"stdout","time":250.612919458,"data":"U_ALLhi     26.30      18.08     19.05   28.99    18.57  21.72  14.48\n"}
+,{"stream_name":"stdout","time":250.613601778,"data":"U_sf        26.22      18.25     18.97   29.10    18.89  22.43  14.82\n"}
+,{"stream_name":"stdout","time":250.614292598,"data":"U_F1hi      26.42      17.99     19.12   28.87    19.01  22.15  14.47\n"}
+,{"stream_name":"stdout","time":250.615075597,"data":"U_ibv       26.16      18.02     19.19   29.22    18.65  22.31  14.98\n"}
+,{"stream_name":"stdout","time":250.615968017,"data":"U_c5rl      26.17      17.83     18.65   28.17    18.50  21.63  14.50\n"}
+,{"stream_name":"stdout","time":250.616501257,"data":"U_c5x       26.05      17.94     19.03   29.07    18.67  22.00  14.47\n"}
+,{"stream_name":"stdout","time":250.617256976,"data":"R_a0        29.55      20.43     22.43   34.36    20.76  25.13  16.79\n"}
+,{"stream_name":"stdout","time":250.618065796,"data":"R_ALL       28.96      19.44     21.04   31.09    19.92  23.12  14.79\n"}
+,{"stream_name":"stdout","time":250.618805606,"data":"R_c5        29.49      19.96     21.56   32.95    19.94  24.08  15.92\n"}
+,{"stream_name":"stdout","time":250.619549916,"data":"R_F1        29.43      19.75     21.58   31.94    19.80  23.52  15.72\n"}
+,{"stream_name":"stdout","time":250.620268145,"data":"R_farl      29.13      20.44     23.04   34.15    21.04  24.65  16.60\n"}
+,{"stream_name":"stdout","time":250.620990795,"data":"R_ALLlo     29.04      19.10     20.96   30.62    19.77  23.50  15.45\n"}
+,{"stream_name":"stdout","time":250.621795695,"data":"R_pel       29.04      20.32     22.40   33.04    20.53  24.72  16.32\n"}
+,{"stream_name":"stdout","time":250.622472715,"data":"R_F1lo      29.01      19.50     21.01   31.55    19.65  24.15  15.54\n"}
+,{"stream_name":"stdout","time":250.623780944,"data":"R_rl        28.93      19.90     22.16   33.46    20.09  24.72  16.35\n"}
+,{"stream_name":"stdout","time":250.624011214,"data":"R_ALLhi     29.27      19.89     21.62   32.46    20.22  23.60  15.30\n"}
+,{"stream_name":"stdout","time":250.624599313,"data":"R_sf        29.84      20.58     22.68   34.08    20.56  25.13  16.54\n"}
+,{"stream_name":"stdout","time":250.625173563,"data":"R_F1hi      29.80      20.04     22.00   32.18    19.39  24.07  15.97\n"}
+,{"stream_name":"stdout","time":250.625690563,"data":"R_ibv       29.87      20.63     22.65   34.10    21.50  25.13  16.45\n"}
+,{"stream_name":"stdout","time":250.626254512,"data":"R_c5rl      29.24      19.56     20.84   32.40    19.42  23.65  15.76\n"}
+,{"stream_name":"stdout","time":250.626819052,"data":"R_c5x       29.50      20.01     21.58   32.94    19.85  24.18  15.67\n"}
+,{"stream_name":"stdout","time":250.627373792,"data":"\n"}
+,{"stream_name":"stdout","time":250.627929742,"data":"== each arm vs a0 on the g cells (\u003e 0 = arm better): U level | R level (RFS family alone)\n"}
+,{"stream_name":"stdout","time":251.103225353,"data":"  ALL    U f1 +0.94, f2 +1.18, f3 +0.59, f4 +0.18, f5 +0.37 | mean +0.65, 5/5 | held-out {'hold_urdu': 0.502, 'hold_hindi': -0.319}\n"}
+,{"stream_name":"stdout","time":251.103810153,"data":"         R f1 +1.89, f2 +3.25, f3 +1.54, f4 +2.44, f5 +0.66 | mean +1.96, 5/5 | held-out {'hold_urdu': 1.904, 'hold_hindi': 1.559}\n"}
+,{"stream_name":"stdout","time":251.569061289,"data":"  c5     U f1 +0.49, f2 -0.05, f3 +0.21, f4 +0.56, f5 -0.11 | mean +0.22, 3/5 | held-out {'hold_urdu': 0.122, 'hold_hindi': -0.246}\n"}
+,{"stream_name":"stdout","time":251.570131398,"data":"         R f1 +1.34, f2 +1.38, f3 +0.87, f4 +0.98, f5 -0.38 | mean +0.84, 4/5 | held-out {'hold_urdu': 0.861, 'hold_hindi': 1.2}\n"}
+,{"stream_name":"stdout","time":252.142379387,"data":"  F1     U f1 +0.73, f2 +0.28, f3 +0.34, f4 +1.15, f5 -0.30 | mean +0.44, 4/5 | held-out {'hold_urdu': 0.499, 'hold_hindi': -0.189}\n"}
+,{"stream_name":"stdout","time":252.143387487,"data":"         R f1 +1.55, f2 +1.67, f3 +1.58, f4 +1.88, f5 +0.22 | mean +1.38, 5/5 | held-out {'hold_urdu': 1.544, 'hold_hindi': 1.119}\n"}
+,{"stream_name":"stdout","time":252.601719886,"data":"  farl   U f1 +0.13, f2 +0.33, f3 -0.00, f4 +0.34, f5 -0.05 | mean +0.15, 3/5 | held-out {'hold_urdu': 0.286, 'hold_hindi': -0.225}\n"}
+,{"stream_name":"stdout","time":252.602363566,"data":"         R f1 +0.21, f2 +1.29, f3 +0.01, f4 +0.34, f5 +0.00 | mean +0.37, 5/5 | held-out {'hold_urdu': -0.077, 'hold_hindi': -0.152}\n"}
+,{"stream_name":"stdout","time":253.083978714,"data":"  ALLlo  U f1 +0.58, f2 +0.85, f3 +0.89, f4 +0.22, f5 +0.73 | mean +0.65, 5/5 | held-out {'hold_urdu': 0.383, 'hold_hindi': 0.132}\n"}
+,{"stream_name":"stdout","time":253.084536634,"data":"         R f1 +1.33, f2 +3.48, f3 +1.24, f4 +2.84, f5 +0.90 | mean +1.96, 5/5 | held-out {'hold_urdu': 1.961, 'hold_hindi': 1.66}\n"}
+,{"stream_name":"stdout","time":253.554573968,"data":"  pel    U f1 +0.89, f2 +0.51, f3 +0.28, f4 +0.08, f5 -0.09 | mean +0.33, 4/5 | held-out {'hold_urdu': 0.114, 'hold_hindi': -0.352}\n"}
+,{"stream_name":"stdout","time":253.555118408,"data":"         R f1 +0.88, f2 +1.40, f3 +0.14, f4 +1.03, f5 +0.27 | mean +0.74, 5/5 | held-out {'hold_urdu': 0.697, 'hold_hindi': 0.226}\n"}
+,{"stream_name":"stdout","time":254.035835187,"data":"  F1lo   U f1 +0.70, f2 +0.66, f3 +0.61, f4 +0.74, f5 +0.15 | mean +0.57, 5/5 | held-out {'hold_urdu': 0.642, 'hold_hindi': 0.298}\n"}
+,{"stream_name":"stdout","time":254.036400496,"data":"         R f1 +0.84, f2 +2.59, f3 +1.12, f4 +2.27, f5 +0.38 | mean +1.44, 5/5 | held-out {'hold_urdu': 1.895, 'hold_hindi': 1.822}\n"}
+,{"stream_name":"stdout","time":254.71290185,"data":"  rl     U f1 +0.40, f2 -0.20, f3 +0.37, f4 +0.67, f5 -0.21 | mean +0.21, 3/5 | held-out {'hold_urdu': 0.333, 'hold_hindi': -0.314}\n"}
+,{"stream_name":"stdout","time":254.713516109,"data":"         R f1 +0.28, f2 +0.61, f3 +0.80, f4 +0.95, f5 +0.58 | mean +0.64, 5/5 | held-out {'hold_urdu': 0.915, 'hold_hindi': 0.323}\n"}
+,{"stream_name":"stdout","time":255.187418742,"data":"  ALLhi  U f1 +0.85, f2 +0.53, f3 -0.02, f4 +0.34, f5 -0.16 | mean +0.31, 3/5 | held-out {'hold_urdu': 0.394, 'hold_hindi': -0.686}\n"}
+,{"stream_name":"stdout","time":255.188007141,"data":"         R f1 +1.66, f2 +2.30, f3 +0.85, f4 +1.24, f5 +0.13 | mean +1.24, 5/5 | held-out {'hold_urdu': 1.165, 'hold_hindi': 0.819}\n"}
+,{"stream_name":"stdout","time":255.662621313,"data":"  sf     U f1 +0.09, f2 -0.28, f3 +0.29, f4 +0.42, f5 -0.20 | mean +0.06, 3/5 | held-out {'hold_urdu': 0.313, 'hold_hindi': -0.329}\n"}
+,{"stream_name":"stdout","time":255.663225652,"data":"         R f1 -0.45, f2 +0.37, f3 +0.11, f4 +0.36, f5 -0.40 | mean -0.00, 3/5 | held-out {'hold_urdu': 0.376, 'hold_hindi': 0.001}\n"}
+,{"stream_name":"stdout","time":256.139553424,"data":"  F1hi   U f1 +0.36, f2 -0.04, f3 +0.29, f4 +0.75, f5 -0.52 | mean +0.17, 3/5 | held-out {'hold_urdu': 0.331, 'hold_hindi': -0.54}\n"}
+,{"stream_name":"stdout","time":256.140104414,"data":"         R f1 +1.57, f2 +0.94, f3 +1.36, f4 +1.56, f5 -0.46 | mean +0.99, 4/5 | held-out {'hold_urdu': 1.458, 'hold_hindi': 0.681}\n"}
+,{"stream_name":"stdout","time":256.715701921,"data":"  ibv    U f1 +0.70, f2 +0.01, f3 -0.14, f4 +0.01, f5 -0.16 | mean +0.08, 3/5 | held-out {'hold_urdu': 0.205, 'hold_hindi': -0.602}\n"}
+,{"stream_name":"stdout","time":256.716289401,"data":"         R f1 -0.45, f2 +1.18, f3 -0.59, f4 +0.18, f5 -0.42 | mean -0.02, 2/5 | held-out {'hold_urdu': -0.118, 'hold_hindi': -0.21}\n"}
+,{"stream_name":"stdout","time":257.15081853,"data":"  c5rl   U f1 +1.07, f2 +0.63, f3 +0.59, f4 +1.12, f5 -0.11 | mean +0.66, 4/5 | held-out {'hold_urdu': 0.552, 'hold_hindi': -0.227}\n"}
+,{"stream_name":"stdout","time":257.15164014,"data":"         R f1 +2.10, f2 +1.29, f3 +1.28, f4 +1.42, f5 +0.17 | mean +1.25, 5/5 | held-out {'hold_urdu': 1.628, 'hold_hindi': 1.75}\n"}
+,{"stream_name":"stdout","time":257.585877319,"data":"  c5x    U f1 +0.71, f2 -0.18, f3 +0.06, f4 +0.87, f5 -0.10 | mean +0.27, 3/5 | held-out {'hold_urdu': 0.161, 'hold_hindi': -0.457}\n"}
+,{"stream_name":"stdout","time":257.586597719,"data":"         R f1 +0.96, f2 +1.32, f3 +0.92, f4 +1.44, f5 -0.61 | mean +0.81, 4/5 | held-out {'hold_urdu': 1.118, 'hold_hindi': 0.75}\n"}
+,{"stream_name":"stdout","time":257.587338468,"data":"\n"}
+,{"stream_name":"stdout","time":257.588007478,"data":"== SEL: nested arm choice (outer fold s: lowest mean g-cell EER of U_\u003carm\u003e|oof over the other folds)\n"}
+,{"stream_name":"stdout","time":257.594766375,"data":"  fold 1: pick ALLlo (inner g EER 25.50; a0 26.17)\n"}
+,{"stream_name":"stdout","time":257.600947632,"data":"  fold 2: pick c5rl (inner g EER 25.75; a0 26.41)\n"}
+,{"stream_name":"stdout","time":257.6070061,"data":"  fold 3: pick c5rl (inner g EER 24.48; a0 25.16)\n"}
+,{"stream_name":"stdout","time":257.613170527,"data":"  fold 4: pick ALL (inner g EER 24.95; a0 25.72)\n"}
+,{"stream_name":"stdout","time":257.619162984,"data":"  fold 5: pick c5rl (inner g EER 25.58; a0 26.43)\n"}
+,{"stream_name":"stdout","time":259.557551384,"data":"  (a) SEL - U_a0: f1 +0.58, f2 +0.63, f3 +0.59, f4 +0.18, f5 -0.11 | mean +0.37, 4/5 | held-out {'hold_urdu': 0.289, 'hold_hindi': -0.009} | CI95 person bootstrap [-0.38, +0.88] -\u003e PASS (\u003e= +0.30, \u003e= 4/5 folds, held-out \u003e= -0.20)\n"}
+,{"stream_name":"stdout","time":259.558220384,"data":"  (b) R_SEL - R_a0: f1 +1.33, f2 +1.29, f3 +1.28, f4 +2.44, f5 +0.17 | mean +1.30, 5/5 | held-out {'hold_urdu': 1.386, 'hold_hindi': 1.968} -\u003e PASS (\u003e= +0.50, \u003e= 4/5 folds)\n"}
+,{"stream_name":"stdout","time":259.558903163,"data":"  best arm over the 5 folds: c5rl (mean g EER 25.32, a0 25.98)\n"}
+,{"stream_name":"stdout","time":259.559463343,"data":"  GATE (a and b): PASS -\u003e step 3 (final RFX = c5rl, Evaluation path)\n"}
+,{"stream_name":"stdout","time":259.799409968,"data":"  (context) U_a0 - F1s: f1 -1.06, f2 +0.08, f3 -1.63, f4 -0.26, f5 +0.17 | mean -0.54, 2/5 | held-out {'hold_urdu': -0.577, 'hold_hindi': -0.373}\n"}
+,{"stream_name":"stdout","time":259.799959028,"data":"factor report written [213s]\n"}
+,{"stream_name":"stdout","time":260.897799476,"data":"FACTOR-01 outputs: ['factor_report.txt', 'factor_summary.json']\n"}
+,{"stream_name":"stdout","time":260.943616396,"data":"[cell] summary\n"}
+,{"stream_name":"stdout","time":260.945423895,"data":"{\n"}
+,{"stream_name":"stdout","time":260.945472785,"data":" \"exp\": \"CLEANTUNE-01\",\n"}
+,{"stream_name":"stdout","time":260.945476795,"data":" \"split\": \"dev\",\n"}
+,{"stream_name":"stdout","time":260.945479135,"data":" \"done\": [\n"}
+,{"stream_name":"stdout","time":260.945481185,"data":"  \"fold1b3s\",\n"}
+,{"stream_name":"stdout","time":260.945483225,"data":"  \"fold2b3s\",\n"}
+,{"stream_name":"stdout","time":260.945485245,"data":"  \"fold3b3s\",\n"}
+,{"stream_name":"stdout","time":260.945487085,"data":"  \"fold4b3s\",\n"}
+,{"stream_name":"stdout","time":260.945488885,"data":"  \"fold5b3s\",\n"}
+,{"stream_name":"stdout","time":260.945490675,"data":"  \"fold1c5s\",\n"}
+,{"stream_name":"stdout","time":260.945492655,"data":"  \"fold2c5s\",\n"}
+,{"stream_name":"stdout","time":260.945494475,"data":"  \"fold3c5s\",\n"}
+,{"stream_name":"stdout","time":260.945496295,"data":"  \"fold4c5s\",\n"}
+,{"stream_name":"stdout","time":260.945498095,"data":"  \"fold5c5s\",\n"}
+,{"stream_name":"stdout","time":260.945499895,"data":"  \"fold1clip\",\n"}
+,{"stream_name":"stdout","time":260.945501765,"data":"  \"fold2clip\",\n"}
+,{"stream_name":"stdout","time":260.945503575,"data":"  \"fold3clip\",\n"}
+,{"stream_name":"stdout","time":260.945505385,"data":"  \"fold4clip\",\n"}
+,{"stream_name":"stdout","time":260.945507675,"data":"  \"fold5clip\",\n"}
+,{"stream_name":"stdout","time":260.945509485,"data":"  \"fold1farl\",\n"}
+,{"stream_name":"stdout","time":260.945511285,"data":"  \"fold2farl\",\n"}
+,{"stream_name":"stdout","time":260.945513085,"data":"  \"fold3farl\",\n"}
+,{"stream_name":"stdout","time":260.945514885,"data":"  \"fold4farl\",\n"}
+,{"stream_name":"stdout","time":260.945516755,"data":"  \"fold5farl\"\n"}
+,{"stream_name":"stdout","time":260.945518625,"data":" ],\n"}
+,{"stream_name":"stdout","time":260.945520455,"data":" \"seconds\": {},\n"}
+,{"stream_name":"stdout","time":260.945522375,"data":" \"files\": {\n"}
+,{"stream_name":"stdout","time":260.945524255,"data":"  \"ct01r2b3s_fold1.parquet\": \"fb987a738fea00e85b935ea8b50535ad\",\n"}
+,{"stream_name":"stdout","time":260.945541235,"data":"  \"ct01r2b3s_fold2.parquet\": \"349b65b4006fe3806cb74ff99ac4cd6e\",\n"}
+,{"stream_name":"stdout","time":260.945543305,"data":"  \"ct01r2b3s_fold3.parquet\": \"b38988bb23a3af3d635f6b8ac3e03b4d\",\n"}
+,{"stream_name":"stdout","time":260.945545205,"data":"  \"ct01r2b3s_fold4.parquet\": \"a14ff4fd60517164ae1eef2d980ddae7\",\n"}
+,{"stream_name":"stdout","time":260.945547105,"data":"  \"ct01r2b3s_fold5.parquet\": \"86d649c9e731ed8a75c43d342409855e\",\n"}
+,{"stream_name":"stdout","time":260.945549015,"data":"  \"ct01r2c5s_fold1.parquet\": \"7cf9d0d509b2997fe34d63fb6931faab\",\n"}
+,{"stream_name":"stdout","time":260.945550915,"data":"  \"ct01r2c5s_fold2.parquet\": \"983f178f132c61915bfb8bdd66347cc2\",\n"}
+,{"stream_name":"stdout","time":260.945552835,"data":"  \"ct01r2c5s_fold3.parquet\": \"465655140083a5488bb4393c36969add\",\n"}
+,{"stream_name":"stdout","time":260.945554785,"data":"  \"ct01r2c5s_fold4.parquet\": \"5b95134efd8b25e67915cce97075a770\",\n"}
+,{"stream_name":"stdout","time":260.945556685,"data":"  \"ct01r2c5s_fold5.parquet\": \"3703eb253b23ef034a01c40bff68e24c\",\n"}
+,{"stream_name":"stdout","time":260.945558605,"data":"  \"ct01r2clip_fold1.parquet\": \"bce24b42cdd8f6d6ff19c80eb7feaa7f\",\n"}
+,{"stream_name":"stdout","time":260.945560535,"data":"  \"ct01r2clip_fold2.parquet\": \"7563f3739845a7a28604cf81a3c65f41\",\n"}
+,{"stream_name":"stdout","time":260.945562465,"data":"  \"ct01r2clip_fold3.parquet\": \"6c000ddb1056f43dad33497ea132d148\",\n"}
+,{"stream_name":"stdout","time":260.945564355,"data":"  \"ct01r2clip_fold4.parquet\": \"78df96500223437ed9a56db5782e733e\",\n"}
+,{"stream_name":"stdout","time":260.945566255,"data":"  \"ct01r2clip_fold5.parquet\": \"98c67061f90c33bac6a2ab704a439b15\",\n"}
+,{"stream_name":"stdout","time":260.945568165,"data":"  \"ct01r2farl_fold1.parquet\": \"22846d0ff7564ec1f006669f8b3c1a1c\",\n"}
+,{"stream_name":"stdout","time":260.945570065,"data":"  \"ct01r2farl_fold2.parquet\": \"eff9ad131ced3121df9fa25830c81a6a\",\n"}
+,{"stream_name":"stdout","time":260.945571945,"data":"  \"ct01r2farl_fold3.parquet\": \"25dd5917b00d67bddb24a42be51d206c\",\n"}
+,{"stream_name":"stdout","time":260.945574035,"data":"  \"ct01r2farl_fold4.parquet\": \"6765771b1a0033fedc97738441194f11\",\n"}
+,{"stream_name":"stdout","time":260.945575955,"data":"  \"ct01r2farl_fold5.parquet\": \"4cf0c50aa410dd7aaef06719782fa721\"\n"}
+,{"stream_name":"stdout","time":260.945577915,"data":" },\n"}
+,{"stream_name":"stdout","time":260.945579705,"data":" \"gpu\": [\n"}
+,{"stream_name":"stdout","time":260.945581655,"data":"  \"none (CPU: slow)\"\n"}
+,{"stream_name":"stdout","time":260.945583565,"data":" ],\n"}
+,{"stream_name":"stdout","time":260.945585365,"data":" \"torch\": \"2.11.0+cpu\",\n"}
+,{"stream_name":"stdout","time":260.945587315,"data":" \"lab_data\": \"2026-10-08 21:02\",\n"}
+,{"stream_name":"stdout","time":260.945589255,"data":" \"e2e\": \"2026-10-10 21:00\",\n"}
+,{"stream_name":"stdout","time":260.945591155,"data":" \"finished\": \"2026-11-13 03:09\"\n"}
+,{"stream_name":"stdout","time":260.945593015,"data":"}\n"}
+,{"stream_name":"stdout","time":260.945596555,"data":"NEXT: download /kaggle/working/e2e_out (report, fold parquets, final models, fuser, zip). Submit submission.zip to CodaBench ONLY if the DECISION line says PASSES, and read it with the rule registered in the experiment README.\n"}
+,{"stream_name":"stderr","time":264.714808093,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":264.714850262,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":264.924665476,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":264.924740617,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":265.712714262,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":265.801533107,"data":"[NbConvertApp] Writing 464647 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":268.36380635,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":268.935519022,"data":"[NbConvertApp] Writing 807301 bytes to __results__.html\n"}
+]

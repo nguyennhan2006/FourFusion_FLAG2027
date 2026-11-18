@@ -1,0 +1,31 @@
+{
+ "id": "thanhhuyen11/flag-2027-nb-163-rfsfxfvb-p",
+ "title": "flag-2027-nb-163-rfsfxfvb-p",
+ "code_file": "flag-2027-nb-163-rfsfxfvb-p.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_internet": true,
+ "machine_shape": "NvidiaTeslaT4",
+ "dataset_sources": [
+  "ngnnguynchn/flag2027-rfs-bundle-p",
+  "ngnnguynchn/flag2027-lid-strict-p",
+  "onnhqunhh/flag2027-rfs-lora-p",
+  "quynhnhu82/flag2027-feats-ls-c5s-p",
+  "trngsnam/flag2027-feats-peface01-pe0-p",
+  "ngnnguynchn/flag2027-lab-data-p",
+  "ngnnguynchn/flag2027-feats-vox2b-p",
+  "ngnnguynchn/flag2027-lab-vb-p",
+  "hthlin/flag2027-aux-voice-feats-p",
+  "ngnnguynchn/flag2027-feats-screen2-p",
+  "nguynchnngn1/flag2027-feats-rfs-a-p",
+  "phanththui/flag2027-feats-rfs-b-p",
+  "phanvnnnnn6789/flag2027-feats-rfs-c-p"
+ ],
+ "kernel_sources": [
+  "thanhhuyen11/flag-2027-nb-192-fvbx3"
+ ],
+ "competition_sources": [],
+ "model_sources": []
+}

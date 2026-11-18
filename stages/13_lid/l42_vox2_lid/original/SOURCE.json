@@ -1,0 +1,56 @@
+{
+ "copied_from": {
+  "kaggle/FLAG_42_vox2_lid.ipynb": "untracked; mtime 2026-10-08 07:40:28 +07",
+  "kaggle/build_vox2lid_notebook.py": "untracked; same mtime"
+ },
+ "run_output_team_machine": {
+  "Experiment/T3ENC-01/feats_vox2lid/": {
+   "lid_summary.json": "4d05cb34fc0fa66951750bb8f37d1f01b18f32a3e26847c7f42caad8e3341085",
+   "voice_lid_probs.npy": "2bd938fc64872bd0352de4a5b400264208c023e48a4b02f6a7715ffb48960f49",
+   "voice_meta.csv": "3db779d3e58e1bdda05ea460335b808c5e17b66d67aab32dc6adeb4fb84cdfa4",
+   "lid_labels.json": "f8ef4657ba259f104e08a746e44ee0097ace014bc6bcd995dbd682de56b65b2b",
+   "feats_manifest.json": "e5f06c6d3666f6525ea5cbf8a15070f66b0231810727a2b12642164d91f87e80"
+  },
+  "__huggingface_repos__.json": {
+   "repoId": "speechbrain/lang-id-voxlingua107-ecapa",
+   "commitHash": "0253049ae131d6a4be1c4f0d8b0ff483a0f8c8e9"
+  },
+  "manifest": {
+   "created": "2026-10-08 02:54",
+   "torch": "2.11.0+cu128",
+   "clips": 38345,
+   "speakers": 4877,
+   "speakers_dropped": 25
+  }
+ },
+ "docs": "docs/DATASETS.md:113 (output: private notebook nguynlcnhtho/flag-2027-nb-42)",
+ "stage": "l42_vox2_lid",
+ "files": [
+  {
+   "path": "original/build_vox2lid_notebook.py",
+   "bytes": 9772,
+   "md5": "aa3300d1e20bf5d1021a52ec7d49fa4b",
+   "sha256": "66027626c170f705c87bf29d7f28a20b4d27c99908c0664e419e7826c993a9e9"
+  },
+  {
+   "path": "original/FLAG_42_vox2_lid.ipynb",
+   "bytes": 22530,
+   "md5": "79fac62e63fc88c516d30df5ca2f3aaf",
+   "sha256": "dc6d5eba69f640be5e5ee8243cbf476e0117f0545a33f89087f567b3d28eef93"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/99_compare.py",
+   "bytes": 1860,
+   "md5": "c6d2ec9255342baa8470e6848003d138",
+   "sha256": "4420d993df69c24c9da31afc2139f5a874da35a686709e5bd320202add53d13e"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 431,
+   "md5": "3800da54260f4e8d33cc19c17fd985a1",
+   "sha256": "264cb944e90f7c2c4537cddec6c074413bb0162f36b7e459861be6dcfdd82227"
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+# Excerpt (lines 172-193) of Experiment/FUSENET-01/run.py AS RUN in FLAG_219 (copy in the run output: Experiment/XJF-01/out/dumpv4/lab/Experiment/FUSENET-01/run.py,
+# sha256 df6d739e5fef7b015a423f27ceec87882f4ac81ac6f8b2657b392a7eabd4303d). Not executed by this stage; shown because the statistic of dp_sigma.py is the one printed on the 'dumpv4 ... sd_all' line.
+    gc = sorted(c for c in D.cell.unique() if c.endswith(" g"))
+    FS.fuse(D, S2, persons, "F1s", F1S)
+    if os.environ.get("FUSENET_MODE") == "dumpv4":   # XJF-01 (16/11): base score U = F1s + R of the held-out TRAIN trials (v4 cells) -> scale constants
+        def _ser(v):
+            if isinstance(v, dict): return {str(a): _ser(b) for a, b in v.items()}
+            if isinstance(v, (set, frozenset, list, tuple, np.ndarray)): return sorted(str(x) for x in v)
+            return str(v)
+        for a in reps:
+            FS.fuse(D, S2, persons, f"R_{a}", [f"trRFS_{a}"]); D[f"U_{a}"] = D["F1s|oof"] + D[f"R_{a}|oof"]
+        V = D[D.cell.str.startswith("v4")]
+        keep = [c for c in V.columns if not pd.api.types.is_float_dtype(V[c])] + ["F1s|oof"] + [f"U_{a}" for a in reps]
+        V[keep].to_parquet(OUT / "xjfdump_v4.parquet")
+        (OUT / "xjfdump_persons.json").write_text(json.dumps(_ser(persons)))
+        say(f"== dumpv4: {len(V)} v4 trials, columns {keep}")
+        for c, g in V.groupby("cell"):
+            y = g.y.values.astype(bool)
+            for a in reps:
+                u = g[f"U_{a}"].values.astype(float)
+                say(f"  dumpv4 {c} {a}: n {len(u)} pos {int(y.sum())} | sd_all {u.std():.4f} sd_pos {u[y].std():.4f} sd_neg {u[~y].std():.4f} mean_pos {u[y].mean():.4f} mean_neg {u[~y].mean():.4f}")
+        (OUT / "xjfdump_report.txt").write_text("\n".join(M.TXT) if hasattr(M, "TXT") else "")
+        return
+    for a in reps:

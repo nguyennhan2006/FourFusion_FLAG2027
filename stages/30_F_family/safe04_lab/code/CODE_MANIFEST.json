@@ -1,0 +1,164 @@
+{
+ "kaggle/build_l0_notebooks.py": {
+  "sha256": "1097dd9537b505682e034e78330690f67a7e2fcc2a10cbad887a0f603088b96e",
+  "md5": "e2f63ea92aa5c62e66a034a20a5ab493",
+  "bytes": 121966,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/SAFE-04/lab_streams.py": {
+  "sha256": "aaf3880c57fdfddda7be567369212af88a8318d08a4eb1fcfa9182ec2002a727",
+  "md5": "e288a49c7f77f9a22e9cce00aead459b",
+  "bytes": 7338,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/SAFE-04/rel_sweep.py": {
+  "sha256": "a7290e7ad56fb54cf1e3c5b53757ae9c2ada3e5283d5526f9d806ad91f16e620",
+  "md5": "7166b20f70f25f342a22bfcadc5883ac",
+  "bytes": 3939,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/SAFE-04/rel_sweep2.py": {
+  "sha256": "7214c9083702a0e568b4fbee1d78ca9e1382c1f8154c8982d2ac7d812200cfc4",
+  "md5": "75899e4caf38b38bbf953da6b5b62a04",
+  "bytes": 3411,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/SAFE-04/rel_sweep5.py": {
+  "sha256": "43960985823a6c29c4e853a9e513e91da15c9c3af013bf0ade92ad266cb57bab",
+  "md5": "557afcb255ab4f1b4696296633d87a88",
+  "bytes": 1885,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/SAFE-04/rel.py": {
+  "sha256": "0ee274361b370112e54d3019b4e3f6b188ba3afff1cf99d098dbbb6a8d0f2bc5",
+  "md5": "402aaf561639e75409f2ead79d78a939",
+  "bytes": 8279,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/VOX2-01/run_bridge.py": {
+  "sha256": "9daeeeec609a3e5e0a8d2764796391dc2bf8fb2291fa0ab6169695552e8b35ff",
+  "md5": "e3260d3276cfdca8eb08dbcfd26f19aa",
+  "bytes": 8524,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/T3ENC-01/run.py": {
+  "sha256": "3cb048edfd4793173e937022404932705d186ba1e3ceacd7d24e237864099ee1",
+  "md5": "fd780c6f94762c24b9d9cf4db49df181",
+  "bytes": 12721,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/ALLNEG-01/run.py": {
+  "sha256": "0776caba9bcdb017ef6d29e6d0276f19d9fd50e7d39d1ae472ce17f67d37cc2e",
+  "md5": "413e0779662fc2be0b5fb75930129e5b",
+  "bytes": 10388,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/BIGB-01/run.py": {
+  "sha256": "19a652bb0ec7eb02427f6c2fbfad52dfb82ab65169e5feec7be4e3cd9ae0a067",
+  "md5": "f2a9a4f099496905ea93d9cf44025860",
+  "bytes": 1971,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab"
+ },
+ "Experiment/SAFE-04/stream_gate.py": {
+  "sha256": "50c0b4e4d9a1c3c7998170506e038f5f2488aa607b80d9cc879c182ead6ffa84",
+  "md5": "079c789b6461024c007a0ffbfbcf7b7d",
+  "bytes": 9118,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12 (release/flag2027_e2e/src_nb/flag-2027-nb-155s-ct02ca-f12/flag-2027-nb-155s-ct02ca-f12.ipynb)",
+  "equals_repo_file": false,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, imported only by report paths (kept for completeness)"
+ },
+ "Experiment/SAFE-04/lab_fuse.py": {
+  "sha256": "3bea1e496286e688f5ab44a31ccb165729b38924228421cfb9cdccba973d026f",
+  "md5": "fa8ce8f652bf3ee13597e872fda40b83",
+  "bytes": 3143,
+  "source": "embedded code zip (CODE_B64) of the executed notebook nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12 (release/flag2027_e2e/src_nb/flag-2027-nb-155s-ct02ca-f12/flag-2027-nb-155s-ct02ca-f12.ipynb)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, imported only by report paths (kept for completeness)"
+ },
+ "Experiment/CAFUSE-EN/run2.py": {
+  "sha256": "6fd1fad83723e39e6c14baf87ccef1ef648c752712612e12ca3212e9be058773",
+  "md5": "f47120fe9bb50a918aae4bcb2e412f46",
+  "bytes": 5201,
+  "source": "repository file Experiment/CAFUSE-EN/run2.py (not embedded in any executed notebook; read 2026-11-18)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, run by safe04_lab (full level: cafuse_en2 tables)"
+ },
+ "kaggle/build_e2e_dev_bundle.py": {
+  "sha256": "5c455f9d564f010181a23b7e067c60e7dcb655e679e17598d5687209bbbb47b6",
+  "md5": "aa6e2c67eb54a1ba02e8b81623ed3984",
+  "bytes": 7692,
+  "source": "repository file kaggle/build_e2e_dev_bundle.py (not embedded in any executed notebook; read 2026-11-18)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "verbatim, imported by safe04_lab for safe04_tables() only (packaging columns); components() / main() are NOT called (dev lists)"
+ },
+ "Experiment/STACK-02/export.py": {
+  "sha256": "a24395d71ba42644625bdba8eec5a64cf8f76a28be348fe5f774ec79bfdb9289",
+  "md5": "2c5a28215799ab3183743bd6a6619aa6",
+  "bytes": 2238,
+  "source": "repository file Experiment/STACK-02/export.py (not embedded in any executed notebook; read 2026-11-18)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "reference only, NOT run (needs 10 other experiments' tables); its fp / fold_persons formulas are reproduced in ff_derive_stack02.py"
+ },
+ "Experiment/STACK-02/pools.py": {
+  "sha256": "ff99990d8fc6ee34ef4b758e3ef0b34e55bf13ac5adf5e81ee60da5f637242ba",
+  "md5": "cd867144bf43f0283003a8f1ba685cc0",
+  "bytes": 2737,
+  "source": "repository file Experiment/STACK-02/pools.py (not embedded in any executed notebook; read 2026-11-18)",
+  "equals_repo_file": true,
+  "repo_git": "untracked (??)",
+  "role": "reference only, NOT run (list of the 10 candidate tables export.py needs)"
+ },
+ "Experiment/SAFE-04/ff_core_streams.py": {
+  "sha256": "2f1209f2e0ce0010d126a15e83989cabe45ab22b510ef7e59b11d84b1a5e795a",
+  "md5": "bdd7cc8e94db3627f88a87b1c9fc6cbe",
+  "bytes": 2642,
+  "source": "written for the reproduction repository (2026-11-18)",
+  "equals_repo_file": null,
+  "repo_git": "new",
+  "role": "NEW (this repository): level core; imports lab_streams.py unchanged, runs make_fold + Extra without the bridge training"
+ },
+ "Experiment/SAFE-04/ff_derive_stack02.py": {
+  "sha256": "96f062fb42f4ade8171a53aa31df6c44245b4f5da30f0c660fd4cc6dd5fcbafc",
+  "md5": "e1121534e5570e34303a0627bde84883",
+  "bytes": 2610,
+  "source": "written for the reproduction repository (2026-11-18)",
+  "equals_repo_file": null,
+  "repo_git": "new",
+  "role": "NEW (this repository): reduced stack02_rows + fold_persons.json with the formulas of STACK-02/export.py and stream_gate.load"
+ }
+}

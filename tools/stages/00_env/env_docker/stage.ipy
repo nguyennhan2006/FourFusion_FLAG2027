@@ -1,0 +1,50 @@
+print("[cell] env_docker: interpreter and library versions", flush=True)
+import json, os, platform, re, sys, time
+from importlib import metadata
+from pathlib import Path
+REPO = Path(os.environ.get("FF_REPO", "."))
+OUT = Path("/kaggle/working")
+rep = {"time": time.strftime("%Y-%m-%d %H:%M:%S"), "python": sys.version.split()[0], "platform": platform.platform(),
+       "machine": platform.machine(), "on_kaggle": bool(os.environ.get("KAGGLE_KERNEL_RUN_TYPE") or os.environ.get("KAGGLE_URL_BASE"))}
+try:
+    import torch
+    rep["torch"] = torch.__version__
+    rep["cuda"] = torch.version.cuda
+    rep["gpus"] = [torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())]
+except Exception as e:
+    rep["torch"] = f"not importable ({type(e).__name__})"
+norm = lambda n: re.sub(r"[-_.]+", "-", (n or "").lower())
+inst = {}
+for d in metadata.distributions():
+    if d.metadata["Name"]:
+        inst[norm(d.metadata["Name"])] = d.version
+(OUT / "pip_freeze.txt").write_text("".join(f"{k}=={v}\n" for k, v in sorted(inst.items())), encoding="utf-8")
+for k in ("transformers", "numpy", "pandas", "scipy", "scikit-learn", "speechbrain", "onnxruntime", "onnxruntime-gpu", "insightface", "huggingface-hub"):
+    rep[k] = inst.get(k)
+print({k: rep.get(k) for k in ("python", "torch", "cuda", "transformers", "speechbrain")}, flush=True)
+# <<<FF-CELL>>>
+print("[cell] env_docker: compare with docker/constraints-kaggle-v173.txt", flush=True)
+pins = {}
+for line in (REPO / "docker" / "constraints-kaggle-v173.txt").read_text(encoding="utf-8").splitlines():
+    m = re.match(r"\s*([A-Za-z0-9_.\-]+)==(\S+)", line.split("#")[0])
+    if m:
+        pins[norm(m.group(1))] = m.group(2)
+cmp = {k: {"pinned": v, "installed": inst.get(k)} for k, v in pins.items()}
+rep["constraints"] = cmp
+rep["differs"] = {k: x for k, x in cmp.items() if x["installed"] is not None and x["installed"] != x["pinned"]}
+rep["not_installed"] = sorted(k for k, x in cmp.items() if x["installed"] is None)
+rep["ok"] = not rep["differs"]
+for k, x in sorted(cmp.items()):
+    print(f"  {k:22s} pinned {x['pinned']:26s} installed {x['installed']}", flush=True)
+# <<<FF-CELL>>>
+print("[cell] env_docker: versions of the original runs and the reference Docker build", flush=True)
+rep["original_runs"] = {"base_image_gpu": "gcr.io/kaggle-gpu-images/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
+                        "base_image_cpu": "gcr.io/kaggle-images/python@sha256:0717e81990be591f8c5f98f033d29ab23e9ffde057e5b3a6bd4371f93969e962",
+                        "python": "GPU image 3.13.16, CPU image 3.13.18 (November runs; older images in Sept / Oct: docker/ENV_PER_STAGE.md)", "torch": "2.11.0+cu130 (GPU) / 2.11.0+cpu (CPU); 2.11.0+cu128 / 2.10.0+cu128 in the Sept / Oct runs", "transformers": "5.20.2"}
+rep["same_as_runs"] = {"python_3_13": rep["python"].startswith("3.13."), "torch_2_11": str(rep.get("torch", "")).startswith("2.11.0"),
+                       "transformers_5_20_2": rep.get("transformers") == "5.20.2"}
+print("reference image build (not run here; Docker is optional):", flush=True)
+print(f"  docker build -f {REPO / 'docker' / 'Dockerfile'} -t fourfusion:gpu {REPO}", flush=True)
+print(f"  docker build -f {REPO / 'docker' / 'Dockerfile'} -t fourfusion:cpu --build-arg FLAVOR=cpu --build-arg BASE={rep['original_runs']['base_image_cpu']} {REPO}", flush=True)
+(OUT / "env_report.json").write_text(json.dumps(rep, indent=1), encoding="utf-8")
+print("environment matches the pins" if rep["ok"] else f"differs from the pins: {sorted(rep['differs'])}", "| same as the runs:", rep["same_as_runs"], flush=True)

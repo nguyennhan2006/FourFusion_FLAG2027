@@ -1,0 +1,26 @@
+{
+ "stage": "t162c",
+ "files": [
+  {
+   "copy": "original/13_flag-2027-nb-162c-rfs.ipynb",
+   "source": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/13_flag-2027-nb-162c-rfs.ipynb",
+   "obtained_by": "copy of the exact notebook of the run in package E: (pulled from Kaggle; listed in notebooks/RUNS.json)",
+   "bytes": 86018,
+   "md5": "53c1e3ae112a08a95324f0d557e13743",
+   "sha256": "33464044832f4b8e26cc9c83ce986d6c339e33924dc6d3ff4554597f3e5c44ec"
+  },
+  {
+   "copy": "original/13_flag-2027-nb-162c-rfs.log",
+   "source": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/13_flag-2027-nb-162c-rfs.log",
+   "obtained_by": "run log of the same run (package E:)",
+   "bytes": 390937,
+   "md5": "be97fb600ca0a1c64c6a793f69533647",
+   "sha256": "25853965b618ebc7950183b76aea656cf3f190daa4343393e1a9618595c6cd79"
+  }
+ ],
+ "run": "phanvnnnnn6789/flag-2027-nb-162c-rfs",
+ "evidence": [
+  "Notebook of the run in package E: (notebooks/RUNS.json: phanvnnnnn6789/flag-2027-nb-162c-rfs, status COMPLETE); its first cell is the kapi.py --env cell of the push.",
+  "The pushed md5 (kapi_runs.jsonl) differs from the package copy because Kaggle re-serialises pulled notebooks; the package copy is the authoritative code."
+ ]
+}

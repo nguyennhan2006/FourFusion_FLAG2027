@@ -1,0 +1,7 @@
+# sha256 of the exported dataset as saved in the E: package: datasets/ngnnguynchn__flag2027-rfsfxc5rl-art-p.zip (zip sha256 12da5398b819f0ce63046e2fadf07d879b65a0065c2a64645a01afdd69fb5bfb), members (computed 18/11)
+ed76bf64ab9e3b16825ed429a8b7f021faea466e129e6bb8f1f9591d32a4d1b8  rfs_art/final_params.npz
+75f26e60777e4f870b7b414e1a57daf96b9c84fa0da56bc7d176e969b706040b  rfs_art/fuse_report.json
+b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c  rfs_art/lora_C1.pt
+21adffb32edd59767079d1287c9aa3d971165cab8702f266defff492c7d04736  rfs_art/manifest_final.json
+17eb47ac20ddf2f01aae50b3ebbca87f3b04403f772d124d74442da848e362f2  rfs_art/projector_Q.pt
+97be1d64b930ec1581b63dbf1386ec74a2fab55a7023b0875b5a5afd8f052bc0  rfs_art/split.json

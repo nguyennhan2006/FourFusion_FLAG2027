@@ -1,0 +1,231 @@
+{
+ "about": "Reference values of the FourFusion submission xjf_r10_trsig.zip (CodaBench 1054704, Evaluation 13.54) and of every stored file used to rebuild it in mode (c). Member = one score file inside a zip. All sha256 measured on the team's copies, 18/11/2026.",
+ "target": {
+  "zip": "xjf_r10_trsig.zip",
+  "sha256": "b4354eaf988b2b4ea8c4e1c3fa44d7bcf631ea5cb3cd635ab2965021fe82e507",
+  "bytes": 31603,
+  "codabench_submission": 1054704,
+  "evaluation_eer": {
+   "mean": 13.54,
+   "no_gender_English": 10.2,
+   "no_gender_Bangla": 11.97,
+   "gender_English": 12.98,
+   "gender_Bangla": 18.99
+  },
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "d45f85027b95a0c6dbd0ba253401019c51c887ab5fa6155e3b8c969abbd55301",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+   "gender/sub_score_v4_English_heard.txt": "ead7e1772e986be0a10a2acf810ec42f4662ad480237ed1c7632f926ead41be4",
+   "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+  },
+  "pairs": {
+   "no_gender/sub_score_v4_English_heard.txt": 392,
+   "no_gender/sub_score_v4_Bangla_unheard.txt": 802,
+   "gender/sub_score_v4_English_heard.txt": 416,
+   "gender/sub_score_v4_Bangla_unheard.txt": 716
+  },
+  "member_recipe": {
+   "no_gender/sub_score_v4_English_heard.txt": "FACTOR_ENFUSE member / 5.0983 - 1.0 x z_DP (no_gender), '%.8f'",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "FACTOR_ENFUSE member, same bytes (= -(F1s' + RFX))",
+   "gender/sub_score_v4_English_heard.txt": "FACTOR_ENFUSE member / 3.8376 - 1.0 x z_DP (gender), '%.8f'",
+   "gender/sub_score_v4_Bangla_unheard.txt": "FVBIND_ENFUSE member, same bytes (= -(F1s' + RFX'))"
+  },
+  "zipinfo": {
+   "order": [
+    "no_gender/sub_score_v4_English_heard.txt",
+    "no_gender/sub_score_v4_Bangla_unheard.txt",
+    "gender/sub_score_v4_English_heard.txt",
+    "gender/sub_score_v4_Bangla_unheard.txt"
+   ],
+   "date_time": [
+    2026,
+    11,
+    16,
+    11,
+    8,
+    8
+   ],
+   "create_system": 0,
+   "create_version": 20,
+   "extract_version": 20,
+   "external_attr": 25165824,
+   "compress_type": 8,
+   "compress_size": {
+    "no_gender/sub_score_v4_English_heard.txt": 5198,
+    "no_gender/sub_score_v4_Bangla_unheard.txt": 10734,
+    "gender/sub_score_v4_English_heard.txt": 5499,
+    "gender/sub_score_v4_Bangla_unheard.txt": 9534
+   },
+   "written_by": "Python 3.14.0 on Windows (zlib module = zlib-ng 2.2.4, zlib 1.3.1 compatible), zipfile.writestr, ZIP_DEFLATED, default level"
+  }
+ },
+ "r": 1.0,
+ "sigma": {
+  "xjf_sig": "5.0983,3.8376",
+  "statistic": "numpy std (ddof 0) of U per cell (v4 ng / v4 g), mean of replicates c0r / c0s / c0t, '%.4f'",
+  "full_as_recomputed_by_layer_map_S7": {
+   "no_gender": 5.09827,
+   "gender": 3.83757
+  },
+  "per_replicate_as_recomputed_by_layer_map_S7": {
+   "no_gender": [
+    5.100701,
+    5.098011,
+    5.096098
+   ],
+   "gender": [
+    3.833133,
+    3.848139,
+    3.831439
+   ]
+  }
+ },
+ "factor_enfuse": {
+  "zip": "posteval_FACTOR_ENFUSE_c5rl.zip",
+  "sha256": "9cf5bbe4e3af14184c26eef08104d3ddd94fc5357569c09fc657a93d4549fd93",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "44e2781f5673e318318c7662a2cc4feb28f347557db8288a18cbe2cbac5af69c",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+   "gender/sub_score_v4_English_heard.txt": "73e485fd8803a2f897974257f77bb45c6319d9f8466ca6fd067af2f48e6964db",
+   "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"
+  }
+ },
+ "fvbind_enfuse": {
+  "zip": "posteval_FVBIND_ENFUSE_fvb.zip",
+  "sha256": "bb0e0175e9e9448128a529db8ed537cec0eef427d044729f030c4984830b0bbc",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "eb1ef21098092e75012a8c130e489563e9d23eb7757b38eff271dc0c3017cb3e",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "1f6e8aea3927185a7460b88bc3adff5737e895b866576cf4c0d6ba6bfd4c9043",
+   "gender/sub_score_v4_English_heard.txt": "7f016f444d0d35035e99d13058d16e9d87f063894c3f4ee17dd9090049881a48",
+   "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+  },
+  "required_members": [
+   "gender/sub_score_v4_Bangla_unheard.txt"
+  ]
+ },
+ "factor_u": {
+  "zip": "posteval_FACTOR_U_c5rl.zip",
+  "sha256": "23702a4295b7189c1aeb24da3f34a4c5a788e0a621261230c5f1e6550d9d2c09",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "1726bf9488cb6507e692a9bce0475dffea3db3e2db4aef660fd2c49ba70827b7",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+   "gender/sub_score_v4_English_heard.txt": "754eb4e3f8bcc662db8e082f97def050a9021aae1bbc7703d1fa2b9f0f18e9c6",
+   "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"
+  }
+ },
+ "fvbind_u": {
+  "zip": "posteval_FVBIND_U_fvb.zip",
+  "sha256": "b61c84edca2921fc8e313994f3f5d66247d5fa378a4f4f76a2789e516036b401",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "578ef595d23150637f95a5da72b30b2af9d557d217de3d549c5ff3b9e6d3aa65",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "1f6e8aea3927185a7460b88bc3adff5737e895b866576cf4c0d6ba6bfd4c9043",
+   "gender/sub_score_v4_English_heard.txt": "bed8ac03b742342d338ebbb52214b1e9ddb450ffa90d5cdb385470fe94115a54",
+   "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+  }
+ },
+ "best4_reference": {
+  "zip": "fourfusion_BEST4_v1.zip",
+  "sha256": "eb58ba77499c396f14b3e217dd5d3acd43c18a4f746928e7f039295839a60e63",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "44e2781f5673e318318c7662a2cc4feb28f347557db8288a18cbe2cbac5af69c",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+   "gender/sub_score_v4_English_heard.txt": "73e485fd8803a2f897974257f77bb45c6319d9f8466ca6fd067af2f48e6964db",
+   "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+  },
+  "note": "the four members before the DP blend (3 from FACTOR_ENFUSE + gender/Bangla from FVBIND); not needed to rebuild"
+ },
+ "inputs": {
+  "f1s_eval.zip": {
+   "sha256": "1b43b14ff763bd0eac72fea505e4cfd4ff98bc41d87d49baecdfd613525a6962",
+   "bytes": 29188,
+   "made_by": "stage e112f1sx (thanhhuyen11/flag-2027-nb-112f1sx-eval): e2e_out/submission_cleantune01_F1_CA_eval.zip (F1s' scores, Bangla fuser)",
+   "team_copy": "<team archive>/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/in/f1s_eval.zip"
+  },
+  "rfx_eval.zip": {
+   "sha256": "1fa53218c9501ef38f9b1c33680fac5b7f6a0ddace4fdaffed7cd5334b9aa369",
+   "bytes": 32049,
+   "made_by": "stage e163i (thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval): FLAG_RF_E2E/submission.zip (RFX c5rl, ORIGINAL LoRA C1)",
+   "team_copy": "<team archive>/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/in/rfx_eval.zip"
+  },
+  "rfsfxfvb_eval.zip": {
+   "sha256": "45044189ae4b228b93aaae7e6eb4015f38516bfaa8c57abf2940db7ea6590862",
+   "bytes": 32027,
+   "made_by": "stage e163i_fvb (thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval): FLAG_RF_E2E/submission.zip (RFX' = RFX + FVBIND block B2, ORIGINAL LoRA C1)",
+   "team_copy": "Experiment/FVBIND-01/out/eval163i/FLAG_RF_E2E/submission.zip"
+  },
+  "components_eval.npz": {
+   "sha256": "2cd160ae456447c0c47bf611f2f73480ffc5c9161e767812d42e5f380b1b56c7",
+   "bytes": 17384406,
+   "made_by": "stage e50cc (thanhhuyen11/flag-2027-nb-50cc-e2e-eval): e2e_eval/components_eval.npz",
+   "team_copy": "<team archive>/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/in/components_eval.npz"
+  },
+  "e2e_manifest.json": {
+   "sha256": "b0ba27c2982f917199d957cd42763fecfdd31c292352594a4e141105ce72bd58",
+   "bytes": 12400,
+   "made_by": "stage e50cc: e2e_eval/e2e_manifest.json",
+   "team_copy": "<team archive>/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/in/e2e_manifest.json"
+  },
+  "cleantune01_fuser_bangla_CA.json": {
+   "sha256": "c4737367e787da6dc9a1e08453a9602e2ea60b830bd7a56e8d6728501e9d06a4",
+   "bytes": 4695,
+   "made_by": "stage e112f1sx: e2e_out/cleantune01_fuser_bangla_CA.json (F1s' Bangla fuser weights)",
+   "team_copy": "<team archive>/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/in/cleantune01_fuser_bangla_CA.json"
+  },
+  "ct01r2_final_eval.npz": {
+   "sha256": "bbad53ed8e32066240f405676e7f3676dd55040573c00d1fad07b81774c3d0fc",
+   "bytes": 21154,
+   "made_by": "stage e112f1sx: e2e_out/ct01r2_final_eval.npz (CA head scores trCA)",
+   "team_copy": "<team archive>/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/in/ct01r2_final_eval.npz"
+  },
+  "xjf_scores.npz": {
+   "sha256_any_of": [
+    "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779",
+    "6a039fafe5c0f82003601fffa17615548498d8ee733ba6cf1e4d244356193980"
+   ],
+   "arrays_sha256": {
+    "ids_no_gender_English": "113a8942f76cbdb2f937b38fcf349c008dd5e2004bf08581613a2f7993a4b752",
+    "cos_no_gender_English": "3bed37e7ab8dc91509a4967961adc593d4347b6c714f128f71dfcf6626c8196b",
+    "z_no_gender_English": "60c70ee55e06e428f74e9089e48e51b9d836d977466a0c8708ee7e7efb94ba03",
+    "ids_gender_English": "5b50b4caeb116b8022531b89f972623266a2882f947e9f5374647170086f2c4f",
+    "cos_gender_English": "2f29551e3692d822cd746d0c61b07500f0c2f1456dc0b57686a3b4542feeff54",
+    "z_gender_English": "65b089571a113c578a2c229e2b937583a924f7fae9c8b030ce6792fdd9fa4a78"
+   },
+   "made_by": "stage dp_train (xjf.py, team machine 16/11 02:11; the 22:03 re-run adds Bangla keys, English arrays identical)",
+   "team_copy": "Experiment/XJF-01/out/bak_english_only/xjf_scores.npz (or out/xjf_scores.npz)"
+  },
+  "xjfdump_v4.parquet": {
+   "sha256": "9f0a5af468d1f973e1ff33264ff10239cf21f1813a0f370740e8c2d8e02f7a09",
+   "bytes": 681816,
+   "made_by": "stage t219_dumpv4 (phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4, FUSENET_MODE=dumpv4)",
+   "team_copy": "Experiment/XJF-01/out/dumpv4/sp/out/safe04/xjfdump_v4.parquet"
+  },
+  "consts.json": {
+   "sha256": "356242de47674dfb0c3a245bf3c504ee9f37417e6928040313b155d6bade6324",
+   "bytes": 136,
+   "optional": true,
+   "made_by": "stage dp_train (cross-check only)",
+   "team_copy": "Experiment/XJF-01/out/consts.json"
+  }
+ },
+ "dp": {
+  "consts": {
+   "no_gender": [
+    0.2396060824394226,
+    0.24516652524471283
+   ],
+   "gender": [
+    0.29151424765586853,
+    0.2184155285358429
+   ]
+  },
+  "oof_eer_train": {
+   "no_gender": 25.67,
+   "gender": 34.64
+  },
+  "tower_checkpoint": "not stored by the original run (G5); stage dp_train now writes out/dp_towers.pt"
+ },
+ "other_zips_not_13_54": {
+  "xjf_r10.zip (run 9, SIG 5.8 / 2.9 read off the test files: not allowed)": "2c2187a80919fc2550592eab79a89c4ddcb7fcc742fdafabfa21b085aa89cf08",
+  "xjf_r10_trsig_lf.zip (XJF_BASE=lf, key-fixed LoRA C1, not submitted)": "ac9873cc1d47ba6043b3f204ac5c504769aaa268ce794e8ba50f65cd70902c8c"
+ }
+}

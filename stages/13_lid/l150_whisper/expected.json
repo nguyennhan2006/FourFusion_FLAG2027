@@ -1,0 +1,15 @@
+{
+ "lid_whisper.json (team copy)": "9dcd9ca21f24d982fb3f1e047276c96304198c8a26f4d544c9ca21a98e6df357",
+ "mav.parquet (team copy)": "0a6764035e8053da58c19a02ca78595c776fb036b802a2f2d5a52a5f9c3e0a0d",
+ "flagged": {
+  "vox2": 29,
+  "vb": 43,
+  "mav_v1": 46,
+  "mav_v2": 71
+ },
+ "clips": {
+  "cache": 152031,
+  "mav": 40271
+ },
+ "whisper_flagged_mav_files": 58
+}

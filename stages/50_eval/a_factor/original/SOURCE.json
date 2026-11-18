@@ -1,0 +1,197 @@
+{
+ "stage": "a_factor",
+ "exactness": "local-script",
+ "executed": {
+  "when": "2026-11-13 12:00 (UTC+7)",
+  "where": "team machine, CPU",
+  "driver": "kaggle/rfx_chain.sh state 3 (lines 53-69 of the current file; NAME=fxc5rl, TAG=c5rl; ZPFX, O, W, XDS_ADD, KX_ADD unset). The chain file was edited after 13/11 (15/11: ZPFX / O / W / XDS_ADD / KX_ADD options, patch_163i_dataroot.py; 16/11: LORAD -> the fixed LoRA dataset): none of these touches state 3 when the options are unset, and the LoRA change concerns the RFX training (stage t163p_c5rl), not this step.",
+  "log": "original/rfx_chain_2026-11-13.log"
+ },
+ "commands_as_run": [
+  "cp \"$z\" Experiment/FACTOR-01/out/rfsfxc5rl_eval.zip            # z = FLAG_RF_E2E/submission.zip of thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval",
+  "bash Experiment/EVALPATH-U/make_eval_zip.sh Experiment/EVALPATH-U/eval_out/f1s_eval.zip Experiment/FACTOR-01/out/rfsfxc5rl_eval.zip Experiment/POSTEVAL-01/zips/posteval_FACTOR_U_c5rl.zip eval --counts \"$CNT\"",
+  "python - Experiment/POSTEVAL-01/zips/posteval_FACTOR_U_c5rl.zip <<'PY' ... PY     # freeze the U zip in Experiment/POSTEVAL-01/manifest.json",
+  "python Experiment/EVALPATH-U/check_eval_zip.py Experiment/POSTEVAL-01/zips/posteval_FACTOR_U_c5rl.zip --counts \"$CNT\" --peer Experiment/EVALPATH-U/eval_out/submission_U_eval.zip",
+  "PYTHONIOENCODING=utf-8 ENF_RFS=Experiment/FACTOR-01/out/rfsfxc5rl_eval.zip ENF_U=Experiment/POSTEVAL-01/zips/posteval_FACTOR_U_c5rl.zip ENF_OUT=Experiment/POSTEVAL-01/zips/posteval_FACTOR_ENFUSE_c5rl.zip python Experiment/ENFUSE-U/run.py",
+  "python Experiment/EVALPATH-U/check_eval_zip.py Experiment/POSTEVAL-01/zips/posteval_FACTOR_ENFUSE_c5rl.zip --counts \"$CNT\" --peer Experiment/EVALPATH-U/eval_out/submission_U_eval.zip"
+ ],
+ "CNT": "no_gender/sub_score_v4_English_heard.txt=392,no_gender/sub_score_v4_Bangla_unheard.txt=802,gender/sub_score_v4_English_heard.txt=416,gender/sub_score_v4_Bangla_unheard.txt=716",
+ "tree_files": [
+  {
+   "path": "tree/Experiment/EVALPATH-U/make_eval_zip.sh",
+   "copied_from": "Experiment/EVALPATH-U/make_eval_zip.sh",
+   "bytes": 1400,
+   "md5": "c44fc7ecc05315ca0a2b5fd186defd64",
+   "sha256": "896a28226b3a340b55a5557dad00655ea2bde228086a1916cf227a86a2a60494",
+   "line_endings": "LF",
+   "role": "U = F1s + RFS/RFX zip (sum of the two -logit scores) + checks; calls check_eval_zip.py and XTEAM-03/run.py",
+   "status": "unchanged since 2026-11-03 18:22 (mtime) and md5-identical to the release/fourfusion_flag2027 copy of 3/11: the file that ran on 13/11",
+   "git_in_source_repo": "untracked (??)"
+  },
+  {
+   "path": "tree/Experiment/EVALPATH-U/check_eval_zip.py",
+   "copied_from": "Experiment/EVALPATH-U/check_eval_zip.py",
+   "bytes": 3244,
+   "md5": "40a27e648bf411995a60323c3adb268a",
+   "sha256": "bde629bc8473c60440e7ecdc7c0618680e5a459aa816b4b34aafb37d199dce16",
+   "line_endings": "LF",
+   "role": "sanity of an Evaluation zip: four files, pair counts, finite, sd > 0, same pair ids as the peers",
+   "status": "unchanged since 2026-11-03 18:22 (mtime) and md5-identical to the release/fourfusion_flag2027 copy: the file that ran on 13/11",
+   "git_in_source_repo": "untracked (??)"
+  },
+  {
+   "path": "tree/Experiment/XTEAM-03/run.py",
+   "copied_from": "release/fourfusion_flag2027/Experiment/XTEAM-03/run.py",
+   "bytes": 1276,
+   "md5": "46eeb3a730d208b0f0db1cf698091a45",
+   "sha256": "60920e6bc1722fa9e82d79add16fd012d847d155d43acd4133140d24dd040882",
+   "line_endings": "CRLF",
+   "role": "pairwise sum RFX + F1s' (1 : 1) in the pair order of the F1s' zip, '%.8f'",
+   "status": "the version that ran on 13/11: the repository file was edited on 15/11 09:33 (FUSEDIM-02 added the optional XT_W, unset = unchanged); its diff to this 3/11 release copy is exactly that edit (original/XTEAM-03_run_current_2026-11-15.py)",
+   "git_in_source_repo": "untracked (??)"
+  },
+  {
+   "path": "tree/Experiment/ENFUSE-U/run.py",
+   "copied_from": "Experiment/ENFUSE-U/run.py",
+   "bytes": 5484,
+   "md5": "5250aaf7c006eb2316950c93078206a9",
+   "sha256": "03858efa3fb034c841cbde91a4c79b7dc256530f0580e080d0611c9ad018c2ef",
+   "line_endings": "LF",
+   "role": "ENFUSE: English = -(F1s' Bangla fuser applied to the English trials) + RFX, Bangla = bytes of the U zip; level-0 self-test; reproduces F1s' Bangla to <= 1e-5; writes the zip, a report and the POSTEVAL manifest entry",
+   "status": "current repository file (mtime 2026-11-15 09:33): it already had ENF_RFS / ENF_U / ENF_OUT on 13/11 (EVALSWEEP-01); FUSEDIM-02 added the optional ENF_W on 15/11 (unset here = 1 : 1). No byte copy of the 13/11 version exists; the stage asserts that the result equals the independent one-step rebuild_final.py",
+   "git_in_source_repo": "untracked (??)"
+  },
+  {
+   "path": "tree/Experiment/E2E/e2e_lib.py",
+   "copied_from": "Experiment/E2E/e2e_lib.py",
+   "bytes": 16836,
+   "md5": "f8efa92934ba217d2b1e6c665815a729",
+   "sha256": "a609cebb35be09b3d6fa7edbb2ced1e9652bd5fe8c4174ee938388393ac19def",
+   "line_endings": "CRLF",
+   "role": "imported by ENFUSE-U/run.py: components(), apply_fuser(), level0_selftest()",
+   "status": "md5 f8efa929... = the copy embedded in the 112f1sx Evaluation run (CODE_MD5), mtime 2026-11-05: unchanged since",
+   "git_in_source_repo": "untracked (??)"
+  },
+  {
+   "path": "tree/release/factor_enfuse/rebuild_final.py",
+   "copied_from": "release/factor_enfuse/rebuild_final.py",
+   "bytes": 4103,
+   "md5": "659da47422dcdcdd1941b19feeb61e14",
+   "sha256": "0878da7f24dc91ce345c7a455cb98880258ba8c022fe733b47387fb76753a1b9",
+   "line_endings": "LF",
+   "role": "one-step equivalent (U_X, ENFUSE English, compare contents); used here as an independent cross-check of the chain",
+   "status": "byte-identical to the team package copy E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/rebuild_final.py, which rebuilt the four files 'identical' (original/rebuild_report_team_package.txt)",
+   "git_in_source_repo": "untracked (??)"
+  }
+ ],
+ "provenance_files": [
+  {
+   "path": "original/rfx_chain_2026-11-13.log",
+   "copied_from": "Experiment/FACTOR-01/rfx_chain.log",
+   "bytes": 2217,
+   "md5": "4dd1ddb862c1dcf9c294ef6377ea8145",
+   "sha256": "251d37d61be933cbe9c10e275b09819d80ce32f0a0f9722407ebfa3d3597ece2",
+   "line_endings": "CRLF",
+   "role": "log of kaggle/rfx_chain.sh on 13/11/2026 10:53-12:00 (UTC+7): the U and ENFUSE steps and their checks",
+   "git_in_source_repo": "untracked (??)"
+  },
+  {
+   "path": "original/enfuse_report_posteval_FACTOR_ENFUSE_c5rl.txt",
+   "copied_from": "Experiment/ENFUSE-U/out/posteval_FACTOR_ENFUSE_c5rl.txt",
+   "bytes": 537,
+   "md5": "fe8f02242b097c92f912a0ef7d2e7131",
+   "sha256": "df1a5831160a0762e9772350cea04d29136f95288dece6ada72a6a532592eaa5",
+   "line_endings": "CRLF",
+   "role": "report written by ENFUSE-U/run.py on 13/11 12:00 (F1s' Bangla reproduced, max |diff| 5.0e-07; level-0 0.0)",
+   "git_in_source_repo": "untracked (??)"
+  },
+  {
+   "path": "original/rebuild_report_team_package.txt",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/rebuild_report.txt",
+   "bytes": 380,
+   "md5": "6078097ea2d085717ae0d3c1f4b1c3ce",
+   "sha256": "68ca223642346749d56e1cee71469d6d284fe035ad1b2483fe05aaea7b1daac1",
+   "line_endings": "CRLF",
+   "role": "rebuild_final.py on the six saved inputs: 'OK: identical to the submitted zip' (14/11)",
+   "git_in_source_repo": "not a repository file"
+  },
+  {
+   "path": "original/XTEAM-03_run_current_2026-11-15.py",
+   "copied_from": "Experiment/XTEAM-03/run.py",
+   "bytes": 1633,
+   "md5": "064f61134d1512f3cf4327d610e76290",
+   "sha256": "3c1003dd9c70ae887e0890bf95fb06a0eaba4cd79552b2798be693e20f361fb8",
+   "line_endings": "CRLF",
+   "role": "today's XTEAM-03/run.py (adds XT_W on 15/11); NOT the version that runs here; kept to show the diff",
+   "git_in_source_repo": "untracked (??)"
+  }
+ ],
+ "outputs_of_the_run": {
+  "posteval_FACTOR_U_c5rl.zip": {
+   "sha256_of_the_13_11_zip": "23702a4295b7189c1aeb24da3f34a4c5a788e0a621261230c5f1e6550d9d2c09",
+   "members_sha256": {
+    "no_gender/sub_score_v4_English_heard.txt": "1726bf9488cb6507e692a9bce0475dffea3db3e2db4aef660fd2c49ba70827b7",
+    "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+    "gender/sub_score_v4_English_heard.txt": "754eb4e3f8bcc662db8e082f97def050a9021aae1bbc7703d1fa2b9f0f18e9c6",
+    "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"
+   },
+   "zip_entry_time": "2026-11-13 12:00:40",
+   "compression": "DEFLATED"
+  },
+  "posteval_FACTOR_ENFUSE_c5rl.zip": {
+   "sha256_of_the_13_11_zip": "9cf5bbe4e3af14184c26eef08104d3ddd94fc5357569c09fc657a93d4549fd93",
+   "members_sha256": {
+    "no_gender/sub_score_v4_English_heard.txt": "44e2781f5673e318318c7662a2cc4feb28f347557db8288a18cbe2cbac5af69c",
+    "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+    "gender/sub_score_v4_English_heard.txt": "73e485fd8803a2f897974257f77bb45c6319d9f8466ca6fd067af2f48e6964db",
+    "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"
+   },
+   "zip_entry_time": "2026-11-13 12:00:44",
+   "compression": "DEFLATED",
+   "codabench": "displayed Evaluation 16.99 (submission of 13/11); base of 3 of the 4 files of 13.54"
+  }
+ },
+ "inputs_of_the_run": {
+  "cleantune01_fuser_bangla_CA.json": {
+   "bytes": 4695,
+   "sha256": "c4737367e787da6dc9a1e08453a9602e2ea60b830bd7a56e8d6728501e9d06a4"
+  },
+  "components_eval.npz": {
+   "bytes": 17384406,
+   "sha256": "2cd160ae456447c0c47bf611f2f73480ffc5c9161e767812d42e5f380b1b56c7"
+  },
+  "ct01r2_final_eval.npz": {
+   "bytes": 21154,
+   "sha256": "bbad53ed8e32066240f405676e7f3676dd55040573c00d1fad07b81774c3d0fc"
+  },
+  "e2e_manifest.json": {
+   "bytes": 12400,
+   "sha256": "b0ba27c2982f917199d957cd42763fecfdd31c292352594a4e141105ce72bd58"
+  },
+  "f1s_eval.zip": {
+   "bytes": 29188,
+   "sha256": "1b43b14ff763bd0eac72fea505e4cfd4ff98bc41d87d49baecdfd613525a6962",
+   "members": {
+    "no_gender/sub_score_v4_English_heard.txt": "13b2b9b4e75f59fc92cf58477acca17c17bb2e11f5e804ead6797de59f470e08",
+    "no_gender/sub_score_v4_Bangla_unheard.txt": "db9a4242a811d9d70d16ee003ee9023827fd941d409697c533fc535d96e9469f",
+    "gender/sub_score_v4_English_heard.txt": "557e752fe730323371e3dceab57b54532578c633f7ad2ea9e4d3d27d7cee53ae",
+    "gender/sub_score_v4_Bangla_unheard.txt": "c3a93c4671358e2d27d296edab664ca695bcdfadf2ad187be2f006b361bf1bc2"
+   }
+  },
+  "rfx_eval.zip": {
+   "bytes": 32049,
+   "sha256": "1fa53218c9501ef38f9b1c33680fac5b7f6a0ddace4fdaffed7cd5334b9aa369",
+   "members": {
+    "no_gender/sub_score_v4_English_heard.txt": "6d1b5dfdd6be91c0faf33d250baf0b869be377c43b631e37e037e4201110a1cb",
+    "no_gender/sub_score_v4_Bangla_unheard.txt": "518840adbc65e948127f10abf3f0efd7c4ab71293a8a7f4eafc613ca5f38d723",
+    "gender/sub_score_v4_English_heard.txt": "6a8a7c95a2b5210a54a97ad959a8f35b033a49302373ad4e9e00932f3742a079",
+    "gender/sub_score_v4_Bangla_unheard.txt": "b26ec075324f649a85caaeb842660aad5f79a3d6b168520b1bf1cf0a010f37f6"
+   }
+  }
+ },
+ "notes": [
+  "The tree/ files are byte copies (no edit). The stage cell lays them out with the six inputs exactly at the repository paths that the 13/11 run read, and runs the same commands with the repository copy as working directory; outputs stay inside /kaggle/working.",
+  "Two departures from the 13/11 command list (wiring only, see CHANGES.md): the --peer of the two check_eval_zip.py calls is the F1s' and RFX zips instead of the U' Evaluation zip (not part of this chain); the POSTEVAL-01 manifest starts empty in the working copy.",
+  "Zip bytes differ from the 13/11 zips even when every member is identical (ZipFile.writestr stores the build time); compare members."
+ ]
+}

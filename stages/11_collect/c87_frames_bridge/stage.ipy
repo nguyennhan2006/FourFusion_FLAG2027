@@ -1,0 +1,40 @@
+print("[boot] FLAG_87_bridge | python", __import__("sys").version.split()[0], "| start", __import__("time").strftime("%Y-%m-%d %H:%M:%S"), flush=True)  # heartbeat rule: first output, before any import
+import os, sys, json, time, shutil
+from pathlib import Path
+IN = Path("/kaggle/input")
+HANDLE = f"onnhqunhh/flag2027-lora-frames-p"
+log = lambda *a: print(time.strftime("%H:%M:%S"), *a, flush=True)
+# [FF upload] kagglehub only served the upload cell, which this stage drops (the runner exports the staged folder):
+# import kagglehub
+# log("kagglehub", kagglehub.__version__)
+# <<<FF-CELL>>>
+# stage = symlinks with the published names (no copy); every source must be found once
+def find(name, parent=None):
+    hits = sorted(p for p in IN.rglob(name) if parent is None or p.parent.name == parent)
+    assert hits, f"{name} ({parent}) not found: attach the FLAG_45 / FLAG_63 / FLAG_65-b outputs"
+    return hits[0]
+
+
+stage = Path("/kaggle/working/lora_frames"); shutil.rmtree(stage, ignore_errors=True)   # [FF upload] staged in the working dir = the exported dataset; orig. /tmp/stage, then uploaded
+z37, man = find("vox_frames_png.zip"), find("frames_manifest.json")
+# [FF wiring] the FLAG_65-b checkpoint (FACELORA-03 B3 adapter; never read by the 13.54 chain) is optional here: kept when
+# its output is attached (= the original dataset content), else skipped. Orig.: ck = find("facelora_ckpt.pt", "feats_facelora3_b")
+ck = sorted(p for p in IN.rglob("facelora_ckpt.pt") if p.parent.name == "feats_facelora3_b")
+links = {stage / "vox_frames_png.zipdata": z37, stage / "frames/frames_manifest.json": man}
+if ck:
+    links[stage / "feats_facelora3_b/facelora_ckpt.pt"] = ck[0]
+for part in ("vb", "vox2b"):
+    for zf in sorted((man.parent / part).glob("*.zip")):
+        links[stage / f"frames/{part}/{zf.stem}.zipdata"] = zf
+for dst, src in links.items():
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    try:                                     # [FF upload] real files: orig. os.symlink(src, dst), fine for an upload, but a link
+        os.link(os.path.realpath(src), dst)  # into the stage's temporary input view would dangle once the stage ends
+    except OSError:
+        shutil.copy2(os.path.realpath(src), dst)
+m = json.loads(man.read_text())
+n = {p: len(list((stage / f"frames/{p}").glob("*.zipdata"))) for p in ("vb", "vox2b")}
+gb = sum(Path(s).stat().st_size for s in links.values()) / 2 ** 30
+log(f"staged {len(links)} files, {gb:.2f} GB | chunk zips {n} vs manifest {{'vb': {m['parts']['vb']['zips']}, 'vox2b': {m['parts']['vox2b']['zips']}}}")
+assert n["vb"] == m["parts"]["vb"]["zips"] and n["vox2b"] == m["parts"]["vox2b"]["zips"], "missing frame zips"
+# <<<FF-CELL>>>

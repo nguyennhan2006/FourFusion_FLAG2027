@@ -1,0 +1,34 @@
+{
+ "about": "Pinned pretrained models of the DP feature extractor (the versions on the team machine on 16/11).",
+ "insightface_buffalo_l": {
+  "dir": "~/.insightface/models/buffalo_l",
+  "sha256": {
+   "det_10g.onnx": "5838f7fe053675b1c7a08b633df49e7af5495cee0493c7dcf6697200b85b5b91",
+   "w600k_r50.onnx": "4c06341c33c2ca1f86781dab0e829f88ad5b64be9fba56e56bc9ebdefc619e43"
+  },
+  "zip_sha256": "80ffe37d8a5940d59a7384c201a2a38d4741f2f3c51eef46ebb28218a7b0ca2f",
+  "source": "insightface model zoo buffalo_l.zip (auto-download of FaceAnalysis(name='buffalo_l')); recognition = w600k_r50 (ResNet-50, WebFace600K), detection = SCRFD det_10g"
+ },
+ "adaface": {
+  "repo": "minchul/cvlface_adaface_ir101_webface12m",
+  "revision": "54f602a0737bd1ee4a4e7e9fd089a485f397fefd",
+  "sha256": {
+   "pretrained_model/model.pt": "e312d79222d28027f146ed495e182e48fe0dddf404cdbbdabcccdbdd07cc3758",
+   "pretrained_model/model.yaml": "29b9eb57d3e6364421b34312ec1cb44cfd3e2b7a3e4fb06c72d322ddeb338dae"
+  }
+ },
+ "speechbrain_ecapa": {
+  "repo": "speechbrain/spkrec-ecapa-voxceleb",
+  "revision": "0f99f2d0ebe89ac095bcc5903c4dd8f72b367286",
+  "savedir_files": {
+   "hyperparams.yaml": "6f78854fa04ba59e761437b76a2575d3aba5e5016de3e9b69f0c9a5077fb1a41",
+   "embedding_model.ckpt": "0575cb64845e6b9a10db9bcb74d5ac32b326b8dc90352671d345e2ee3d0126a2",
+   "mean_var_norm_emb.ckpt": "cd70225b05b37be64fc5a95e24395d804231d43f74b2e1e5a513db7b69b34c33",
+   "classifier.ckpt": "fd9e3634fe68bd0a427c95e354c0c677374f62b3f434e45b78599950d860d535",
+   "label_encoder.ckpt": "e13c3a167bb4112685670ee896d20e2b565af16b3a4ceeaa8689fa4d22adb8b9"
+  },
+  "hub_name_of": {
+   "label_encoder.ckpt": "label_encoder.txt"
+  }
+ }
+}

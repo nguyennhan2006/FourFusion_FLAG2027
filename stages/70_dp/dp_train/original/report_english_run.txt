@@ -1,0 +1,18 @@
+02:11:06 FLAG train (6485, 5120) (6485, 6528) persons 70
+02:11:06 MAV v1: ArcFace cos same speaker 0.539 / other 0.028 (7580 faces, 19556 voices)
+02:11:19 MAV v1: dropped 13 voice files flagged Bengali
+02:11:19 MAV v2: ArcFace cos same speaker 0.561 / other 0.027 (8953 faces, 20715 voices)
+02:11:33 MAV v2: dropped 45 voice files flagged Bengali
+02:11:35 external (16533, 5120) (40213, 6528) persons 154 voice rows with a face 40213
+02:11:36 skip (no features): no_gender_Bangla
+02:11:37 skip (no features): gender_Bangla
+02:12:43 fold 0: 14 held-out persons, last loss 1.054
+02:13:49 fold 1: 14 held-out persons, last loss 1.312
+02:14:51 fold 2: 14 held-out persons, last loss 0.990
+02:15:54 fold 3: 14 held-out persons, last loss 1.291
+02:16:57 fold 4: 14 held-out persons, last loss 1.174
+02:16:57 OOF FLAG train no_gender: EER 25.67 | mean 0.2396 sd 0.2452 (30000 trials)
+02:16:57 OOF FLAG train gender: EER 34.64 | mean 0.2915 sd 0.2184 (30000 trials)
+02:21:31 final models: 10 last losses [1.24, 1.008, 1.104]
+02:21:31 Evaluation no_gender_English: 392 trials scored
+02:21:32 Evaluation gender_English: 416 trials scored

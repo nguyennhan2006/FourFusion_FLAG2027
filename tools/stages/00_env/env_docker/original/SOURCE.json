@@ -1,0 +1,16 @@
+{
+ "stage": "env_docker",
+ "exactness": "new",
+ "note": "No original run. original/ holds the reference file the stage is built around.",
+ "files": [
+  {
+   "name": "Dockerfile",
+   "copied_from": "release/docker/Dockerfile (team repository d:/Sinh viên CNhan/FLAG_2027_FourFusion, untracked in git: '??')",
+   "identical_to": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/docker/Dockerfile (team package, same SHA-256)",
+   "bytes": 3329,
+   "md5": "104c1874fc4838b75a3ccd1f6dd46b7b",
+   "sha256": "ad84e6fea5f55541c087d85fe5de806049d2f93fe0a3a5a1530842fbbbe66eb9",
+   "copied": "2026-11-18, cp -p (byte copy), sha256 re-checked at the destination"
+  }
+ ]
+}

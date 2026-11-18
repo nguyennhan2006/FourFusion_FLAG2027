@@ -1,0 +1,89 @@
+{
+ "id": "cleancomp_tables",
+ "group": "30_F_family",
+ "title": "SAFE-04 reference tables of F1s' with the CLEANCOMP-01 columns (XALL_*, rel, relg, anP512_*, t3_relg) from the FLAG_164 out-of-fold tables",
+ "kind": "train",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "local-script",
+  "source_file": "Experiment/CLEANCOMP-01/build_tables.py",
+  "source_sha256": "a37bfda0db73296a290d491faf55a4d307e5302b2e1625e7807716975b83de71",
+  "original_in_repo": "original/build_tables.py",
+  "invoked_by": "kaggle/cleancomp_chain.sh (3/11 ≈17:17, local CPU)",
+  "release_e2e": "release/flag2027_e2e/stages.py:379-420 (stage cleancomp_tables)",
+  "builder": null
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-e2e-dev-p"
+  },
+  {
+   "artifact": "notebooks/nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123"
+  },
+  {
+   "artifact": "notebooks/dngxunqun/flag-2027-nb-164-cleancomp01-f45"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/cleancomp_tables",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p": "ds"
+  }
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not_used (no input of this stage is a LoRA C1 artifact; the F1s' family does not use the ImageBind-audio LoRA)"
+ },
+ "skip_with": [
+  "03_checkpoints/f1s_safe04_tables"
+ ],
+ "verify": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+   "file": "e2edev/safe04/fold_persons.json",
+   "sha256": "43e77e8c4e9091a8120de7e4865e7f4fbdb9eb062fba0088b9649ed13f9cb884",
+   "mode": "exact (copied unchanged from e2e-dev)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+   "file": "e2edev/safe04/stack02_rows.parquet",
+   "sha256": "d3d7ab753849fded97fcf997a39df3c966aa2e6a6bdc8ff7ce9730da36134f55",
+   "mode": "exact (copied unchanged)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+   "file": "e2edev/CLEANCOMP.txt",
+   "sha256": "0d9c5b799237ee4e9cded25570496539ce4f4e8a2f57efd6721286c358ab6e6a",
+   "mode": "reference (equal only with the original fold tables)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+   "dataset_zip_sha256_in_E_package": "a36698fa78f2a3ace06921353b1c08071988273356312990cedd4fd0343aa4ce",
+   "known_differences": "components_dev.npz (original b42e09d5...), e2e_manifest.json (843caed9...), CLEANCOMP_dev.txt (748c18a0...) come from build_dev.py, not run here; this stage copies the e2e-dev versions (components_dev.npz b8da75dc..., e2e_manifest.json 50282866...)"
+  }
+ ],
+ "dev_usage": "Copies the dev wiring files of the e2e-dev input (components_dev.npz, fusers/, ref/, e2e_manifest.json) unchanged; does not run build_dev.py (dev lists).",
+ "todo": [
+  "WP-A: data_map dev_data true on datasets/ngnnguynchn/flag2027-e2e-dev-p and datasets/ff-frozen/flag2027-e2e-dev-p (components_dev.npz, ref/ dev zips) - already true on cleancomp-e2e-p"
+ ],
+ "stage_ipy": {
+  "file": "stage.ipy",
+  "sha256": "c9fe51f87e62d7d60a63b8784ba02961f10af6f067550195edad6aa4ff1f8e79",
+  "bytes": 3026,
+  "cells": 1,
+  "cell_separator": "\\n# <<<FF-CELL>>>\\n"
+ }
+}

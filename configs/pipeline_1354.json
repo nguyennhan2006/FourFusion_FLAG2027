@@ -1,0 +1,2066 @@
+{
+ "_doc": "Stage order and reference DAG of the 13.54 chain (DESIGN section 4). The authoritative definition of a stage is its stages/<group>/<id>/stage.json; the 'stages' list below is the SKELETON from DESIGN (inputs / outputs as artifact ids) used by runner/ffrun.py to plan before every stage.json exists and to cross-check them ('ffrun.py dag --compare-skeleton').",
+ "version": 1,
+ "variant": "1354",
+ "default_target": "final_verify",
+ "stage_roots": [
+  "stages",
+  "tools/stages"
+ ],
+ "cell_sep": "\n# <<<FF-CELL>>>\n",
+ "groups": [
+  "00_env",
+  "10_raw",
+  "11_collect",
+  "12_rows",
+  "13_lid",
+  "20_features",
+  "30_F_family",
+  "40_R_family",
+  "50_eval",
+  "60_fvbind",
+  "70_dp",
+  "80_final"
+ ],
+ "kinds": [
+  "raw",
+  "collect",
+  "data",
+  "train",
+  "infer",
+  "assemble"
+ ],
+ "roles": [
+  "score",
+  "wiring",
+  "evidence",
+  "optional"
+ ],
+ "runtime_rewrites": [
+  {
+   "old": "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "new": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+   "why": "Meta's ImageBind URL has been dead since 2026-11-12; the HF copy pinned at commit 40c7e2a has the same SHA-256 d6f6c22b...2157. Applied at run time to every stage (idempotent when the stage already patched it)."
+  }
+ ],
+ "upload_vars": [
+  "RFS_UPLOAD",
+  "FL3_UPLOAD",
+  "WH_UPLOAD",
+  "AUDIO_UPLOAD",
+  "VFEAT_UPLOAD",
+  "FVB_UPLOAD",
+  "LORA_UPLOAD",
+  "FRAMES_UPLOAD",
+  "TAP_UPLOAD",
+  "UPLOAD"
+ ],
+ "upload_vars_why": "every line `os.environ['<VAR>'] = '<slug>'` (or os.environ.setdefault('<VAR>', '<slug>')) of these variables is replaced at run time by `pass  # [ff runner] upload disabled (output becomes an artifact): <original line>` and the variable is removed from the stage's environment, so no stage uploads to Kaggle; the stage's output becomes an artifact under FF_WORK/art instead (runner/RUNTIME_CHANGES.md)",
+ "producer_preference": {},
+ "pip": {
+  "original": "run the notebooks' own pip cells unchanged (needs Internet; pip resolves to the newest releases of unpinned packages)",
+  "pinned": "PIP_CONSTRAINT=docker/constraints-kaggle-v173.txt for every stage + the unpinned ImageBind git URL rewritten to the commit below",
+  "skip": "pip is replaced by a no-op shim (offline runs in an environment that already holds the pinned packages, e.g. the Docker image)",
+  "constraints_file": "docker/constraints-kaggle-v173.txt",
+  "git_pins": [
+   {
+    "regex": "git\\+https://github\\.com/facebookresearch/ImageBind(?:\\.git)?(?![@\\w.])",
+    "new": "git+https://github.com/facebookresearch/ImageBind.git@53680b02d7e37b19b124fa37bae4b6c98c38f5be",
+    "why": "the notebooks install ImageBind from main; the Docker image pins the main of 2026-11-05 (unverified: same as HEAD at each run date)"
+   }
+  ],
+  "pinned_scope_note": "docker/constraints-kaggle-v173.txt holds the newest releases before 2026-11-05 = the November image family of the F / R / Evaluation / FVBIND runs (configs/env_per_stage.json family v173). The runner warns when FF_PIP=pinned is applied to a stage of another family; FF_PIP_SCOPE=v173 keeps 'original' for those stages"
+ },
+ "time_budget_h_kaggle": 11.3,
+ "stages": [
+  {
+   "id": "env_docker",
+   "group": "00_env",
+   "wp": "WP-A",
+   "kind": "data",
+   "role_in_1354": "optional",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "Environment specification check: Kaggle base image v173 + pinned pip packages (Docker build optional, printed only)",
+   "inputs": [],
+   "kernel": "notebooks/ff/env_docker",
+   "exports": []
+  },
+  {
+   "id": "models_fetch",
+   "group": "00_env",
+   "wp": "WP-A",
+   "kind": "data",
+   "role_in_1354": "optional",
+   "device": "cpu",
+   "minutes_original": 60,
+   "title": "Download every public pretrained model at a pinned revision, check SHA-256 -> FF_DATA/06_pretrained (+ SOURCES.json)",
+   "inputs": [],
+   "kernel": "notebooks/ff/models_fetch",
+   "exports": [
+    "pretrained/models"
+   ],
+   "internet": true
+  },
+  {
+   "id": "raw_btc",
+   "group": "10_raw",
+   "wp": "WP-B",
+   "kind": "raw",
+   "role_in_1354": "evidence",
+   "device": "cpu",
+   "minutes_original": 2,
+   "title": "Check the organisers' MAV-Celeb v4 train / dev release (no producing code)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/ff/raw_btc",
+   "exports": []
+  },
+  {
+   "id": "raw_evalphase",
+   "group": "10_raw",
+   "wp": "WP-B",
+   "kind": "raw",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "Organisers' Evaluation zip -> eval_set.zip (*_valid -> *_test, 416 list lines fixed) = dataset flag2027-evalphase-p",
+   "inputs": [
+    "raw/btc_evaluation_original"
+   ],
+   "kernel": "notebooks/ff/raw_evalphase",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-evalphase-p"
+   ]
+  },
+  {
+   "id": "raw_mavceleb",
+   "group": "10_raw",
+   "wp": "WP-B",
+   "kind": "raw",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 45,
+   "title": "Extract the original MAV-Celeb v1 / v2 zips exactly as the Kaggle dataset chnnhnnguyn/external-data-mavceleb",
+   "inputs": [
+    "raw/mavceleb_v1_v2_zips"
+   ],
+   "kernel": "notebooks/ff/raw_mavceleb",
+   "exports": [
+    "datasets/chnnhnnguyn/external-data-mavceleb"
+   ]
+  },
+  {
+   "id": "raw_mavceleb_check",
+   "group": "10_raw",
+   "wp": "",
+   "kind": "raw",
+   "role_in_1354": "evidence",
+   "device": "cpu",
+   "minutes_original": 15,
+   "title": "Check a saved copy of the extracted MAV-Celeb v1 / v2 dataset (chnnhnnguyn/external-data-mavceleb): counts, layout, meta_v1.csv, no zip",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb"
+   ],
+   "kernel": "notebooks/ff/raw_mavceleb_check",
+   "exports": []
+  },
+  {
+   "id": "c37_vox2",
+   "group": "11_collect",
+   "wp": "WP-C",
+   "kind": "collect",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 118,
+   "title": "VoxCeleb2 identity list + sample keys of FLAG_37 (4 877 speakers; 29 251 face tracks, 38 345 voice clips)",
+   "inputs": [],
+   "kernel": "notebooks/ff/c37_vox2",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-vox2-keys"
+   ],
+   "internet": true
+  },
+  {
+   "id": "c53_vox2b",
+   "group": "11_collect",
+   "wp": "WP-C",
+   "kind": "collect",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 484,
+   "title": "VoxCeleb2 extra speakers + extra samples of FLAG_53, part 0 only (1 235 new + 4 877 old speakers; 36 426 faces, 47 529 voices)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p"
+   ],
+   "kernel": "notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "c46_voxblink",
+   "group": "11_collect",
+   "wp": "WP-C",
+   "kind": "collect",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 936,
+   "title": "VoxBlink-clean identities of FLAG_46 (Bengali / Bangladesh speakers removed before download; 15 175 speakers, 68 041 faces, 68 043 voices) + Track-3 encoders + VoxLingua107",
+   "inputs": [],
+   "kernel": "notebooks/ff/c46_voxblink",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "c45_frames_vox2",
+   "group": "11_collect",
+   "wp": "WP-C",
+   "kind": "collect",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 70,
+   "title": "Lossless PNG middle frames of the 29 251 FLAG_37 face tracks (vox_frames_png.zip), frames part of FLAG_45 only",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p"
+   ],
+   "kernel": "notebooks/onnhqunhh/flag-2027-nb-45-facelora-farl",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "c63_frames",
+   "group": "11_collect",
+   "wp": "WP-C",
+   "kind": "collect",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 335,
+   "title": "Lossless PNG face frames of the 68 041 VoxBlink (FLAG_46) and 36 426 VoxCeleb2 (FLAG_53) face rows, re-cut exactly like the features",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-frames-index-p"
+   ],
+   "kernel": "notebooks/onnhqunhh/flag-2027-nb-63-frames",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "c87_frames_bridge",
+   "group": "11_collect",
+   "wp": "WP-C",
+   "kind": "collect",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "Assemble the private face-frame dataset onnhqunhh/flag2027-lora-frames-p (FLAG_45 + FLAG_63 frames, renamed *.zipdata)",
+   "inputs": [
+    "notebooks/onnhqunhh/flag-2027-nb-45-facelora-farl",
+    "notebooks/onnhqunhh/flag-2027-nb-63-frames"
+   ],
+   "kernel": "notebooks/onnhqunhh/flag-2027-nb-87-bridge",
+   "exports": [
+    "datasets/onnhqunhh/flag2027-lora-frames-p"
+   ]
+  },
+  {
+   "id": "c63v_audio_cache",
+   "group": "11_collect",
+   "wp": "WP-C",
+   "kind": "collect",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 444,
+   "title": "Audio cache: centre 3 s, 16 kHz int16 of every auxiliary voice row (VoxBlink 67 616, VoxCeleb2 84 415), LID-dropped speakers (old per-source rule) never fetched",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-frames-index-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+   ],
+   "kernel": "notebooks/duongphihoang/flag-2027-nb-63v-audio-cache",
+   "exports": [
+    "datasets/duongphihoang/flag2027-audio-cache-p"
+   ],
+   "internet": true
+  },
+  {
+   "id": "c_frames_index",
+   "group": "11_collect",
+   "wp": "WP-C",
+   "kind": "collect",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "Pack the frame-fetch index ngnnguynchn/flag2027-frames-index-p (FLAG_46 selection / timestamps / shard_listing / face_meta; FLAG_53 listing_{dev,test}_mp4.parquet / face_meta)",
+   "inputs": [
+    "notebooks/ff/c46_voxblink",
+    "notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid"
+   ],
+   "kernel": "notebooks/ff/c_frames_index",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-frames-index-p"
+   ]
+  },
+  {
+   "id": "r08_mav_rows",
+   "group": "12_rows",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 830,
+   "title": "MAV-Celeb row tables (8 frames per video, every wav uncropped) + organiser-space VGG-Face fc7 / ECAPA arrays (FLAG_08 full)",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb"
+   ],
+   "kernel": "notebooks/ff/r08_mav_rows",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-ext-meta-p"
+   ]
+  },
+  {
+   "id": "r31_mav_rows_check",
+   "group": "12_rows",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "optional",
+   "device": "cpu",
+   "minutes_original": 10,
+   "title": "Optional: rebuild the MAV row tables without encoders (FLAG_08 listing + FLAG_31 EXTRAW listing) and compare byte for byte",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb"
+   ],
+   "kernel": "notebooks/ff/r31_mav_rows_check",
+   "exports": []
+  },
+  {
+   "id": "r07_overlap",
+   "group": "12_rows",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "evidence",
+   "device": "cpu",
+   "minutes_original": 2,
+   "title": "Evidence: MAV <-> v4 identity overlap list (SET-07), train-only rule; the chain hard-codes the result",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "notebooks/ff/r08_mav_rows"
+   ],
+   "kernel": "notebooks/ff/r07_overlap",
+   "exports": []
+  },
+  {
+   "id": "l42_vox2_lid",
+   "group": "13_lid",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 130,
+   "title": "FLAG_42: VoxLingua107 language ID of the 38 345 FLAG_37 VoxCeleb2 clips (12 s centre crop, streamed from the HF tars)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-vox2-keys"
+   ],
+   "kernel": "notebooks/nguynlcnhtho/flag-2027-nb-42",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "l_groups",
+   "group": "13_lid",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "evidence",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "Evidence: language groups (DSEL-01, SCALE-CC-01) and genders of the VoxCeleb2 speakers",
+   "inputs": [
+    "notebooks/nguynlcnhtho/flag-2027-nb-42",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "raw/voxceleb2_vox2_meta"
+   ],
+   "kernel": "notebooks/ff/l_groups",
+   "exports": []
+  },
+  {
+   "id": "l150_whisper",
+   "group": "13_lid",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 567,
+   "title": "FLAG_150: Whisper-large-v3 language ID on every cached 3 s training clip + every MAV voice file (+ VoxLingua107 on MAV)",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/duongphihoang/flag2027-audio-cache-p"
+   ],
+   "kernel": "notebooks/duongphihoang/flag-2027-nb-150-lidwhisper",
+   "exports": [],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "l152_mms",
+   "group": "13_lid",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": 139,
+   "title": "FLAG_152: MMS-LID-4017 language ID on every MAV voice file (third vote, reported only; LID-AUDIT-01 requires the table)",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb"
+   ],
+   "kernel": "notebooks/phantrnanna/flag-2027-nb-152-mmslid",
+   "exports": [],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "l_dqual_g3",
+   "group": "13_lid",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 3,
+   "title": "DQUAL-01 layer G3 only (bottom 5 % within-person consistency) for VoxCeleb2 and VoxBlink",
+   "inputs": [
+    "notebooks/ff/f41_t3enc_vox2",
+    "datasets/ngnnguynchn/flag2027-vox2-keys",
+    "notebooks/nguynlcnhtho/flag-2027-nb-42",
+    "notebooks/ff/c46_voxblink"
+   ],
+   "kernel": "notebooks/ff/l_dqual_g3",
+   "exports": []
+  },
+  {
+   "id": "l_lid_audit",
+   "group": "13_lid",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "LID-AUDIT-01: three LID votes per MAV voice file -> mav_w.json (58 Whisper-flagged files, file-level rule)",
+   "inputs": [
+    "notebooks/duongphihoang/flag-2027-nb-150-lidwhisper",
+    "notebooks/phantrnanna/flag-2027-nb-152-mmslid"
+   ],
+   "kernel": "notebooks/ff/l_lid_audit",
+   "exports": []
+  },
+  {
+   "id": "l_lid_strict",
+   "group": "13_lid",
+   "wp": "WP-B",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "LIDSTRICT-01 merge: lid_strict.json version 2 (VoxCeleb2 608, VoxBlink 1 637 speakers, 58 MAV files) = flag2027-lid-strict-p",
+   "inputs": [
+    "notebooks/nguynlcnhtho/flag-2027-nb-42",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "notebooks/ff/c46_voxblink",
+    "notebooks/duongphihoang/flag-2027-nb-150-lidwhisper",
+    "notebooks/ff/l_lid_audit",
+    "notebooks/ff/l_dqual_g3"
+   ],
+   "kernel": "notebooks/ff/l_lid_strict",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p"
+   ]
+  },
+  {
+   "id": "f10_models",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 120,
+   "title": "FLAG_10: ImageBind face / voice, ViT-age, audeering age-gender, AdaFace (+ FaRL ep64, SigLIP2, ViT-age CLS: wiring) for v4 train + MAV-Celeb v1 / v2",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p"
+   ],
+   "kernel": "notebooks/ff/f10_models",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "f12_eval_feats",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 135,
+   "title": "FLAG_12 ('FLAG_12 loop'): ArcFace, SpeechBrain ECAPA 192 / 6144, ViT-age, audeering, ImageBind for v4 train + MAV-Celeb v1 / v2 (MAV cut to the centre 12 s)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p"
+   ],
+   "kernel": "notebooks/ff/f12_eval_feats",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "f04_v2_ref",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "optional",
+   "device": "gpu",
+   "minutes_original": 80,
+   "title": "FLAG_04 (reference, optional): ArcFace + SpeechBrain ECAPA 192 / 6144 of the v4 train list, n_crops = 0",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/ff/f04_v2_ref",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "f14_av",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": 180,
+   "title": "FLAG_14 (wiring): AudioCLIP, ImageBind-align, CLIP B/32, B/16, Wav2CLIP, LanguageBind on v4 train + a MAV-Celeb subset",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p"
+   ],
+   "kernel": "notebooks/ff/f14_av",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "f40_t3enc_mav",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 210,
+   "title": "FLAG_40: FaRL ViT-B/16 epoch 16, CLIP ViT-L/14, SimAM-ResNet100 (VoxBlink2, and the VoxCeleb2 fine-tune) for v4 train + MAV-Celeb v1 / v2",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p"
+   ],
+   "kernel": "notebooks/ff/f40_t3enc_mav",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "f41_t3enc_vox2",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 300,
+   "title": "FLAG_41: the same four encoders on the FLAG_37 VoxCeleb2 samples (middle frame of each face track, centre 12 s of each voice clip)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-vox2-keys"
+   ],
+   "kernel": "notebooks/ff/f41_t3enc_vox2",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "b_eda_bundle",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 5,
+   "title": "Pack the eda bundle (v4 train organiser features + FLAG_10 / FLAG_04 arrays; MAV-Celeb rows + FLAG_10 / FLAG_12 arrays as float16)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "notebooks/ff/r08_mav_rows",
+    "notebooks/ff/f10_models",
+    "notebooks/ff/f12_eval_feats"
+   ],
+   "kernel": "notebooks/ff/b_eda_bundle",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p"
+   ]
+  },
+  {
+   "id": "b_lab_data",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 5,
+   "title": "Pack the lab-data bundle (T3 encoder arrays of v4 / MAV-Celeb / VoxCeleb2, FLAG_37 keys, FLAG_42 LID summary, selected FLAG_10 / 12 / 14 arrays; 3 ECAPA-6144 placeholders)",
+   "inputs": [
+    "notebooks/ff/f40_t3enc_mav",
+    "notebooks/ff/f41_t3enc_vox2",
+    "notebooks/ff/l42_vox2_lid",
+    "datasets/ngnnguynchn/flag2027-vox2-keys",
+    "notebooks/ff/f14_av",
+    "notebooks/ff/f12_eval_feats",
+    "notebooks/ff/f10_models"
+   ],
+   "kernel": "notebooks/ff/b_lab_data",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p"
+   ]
+  },
+  {
+   "id": "b_lab_vb",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 2,
+   "title": "Pack the lab-vb bundle (FLAG_46 VoxBlink-clean: farl16 / clipL / sam100p / sam100f + meta + LID summary); private",
+   "inputs": [
+    "notebooks/ff/c46_voxblink"
+   ],
+   "kernel": "notebooks/ff/b_lab_vb",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-lab-vb-p"
+   ]
+  },
+  {
+   "id": "f47b_screen2",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 151,
+   "title": "FLAG_47b: WeSpeaker ResNet293-LM and ECAPA-TDNN-1024-LM (frozen) for v4 train + MAV-Celeb v1 / v2",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p"
+   ],
+   "kernel": "notebooks/thanhthaoph/flag-2027-nb-47b-voice-screen",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p"
+   ],
+   "internet": true,
+   "gpus": 2
+  },
+  {
+   "id": "f63w_aux_voice",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 516,
+   "title": "FLAG_63w: ResNet293-LM / ECAPA-TDNN-1024-LM of every auxiliary voice (VoxCeleb2 FLAG_37 + FLAG_53, VoxBlink FLAG_46), centre 12 s",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-frames-index-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+   ],
+   "kernel": "notebooks/hthlin/flag-2027-nb-63w-aux-voice",
+   "exports": [
+    "datasets/hthlin/flag2027-aux-voice-feats-p"
+   ],
+   "internet": true
+  },
+  {
+   "id": "f103c_tap01",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 390,
+   "title": "FLAG_103c: SimAM-ResNet100 tap before the bottleneck (samS4) for v4 train, MAV-Celeb and every auxiliary voice (row mask of the CA head)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/duongphihoang/flag2027-audio-cache-p"
+   ],
+   "kernel": "notebooks/dnq1209/flag-2027-nb-103c-tap01-voice-r2",
+   "exports": [
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p"
+   ],
+   "internet": true
+  },
+  {
+   "id": "t160a",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 214,
+   "title": "FLAG_160a: Whisper-large-v3 encoder (block whv3) for v4 train + MAV-Celeb v1 / v2",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/tranthuytien2511/flag-2027-nb-160a-whv3",
+   "exports": [
+    "datasets/tranthuytien2511/flag2027-feats-whv3-a-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "t160b",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 138,
+   "title": "FLAG_160b: Whisper-large-v3 for VoxCeleb2 / VoxBlink (even chunks of the 3 s audio cache)",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-160b-whv3",
+   "exports": [
+    "datasets/thanhhuyen11/flag2027-feats-whv3-b-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "t160c",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 122,
+   "title": "FLAG_160c: Whisper-large-v3 for VoxCeleb2 / VoxBlink (odd chunks of the 3 s audio cache)",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/phuonggmaii/flag-2027-nb-160c-whv3",
+   "exports": [
+    "datasets/phuonggmaii/flag2027-feats-whv3-c-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "t162a",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 434,
+   "title": "FLAG_162a: RF-092 recipe blocks (CLIP-L, ImageBind, SimAM 60 s, ResNet221, organiser-style ECAPA, age) for v4 train + MAV-Celeb",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/onnhqunhh/flag2027-lora-frames-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/nguynchnngn1/flag-2027-nb-162a-rfs",
+   "exports": [
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "t162b",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 242,
+   "title": "FLAG_162b: RF-092 recipe blocks for VoxCeleb2 / VoxBlink (even face indices / even voice chunks)",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/onnhqunhh/flag2027-lora-frames-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/phanththui/flag-2027-nb-162b-rfs",
+   "exports": [
+    "datasets/phanththui/flag2027-feats-rfs-b-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "t162c",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 237,
+   "title": "FLAG_162c: RF-092 recipe blocks for VoxCeleb2 / VoxBlink (odd face indices / odd voice chunks)",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/onnhqunhh/flag2027-lora-frames-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/phanvnnnnn6789/flag-2027-nb-162c-rfs",
+   "exports": [
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "t153b",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": 494,
+   "title": "LoRA adapter B3S on CLIP ViT-L/14 (blocks 18-23, 0.98 M parameters, 4 600 steps) + `clipB3` of every face row",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/onnhqunhh/flag2027-lora-frames-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/phanvnhtrng/flag-2027-nb-153b-b3s",
+   "exports": [
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "t153c",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 712,
+   "title": "LoRA adapter C5S on CLIP ViT-L/14 (blocks 12-23 (MLP + attention), rank 16, 3.54 M parameters, 4 600 steps) + `clipC5` of every face row",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/onnhqunhh/flag2027-lora-frames-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/quynhnhu82/flag-2027-nb-153c-c5s",
+   "exports": [
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "safe04_lab",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "optional",
+   "device": "gpu",
+   "minutes_original": null,
+   "title": "Rebuild the SAFE-04 reference tables of the e2e-dev bundle (pair keys, pf_m / pv_m, stack02_rows, fold_persons; full level: every stream table) from lab-data + eda-bundle",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "notebooks/ff/f12_eval_feats",
+    "datasets/ff-frozen/flag2027-e2e-dev-wiring-p"
+   ],
+   "kernel": "notebooks/ff/safe04_lab",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p"
+   ]
+  },
+  {
+   "id": "safe04_lab_core",
+   "group": "30_F_family",
+   "wp": "",
+   "kind": "data",
+   "role_in_1354": "evidence",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "Partial SAFE-04 rebuild (level core, evidence only): pair keys, pf_m / pv_m and the other Extra columns, stack02_rows, fold_persons spliced into the frozen safe04/ tables",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ff-frozen/flag2027-e2e-dev-p"
+   ],
+   "kernel": "notebooks/ff/safe04_lab_core",
+   "exports": []
+  },
+  {
+   "id": "safe04_compare",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "data",
+   "role_in_1354": "evidence",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "Compare the rebuilt SAFE-04 tables (safe04_lab) with the frozen e2e-dev bundle",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ff-frozen/flag2027-e2e-dev-p"
+   ],
+   "kernel": "notebooks/ff/safe04_compare",
+   "exports": []
+  },
+  {
+   "id": "t164_f123",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 16,
+   "title": "CLEANCOMP-01 folds 1,2,3: XALL bridge (S6) + v11 T3 head (P512) relearned per SAFE-04 fold under LID_STRICT=1 -> cleancomp01_fold<s>.parquet",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p"
+   ],
+   "kernel": "notebooks/nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123",
+   "exports": [],
+   "gpus": 2
+  },
+  {
+   "id": "t164_f45",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 12,
+   "title": "CLEANCOMP-01 folds 4,5: XALL bridge (S6) + v11 T3 head (P512) relearned per SAFE-04 fold under LID_STRICT=1 -> cleancomp01_fold<s>.parquet",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p"
+   ],
+   "kernel": "notebooks/dngxunqun/flag-2027-nb-164-cleancomp01-f45",
+   "exports": [],
+   "gpus": 2
+  },
+  {
+   "id": "cleancomp_tables",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "SAFE-04 reference tables of F1s' with the CLEANCOMP-01 columns (XALL_*, rel, relg, anP512_*, t3_relg) from the FLAG_164 out-of-fold tables",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "notebooks/nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123",
+    "notebooks/dngxunqun/flag-2027-nb-164-cleancomp01-f45"
+   ],
+   "kernel": "notebooks/ff/cleancomp_tables",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p"
+   ]
+  },
+  {
+   "id": "t164f",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 9,
+   "title": "CLEANCOMP-01 final: XALL bridge member `s007_xall.pt` (5 nets) + v11 T3 head `v11_head/v11_t3head.pt` (3 nets) on every train person, LID_STRICT=1",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p"
+   ],
+   "kernel": "notebooks/dngxunqun/flag-2027-nb-164f-cleancomp01-final",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-cleancomp-final-p"
+   ],
+   "gpus": 2
+  },
+  {
+   "id": "t154_g1_f12",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": null,
+   "title": "CLEANTUNE-02 group g1 folds 1,2 (FLAG_110, B3s adapter): ct01g1_fold<s>.parquet for the B0s head (wiring, optional)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernel": "notebooks/nguynthanhnhnn/flag-2027-nb-154-ct02-g1-f12",
+   "exports": [],
+   "gpus": 2
+  },
+  {
+   "id": "t154_g1_f34",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": null,
+   "title": "CLEANTUNE-02 group g1 folds 3,4 (FLAG_110, B3s adapter): ct01g1_fold<s>.parquet for the B0s head (wiring, optional)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernel": "notebooks/hdonqu/flag-2027-nb-154-ct02-g1-f34",
+   "exports": [],
+   "gpus": 2
+  },
+  {
+   "id": "t154_g1_f5",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": null,
+   "title": "CLEANTUNE-02 group g1 folds 5 (FLAG_110, B3s adapter): ct01g1_fold<s>.parquet for the B0s head (wiring, optional)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernel": "notebooks/thanhtruc02/flag-2027-nb-154-ct02-g1-f5",
+   "exports": [],
+   "gpus": 2
+  },
+  {
+   "id": "gather_g1",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "wiring",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "Gather the five ct01g1 fold tables of the three t154_g1 runs (wiring for the B0s head)",
+   "inputs": [
+    "notebooks/nguynthanhnhnn/flag-2027-nb-154-ct02-g1-f12",
+    "notebooks/hdonqu/flag-2027-nb-154-ct02-g1-f34",
+    "notebooks/thanhtruc02/flag-2027-nb-154-ct02-g1-f5"
+   ],
+   "kernel": "notebooks/ff/gather_g1",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p"
+   ]
+  },
+  {
+   "id": "t155s_f12",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 78,
+   "title": "CA head per SAFE-04 fold (folds 1,2): out-of-fold `trCA` (CLEANTUNE-01 round 2, arm CA only) -> ct01r2_fold<s>.parquet",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p"
+   ],
+   "kernel": "notebooks/nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12",
+   "exports": [],
+   "gpus": 2
+  },
+  {
+   "id": "t155s_f34",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 79,
+   "title": "CA head per SAFE-04 fold (folds 3,4): out-of-fold `trCA` (CLEANTUNE-01 round 2, arm CA only) -> ct01r2_fold<s>.parquet",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p"
+   ],
+   "kernel": "notebooks/nguyenchonnhan/flag-2027-nb-155s-ct02ca-f34",
+   "exports": [],
+   "gpus": 2
+  },
+  {
+   "id": "t155s_f5",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 69,
+   "title": "CA head per SAFE-04 fold (folds 5): out-of-fold `trCA` (CLEANTUNE-01 round 2, arm CA only) -> ct01r2_fold<s>.parquet",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p"
+   ],
+   "kernel": "notebooks/locnguyentruongan/flag-2027-nb-155s-ct02ca-f5",
+   "exports": [],
+   "gpus": 2
+  },
+  {
+   "id": "gather_r2ca",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "Gather the five ct01r2 fold tables (trCA) of the three t155s runs",
+   "inputs": [
+    "notebooks/nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12",
+    "notebooks/nguyenchonnhan/flag-2027-nb-155s-ct02ca-f34",
+    "notebooks/locnguyentruongan/flag-2027-nb-155s-ct02ca-f5"
+   ],
+   "kernel": "notebooks/ff/gather_r2ca",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p"
+   ]
+  },
+  {
+   "id": "t112sf0s",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": 60,
+   "title": "B0s head (face [FaRL ep16 ‖ clipB3], voice [SimAM p ‖ ft]), 5 seeds, + F0s dev zip (wiring for t112sf1s / e112f0sx)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p"
+   ],
+   "kernel": "notebooks/locnguyentruongan/flag-2027-nb-112s-f0s",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-evalu-f0s-p"
+   ],
+   "gpus": 2
+  },
+  {
+   "id": "t112sf1s",
+   "group": "30_F_family",
+   "wp": "WP-E",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 154,
+   "title": "final CA head (face [FaRL ep16 ‖ clipC5], voice CAT4 = [SimAM p ‖ SimAM ft ‖ ResNet293 ‖ ECAPA-TDNN-1024]), 10 seeds x 18 560 steps -> ct01r2_final_models.pt",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "notebooks/locnguyentruongan/flag-2027-nb-112s-f0s"
+   ],
+   "kernel": "notebooks/locnguyentruongan/flag-2027-nb-112s-f1s",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-evalu-f1s-p"
+   ],
+   "gpus": 2
+  },
+  {
+   "id": "t163b",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 4,
+   "title": "RFS bundle (ext.npz, v4.npz): assemble the FLAG_160 a/b/c Whisper and FLAG_162 a/b/c RF-092 feature datasets, the MAV row order and the v4 train list",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p",
+    "datasets/tranthuytien2511/flag2027-feats-whv3-a-p",
+    "datasets/thanhhuyen11/flag2027-feats-whv3-b-p",
+    "datasets/phuonggmaii/flag2027-feats-whv3-c-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p"
+   ],
+   "kernel": "notebooks/ngnnguynchn/flag-2027-nb-163-rfs-b",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p"
+   ]
+  },
+  {
+   "id": "t163l_orig",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 66,
+   "title": "ORIGINAL LoRA C1 of the ImageBind audio tower (cache-key bug: 0 VoxCeleb2 clips, 210 MAV-Celeb v1 clips of 70 persons, 1 200 steps) + v_lora of the 6 485 v4 train voices",
+   "inputs": [
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p"
+   ],
+   "kernel": "notebooks/onnhqunhh/flag-2027-nb-163-rfs-l",
+   "exports": [
+    "datasets/onnhqunhh/flag2027-rfs-lora-p"
+   ],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "t183_p1",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "evidence",
+   "device": "gpu",
+   "minutes_original": 43,
+   "title": "FACTOR-01 lab part 1: RFS-LAB of 15 projector-input arms x 5 SAFE-04 folds (evidence for choosing c5rl on validation)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/trngsnam/flag2027-feats-peface01-pe0-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p"
+   ],
+   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p1",
+   "exports": []
+  },
+  {
+   "id": "t183_p2",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "evidence",
+   "device": "gpu",
+   "minutes_original": 50,
+   "title": "FACTOR-01 lab part 2: RFS-LAB of 15 projector-input arms x 5 SAFE-04 folds (evidence for choosing c5rl on validation)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/trngsnam/flag2027-feats-peface01-pe0-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p"
+   ],
+   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p2",
+   "exports": []
+  },
+  {
+   "id": "t184_report",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "evidence",
+   "device": "cpu",
+   "minutes_original": 5,
+   "title": "FACTOR-01 gate report (CPU): nested choice of the RFX arm on SAFE-04, decision 'RFX = RFS a0 + add [f_c5s, v_rl]' (evidence)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-t3s01-tables-p",
+    "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p1",
+    "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p2"
+   ],
+   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-184-factor-report",
+   "exports": []
+  },
+  {
+   "id": "t163p_c5rl",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 9,
+   "title": "RFX c5rl artifact (RFS_MODE=P): 3-seed projector with the extra blocks f_c5s + v_rl, gender probes, ImageBind centring constants, 4-stream / 29-column fusers; copies the ORIGINAL LoRA C1",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p"
+   ],
+   "kernel": "notebooks/ngnnguynchn/flag-2027-nb-163-rfsfxc5rl-p",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p"
+   ],
+   "internet": true
+  },
+  {
+   "id": "t213_p1",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": null,
+   "title": "RFX c5rl lab replicate c0r (projector seeds 4-6) on the 5 SAFE-04 folds: tables rfrc0rlab_fold1..5 (source of the two DP scale constants)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p"
+   ],
+   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-213-seedrep-p1",
+   "exports": []
+  },
+  {
+   "id": "t213_p2",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": null,
+   "title": "RFX c5rl lab replicate c0s (projector seeds 7-9) on the 5 SAFE-04 folds: tables rfrc0slab_fold1..5 (source of the two DP scale constants)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p"
+   ],
+   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-213-seedrep-p2",
+   "exports": []
+  },
+  {
+   "id": "t216_p3",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": null,
+   "title": "RFX c5rl lab replicate c0t (projector seeds 10-12) on the 5 SAFE-04 folds: tables rfrc0tlab_fold1..5 (source of the two DP scale constants)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p"
+   ],
+   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-216-seedrep3",
+   "exports": []
+  },
+  {
+   "id": "t3s01_trca",
+   "group": "40_R_family",
+   "wp": "integration",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "T3S-01 job-table layout with the row keys + trCA of ct02s-r2ca-tables-p (the part of t3s01-tables-p that t219_dumpv4 reads)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p"
+   ],
+   "kernel": "notebooks/ff/t3s01_trca",
+   "exports": [
+    "datasets/ff/flag2027-t3s01-trca-p"
+   ]
+  },
+  {
+   "id": "t219_dumpv4",
+   "group": "40_R_family",
+   "wp": "WP-F",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 2,
+   "title": "Base score U = F1s' out-of-fold + RFX out-of-fold on the held-out v4 train cells (12 896 trials) for the three RFX replicates -> xjfdump_v4.parquet (source of sigma 5.0983 / 3.8376)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+    "datasets/ff/flag2027-t3s01-trca-p",
+    "notebooks/phantrnhuyntrn/flag-2027-nb-213-seedrep-p1",
+    "notebooks/phantrnhuyntrn/flag-2027-nb-213-seedrep-p2",
+    "notebooks/phantrnhuyntrn/flag-2027-nb-216-seedrep3"
+   ],
+   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4",
+   "exports": []
+  },
+  {
+   "id": "e65xbs",
+   "group": "50_eval",
+   "wp": "WP-G",
+   "kind": "infer",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": 16.4,
+   "title": "Faces of the four Evaluation lists: CLIP ViT-L/14 + LoRA face adapter B3s (wiring only)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/onnhqunhh/flag2027-lora-frames-p",
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/ngnnguynchn/flag2027-evalphase-p"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "e65xcs",
+   "group": "50_eval",
+   "wp": "WP-G",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 21.4,
+   "title": "Faces of the four Evaluation lists: CLIP ViT-L/14 + LoRA face adapter C5s",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/onnhqunhh/flag2027-lora-frames-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-evalphase-p"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "e47rs",
+   "group": "50_eval",
+   "wp": "WP-G",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 240.2,
+   "title": "Voices: WeSpeaker ResNet293-LM and ECAPA-TDNN-1024-LM (frozen) on the four Evaluation lists + v4 train (+ MAV-Celeb v1 / v2)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-evalphase-p"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "e50cc",
+   "group": "50_eval",
+   "wp": "WP-G",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 221.1,
+   "title": "F1s′ components on the four Evaluation lists: XALL bridge (4 streams), v11 T3 head (2 streams), 7 conditions",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/ngnnguynchn/flag2027-members-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-best-v7-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+    "datasets/ngnnguynchn/flag2027-cleancomp-final-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-evalphase-p"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+   "exports": [],
+   "gpus": 2,
+   "internet": true
+  },
+  {
+   "id": "e112f0sx",
+   "group": "50_eval",
+   "wp": "WP-G",
+   "kind": "infer",
+   "role_in_1354": "wiring",
+   "device": "cpu",
+   "minutes_original": 2.1,
+   "title": "Saved B0s head on the Evaluation lists -> F0s zip (wiring only)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-evalu-f0s-p",
+    "notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-112f0sx-eval",
+   "exports": [],
+   "internet": false
+  },
+  {
+   "id": "e112f1sx",
+   "group": "50_eval",
+   "wp": "WP-G",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 3.6,
+   "title": "Saved CA head + F1s′ Bangla fuser refit (NOREL) -> f1s_eval.zip, fuser JSON, trCA",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/ngnnguynchn/flag2027-evalu-f1s-p",
+    "notebooks/thanhhuyen11/flag-2027-nb-112f0sx-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval",
+   "exports": [],
+   "internet": false
+  },
+  {
+   "id": "e163i",
+   "group": "50_eval",
+   "wp": "WP-G",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 31.0,
+   "title": "RFX on the four Evaluation lists, scored with the c5rl artifact that holds the ORIGINAL ImageBind-audio LoRA C1 -> rfx_eval.zip",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-evalphase-p",
+    "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "a_factor",
+   "group": "50_eval",
+   "wp": "WP-G",
+   "kind": "assemble",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "FACTOR_ENFUSE (c5rl): U zip = F1s′ + RFX (1 : 1) and ENFUSE zip (English = F1s′ Bangla fuser on the English trials + RFX)",
+   "inputs": [
+    "notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval"
+   ],
+   "kernel": "notebooks/ff/a_factor",
+   "exports": []
+  },
+  {
+   "id": "t189_b2",
+   "group": "60_fvbind",
+   "wp": "WP-H",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 380,
+   "title": "FVBIND-01 voice block B2: ImageBind-huge audio tower + LoRA r8 + linear head 1024->1280, symmetric InfoNCE to the frozen per-person anchor [C5s | FaRL ep16], 2 048 persons per step (GradCache), 584 steps",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "t192_fvbx",
+   "group": "60_fvbind",
+   "wp": "WP-H",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 165,
+   "title": "Block v_fvb = head(ImageBind_B2(voice)) - mu_v for every voice row of the RFS bundle, the v4 train voices and the four Evaluation lists",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/ngnnguynchn/flag2027-evalphase-p",
+    "notebooks/thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0",
+    "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-192-fvbx3",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "t163p_fvb",
+   "group": "60_fvbind",
+   "wp": "WP-H",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 10,
+   "title": "RFX' = RFX c5rl + block v_fvb: InfoNCE projector (3 seeds) on the clean RFS pool, gender probes, centre constants, fusers fg / fn (RFS_MODE=P)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
+    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
+    "datasets/phanththui/flag2027-feats-rfs-b-p",
+    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p",
+    "notebooks/thanhhuyen11/flag-2027-nb-192-fvbx3"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-163-rfsfxfvb-p",
+   "exports": [
+    "datasets/thanhhuyen11/flag2027-rfsfxfvb-art-p"
+   ],
+   "internet": true
+  },
+  {
+   "id": "e163i_fvb",
+   "group": "60_fvbind",
+   "wp": "WP-H",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "gpu",
+   "minutes_original": 34,
+   "title": "RFX' on the four Evaluation lists: re-extract the core RFS blocks from the original media (ImageBind + the artifact's LoRA C1, CLIP-L, SimAM, ResNet221, ECAPA, Whisper, age), add f_c5s / v_rl / v_fvb, score each pair -> rfsfxfvb_eval.zip",
+   "inputs": [
+    "datasets/thanhhuyen11/flag2027-rfsfxfvb-art-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-evalphase-p",
+    "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-192-fvbx3"
+   ],
+   "kernel": "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "a_fvbind",
+   "group": "60_fvbind",
+   "wp": "WP-H",
+   "kind": "assemble",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "FVBIND zips: U = F1s' + RFX' (1 : 1) and ENFUSE (English = F1s' Bangla fuser + RFX'; Bangla = bytes of U); source of the Bangla same-gender file of the 13.54 zip",
+   "inputs": [
+    "notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+    "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval"
+   ],
+   "kernel": "notebooks/ff/a_fvbind",
+   "exports": []
+  },
+  {
+   "id": "a_best4_ref",
+   "group": "60_fvbind",
+   "wp": "WP-H",
+   "kind": "assemble",
+   "role_in_1354": "optional",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "Optional reference: BEST4 (16.72) = FACTOR_ENFUSE for ng/En, ng/Bn, g/En + FVBIND ENFUSE for g/Bn; not an input of the 13.54 zip",
+   "inputs": [
+    "notebooks/ff/a_factor",
+    "notebooks/ff/a_fvbind"
+   ],
+   "kernel": "notebooks/ff/a_best4_ref",
+   "exports": []
+  },
+  {
+   "id": "dp_feats_layout",
+   "group": "70_dp",
+   "wp": "WP-I",
+   "kind": "data",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "DP (Different Profile) branch: lay out the frozen-encoder arrays of the FLAG train set and MAV-Celeb v1/v2 as the DP scripts read them",
+   "inputs": [
+    "notebooks/ff/f12_eval_feats",
+    "notebooks/ff/f10_models",
+    "notebooks/ff/r08_mav_rows"
+   ],
+   "kernel": "notebooks/ff/dp_feats_layout",
+   "exports": []
+  },
+  {
+   "id": "dp_extract_eval",
+   "group": "70_dp",
+   "wp": "WP-I",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 34,
+   "title": "DP branch: ArcFace (insightface buffalo_l), AdaFace IR-101 and SpeechBrain ECAPA 192 / 6144 features of the two English Evaluation files",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-evalphase-p",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "notebooks/ff/dp_feats_layout",
+    "notebooks/ff/raw_evalphase"
+   ],
+   "kernel": "notebooks/ff/dp_extract_eval",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "dp_train",
+   "group": "70_dp",
+   "wp": "WP-I",
+   "kind": "train",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": 11,
+   "title": "DP branch: two towers x 10 seeds (FLAG train + MAV-Celeb v1/v2, 58 Bengali-flagged MAV voice files dropped), out-of-fold z constants, English Evaluation scores, tower checkpoint",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "notebooks/ff/dp_feats_layout",
+    "notebooks/ff/dp_extract_eval",
+    "datasets/ngnnguynchn/flag2027-evalphase-p",
+    "notebooks/ff/raw_evalphase"
+   ],
+   "kernel": "notebooks/ff/dp_train",
+   "exports": []
+  },
+  {
+   "id": "dp_score",
+   "group": "70_dp",
+   "wp": "WP-I",
+   "kind": "infer",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "DP branch: Evaluation scores from the saved tower checkpoint (no re-training)",
+   "inputs": [
+    "notebooks/ff/dp_train",
+    "notebooks/ff/dp_extract_eval",
+    "datasets/ngnnguynchn/flag2027-evalphase-p",
+    "notebooks/ff/raw_evalphase"
+   ],
+   "kernel": "notebooks/ff/dp_score",
+   "exports": []
+  },
+  {
+   "id": "dp_sigma",
+   "group": "70_dp",
+   "wp": "WP-I",
+   "kind": "assemble",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "Scale constants of the final English blend: sd of the base score U over held-out TRAIN pairs (SAFE-04 v4 cells), mean of 3 seed replicates",
+   "inputs": [
+    "notebooks/phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4"
+   ],
+   "kernel": "notebooks/ff/dp_sigma",
+   "exports": []
+  },
+  {
+   "id": "final_blend",
+   "group": "80_final",
+   "wp": "WP-I",
+   "kind": "assemble",
+   "role_in_1354": "score",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "Final zip: English = FACTOR_ENFUSE English / SIG - 1.0 x z_DP; no_gender Bangla from FACTOR_ENFUSE, gender Bangla from FVBIND_ENFUSE (bytes copied)",
+   "inputs": [
+    "notebooks/ff/a_factor",
+    "notebooks/ff/a_fvbind",
+    "notebooks/ff/dp_score",
+    "notebooks/ff/dp_sigma"
+   ],
+   "kernel": "notebooks/ff/final_blend",
+   "exports": []
+  },
+  {
+   "id": "final_verify",
+   "group": "80_final",
+   "wp": "WP-I",
+   "kind": "assemble",
+   "role_in_1354": "evidence",
+   "device": "cpu",
+   "minutes_original": null,
+   "title": "Verify the final zip: per-member sha256 against the submission, format check, Spearman against the submitted zip",
+   "inputs": [
+    "notebooks/ff/final_blend"
+   ],
+   "kernel": "notebooks/ff/final_verify",
+   "exports": []
+  }
+ ],
+ "_skeleton_sync": "stages[] synced on 2026-11-18 with the stage.json written by every work package (they are authoritative); differences from the DESIGN skeleton are listed in repo_map/build/WP-A.md"
+}

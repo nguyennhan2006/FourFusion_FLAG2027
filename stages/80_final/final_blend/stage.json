@@ -1,0 +1,203 @@
+{
+ "id": "final_blend",
+ "group": "80_final",
+ "title": "Final zip: English = FACTOR_ENFUSE English / SIG - 1.0 x z_DP; no_gender Bangla from FACTOR_ENFUSE, gender Bangla from FVBIND_ENFUSE (bytes copied)",
+ "kind": "assemble",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": null,
+  "minutes_estimate": 0.1,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "local-script",
+  "source_file": "Experiment/XJF-01/blend.py",
+  "script_sha256": "ece86b2ad25621bfba6b2d46c3d6ec12ad2d568d8c3bb2598a8a743ed144fb99",
+  "script_md5": "8561bf2362fbe1fd0763e0607d294f01",
+  "notebook_md5": null,
+  "builder": null,
+  "local_run": {
+   "where": "team machine, Windows 11, Python 3.14.0",
+   "when": "2026-11-16 11:08:08 +07:00 (time in the zip)",
+   "command": "XJF_SIG=\"5.0983,3.8376\" python Experiment/XJF-01/blend.py 1.0",
+   "log": "none kept"
+  },
+  "note": "blend.py was edited at 17:08 the same day (XJF_BASE=lf branch for an unsubmitted zip); with XJF_BASE unset its code path is the 11:08 one (members recomputed byte for byte: S7 0.1, S8 K1)"
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/ff/a_factor"
+  },
+  {
+   "artifact": "notebooks/ff/a_fvbind"
+  },
+  {
+   "artifact": "notebooks/ff/dp_score"
+  },
+  {
+   "artifact": "notebooks/ff/dp_sigma"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/final_blend",
+  "exports": {},
+  "files": [
+   "zips/xjf_r10_trsig.zip",
+   "final_blend_members.json"
+  ]
+ },
+ "env": {
+  "XJF_SIG": "5.0983,3.8376",
+  "DP_R": "1.0"
+ },
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {
+  "xjf_sig": "5.0983,3.8376",
+  "r": 1.0,
+  "XJF_BASE": "must be unset (lf forbidden)",
+  "lora_c1": "original (enters only through the two base zips)"
+ },
+ "skip_with": [],
+ "verify": [
+  {
+   "file": "zips/xjf_r10_trsig.zip",
+   "members_sha256": {
+    "no_gender/sub_score_v4_English_heard.txt": "d45f85027b95a0c6dbd0ba253401019c51c887ab5fa6155e3b8c969abbd55301",
+    "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+    "gender/sub_score_v4_English_heard.txt": "ead7e1772e986be0a10a2acf810ec42f4662ad480237ed1c7632f926ead41be4",
+    "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+   },
+   "zip_sha256_informational": "b4354eaf988b2b4ea8c4e1c3fa44d7bcf631ea5cb3cd635ab2965021fe82e507"
+  }
+ ],
+ "todo": [
+  "input kernels of the base zips are assumed to be notebooks/ff/a_factor (WP-G) and notebooks/ff/a_fvbind (WP-H) holding posteval_FACTOR_ENFUSE_c5rl.zip / posteval_FVBIND_ENFUSE_fvb.zip (DESIGN 2.1, 4.8, 4.9); adjust if those packages chose other ids or names (or set DP_FACTOR_ZIP / DP_FVBIND_ZIP)",
+  "WP-K docs/COMPLIANCE_NOTES.md must carry the compliance disclosure of the DP (Different Profile) branch (text in this stage's CHANGES.md, section 'Compliance disclosure'): held-out-person EER of the branch alone 25.67 (no_gender) / 34.64 (gender); the English Evaluation gain most likely comes from recordings of the English Evaluation file that are also in MAV-Celeb v1/v2 (team study DPSTUDY-01: gain only when the same video / recording is in training; not checked by identity matching, which the rules forbid); a held-out-person test of the fusion made the system worse (0/5 folds); the organisers have not been asked yet (question drafted 16/11, unsent); submission order: xjf_r10.zip (constants 5.8 / 2.9 read off the test-score scale, not allowed) was scored 13.54 on 16/11 10:31 (CodaBench 1054532) before xjf_r10_trsig.zip (constants from held-out train persons) was built at 11:08 and submitted at 12:02 (1054704)",
+  "WP-K docs/COMPLIANCE_NOTES.md: blend.py (verbatim, line 43) prints a label-free Spearman / mean / sd line per English Evaluation file; it feeds no value. The disallowed constants 5.8 / 2.9 of run 9 were read off this kind of printout; the new DP code no longer prints Evaluation score statistics",
+  "WP-A configs/data_map.json: notebooks/ff/dp_score and scores/1354_inputs -> private: true until decision Q-D"
+ ],
+ "script_patches": {
+  "blend.py": [
+   {
+    "id": "BL1",
+    "type": "path",
+    "count": 1,
+    "where": "line 8",
+    "old": "import os, sys, zipfile",
+    "new": "import json, os, sys, zipfile",
+    "why": "json is needed to read sigma.json (BL5)",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "BL2",
+    "type": "path",
+    "count": 1,
+    "where": "line 14",
+    "old": "PE = REPO / \"Experiment\" / \"POSTEVAL-01\" / \"zips\"",
+    "new": "PE = Path(os.environ.get(\"DP_POSTEVAL_DIR\", REPO / \"Experiment\" / \"POSTEVAL-01\" / \"zips\"))   # FF repo: folder of posteval_FACTOR_ENFUSE_c5rl.zip (stage a_factor)",
+    "why": "the FACTOR_ENFUSE base zip is made by stage a_factor",
+    "effect_on_numbers": "none (same file name; member sha256 checked)"
+   },
+   {
+    "id": "BL3",
+    "type": "path",
+    "count": 1,
+    "where": "line 16",
+    "old": "REPO / \"Experiment\" / \"FVBIND-01\" / \"zips\" / \"posteval_FVBIND_ENFUSE_fvb.zip\"",
+    "new": "Path(os.environ.get(\"DP_FVBIND_DIR\", REPO / \"Experiment\" / \"FVBIND-01\" / \"zips\")) / \"posteval_FVBIND_ENFUSE_fvb.zip\"",
+    "why": "the FVBIND_ENFUSE base zip is made by stage a_fvbind",
+    "effect_on_numbers": "none (same file name; member sha256 checked)"
+   },
+   {
+    "id": "BL4",
+    "type": "variant",
+    "count": 1,
+    "where": "after line 20",
+    "old": "LF = os.environ.get(\"XJF_BASE\") == \"lf\"",
+    "new": "LF = os.environ.get(\"XJF_BASE\") == \"lf\"\nassert not LF, \"FF repo, variant 13.54: XJF_BASE=lf takes the base zip of another system (key-fixed LoRA C1, never submitted); leave it unset\"",
+    "why": "XJF_BASE=lf (added 16/11 17:08, after the submission) selects posteval_CELL4_ENFUSE_lf.zip of the key-fixed LoRA C1 (zip xjf_r10_trsig_lf.zip, not submitted); configs/variant_1354.json forbids it",
+    "effect_on_numbers": "none for 13.54 (the submitted zip was made with XJF_BASE unset)"
+   },
+   {
+    "id": "BL5",
+    "type": "variant",
+    "count": 1,
+    "where": "line 28",
+    "old": "TRSIG = os.environ.get(\"XJF_SIG\")",
+    "new": "TRSIG = os.environ.get(\"XJF_SIG\")\nif not TRSIG and os.environ.get(\"DP_SIGMA_JSON\"):   # FF repo: the string written by stage dp_sigma (parsed exactly like XJF_SIG below)\n    TRSIG = json.loads(Path(os.environ[\"DP_SIGMA_JSON\"]).read_text(encoding=\"utf-8\"))[\"xjf_sig\"]\nassert TRSIG, \"FF repo: set XJF_SIG='5.0983,3.8376' (variant 13.54) or DP_SIGMA_JSON; the default 5.8 / 2.9 above was read off the test files and is not allowed\"",
+    "why": "the constants may come from stage dp_sigma (sigma.json) instead of being typed; and the original fallback 5.8 / 2.9 (read off the test files' score scale, run 9, not allowed) must never be used silently",
+    "effect_on_numbers": "none for 13.54 (the submitted zip was made with XJF_SIG=\"5.0983,3.8376\", which takes precedence exactly as before)"
+   },
+   {
+    "id": "BL6",
+    "type": "path",
+    "count": 1,
+    "where": "line 31",
+    "old": "X = np.load(HERE / \"out\" / \"xjf_scores.npz\")",
+    "new": "X = np.load(os.environ.get(\"DP_SCORES\", HERE / \"out\" / \"xjf_scores.npz\"))   # FF repo: DP scores (stage dp_score / dp_train)",
+    "why": "DP scores come from stage dp_score (or the stored file in mode c)",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "BL7",
+    "type": "path",
+    "count": 1,
+    "where": "line 44",
+    "old": "(HERE / \"zips\").mkdir(exist_ok=True)",
+    "new": "ZD = Path(os.environ.get(\"DP_ZIP_DIR\", HERE / \"zips\")); ZD.mkdir(parents=True, exist_ok=True)   # FF repo: output folder",
+    "why": "the stage folder is read-only; zips go to the stage's working folder",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "BL8",
+    "type": "variant",
+    "count": 1,
+    "where": "line 45",
+    "old": "for r in [float(a) for a in sys.argv[1:]] or (0.5, 1.0, 2.0):   # r >= 99: the branch alone on the English files (xjf_only.zip)",
+    "new": "for r in [float(a) for a in sys.argv[1:]] or (1.0,):   # FF repo: default = the submitted weight r = 1.0 only. r >= 99: the branch alone on the English files (xjf_only.zip)",
+    "why": "with no argument the original wrote three weight variants (r 0.5 / 1.0 / 2.0); only r = 1.0 was submitted and the team decided not to make the others",
+    "effect_on_numbers": "none (the submission command passed 1.0 explicitly)"
+   },
+   {
+    "id": "BL9",
+    "type": "path",
+    "count": 1,
+    "where": "line 47",
+    "old": "p = HERE / \"zips\" / (",
+    "new": "p = ZD / (",
+    "why": "output folder of BL7",
+    "effect_on_numbers": "none (same zip name)"
+   },
+   {
+    "id": "BL10",
+    "type": "path",
+    "count": 1,
+    "where": "line 58",
+    "old": "print(\"wrote\", p.relative_to(REPO))",
+    "new": "print(\"wrote\", p)",
+    "why": "p is no longer under the team repo root (relative_to would raise ValueError)",
+    "effect_on_numbers": "none"
+   }
+  ]
+ },
+ "env_spec": "docker/requirements-dp-local.txt (team CPU machine: Python 3.14.0, torch 2.12.1+cpu, numpy 2.3.5, pandas 3.0.5, insightface 2.0, onnxruntime 1.31.1, speechbrain 1.1.2; S8 E3)",
+ "env_overrides": {
+  "DP_FACTOR_ZIP": "path of posteval_FACTOR_ENFUSE_c5rl.zip",
+  "DP_FVBIND_ZIP": "path of posteval_FVBIND_ENFUSE_fvb.zip",
+  "DP_SCORES_NPZ": "path of xjf_scores.npz (else the dp_score output, else in FF_MODE=assemble the stored file)",
+  "DP_SIGMA_FILE": "path of sigma.json",
+  "XJF_SIG": "constants (variant 13.54: 5.0983,3.8376)",
+  "DP_R": "weight r (variant 13.54: 1.0)",
+  "FF_VARIANT": "1354 (default: XJF_SIG and r are enforced)",
+  "DP_TMP": "scratch folder (unpacked media, rebuilt zips, model copies); default FF_WORK/tmp, emptied at every run (<base>/ff_dp/<stage>)"
+ },
+ "stored_inputs_mode_c": "FF_MODE=assemble, input not mounted (soft input without saved copy): xjf_scores.npz from <FF_DATA entry>/05_scores/xjf_scores.npz or .../05_scores/dp/xjf_scores.npz, then assembly/inputs/; its ids_* / z_* arrays must equal the stored original (expected.json inputs.xjf_scores.npz.arrays_sha256); the recomputed sigma.json must equal the pinned XJF_SIG. In modes train / infer stored copies are never read by this stage"
+}

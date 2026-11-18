@@ -1,0 +1,376 @@
+print("[boot] FLAG_63_frames | python", __import__("sys").version.split()[0], "| start", __import__("time").strftime("%Y-%m-%d %H:%M:%S"), flush=True)  # heartbeat rule: first output, before any import
+import os, sys, io, re, json, time, shutil, zipfile, threading, struct, zlib, hashlib
+from pathlib import Path
+import numpy as np, pandas as pd
+LOCAL = os.environ.get("FLAG_LOCAL") == "1"
+IN = Path(os.environ.get("FLAG_IN", "/kaggle/input"))
+WORK = Path(os.environ.get("FLAG_OUT", "/kaggle/working"))
+OUT = WORK / "frames"
+for d in (OUT, OUT / "vb", OUT / "vox2b"):
+    d.mkdir(parents=True, exist_ok=True)
+SMOKE = LOCAL or os.environ.get("FLAG_SMOKE") == "1"
+SMOKE_N = int(os.environ.get("FRAMES_SMOKE_N", "30"))
+TIME_LIMIT_H = float(os.environ.get("FRAMES_TIME_LIMIT_H", "11"))
+THREADS = int(os.environ.get("FRAMES_THREADS", "12"))
+T_START = time.time()
+
+
+def log(*a):
+    print(time.strftime("%H:%M:%S"), f"[{(time.time() - T_START) / 3600:4.1f}h]", *a, flush=True)
+
+
+def time_left():
+    return time.time() - T_START < TIME_LIMIT_H * 3600
+
+
+log("frames cache | smoke", SMOKE, "| threads", THREADS, "| time limit", TIME_LIMIT_H, "h")
+# <<<FF-CELL>>>
+if not LOCAL:
+    !pip -q install av 2>&1 | tail -1
+import requests, av
+log("av", av.__version__)
+# resume: chunk zips of an earlier run (this notebook's output attached)
+n_res = 0
+# [FF path] FRAMES_RESUME_FROM (CHANGES.md): a folder holding the frames/ of an earlier, time-limited run of this stage, searched
+# like the attached output. Unset = the original line:
+# for prev in ([] if LOCAL else [p for p in IN.rglob("frames") if p.is_dir() and (p / "vb").exists()]):
+for prev in ([] if LOCAL else [p for q in [IN] + ([Path(os.environ["FRAMES_RESUME_FROM"])] if os.environ.get("FRAMES_RESUME_FROM") else []) for p in q.rglob("frames") if p.is_dir() and (p / "vb").exists()]):
+    for f in list((prev / "vb").glob("*.zip")) + list((prev / "vox2b").glob("*.zip")):
+        tgt = OUT / f.parent.name / f.name
+        if not tgt.exists():
+            shutil.copy(f, tgt); n_res += 1
+log("resume: chunk zips copied from an earlier run:", n_res)
+IDX_VB = next(p.parent for p in IN.rglob("shard_listing.csv"))
+IDX_V2 = next(p.parent for p in IN.rglob("listing_dev_mp4.parquet"))
+log("index:", IDX_VB, "|", IDX_V2)
+# <<<FF-CELL>>>
+# ============================================================================ VoxBlink media helpers (FLAG_46): shard index, timestamps, cutting
+# Source: the unofficial Hugging Face crawl adollahamini1998/VoxBlink-Video-clean-8-{0..7} (whole YouTube shorts, h264 <= 720p,
+# 25 fps, AAC 16 kHz) + the official VoxBlink annotations (timestamp.tar.gz: one file per utterance, per-frame face box;
+# meta/spk2lan, spk2loc, spk2gender). VoxBlink: CC BY-NC-SA 4.0, the authors forbid redistribution: research use inside the
+# challenge, outputs kept private, source declared in the system description.
+# Every function here works on one video at a time (no statistic of other samples).
+import tarfile as _tarfile
+
+
+def tar_parse_header(h):
+    """512-byte ustar header -> (name, size, typeflag). Sizes in base-256 (GNU) are handled."""
+    name = h[0:100].rstrip(b"\0").decode("utf8", "replace")
+    prefix = h[345:500].rstrip(b"\0").decode("utf8", "replace")
+    sz = h[124:136]
+    size = int.from_bytes(sz[1:], "big") if sz[0] & 0x80 else int(sz.rstrip(b"\0 ").decode() or "0", 8)
+    return (prefix + "/" + name if prefix else name), size, (chr(h[156]) if h[156] else "0")
+
+
+def tar_list_remote(session, url, max_members=None):
+    """Member list of a remote plain tar by HTTP range reads of the headers only: [(name, data offset, size)].
+    PAX per-file headers ('x') are followed to the real header; their 'path' record overrides the name."""
+    off, out = 0, []
+    while max_members is None or len(out) < max_members:
+        b = session.get(url, headers={"Range": f"bytes={off}-{off + 2047}"}, timeout=120).content
+        if len(b) < 512 or b[:512] == b"\0" * 512:
+            break
+        name, size, typ = tar_parse_header(b[:512])
+        if typ in ("x", "g"):
+            pax = b[512:512 + size] if 512 + size <= len(b) else session.get(
+                url, headers={"Range": f"bytes={off + 512}-{off + 512 + size - 1}"}, timeout=120).content
+            path = None
+            for rec in pax.decode("utf8", "replace").split("\n"):
+                if " path=" in rec:
+                    path = rec.split(" path=", 1)[1]
+            off2 = off + 512 + ((size + 511) // 512) * 512
+            h2 = b[off2 - off:off2 - off + 512] if off2 - off + 512 <= len(b) else session.get(
+                url, headers={"Range": f"bytes={off2}-{off2 + 511}"}, timeout=120).content
+            name2, size2, _ = tar_parse_header(h2)
+            if typ == "x":
+                out.append((path or name2, off2 + 512, size2))
+            off = off2 + 512 + ((size2 + 511) // 512) * 512
+        else:
+            if typ in ("0", "\0"):
+                out.append((name, off + 512, size))
+            off = off + 512 + ((size + 511) // 512) * 512
+    return out
+
+
+def parse_timestamp(text):
+    """Official VoxBlink timestamp file -> (frames int array, boxes (n, 4) x, y, w, h). Header: 'Identity', 'Reference',
+    blank, 'FRAME X Y W H', blank, then one tab-separated line per frame (25 fps)."""
+    fr, bx = [], []
+    for line in text.splitlines():
+        p = line.strip().split("\t")
+        if len(p) == 5 and p[0].isdigit():
+            fr.append(int(p[0])); bx.append([int(float(v)) for v in p[1:]])
+    return np.asarray(fr, int), np.asarray(bx, int).reshape(-1, 4)
+
+
+def loose_crop(rgb, box, scale, out=224):
+    """Square crop of side scale * max(w, h) centred on the face box, padded with black outside the image, resized to out:
+    the loose head-and-shoulders framing of MAV-Celeb / VoxCeleb face tracks (the official VoxBlink crop is tight, 112)."""
+    from PIL import Image
+    x, y, w, h = [float(v) for v in box]
+    cx, cy, side = x + w / 2, y + h / 2, scale * max(w, h)
+    x0, y0 = int(round(cx - side / 2)), int(round(cy - side / 2)); s = int(round(side))
+    H, W = rgb.shape[:2]
+    canvas = np.zeros((s, s, 3), np.uint8)
+    sx0, sy0, sx1, sy1 = max(0, x0), max(0, y0), min(W, x0 + s), min(H, y0 + s)
+    if sx1 > sx0 and sy1 > sy0:
+        canvas[sy0 - y0:sy1 - y0, sx0 - x0:sx1 - x0] = rgb[sy0:sy1, sx0:sx1]
+    inside = (sx1 - sx0) * (sy1 - sy0) / float(s * s)
+    return Image.fromarray(canvas).resize((out, out), Image.BICUBIC), inside
+
+
+def decode_video(mp4, frames_wanted, sr=16000):
+    """One pass over a short: the RGB frames at the wanted indices (decoded in order, no seeking: shorts are <= 60 s) and the
+    whole audio track as mono float32 at sr. -> ({frame index: HxWx3 uint8}, audio)."""
+    import av
+    want, got = sorted(set(int(f) for f in frames_wanted)), {}
+    audio = []
+    with av.open(io.BytesIO(mp4)) as c:
+        vs = c.streams.video[0] if c.streams.video else None
+        if vs is not None:
+            vs.thread_type = "AUTO"
+            last = max(want) if want else -1
+            for k, fr in enumerate(c.decode(vs)):
+                if k in want:
+                    got[k] = fr.to_ndarray(format="rgb24")
+                if k >= last:
+                    break
+    with av.open(io.BytesIO(mp4)) as c:
+        if c.streams.audio:
+            res = av.AudioResampler(format="flt", layout="mono", rate=sr)
+            for fr in c.decode(c.streams.audio[0]):
+                audio += [o.to_ndarray().reshape(-1) for o in res.resample(fr)]
+            audio += [o.to_ndarray().reshape(-1) for o in res.resample(None)]
+    return got, (np.concatenate(audio).astype(np.float32) if audio else np.zeros(0, np.float32))
+# <<<FF-CELL>>>
+# ============================================================================ VoxBlink: FLAG_46's face rows, same frame, same crop, PNG
+import concurrent.futures as cf
+# [FF pin] HF revision parameter added for the reproduction repo (CHANGES.md): FF_HF_REVS = JSON {"<repo id>": "<commit>"};
+# unset, or a repo not listed -> "main" = the original behaviour (the original run read resolve/main, unpinned).
+FF_HF_REV = lambda repo: __import__("json").loads(__import__("os").environ.get("FF_HF_REVS") or "{}").get(repo, "main")
+class FF_PartURL(str):   # [FF pin] the VoxBlink mirror is one HF repo per part: each part gets its own revision
+    def format(self, part, *rest):
+        return str.format(self.replace("/main", "/" + FF_HF_REV(f"adollahamini1998/VoxBlink-Video-clean-8-{part}"), 1), part, *rest)
+SHARD = FF_PartURL("https://huggingface.co/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/resolve/main/{}")
+CROP_SCALE = 1.3
+dt = {"spk": str, "video": str, "utt": str}
+FMV = pd.read_csv(IDX_VB / "face_meta.csv", dtype=dt)
+SEL = pd.read_csv(IDX_VB / "selection.csv", dtype=dt)
+TSV = pd.read_csv(IDX_VB / "timestamps.csv", dtype=dt)
+LSV = pd.read_csv(IDX_VB / "shard_listing.csv")
+LSV["spk"], LSV["video"] = LSV.member.str.split("/").str[0], LSV.member.str.split("/").str[1].str[:-4]
+JOB = SEL.merge(TSV, on=["spk", "video", "utt"]).merge(LSV[["part", "shard", "spk", "video", "off", "size"]],
+                                                       on=["part", "shard", "spk", "video"])
+want = set(zip(FMV.spk, FMV.video, FMV.utt))
+JOB = JOB[[k in want for k in zip(JOB.spk, JOB.video, JOB.utt)]].drop_duplicates(["spk", "video", "utt"]).reset_index(drop=True)
+log(f"VoxBlink: {len(FMV)} face rows wanted, {len(JOB)} with selection + timestamp + member offset, {JOB.spk.nunique()} speakers, "
+    f"{JOB.groupby(['part', 'shard']).ngroups} shards")
+_TL = threading.local()
+
+
+def cdn_url(part, shard):
+    with requests.get(SHARD.format(part, shard), headers={"Range": "bytes=0-0"}, allow_redirects=True, timeout=120, stream=True) as r:
+        return r.url
+
+
+def decode_frames(mp4, frames_wanted):
+    """= vb_media.decode_video without the audio: the RGB frames at the wanted indices (decoded in order)."""
+    want, got = sorted(set(int(f) for f in frames_wanted)), {}
+    with av.open(io.BytesIO(mp4)) as c:
+        vs = c.streams.video[0] if c.streams.video else None
+        if vs is not None:
+            vs.thread_type = "AUTO"
+            last = max(want) if want else -1
+            for k, fr in enumerate(c.decode(vs)):
+                if k in want:
+                    got[k] = fr.to_ndarray(format="rgb24")
+                if k >= last:
+                    break
+    return got
+
+
+def vb_job(job):
+    (part, shard, spk, video), g = job
+    if not hasattr(_TL, "s"):
+        _TL.s, _TL.urls = requests.Session(), {}
+    for attempt in range(4):
+        try:
+            url = _TL.urls.get((part, shard)) or _TL.urls.setdefault((part, shard), cdn_url(part, shard))
+            off, size = int(g.off.iloc[0]), int(g["size"].iloc[0])
+            b = _TL.s.get(url, headers={"Range": f"bytes={off}-{off + size - 1}"}, timeout=300).content
+            if len(b) != size:
+                _TL.urls.pop((part, shard), None); raise IOError(f"short read {len(b)} / {size}")
+            frames = decode_frames(b, g.mid.tolist())
+            out = []
+            for r in g.itertuples():
+                if r.mid in frames:
+                    im, _ = loose_crop(frames[r.mid], (r.x, r.y, r.w, r.h), CROP_SCALE)
+                    buf = io.BytesIO(); im.save(buf, "PNG", compress_level=3)
+                    out.append((f"{spk}/{video}/{r.utt}.png", buf.getvalue()))
+            return out, None
+        except Exception as e:
+            err = f"{spk}/{video}: {type(e).__name__}: {e}"; time.sleep(3 * (attempt + 1))
+    return [], err
+
+
+order = JOB.groupby(["part", "shard"]).size().sort_index()
+if SMOKE:
+    order = order.iloc[:1]
+STATS_VB = dict(shards=0, videos=0, failed=0, faces=0)
+for (part, shard), n in order.items():
+    zf = OUT / "vb" / f"{part}_{shard}.zip"
+    if zf.exists():
+        continue
+    if not time_left():
+        log(f"time limit reached: stopping before VoxBlink shard {shard} (attach the output and run again)"); break
+    t0 = time.time()
+    G = JOB[(JOB.part == part) & (JOB.shard == shard)]
+    jobs = list(G.groupby(["part", "shard", "spk", "video"]))
+    if SMOKE:
+        jobs = jobs[:SMOKE_N]
+    got, errs = [], []
+    with cf.ThreadPoolExecutor(THREADS) as ex:
+        for res, err in ex.map(vb_job, jobs):
+            got += res
+            if err:
+                errs.append(err)
+    tmp = zf.with_suffix(".part")
+    with zipfile.ZipFile(tmp, "w", zipfile.ZIP_STORED) as z:
+        for name, b in got:
+            z.writestr(name, b)
+    tmp.replace(zf)
+    STATS_VB["shards"] += 1; STATS_VB["videos"] += len(jobs); STATS_VB["failed"] += len(errs); STATS_VB["faces"] += len(got)
+    log(f"VoxBlink {shard}: {len(jobs)} videos ({len(errs)} failed), {len(got)}/{len(G)} faces [{time.time() - t0:.0f}s]"
+        + (f" | e.g. {errs[0][:120]}" if errs else ""))
+log("VoxBlink done this session:", STATS_VB)
+# <<<FF-CELL>>>
+# ============================================================================ VoxCeleb2 (FLAG_53 rows): middle frame of the track, PNG
+# [FF url] ProgramComputer/voxceleb became gated (auto-approved terms) after the run: token from the environment only, never
+# printed; no HF_TOKEN -> {} = the original anonymous request.
+FF_HF_HDR = {"Authorization": "Bearer " + __import__("os").environ["HF_TOKEN"]} if __import__("os").environ.get("HF_TOKEN") else {}
+HF = "https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/" + FF_HF_REV("ProgramComputer/voxceleb") + "/vox2/"
+SOURCES = {"dev_mp4": [f"vox2_dev_mp4_parta{c}" for c in "abcdefghi"], "test_mp4": ["vox2_test_mp4.zip"]}
+
+
+class Remote:
+    """= FLAG_53 Remote: a zip made of byte-chunk parts, read by absolute offset with HTTP range requests."""
+    def __init__(self, names):
+        self.names, self.urls, self.sizes = names, {}, []
+        for n in names:
+            with requests.get(HF + n, headers={"Range": "bytes=0-0", **FF_HF_HDR}, allow_redirects=True, timeout=120, stream=True) as r:
+                r.raise_for_status()
+                self.urls[n] = r.url
+                self.sizes.append(int(r.headers["Content-Range"].split("/")[-1]))
+        self.starts = np.r_[0, np.cumsum(self.sizes)]
+        self.tl = threading.local()
+
+    def _get(self, j, a, b):
+        n = self.names[j]
+        if not hasattr(self.tl, "s"):
+            self.tl.s = requests.Session()
+        for attempt in range(5):
+            try:
+                r = self.tl.s.get(self.urls[n], headers={"Range": f"bytes={a}-{b}"}, timeout=300)
+                if r.status_code in (401, 403):
+                    with requests.get(HF + n, headers={"Range": "bytes=0-0", **FF_HF_HDR}, allow_redirects=True, timeout=120, stream=True) as q:
+                        self.urls[n] = q.url
+                    continue
+                r.raise_for_status()
+                assert len(r.content) == b - a + 1, (len(r.content), b - a + 1)
+                return r.content
+            except Exception:
+                time.sleep(3 * (attempt + 1))
+        raise RuntimeError(f"range {a}-{b} of {n} failed")
+
+    def read(self, off, n):
+        out, end = [], off + n
+        while off < end:
+            j = int(np.searchsorted(self.starts, off, side="right") - 1)
+            a = off - self.starts[j]; b = min(end, self.starts[j + 1]) - self.starts[j] - 1
+            out.append(self._get(j, int(a), int(b))); off = int(self.starts[j] + b + 1)
+        return b"".join(out)
+
+    def member(self, off, csize, method):
+        h = self.read(off, 30)
+        assert h[:4] == b"PK\x03\x04", "bad local header"
+        n, e = struct.unpack("<HH", h[26:30])
+        d = self.read(off + 30 + n + e, csize)
+        return zlib.decompress(d, -15) if method == 8 else d
+
+
+def middle_frame(mp4):
+    """= FLAG_53 / FLAG_37 middle_frame."""
+    with av.open(io.BytesIO(mp4)) as c:
+        st = c.streams.video[0]; n = st.frames or 50
+        last = None
+        for k, fr in enumerate(c.decode(st)):
+            last = fr
+            if k >= n // 2:
+                break
+        return last.to_image().convert("RGB") if last is not None else None
+
+
+FM2 = pd.read_csv(IDX_V2 / "face_meta.csv", dtype=str)
+L2 = pd.concat([pd.read_parquet(IDX_V2 / f"listing_{k}.parquet").assign(src=k) for k in SOURCES], ignore_index=True)
+J2 = FM2.merge(L2[["spk", "video", "utt", "src", "off", "csize", "method"]], on=["spk", "video", "utt"], how="left")
+assert J2.src.notna().all(), f"{J2.src.isna().sum()} FLAG_53 face rows not in the listings"
+if SMOKE:
+    J2 = J2.iloc[:SMOKE_N]
+REM = {k: Remote(v) for k, v in SOURCES.items() if k in set(J2.src)}
+log(f"VoxCeleb2 (FLAG_53): {len(J2)} face tracks ({FM2.kind.value_counts().to_dict()}), {J2.spk.nunique()} speakers")
+
+
+def v2_job(r):
+    try:
+        im = middle_frame(REM[r.src].member(int(r.off), int(r.csize), int(r.method)))
+        if im is None:
+            return None
+        buf = io.BytesIO(); im.save(buf, "PNG", compress_level=3)
+        return f"{r.spk}/{r.video}/{r.utt}.png", buf.getvalue()
+    except Exception:
+        return None
+
+
+CH = 1200
+STATS_V2 = dict(chunks=0, faces=0, failed=0)
+for c0 in range(0, len(J2), CH):
+    zf = OUT / "vox2b" / f"faces_{c0 // CH:03d}.zip"
+    if zf.exists():
+        continue
+    if not time_left():
+        log(f"time limit reached: stopping before VoxCeleb2 chunk {c0 // CH} (attach the output and run again)"); break
+    t0 = time.time(); S_ = J2.iloc[c0:c0 + CH]
+    with cf.ThreadPoolExecutor(THREADS) as ex:
+        res = list(ex.map(v2_job, S_.itertuples(index=False)))
+    ok = [x for x in res if x is not None]
+    tmp = zf.with_suffix(".part")
+    with zipfile.ZipFile(tmp, "w", zipfile.ZIP_STORED) as z:
+        for name, b in ok:
+            z.writestr(name, b)
+    tmp.replace(zf)
+    STATS_V2["chunks"] += 1; STATS_V2["faces"] += len(ok); STATS_V2["failed"] += len(S_) - len(ok)
+    log(f"VoxCeleb2 chunk {c0 // CH}: {len(ok)}/{len(S_)} faces [{time.time() - t0:.0f}s]")
+log("VoxCeleb2 done this session:", STATS_V2)
+# <<<FF-CELL>>>
+# ============================================================================ manifest + a check that every member decodes to 224 x 224 RGB
+from PIL import Image
+man = dict(created=time.strftime("%Y-%m-%d %H:%M"), smoke=SMOKE, parts={})
+for part in ("vb", "vox2b"):
+    zs = sorted((OUT / part).glob("*.zip"))
+    names = []
+    for f in zs:
+        with zipfile.ZipFile(f) as z:
+            names += z.namelist()
+    man["parts"][part] = dict(zips=len(zs), faces=len(names), bytes=int(sum(f.stat().st_size for f in zs)))
+    if zs:
+        with zipfile.ZipFile(zs[0]) as z:
+            for n in z.namelist()[:5]:
+                im = Image.open(io.BytesIO(z.read(n)))
+                assert im.size == (224, 224) and im.mode == "RGB", (n, im.size, im.mode)
+man["wanted"] = dict(vb=int(len(FMV)), vox2b=int(len(FM2)))
+man["complete"] = dict(vb=man["parts"]["vb"]["faces"] >= 0.98 * len(FMV), vox2b=man["parts"]["vox2b"]["faces"] >= 0.98 * len(FM2))
+(OUT / "frames_manifest.json").write_text(json.dumps(man, indent=1))
+log(json.dumps(man))
+print("NEXT:", "all frames cached" if all(man["complete"].values()) else "not complete: Save Version, attach this output, run again",
+      "| then FACELORA-03 attaches this notebook's output (same account)")
+# <<<FF-CELL>>>

@@ -1,0 +1,254 @@
+{
+ "source": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-lab-data-p/lab",
+ "note": "sha256 of every file of ngnnguynchn/flag2027-lab-data-p (package E: unpacked copy)",
+ "members": {
+  "lab/Experiment/T3ENC-01/feats_t3enc/ext_v1_complete_face_clipL.npy": {
+   "bytes": 11643008,
+   "sha256": "70d7d46ffcbd80753f7233160dac8f01d87723e3e3278cc3fe11d49aaa97ad09"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/ext_v1_complete_face_farl16.npy": {
+   "bytes": 7762048,
+   "sha256": "1d6e6dd18ebf814007c0af6737ed02f6da28a0c11f5139cc8182c9e54286589f"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/ext_v1_complete_voice_sam100f.npy": {
+   "bytes": 10012800,
+   "sha256": "7fb1ee163f665b176eac48ca6f29fe8836ea8fa43de4061e5d6b47e6628cb18c"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/ext_v1_complete_voice_sam100p.npy": {
+   "bytes": 10012800,
+   "sha256": "ebb6f19a1be672dd46ff5b34f0c70f3267dab81cf95c2cd04ecb8b4db9186271"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/ext_v2_complete_face_clipL.npy": {
+   "bytes": 13751936,
+   "sha256": "78d2e8e2c80c636f85bc076dc11655880473df02bf3ca9deebf8893533dbc318"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/ext_v2_complete_face_farl16.npy": {
+   "bytes": 9168000,
+   "sha256": "847ef0c8131a230d35cb803843146f6ad3c72c9bd9bf7d581e0b5371d83ceb32"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/ext_v2_complete_voice_sam100f.npy": {
+   "bytes": 10606208,
+   "sha256": "b442bb913fafbce52b3813153a926f6ce20a899e6319a8e5b442aa9079f070e3"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/ext_v2_complete_voice_sam100p.npy": {
+   "bytes": 10606208,
+   "sha256": "108830bd0311c3720fa582f9f3eec0264e843e0f8b2d09d56882b0793dbf310c"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/face_clipL_train.npy": {
+   "bytes": 19922048,
+   "sha256": "8b8df47368cb30b31573eb9805c6e47266e8f9fe554332d193ae69d2a5f5edde"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/face_farl16_train.npy": {
+   "bytes": 13281408,
+   "sha256": "f396b9076e1988fdf7a1cd79d18cc6a9cb93f9977f84e0020c82b515184d685a"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/voice_sam100f_train.npy": {
+   "bytes": 6640768,
+   "sha256": "b1d4e4a1bb8d8427b040b8ba0fa6f38d8bfa097486a6be2dd968c6c98506a2cf"
+  },
+  "lab/Experiment/T3ENC-01/feats_t3enc/voice_sam100p_train.npy": {
+   "bytes": 6640768,
+   "sha256": "65f10bc6b3f13aa8ba6896e4b799ded3f8dbf0a4e5ccf64fa7522be4aab447d0"
+  },
+  "lab/Experiment/T3ENC-01/feats_vox2lid/lid_summary.json": {
+   "bytes": 764,
+   "sha256": "4d05cb34fc0fa66951750bb8f37d1f01b18f32a3e26847c7f42caad8e3341085"
+  },
+  "lab/Experiment/T3ENC-01/feats_vox2t3/face_clipL.npy": {
+   "bytes": 44929664,
+   "sha256": "2378b9dd09318564cb7b6dbbc8bfbd5e49e1c3c121f5d8585687fbfdf9947a6e"
+  },
+  "lab/Experiment/T3ENC-01/feats_vox2t3/face_farl16.npy": {
+   "bytes": 29953152,
+   "sha256": "b1c71d1e39c48f8318507f73b67d9460436f40ab595d42f418ca115cef7a592d"
+  },
+  "lab/Experiment/T3ENC-01/feats_vox2t3/voice_sam100f.npy": {
+   "bytes": 19632768,
+   "sha256": "4dfdcd2c0ef3f16a827ae7b4f942ef3500aa9f09326254db33a4730d02c7eecd"
+  },
+  "lab/Experiment/T3ENC-01/feats_vox2t3/voice_sam100p.npy": {
+   "bytes": 19632768,
+   "sha256": "850a21f15793098c406774e61328e8172179a10bfc208217064d26844b691521"
+  },
+  "lab/Experiment/VOX2-01/feats_vox2/face_meta.csv": {
+   "bytes": 819049,
+   "sha256": "abf8cb53cd22415606393962a9f0c6ee5731843e8dc3ebee6e1366eb98ca4da2"
+  },
+  "lab/Experiment/VOX2-01/feats_vox2/voice_meta.csv": {
+   "bytes": 1453857,
+   "sha256": "3db779d3e58e1bdda05ea460335b808c5e17b66d67aab32dc6adeb4fb84cdfa4"
+  },
+  "lab/kaggle/output/feats_av/ext_v1_complete_face_aclip.npy": {
+   "bytes": 2867328,
+   "sha256": "898d74eba93a64c1efc86295e2c47e352336ea5c5d7d8ef6a84778a90ee37f1b"
+  },
+  "lab/kaggle/output/feats_av/ext_v1_complete_face_ibalign.npy": {
+   "bytes": 2867328,
+   "sha256": "cb85bbe7487198731ec159f47bb360e5b5b870977418fe6fc0f4bb2bb36d82e5"
+  },
+  "lab/kaggle/output/feats_av/ext_v1_complete_face_lbind.npy": {
+   "bytes": 2150528,
+   "sha256": "068d74c091897ae03a656aba67da968d656b0c860ac25649c58065786fc42ae5"
+  },
+  "lab/kaggle/output/feats_av/ext_v1_complete_face_rows.npy": {
+   "bytes": 11328,
+   "sha256": "072308ecc42a2472d9a1e6ff764018758f2b674c34f9d00e9d1c53081de7d473"
+  },
+  "lab/kaggle/output/feats_av/ext_v1_complete_voice_aclip.npy": {
+   "bytes": 4565120,
+   "sha256": "beabfe898db8edb58c9ad66ecbce3942733810745815228ef0d055bb6d1bf4e8"
+  },
+  "lab/kaggle/output/feats_av/ext_v1_complete_voice_lbind.npy": {
+   "bytes": 3423872,
+   "sha256": "25b52b49eb8ae1607024fea6fb4f20083ef865c3bcaae291cff833c25244ff97"
+  },
+  "lab/kaggle/output/feats_av/ext_v1_complete_voice_rows.npy": {
+   "bytes": 17960,
+   "sha256": "984a615c3420b46bd967f03946625716644c40e63335ab1119d7cbeccd31c5f0"
+  },
+  "lab/kaggle/output/feats_av/ext_v2_complete_face_aclip.npy": {
+   "bytes": 3440768,
+   "sha256": "abd8951ffa7672f3dc7b727c2ebea003e07afa71972d7fe0fe93e62d792606de"
+  },
+  "lab/kaggle/output/feats_av/ext_v2_complete_face_ibalign.npy": {
+   "bytes": 3440768,
+   "sha256": "2cb9436703045df10d9e340ebda298520a6e16e0c0e2306bd19ab9128d1a8079"
+  },
+  "lab/kaggle/output/feats_av/ext_v2_complete_face_lbind.npy": {
+   "bytes": 2580608,
+   "sha256": "0c4c1af4a8ccab07808f50b063bfc0db07e016da450059d8c7bc71d714ff4a9b"
+  },
+  "lab/kaggle/output/feats_av/ext_v2_complete_face_rows.npy": {
+   "bytes": 13568,
+   "sha256": "b7a367b9a9e819c5426b285a9509e54f0dd5361e746abe8ce498363c1c11cd10"
+  },
+  "lab/kaggle/output/feats_av/ext_v2_complete_voice_aclip.npy": {
+   "bytes": 5378176,
+   "sha256": "40fc14a37e2e34e458aba91d7df178781eac37d2e4b8f90813df1470ef76db4f"
+  },
+  "lab/kaggle/output/feats_av/ext_v2_complete_voice_lbind.npy": {
+   "bytes": 4033664,
+   "sha256": "95fc25d84dc22280de62357cba77d0d05793399a03f9116387698404f8215fd8"
+  },
+  "lab/kaggle/output/feats_av/ext_v2_complete_voice_rows.npy": {
+   "bytes": 21136,
+   "sha256": "c988cfbeb9989b50c316e06970020afe0b545cca296102f20a1b016f69ade504"
+  },
+  "lab/kaggle/output/feats_av/face_aclip_train.npy": {
+   "bytes": 26562688,
+   "sha256": "3597614237cea073962c2052fa30159f9b8e621a29edb7f55618d36d26ba681a"
+  },
+  "lab/kaggle/output/feats_av/face_ibalign_train.npy": {
+   "bytes": 26562688,
+   "sha256": "5d110151016bf99067fc8c2c25d072b292666fcae610356203f069e5e2185f79"
+  },
+  "lab/kaggle/output/feats_av/face_lbind_train.npy": {
+   "bytes": 19922048,
+   "sha256": "2734d1e580a4375b8906257d4a60d858adcbce4162fa43fb25ff81c3b72a60d6"
+  },
+  "lab/kaggle/output/feats_av/voice_aclip_train.npy": {
+   "bytes": 26562688,
+   "sha256": "8201c84eab25ab231591d59548d0b84b84c3d090da55b509a1a8a21b7d2ea903"
+  },
+  "lab/kaggle/output/feats_av/voice_lbind_train.npy": {
+   "bytes": 19922048,
+   "sha256": "8eac199c9889e618666d38b911950cfc101a4f43aa012ddc218dcb5c314f1447"
+  },
+  "lab/kaggle/output/feats_eval/ext_v1_complete_face_arcface.npy": {
+   "bytes": 7762048,
+   "sha256": "e80283e1ee273581068214e4eab4d91e3a26f255e3b9295a82398196cd5f625a"
+  },
+  "lab/kaggle/output/feats_eval/ext_v1_complete_voice_ecapa192.npy": {
+   "bytes": 7509632,
+   "sha256": "e56824753c4fc9e124775c8f99e8dc2e33b8ec038ea047eff1ad804143c89ddc"
+  },
+  "lab/kaggle/output/feats_eval/ext_v1_complete_voice_ecapa6144.npy": {
+   "bytes": 128,
+   "sha256": "88ed0ddb07636ef2c33aa1989e2823c7d5705aa7f327711aa347424a17390f0e"
+  },
+  "lab/kaggle/output/feats_eval/ext_v2_complete_face_arcface.npy": {
+   "bytes": 9168000,
+   "sha256": "c1e99f58e41aef4bc49e4266d314ac927881e494c7fcc1d9905ca8a0b7d11812"
+  },
+  "lab/kaggle/output/feats_eval/ext_v2_complete_voice_ecapa192.npy": {
+   "bytes": 7954688,
+   "sha256": "611ec9c5f71eaef6e9cdf020744cc6463207c36cbb9ab167defdebe264187bf6"
+  },
+  "lab/kaggle/output/feats_eval/ext_v2_complete_voice_ecapa6144.npy": {
+   "bytes": 128,
+   "sha256": "9dc243e4deed6c2a8333568086141bff37a3a0e881210660753b6f6fdc424910"
+  },
+  "lab/kaggle/output/feats_eval/face_ibv_train.npy": {
+   "bytes": 26562688,
+   "sha256": "1d4103653769481d9d62a2aab27a2bfaf1b437b17106d198772e5c2aa6115c88"
+  },
+  "lab/kaggle/output/feats_eval/voice_ecapa6144_train.npy": {
+   "bytes": 128,
+   "sha256": "91f0587426deb0206d6ff12e89bc95175cf1b5b28b98cac40afebea05eedc94e"
+  },
+  "lab/kaggle/output/feats_eval/voice_w2v2aggen_train.npy": {
+   "bytes": 77948,
+   "sha256": "66970f7182c3749f905b97ad683ae94cf074a3e33c62c0cfd62e3e7181633560"
+  },
+  "lab/kaggle/output/feats_models/ext_v1_complete_face_adaface.npy": {
+   "bytes": 7762048,
+   "sha256": "d160e51b74941f561e0ddd89165c0df3b4dc51926b75d6b15dd14fd3fd2a1863"
+  },
+  "lab/kaggle/output/feats_models/ext_v1_complete_face_farl.npy": {
+   "bytes": 7762048,
+   "sha256": "3575fb5b9f8c814a93184e1d00f9be298488898cc34f048441a6fb777d279542"
+  },
+  "lab/kaggle/output/feats_models/ext_v1_complete_face_siglip2.npy": {
+   "bytes": 11643008,
+   "sha256": "4003404d98e36b456831c3b19b3f1ec460fdf9c5a3e415fb68a5fe4d959dd6b3"
+  },
+  "lab/kaggle/output/feats_models/ext_v1_complete_face_vitage.npy": {
+   "bytes": 11643008,
+   "sha256": "0082699ecbe472cd4155f6ab1556d50d6ebb2a5ff97e49407ee98c9884d8b7a1"
+  },
+  "lab/kaggle/output/feats_models/ext_v1_complete_voice_w2v2ag.npy": {
+   "bytes": 40050816,
+   "sha256": "69b5e05d2c0e95d1634e754faaf3f4aa65d7b084b16f7c0b33d8f39ff56b3cab"
+  },
+  "lab/kaggle/output/feats_models/ext_v2_complete_face_adaface.npy": {
+   "bytes": 9168000,
+   "sha256": "0844ca81857500168f8ef2cf7eaca4c10621085f56c3b5cfcdb98c4070d8eee1"
+  },
+  "lab/kaggle/output/feats_models/ext_v2_complete_face_farl.npy": {
+   "bytes": 9168000,
+   "sha256": "70b766de4eb0b99d37f05d468c3872a7fab7410939bf4fdc747c84fb8cb96aa0"
+  },
+  "lab/kaggle/output/feats_models/ext_v2_complete_face_siglip2.npy": {
+   "bytes": 13751936,
+   "sha256": "8d354f65ff3d7df96abe4e74f08ef4280c45f72a3d15b789520340c6a82f271c"
+  },
+  "lab/kaggle/output/feats_models/ext_v2_complete_face_vitage.npy": {
+   "bytes": 13751936,
+   "sha256": "a52e9cd8c88b9db5a8c8f5bbf21d45930ccbe084f92982c4a04234ae25cd2177"
+  },
+  "lab/kaggle/output/feats_models/ext_v2_complete_voice_w2v2ag.npy": {
+   "bytes": 42424448,
+   "sha256": "3c823bfef0667e462700ef6c7fa83e6cab3cb68bbca5b05e29388cd21c60bd28"
+  },
+  "lab/kaggle/output/feats_models/face_adaface_train.npy": {
+   "bytes": 13281408,
+   "sha256": "c806596c394b1c94912cada2bf5d1f6fb3e158a410a68a594cae5a39e4f9112c"
+  },
+  "lab/kaggle/output/feats_models/face_siglip2_train.npy": {
+   "bytes": 19922048,
+   "sha256": "66d152c19e56f5ae2e3e0def145846fa438c4c638719d6b4d9bc90b7754ee6db"
+  },
+  "lab/kaggle/output/feats_models/face_vitage_train.npy": {
+   "bytes": 19922048,
+   "sha256": "377cda9f3cb5a885513f448cae48f18168052ade53eea92d15d79d2c05b49c24"
+  },
+  "lab/kaggle/output/feats_models/voice_w2v2ag_train.npy": {
+   "bytes": 26562688,
+   "sha256": "3144b00237a936035c647d8c3e34c51ab974347621a33bdcba794b26eaf565e2"
+  },
+  "lab/lab_manifest.json": {
+   "bytes": 4459,
+   "sha256": "8062f5e938fc30d49bb487a00d060a102371b5674e1f0c49dc6af9e6b1470464"
+  }
+ }
+}

@@ -1,0 +1,95 @@
+print("[cell] b_lab_data 1/3: helpers and input artifacts", flush=True)
+# NEW cell (FourFusion reproduction repository, stage b_lab_data; DESIGN.md §4.5). The original step was a script run on the team's
+# machine (kaggle/build_lab_bundle.py, 8/10/2026 21:02) over local folders Experiment/T3ENC-01/feats_*, Experiment/VOX2-01/feats_vox2
+# and kaggle/output/feats_{av,eval,models}. This stage rebuilds that layout from the input artifacts, runs the script (verbatim except
+# CHANGES.md) and unpacks its zip = the content of the Kaggle dataset ngnnguynchn/flag2027-lab-data-p.
+import os, sys, json, shutil, subprocess, zipfile, zlib, hashlib, time
+from pathlib import Path
+
+KIN = Path("/kaggle/input")        # the runner points this at the stage's own input view
+KOUT = Path("/kaggle/working")     # ... and this at the stage's own working directory
+STAGE_DIR = Path(os.environ.get("FF_STAGE_DIR", "."))
+SCRIPT = STAGE_DIR / "build_lab_bundle.py"
+assert SCRIPT.is_file(), f"FF_STAGE_DIR must be the folder stages/20_features/b_lab_data of the repository (missing {SCRIPT})"
+
+
+def art_root(aid):
+    """Mounted folder of an input artifact: <input>/<artifact id>; else the same slug under another owner; else <input>/<slug>."""
+    kind, owner, slug = aid.split("/")
+    for p in [KIN / aid] + sorted((KIN / kind).glob(f"*/{slug}")) + [KIN / slug]:
+        if p.is_dir():
+            return p
+    raise FileNotFoundError(f"input artifact {aid} is not mounted under {KIN}")
+
+
+def find_dir(root, *markers):
+    """The folder under `root` (root included) holding every marker file; the shallowest one when there are several."""
+    hits = [Path(dp) for dp, dns, fns in os.walk(root, followlinks=True) if all(m in fns for m in markers)]
+    assert hits, f"no folder under {root} holds {markers}"
+    return sorted(hits, key=lambda p: (len(p.parts), str(p)))[0]
+
+
+def find_file(root, name):
+    hits = [Path(dp) / name for dp, dns, fns in os.walk(root, followlinks=True) if name in fns]
+    return sorted(hits, key=lambda p: (len(p.parts), str(p)))[0] if hits else None
+
+
+R = KOUT / "_ff_repo"              # stand-in for the team's repository root (the script resolves every path from it)
+shutil.rmtree(R, ignore_errors=True)
+LINKS = []
+
+
+def link_dir(dst, src):
+    """dst -> src as a folder symlink; a copy where symlinks are not allowed (e.g. Windows without developer mode)."""
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        os.symlink(src, dst, target_is_directory=True)
+    except OSError:
+        shutil.copytree(src, dst)
+    LINKS.append(dst)
+
+SRC = {
+    "Experiment/T3ENC-01/feats_t3enc": find_dir(art_root("notebooks/ff/f40_t3enc_mav"), "face_farl16_train.npy", "ext_v1_complete_face_farl16.npy"),
+    "Experiment/T3ENC-01/feats_vox2t3": find_dir(art_root("notebooks/ff/f41_t3enc_vox2"), "face_farl16.npy", "voice_sam100f.npy", "face_meta.csv"),
+    "Experiment/T3ENC-01/feats_vox2lid": find_dir(art_root("notebooks/ff/l42_vox2_lid"), "lid_summary.json"),
+    "Experiment/VOX2-01/feats_vox2": find_dir(art_root("datasets/ngnnguynchn/flag2027-vox2-keys"), "face_meta.csv", "voice_meta.csv"),
+    "kaggle/output/feats_av": find_dir(art_root("notebooks/ff/f14_av"), "face_aclip_train.npy", "ext_v1_complete_face_rows.npy"),
+    "kaggle/output/feats_eval": find_dir(art_root("notebooks/ff/f12_eval_feats"), "face_ibv_train.npy", "voice_w2v2aggen_train.npy", "ext_v1_complete_face_arcface.npy"),
+    "kaggle/output/feats_models": find_dir(art_root("notebooks/ff/f10_models"), "face_adaface_train.npy", "face_siglip2_train.npy", "face_vitage_train.npy"),
+}
+for k, v in SRC.items():
+    print(f"{k:36s} {v}", flush=True)
+# <<<FF-CELL>>>
+print("[cell] b_lab_data 2/3: rebuild the repository layout and run kaggle/build_lab_bundle.py", flush=True)
+for rel, src in SRC.items():
+    link_dir(R / rel, src)
+subprocess.run([sys.executable, "-u", str(SCRIPT)], env={**os.environ, "FF_REPO_ROOT": str(R), "PYTHONUNBUFFERED": "1"}, check=True)
+# <<<FF-CELL>>>
+print("[cell] b_lab_data 3/3: unpack the bundle (= the dataset content), compare, clean up", flush=True)
+ZIP = R / "kaggle/flag2027-lab-data.zip"
+DS = KOUT / "lab_data_dataset"
+shutil.rmtree(DS, ignore_errors=True)
+with zipfile.ZipFile(ZIP) as z:
+    z.extractall(DS)
+    members = {i.filename: {"bytes": i.file_size} for i in z.infolist() if not i.is_dir()}
+for name in members:
+    members[name]["sha256"] = hashlib.sha256((DS / name).read_bytes()).hexdigest()
+rep = {"stage": "b_lab_data", "dataset": "ngnnguynchn/flag2027-lab-data-p", "created": time.strftime("%Y-%m-%d %H:%M"), "zip_bytes": ZIP.stat().st_size,
+       "members": members}
+exp_f = STAGE_DIR / "expected_members.json"
+if exp_f.is_file():                 # the original dataset, file by file (package E:); byte identity expected only for frozen inputs
+    exp = json.loads(exp_f.read_text(encoding="utf-8"))["members"]
+    same = sorted(n for n in members if n in exp and exp[n]["sha256"] == members[n]["sha256"])
+    diff = sorted(n for n in members if n in exp and exp[n]["sha256"] != members[n]["sha256"])
+    rep["vs_original"] = {"identical": len(same), "differ": diff, "missing": sorted(set(exp) - set(members)),
+                          "extra": sorted(set(members) - set(exp))}
+    print("vs the original dataset:", json.dumps({k: (v if k == "identical" else v[:12]) for k, v in rep["vs_original"].items()}), flush=True)
+for p in LINKS:                     # remove the folder links first: never delete the input artifacts they point at
+    if os.path.islink(p):
+        os.unlink(p)
+    else:
+        shutil.rmtree(p)
+shutil.rmtree(R)
+(KOUT / "bundle_report.json").write_text(json.dumps(rep, indent=1))
+print(f"{len(members)} files in {DS} = the content of dataset ngnnguynchn/flag2027-lab-data-p", flush=True)
+# <<<FF-CELL>>>

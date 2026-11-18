@@ -1,0 +1,92 @@
+{
+ "stage": "c63v_audio_cache",
+ "run": "duongphihoang/flag-2027-nb-63v-audio-cache",
+ "exactness": "builder-regenerated",
+ "files": [
+  {
+   "path": "original/FLAG_63v_audio_cache.ipynb",
+   "copied_from": "kaggle/FLAG_63v_audio_cache.ipynb",
+   "bytes": 31582,
+   "md5": "788cf383090c034d0d971531c19677f8",
+   "sha256": "aff8a2e0ec8a8bca41717a818ac5e70abdea3fdfccd5b7d09139f87d30e57db1"
+  }
+ ],
+ "notes": [],
+ "exactness_note": "best available: the builder output written 2026-10-16 11:18:28 (+07), 7 min before the push; its 7 code cells equal the current builder strings + vendor_t3enc/t3enc_cell.py (checked 18/11), the builder is unchanged since (mtime and the .pyc header both 11:18:28, 21 174 B). The pushed file (scratchpad …/nb63v/FLAG_63v_audio_cache_up.ipynb, md5 0123c6d09eff6865fe797966243cc292) is gone; it differed by the upload target AUDIO_UPLOAD (inferred: the run uploaded duongphihoang/flag2027-audio-cache-p itself) and by the kapi --secret cell (holds the token: must never be stored).",
+ "notebook_md5": "788cf383090c034d0d971531c19677f8",
+ "pushed_md5": "0123c6d09eff6865fe797966243cc292",
+ "push_records": [
+  {
+   "kapi_runs_line": 341,
+   "record": {
+    "time": "2026-10-16 11:19",
+    "account": "duongphihoang",
+    "kernel": "duongphihoang/flag-2027-nb-63v-audio-cache-smoke",
+    "source": "kaggle/FLAG_63v_audio_cache.ipynb",
+    "notebook_md5": "ab71049cebaeddd5910f5a21d52e484a",
+    "gpu": false,
+    "smoke": {
+     "FLAG_SMOKE": "1",
+     "AUDIO_SMOKE_N": "20",
+     "AUDIO_SMOKE_TARS": "2",
+     "AUDIO_WIRE_N": "8"
+    },
+    "secrets": [
+     "HF_TOKEN"
+    ],
+    "datasets": [
+     "ngnnguynchn/flag2027-frames-index-p",
+     "ngnnguynchn/flag2027-lab-vb-p",
+     "ngnnguynchn/flag2027-lab-data-p",
+     "ngnnguynchn/flag2027-feats-vox2b-p"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  },
+  {
+   "kapi_runs_line": 342,
+   "record": {
+    "time": "2026-10-16 11:25",
+    "account": "duongphihoang",
+    "kernel": "duongphihoang/flag-2027-nb-63v-audio-cache",
+    "source": "<team scratch>/nb63v/FLAG_63v_audio_cache_up.ipynb",
+    "notebook_md5": "0123c6d09eff6865fe797966243cc292",
+    "gpu": false,
+    "smoke": {},
+    "secrets": [
+     "HF_TOKEN"
+    ],
+    "datasets": [
+     "ngnnguynchn/flag2027-frames-index-p",
+     "ngnnguynchn/flag2027-lab-vb-p",
+     "ngnnguynchn/flag2027-lab-data-p",
+     "ngnnguynchn/flag2027-feats-vox2b-p"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  }
+ ],
+ "builders_today": [
+  {
+   "path": "kaggle/build_audiocache_notebook.py",
+   "bytes": 21174,
+   "md5": "e1ad898d26d4200535ab454ee18a54b1",
+   "sha256": "1ba2c3b4d4432767d9d05364dedfb98aecaae09724beeff3a556e3f60ee6be88",
+   "mtime_local": "2026-10-16 11:18:28"
+  },
+  {
+   "path": "kaggle/vendor_t3enc/t3enc_cell.py",
+   "bytes": 6751,
+   "md5": "9ee869ae454df33442705f6fa8a19252",
+   "sha256": "5083111e0beabcae34b3655b37ae05412bd0fa14ecdd40a5844d889b2851917a",
+   "mtime_local": "2026-10-09 18:19:28"
+  }
+ ],
+ "builders_git": "all untracked in the source repo (git status '??'); kaggle/build_eval_notebooks.py (notebook writer) is tracked + modified",
+ "evidence": [
+  "internal provenance (not shipped): NOP_BTC_2026-11-20/repo_map/DESIGN.md §4.2, §6 WP-C, §7 G2 G9 G22 G27",
+  "internal provenance (not shipped): S1 A12; S2 3.2"
+ ]
+}

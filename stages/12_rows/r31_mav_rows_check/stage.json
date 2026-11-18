@@ -1,0 +1,81 @@
+{
+ "id": "r31_mav_rows_check",
+ "group": "12_rows",
+ "title": "Optional: rebuild the MAV row tables without encoders (FLAG_08 listing + FLAG_31 EXTRAW listing) and compare byte for byte",
+ "kind": "data",
+ "role_in_1354": "optional",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 10,
+  "minutes_is_estimate": true,
+  "internet": false,
+  "secrets": [],
+  "platform": "Linux (POSIX path order)"
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "notebook_md5": null,
+  "builder": "check_rows.py = verbatim functions of the executed FLAG_08 flag_extract.py (_parse, DirArchive, open_archive, find_attached_zip, find_attached_source, write_speaker_meta) + EXTRAW RawSource (kaggle/build_raw_notebook.py:154-185) + media_key (kaggle/build_eval_notebooks.py:225-231); new main()"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/r31_mav_rows_check",
+  "exports": {},
+  "kernel_layout": {
+   "r31/rows_A/": "tables from the executed FLAG_08 listing",
+   "r31/rows_B/": "tables from the EXTRAW listing",
+   "r31/r31_report.json": "sha256 vs ngnnguynchn/flag2027-ext-meta-p"
+  }
+ },
+ "env": {},
+ "smoke_env": {
+  "FF_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [],
+ "verify": [
+  {
+   "file": "r31/r31_report.json",
+   "check": "listings A and B: every table sha256 = ext-meta-p (all_match true)"
+  }
+ ],
+ "todo": [],
+ "notes": [
+  "DESIGN gives the builder kaggle/build_raw_notebook.py:68-240 (cell EXTRAW): that cell also runs both encoders and needs the FLAG_12 helper cells; the row tables do not depend on the encoders, so only the listing and table code is reused.",
+  "check_rows.py sha256 is recorded in original/SOURCE.json (stage_files); the full builder is kept in original/ for reading."
+ ],
+ "changes_summary": [
+  "new: check_rows.py + cells/00_check_rows.py: new script; the listing / meta-table code is copied verbatim (ast.get_source_segment) from the executed FLAG_08 module and the EXTRAW cell"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_check_rows.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_check_rows.py",
+    "title": "r31: rebuild the MAV row tables from the extracted release and compare them byte for byte "
+   }
+  ],
+  "n_cells": 1,
+  "stage_ipy_sha256": "d6658d8db78318b31b012b2843bdd3c577451c6ca06788f2fda63e195c1ad835"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)"
+}

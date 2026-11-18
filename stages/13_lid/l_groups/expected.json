@@ -1,0 +1,6 @@
+{
+ "vox2_groups.json": "4f44f5cee3f9a3ae1109962158c07dcb0101a2a3bdd7c99cf27ed787c7a35cc6",
+ "vox2b_groups.json": "7beb7ce7f67de74bcc753e1d8f2be10560b105d74dbcbf220c493d65d27fc742",
+ "vox2_gender.json": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089",
+ "line_ends": "sha256 of the CRLF form (files written on Windows by Path.write_text)"
+}

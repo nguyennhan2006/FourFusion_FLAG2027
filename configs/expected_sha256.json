@@ -1,0 +1,175 @@
+{
+ "_doc": "Reference SHA-256 values for the FourFusion 13.54 submission chain (DESIGN section 9.1). Every value below was read from the real file on the team machine on 2026-11-18 (sha256sum / zipfile member hashing, or E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/MANIFEST.sha256). Keys are referenced by stage.json 'verify' entries as 'configs/expected_sha256.json#<key>' and by runner/verify.py --expected <key>. Zip-level SHA-256 is NOT reproducible when a zip is rewritten (the zip header stores the write time); compare members.",
+ "xjf_r10_trsig": {
+  "what": "displayed Evaluation submission (CodaBench submission 1054704, Evaluation 13.54 = 10.20 / 11.97 / 12.98 / 18.99); internal path Experiment/XJF-01/zips/xjf_r10_trsig.zip",
+  "zip": "b4354eaf988b2b4ea8c4e1c3fa44d7bcf631ea5cb3cd635ab2965021fe82e507",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "d45f85027b95a0c6dbd0ba253401019c51c887ab5fa6155e3b8c969abbd55301",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+   "gender/sub_score_v4_English_heard.txt": "ead7e1772e986be0a10a2acf810ec42f4662ad480237ed1c7632f926ead41be4",
+   "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+  },
+  "member_order": [
+   "no_gender/sub_score_v4_English_heard.txt",
+   "no_gender/sub_score_v4_Bangla_unheard.txt",
+   "gender/sub_score_v4_English_heard.txt",
+   "gender/sub_score_v4_Bangla_unheard.txt"
+  ],
+  "member_lines": {
+   "no_gender/sub_score_v4_English_heard.txt": 392,
+   "no_gender/sub_score_v4_Bangla_unheard.txt": 802,
+   "gender/sub_score_v4_English_heard.txt": 416,
+   "gender/sub_score_v4_Bangla_unheard.txt": 716
+  },
+  "zip_member_date_time": [
+   2026,
+   11,
+   16,
+   11,
+   8,
+   8
+  ],
+  "zip_compression": "ZIP_DEFLATED",
+  "line_format": "<trial id> <value %.8f>\\n; value = -score (lower = same person)"
+ },
+ "factor_enfuse": {
+  "what": "posteval_FACTOR_ENFUSE_c5rl.zip (Evaluation 16.99); source of no_gender/Bangla and of the English base values",
+  "zip": "9cf5bbe4e3af14184c26eef08104d3ddd94fc5357569c09fc657a93d4549fd93",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "44e2781f5673e318318c7662a2cc4feb28f347557db8288a18cbe2cbac5af69c",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+   "gender/sub_score_v4_English_heard.txt": "73e485fd8803a2f897974257f77bb45c6319d9f8466ca6fd067af2f48e6964db",
+   "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"
+  }
+ },
+ "factor_u": {
+  "what": "posteval_FACTOR_U_c5rl.zip (U = F1s' + RFX, 1:1)",
+  "zip": "23702a4295b7189c1aeb24da3f34a4c5a788e0a621261230c5f1e6550d9d2c09",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "1726bf9488cb6507e692a9bce0475dffea3db3e2db4aef660fd2c49ba70827b7",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+   "gender/sub_score_v4_English_heard.txt": "754eb4e3f8bcc662db8e082f97def050a9021aae1bbc7703d1fa2b9f0f18e9c6",
+   "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"
+  }
+ },
+ "fvbind_enfuse": {
+  "what": "posteval_FVBIND_ENFUSE_fvb.zip; source of gender/Bangla",
+  "zip": "bb0e0175e9e9448128a529db8ed537cec0eef427d044729f030c4984830b0bbc",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "eb1ef21098092e75012a8c130e489563e9d23eb7757b38eff271dc0c3017cb3e",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "1f6e8aea3927185a7460b88bc3adff5737e895b866576cf4c0d6ba6bfd4c9043",
+   "gender/sub_score_v4_English_heard.txt": "7f016f444d0d35035e99d13058d16e9d87f063894c3f4ee17dd9090049881a48",
+   "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+  }
+ },
+ "fvbind_u": {
+  "what": "posteval_FVBIND_U_fvb.zip",
+  "zip": "b61c84edca2921fc8e313994f3f5d66247d5fa378a4f4f76a2789e516036b401",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "578ef595d23150637f95a5da72b30b2af9d557d217de3d549c5ff3b9e6d3aa65",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "1f6e8aea3927185a7460b88bc3adff5737e895b866576cf4c0d6ba6bfd4c9043",
+   "gender/sub_score_v4_English_heard.txt": "bed8ac03b742342d338ebbb52214b1e9ddb450ffa90d5cdb385470fe94115a54",
+   "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+  }
+ },
+ "best4": {
+  "what": "fourfusion_BEST4_v1.zip (16.72, optional reference): FACTOR_ENFUSE members + FVBIND gender/Bangla",
+  "zip": "eb58ba77499c396f14b3e217dd5d3acd43c18a4f746928e7f039295839a60e63",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "44e2781f5673e318318c7662a2cc4feb28f347557db8288a18cbe2cbac5af69c",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+   "gender/sub_score_v4_English_heard.txt": "73e485fd8803a2f897974257f77bb45c6319d9f8466ca6fd067af2f48e6964db",
+   "gender/sub_score_v4_Bangla_unheard.txt": "9a6197360fa2c1ddb8c7039730df67b3ace221a635a10abfe51f3ec72c38f392"
+  }
+ },
+ "f1s_eval": {
+  "what": "F1s' scores on the four Evaluation lists (e112f1sx: e2e_out/submission_cleantune01_F1_CA_eval.zip; = rebuild/in/f1s_eval.zip of the E: package)",
+  "zip": "1b43b14ff763bd0eac72fea505e4cfd4ff98bc41d87d49baecdfd613525a6962",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "13b2b9b4e75f59fc92cf58477acca17c17bb2e11f5e804ead6797de59f470e08",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "db9a4242a811d9d70d16ee003ee9023827fd941d409697c533fc535d96e9469f",
+   "gender/sub_score_v4_English_heard.txt": "557e752fe730323371e3dceab57b54532578c633f7ad2ea9e4d3d27d7cee53ae",
+   "gender/sub_score_v4_Bangla_unheard.txt": "c3a93c4671358e2d27d296edab664ca695bcdfadf2ad187be2f006b361bf1bc2"
+  }
+ },
+ "rfx_eval": {
+  "what": "RFX (c5rl, ORIGINAL LoRA C1) scores on the four Evaluation lists (e163i: FLAG_RF_E2E/submission.zip; = rebuild/in/rfx_eval.zip)",
+  "zip": "1fa53218c9501ef38f9b1c33680fac5b7f6a0ddace4fdaffed7cd5334b9aa369",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "6d1b5dfdd6be91c0faf33d250baf0b869be377c43b631e37e037e4201110a1cb",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "518840adbc65e948127f10abf3f0efd7c4ab71293a8a7f4eafc613ca5f38d723",
+   "gender/sub_score_v4_English_heard.txt": "6a8a7c95a2b5210a54a97ad959a8f35b033a49302373ad4e9e00932f3742a079",
+   "gender/sub_score_v4_Bangla_unheard.txt": "b26ec075324f649a85caaeb842660aad5f79a3d6b168520b1bf1cf0a010f37f6"
+  }
+ },
+ "rfsfxfvb_eval": {
+  "what": "RFX' (RFX + FVBIND B2 voice block) scores (e163i_fvb: FLAG_RF_E2E/submission.zip; local copy Experiment/FVBIND-01/out/eval163i/FLAG_RF_E2E/submission.zip)",
+  "zip": "45044189ae4b228b93aaae7e6eb4015f38516bfaa8c57abf2940db7ea6590862",
+  "members": {
+   "no_gender/sub_score_v4_English_heard.txt": "e5a06e2274062cb2f683e584a6a29706acbe51865a84e7dd87398a694a8b6611",
+   "no_gender/sub_score_v4_Bangla_unheard.txt": "95e47fda89a8ab0f3f469a9d0dd05a62e3f5793416b5ebc8db5173aabd667dbb",
+   "gender/sub_score_v4_English_heard.txt": "4db50ec59513671d61a8662fad019585cea4c2af5fb3a7ba9be4a228d3b70d64",
+   "gender/sub_score_v4_Bangla_unheard.txt": "cf7ea42ce4fb856e3b0c6eadc5c56300460184c7dcc12c8871d3bbbfc8d414f5"
+  }
+ },
+ "score_files": {
+  "components_eval.npz": "2cd160ae456447c0c47bf611f2f73480ffc5c9161e767812d42e5f380b1b56c7",
+  "e2e_manifest.json": "b0ba27c2982f917199d957cd42763fecfdd31c292352594a4e141105ce72bd58",
+  "cleantune01_fuser_bangla_CA.json": "c4737367e787da6dc9a1e08453a9602e2ea60b830bd7a56e8d6728501e9d06a4",
+  "ct01r2_final_eval.npz": "bbad53ed8e32066240f405676e7f3676dd55040573c00d1fad07b81774c3d0fc",
+  "xjf_scores.npz (English only, Experiment/XJF-01/out/bak_english_only/)": "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779",
+  "xjf_scores.npz (English + Bangla re-run 16/11 22:03, Experiment/XJF-01/out/; same English z)": "6a039fafe5c0f82003601fffa17615548498d8ee733ba6cf1e4d244356193980",
+  "consts.json (DP z constants, reference only)": "356242de47674dfb0c3a245bf3c504ee9f37417e6928040313b155d6bade6324",
+  "xjfdump_v4.parquet (sigma source, 12 896 pairs)": "9f0a5af468d1f973e1ff33264ff10239cf21f1813a0f370740e8c2d8e02f7a09"
+ },
+ "sigma": {
+  "what": "two scale constants of the English blend = mean over the three seed repeats of std(ddof=0) of U_c0r / U_c0s / U_c0t per v4 cell (S8 K3); rounded to 4 decimals",
+  "no_gender": 5.0983,
+  "gender": 3.8376,
+  "unrounded": {
+   "no_gender": 5.09827,
+   "gender": 3.83757
+  },
+  "XJF_SIG": "5.0983,3.8376",
+  "dp_weight_r": 1.0
+ },
+ "checkpoints": {
+  "lora_C1.pt (ORIGINAL LoRA C1, key bug, 210 MAV clips / 70 persons)": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c",
+  "v4_extra.npz (v_lora of 6 485 v4 voices, original LoRA C1)": "793f81bd3909597cd9d60b5f062c85b64b81d1b56e169b424391853a1a4a8fb9",
+  "onnhqunhh__flag2027-rfs-lora-p.zip (Kaggle download zip)": "14ddbcf579e051114ad9302b6512572ee81ff26447baea4e7bdfdeb545353596",
+  "facelora_state.pt (C5s)": "4dab964c83addaadde32221dba59637c639812e0835899658b792f80e35c2d7b",
+  "facelora_state.pt (B3s, wiring)": "b06a65c862a579589b252e3324499e67e6a8e5174f98fbe587e69722dcc52a15",
+  "s007_xall.pt": "e6b74a101221cfb817efd976bd6338979692af7306952e5e0a0d688284ece0cb",
+  "v11_head/v11_t3head.pt": "84ab8690e2dbf6ca0dbfc916848fdf3f82c16970f7ee89e5298e4f0df2e5de29",
+  "v11_head/t3_streams.npz": "09867a3f2b6440954d604988e847020e5e049b0d8dc83f9af7a0d2156a4450a7",
+  "ct01r2_final_models.pt (CA head, 10 seeds)": "19285c5ca08a9454b120148177f7544cca938aff8afd202c505cf920c085d569",
+  "ct01g1_final_models.pt (B0s head, wiring)": "1933286f1d4c7a54d2e802b3298b27e306acca74e81a41038c02236c7f525d44",
+  "projector_Q.pt (RFX c5rl)": "17eb47ac20ddf2f01aae50b3ebbca87f3b04403f772d124d74442da848e362f2",
+  "final_params.npz (RFX c5rl)": "ed76bf64ab9e3b16825ed429a8b7f021faea466e129e6bb8f1f9591d32a4d1b8",
+  "manifest_final.json (RFX c5rl)": "21adffb32edd59767079d1287c9aa3d971165cab8702f266defff492c7d04736",
+  "fvbB2_state.pt": "d691a44933b252cf2e2aa02bff15b8e0c89b949b2ae10dfd9ca20fe3d1e7377a",
+  "fvbB2_emb.npz": "bf6d03a3aadc0e72afc6bc705bf7ce4fb47895e31fa9b58264756ee50df1c886",
+  "lid_strict.json": "f4065711e01e6284d70b213fedec2823e7b942ca3c470e8b2b896670c5ed3fad"
+ },
+ "raw": {
+  "train_set.zip (organisers, MAV-Celeb v4)": "1803739f059860d5aede064839a17b01c6297f3160ab80cc9d3c929b27ae2ad9",
+  "dev_set.zip (organisers; never read by the 13.54 chain except where recorded as wiring)": "f29cc4139bc3e40bf9e9cd6533b6822e41296de972589d85ac71953cd1a92983",
+  "meta_file_train_set.csv (organisers)": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030",
+  "evaluation_phase.zip (organisers, Evaluation phase)": "c9efa2100dc54188fbd9739970a98c1cd966985d9c6f7d46148e5a3af96fc9f9",
+  "eval_set.zip (built by stage raw_evalphase = datasets/ngnnguynchn/flag2027-evalphase-p)": "a70762a3fb52af6bbf52c14a86c79a4d074ec319b78d6ffedcdf195d71f9381e",
+  "ext_v1_complete_face_meta.csv": "7b385161cfb9bcf998110b4f969c7268aaddb8c5567482d2888cc617f92601ae",
+  "ext_v1_complete_voice_meta.csv": "3fac359f6a5b4fcab53032296c063fdf3adb73ba587a5107507c67982164635e",
+  "ext_v2_complete_face_meta.csv": "9db02bfc517ddf5ea5e52d0c54d937d0887d87038ad969b24172c86a37534c23",
+  "ext_v2_complete_voice_meta.csv": "1e22f7667044afe9bbcfa228d66ab4931f76a5df239ecc905e2bc31fa766378b",
+  "mavceleb_v1_complete-001.zip (MAV-Celeb v1 release, measured by WP-B 18/11)": "2082a9ee5f7d3634f687d682e98cd223606a5b01debc90c3e7ab566a9f86512b",
+  "mavceleb_v2_complete-002.zip (MAV-Celeb v2 release, measured by WP-B 18/11)": "daff513527d7cea698243594a18795cab6d47aea64d64c3c74035154abd6246c"
+ },
+ "code": {
+  "flag_final_core_092.py (LF line endings)": "25abe24db6fbe863109dafd5f75f9075164dce75f77ce276695daf8687d338f7",
+  "release/docker/Dockerfile (= docker/Dockerfile = E: package docker/Dockerfile)": "ad84e6fea5f55541c087d85fe5de806049d2f93fe0a3a5a1530842fbbbe66eb9"
+ },
+ "dev_contamination": {
+  "what": "dev score zip embedded (gzip/base64) in some exact notebooks; must never be published (user rule 6)",
+  "Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip": "b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d"
+ }
+}

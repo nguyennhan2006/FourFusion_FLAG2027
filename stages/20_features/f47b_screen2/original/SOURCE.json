@@ -1,0 +1,20 @@
+{
+ "stage": "f47b_screen2",
+ "files": [
+  {
+   "copy": "original/FLAG_47b_voice_screen.ipynb",
+   "source": "docs/book_FLAG2027/snap/kaggle/FLAG_47b_voice_screen.ipynb",
+   "obtained_by": "copy of the team's 17/10/2026 snapshot of kaggle/FLAG_47b_voice_screen.ipynb; md5 equals the push md5 of kaggle/kapi_runs.jsonl line 53 (and 52), so these are the bytes sent to Kaggle",
+   "bytes": 49159,
+   "md5": "8eeb5c674f054d4412a4b279ed291bd0",
+   "sha256": "b6f5bfc39fe4e56206660effa7c4370baaf8204f0c969dffc4d21bc1ee003a48",
+   "push_md5": "8eeb5c674f054d4412a4b279ed291bd0",
+   "md5_match": true
+  }
+ ],
+ "run": "thanhthaoph/flag-2027-nb-47b-voice-screen",
+ "evidence": [
+  "md5 of the snapshot = notebook_md5 of the push (kapi_runs.jsonl lines 52 and 53): byte-identical to the pushed notebook (new finding 18/11/2026; DESIGN §4.5 listed this run as 'not pulled').",
+  "Today's kaggle/FLAG_47b_voice_screen.ipynb (md5 2ed9efd7..., regenerated 2/11) differs in two places: a [boot] line and the split pip call (the pip fix ported here as patch #3). The Evaluation run 47rs-eval (package E:, 11/11) = today's version + ONLY_UNDER."
+ ]
+}

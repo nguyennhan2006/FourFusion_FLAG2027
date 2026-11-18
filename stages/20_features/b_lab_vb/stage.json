@@ -1,0 +1,109 @@
+{
+ "id": "b_lab_vb",
+ "group": "20_features",
+ "title": "Pack the lab-vb bundle (FLAG_46 VoxBlink-clean: farl16 / clipL / sam100p / sam100f + meta + LID summary); private",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 2,
+  "internet": false,
+  "secrets": [],
+  "note": "original: local run 10/10/2026 08:50 (not timed; minutes is an estimate)"
+ },
+ "origin": {
+  "run": "local script `python kaggle/build_lab_bundle.py vb` (team machine, 10/10/2026 08:50); zip kaggle/flag2027-lab-vb.zip sha256 ced0230bdd77c47a6da9a0d9bb288f249d3ced679300745b156a24a71928460c uploaded as ngnnguynchn/flag2027-lab-vb-p (private)",
+  "exactness": "local-script",
+  "source_file": "kaggle/build_lab_bundle.py vb (not in git)",
+  "notebook_md5": null,
+  "original_copy": "original/build_lab_bundle.py",
+  "original_sha256": "d4bc3e02396ffa36f5a8cf838210556420df44af391180057c2decc7b79d79f9"
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/ff/c46_voxblink"
+  }
+ ],
+ "inputs_dropped": [],
+ "outputs": {
+  "kernel": "notebooks/ff/b_lab_vb",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-lab-vb-p": "lab_vb_dataset"
+  },
+  "main_folder": "lab_vb_dataset",
+  "private": true,
+  "note": "lab_vb_dataset/labvb/* = the dataset content (VoxBlink-derived: keep private, never in the repository)",
+  "licence": "VoxBlink-derived: features computed from VoxBlink media (CC BY-NC-SA 4.0, no redistribution); private, shared only with the organisers through FF_DATA, never public and never in the repository"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/lab_vb"
+ ],
+ "verify": [
+  {
+   "file": "bundle_report.json",
+   "key": "vs_original/extra",
+   "equals": [],
+   "why": "no member beyond the original's (warning only)"
+  }
+ ],
+ "script_patches": [
+  {
+   "file": "build_lab_bundle.py",
+   "old": "import io, json, sys, time, zipfile\n",
+   "new": "import io, json, sys, time, zipfile\nimport os  # FF path (CHANGES.md): FF_REPO_ROOT\n",
+   "count": 1,
+   "type": "path",
+   "why": "needed by the change below",
+   "effect": "none"
+  },
+  {
+   "file": "build_lab_bundle.py",
+   "old": "R = Path(__file__).resolve().parents[1]\n",
+   "new": "R = Path(os.environ[\"FF_REPO_ROOT\"]) if os.environ.get(\"FF_REPO_ROOT\") else Path(__file__).resolve().parents[1]   # FF path (CHANGES.md): repository root given by the stage\n",
+   "count": 1,
+   "type": "path",
+   "why": "the script resolved every input from the team's repository root; the stage gives a stand-in root built from the input artifacts",
+   "effect": "none"
+  }
+ ],
+ "scripts": [
+  {
+   "file": "build_lab_bundle.py",
+   "original": "original/build_lab_bundle.py",
+   "sha256_after_patches": "b0cf25c784dacc67fa323a45f91119c06fcb8571f3d070b37a3f971972caff50",
+   "line_endings": "LF (original bytes kept in original/)"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 3,
+  "sha256": "e8ca16d47edc7c5e0f7cff688948b6cd4aee778e7eaadb15925ebc7b30ea9317",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "new cells (see CHANGES.md)",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "t153b, t153c, t160a/b/c, t162a/b/c, t112sf0s, t112sf1s, t183 / t184, t163p_c5rl, e65xbs, e65xcs, e112f0sx, e112f1sx, f63w_aux_voice, f103c_tap01"
+ ],
+ "todo": [
+  "Input id notebooks/ff/c46_voxblink (WP-C) follows DESIGN §3.2."
+ ],
+ "verify_notes": [
+  "with the frozen input every file except labvb/lab_manifest.json must be byte-identical to expected_members.json"
+ ],
+ "post_checks": [
+  {
+   "file": "bundle_report.json",
+   "json_path": "vs_original/missing",
+   "equals": [],
+   "why": "every member of the original dataset (expected_members.json) is in the new bundle"
+  }
+ ]
+}

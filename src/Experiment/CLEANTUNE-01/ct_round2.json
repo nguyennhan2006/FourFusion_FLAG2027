@@ -1,0 +1,279 @@
+{
+ "threshold": 0.1,
+ "noise_floor": 0.0,
+ "I": "C5CAT4",
+ "S_A": [
+  "T",
+  "AIp"
+ ],
+ "CMB_ALL": [
+  "T",
+  "AIp"
+ ],
+ "CMB_TOP2": [
+  "T",
+  "AIp"
+ ],
+ "single": [
+  "T"
+ ],
+ "run_round2": true,
+ "results": {
+  "DRm": {
+   "group": "g1",
+   "delta": 0.092,
+   "wins": 4,
+   "per_fold": {
+    "1": 0.283,
+    "2": -0.007,
+    "3": 0.007,
+    "4": 0.139,
+    "5": 0.037
+   },
+   "hold": {
+    "hold_urdu": 0.132,
+    "hold_hindi": 0.113
+   },
+   "signal": false
+  },
+  "DRp": {
+   "group": "g1",
+   "delta": -0.065,
+   "wins": 3,
+   "per_fold": {
+    "1": -0.043,
+    "2": 0.096,
+    "3": 0.048,
+    "4": 0.159,
+    "5": -0.583
+   },
+   "hold": {
+    "hold_urdu": -0.031,
+    "hold_hindi": -0.206
+   },
+   "signal": false
+  },
+  "EPm": {
+   "group": "g1",
+   "delta": -0.144,
+   "wins": 0,
+   "per_fold": {
+    "1": -0.049,
+    "2": -0.143,
+    "3": -0.195,
+    "4": -0.107,
+    "5": -0.224
+   },
+   "hold": {
+    "hold_urdu": -0.172,
+    "hold_hindi": -0.112
+   },
+   "signal": false
+  },
+  "EPp": {
+   "group": "g1",
+   "delta": 0.04,
+   "wins": 2,
+   "per_fold": {
+    "1": -0.061,
+    "2": -0.046,
+    "3": 0.253,
+    "4": 0.224,
+    "5": -0.168
+   },
+   "hold": {
+    "hold_urdu": -0.251,
+    "hold_hindi": 0.099
+   },
+   "signal": false
+  },
+  "WDp": {
+   "group": "g1",
+   "delta": 0.012,
+   "wins": 3,
+   "per_fold": {
+    "1": 0.065,
+    "2": 0.0,
+    "3": 0.051,
+    "4": -0.107,
+    "5": 0.049
+   },
+   "hold": {
+    "hold_urdu": 0.0,
+    "hold_hindi": -0.272
+   },
+   "signal": false
+  },
+  "AWm": {
+   "group": "g2",
+   "delta": -0.135,
+   "wins": 0,
+   "per_fold": {
+    "1": -0.043,
+    "2": -0.196,
+    "3": -0.179,
+    "4": -0.088,
+    "5": -0.167
+   },
+   "hold": {
+    "hold_urdu": 0.139,
+    "hold_hindi": -0.102
+   },
+   "signal": false
+  },
+  "AIp": {
+   "group": "g2",
+   "delta": 0.138,
+   "wins": 4,
+   "per_fold": {
+    "1": 0.004,
+    "2": 0.192,
+    "3": 0.342,
+    "4": 0.316,
+    "5": -0.164
+   },
+   "hold": {
+    "hold_urdu": -0.142,
+    "hold_hindi": -0.036
+   },
+   "signal": true
+  },
+  "BSp": {
+   "group": "g2",
+   "delta": 0.082,
+   "wins": 3,
+   "per_fold": {
+    "1": 0.157,
+    "2": 0.279,
+    "3": -0.191,
+    "4": 0.337,
+    "5": -0.172
+   },
+   "hold": {
+    "hold_urdu": -0.091,
+    "hold_hindi": -0.193
+   },
+   "signal": false
+  },
+  "DIMp": {
+   "group": "g2",
+   "delta": 0.01,
+   "wins": 3,
+   "per_fold": {
+    "1": 0.116,
+    "2": -0.093,
+    "3": 0.051,
+    "4": -0.06,
+    "5": 0.034
+   },
+   "hold": {
+    "hold_urdu": 0.028,
+    "hold_hindi": -0.105
+   },
+   "signal": false
+  },
+  "T": {
+   "group": "g2",
+   "delta": 0.247,
+   "wins": 3,
+   "per_fold": {
+    "1": 0.554,
+    "2": -0.093,
+    "3": 0.166,
+    "4": 0.654,
+    "5": -0.044
+   },
+   "hold": {
+    "hold_urdu": 0.184,
+    "hold_hindi": 0.493
+   },
+   "signal": true
+  },
+  "M": {
+   "group": "g2",
+   "delta": 0.088,
+   "wins": 4,
+   "per_fold": {
+    "1": 0.196,
+    "2": 0.233,
+    "3": 0.065,
+    "4": 0.465,
+    "5": -0.519
+   },
+   "hold": {
+    "hold_urdu": 0.271,
+    "hold_hindi": 0.351
+   },
+   "signal": false
+  },
+  "C5": {
+   "group": "g3",
+   "delta": 0.13,
+   "wins": 3,
+   "per_fold": {
+    "1": 0.675,
+    "2": -0.3,
+    "3": -0.402,
+    "4": 0.533,
+    "5": 0.146
+   },
+   "hold": {
+    "hold_urdu": 0.638,
+    "hold_hindi": 0.175
+   },
+   "signal": true
+  },
+  "CAT4": {
+   "group": "g3",
+   "delta": 0.311,
+   "wins": 2,
+   "per_fold": {
+    "1": 0.601,
+    "2": -0.223,
+    "3": -0.161,
+    "4": 1.436,
+    "5": -0.096
+   },
+   "hold": {
+    "hold_urdu": 0.144,
+    "hold_hindi": 0.329
+   },
+   "signal": false
+  },
+  "TAPv": {
+   "group": "g3",
+   "delta": -0.078,
+   "wins": 2,
+   "per_fold": {
+    "1": 0.574,
+    "2": -0.417,
+    "3": -0.63,
+    "4": 0.104,
+    "5": -0.019
+   },
+   "hold": {
+    "hold_urdu": 0.078,
+    "hold_hindi": 0.489
+   },
+   "signal": false
+  },
+  "C5CAT4": {
+   "group": "g3",
+   "delta": 0.659,
+   "wins": 4,
+   "per_fold": {
+    "1": 1.324,
+    "2": -0.282,
+    "3": 0.197,
+    "4": 1.866,
+    "5": 0.191
+   },
+   "hold": {
+    "hold_urdu": 0.819,
+    "hold_hindi": 0.341
+   },
+   "signal": true
+  }
+ },
+ "note": "CMB_* = the input I plus these knobs (README \u00a72); I = B3c means the B0c face / voice blocks"
+}

@@ -1,0 +1,38 @@
+{
+ "copied_from": {
+  "Experiment/LID-AUDIT-01/run.py": "untracked"
+ },
+ "original_outputs": {
+  "Experiment/LID-AUDIT-01/out/mav_w.json": "62919289f7ca53b4359ad20834d8c5079ba33e8490cbe8ae72a206272f20eb4a (CRLF; 58 files; speakers mav_v1 7, mav_v2 23)",
+  "Experiment/LID-AUDIT-01/out/listen_files.csv": "b9ccf99a6cad6094e010526b4a2fa348332c337a2719d3ca37d2b17d9ba52239"
+ },
+ "stage": "l_lid_audit",
+ "files": [
+  {
+   "path": "original/LID-AUDIT-01_run.py",
+   "bytes": 4030,
+   "md5": "03f344846423687c95ef3be93e818b54",
+   "sha256": "5a581cca0147beab7454a5d756a1dc4c0265cde780cc663e255000816eaf7f7f"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/00_audit.py",
+   "bytes": 3408,
+   "md5": "5db368455ed75e760d590c03487d289e",
+   "sha256": "203ccfb9f37ee5911f359fe5ab6f8e5014e78d494ebe6e326b2c8369ff335f46"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 277,
+   "md5": "73109dce7bd436f8742c996542596617",
+   "sha256": "eee6c049d8407220f2ed9a356b1dba9fd0f8229e9f27eb3591fc0edb432ab75f"
+  },
+  {
+   "path": "lid_audit_run.py",
+   "bytes": 4980,
+   "md5": "5dd571c1783510ce6f4a441a73dd7ccc",
+   "sha256": "1852162f0494bcc743728ddba34cf53a2c34b696d37980d9fbb7f8d690158188"
+  }
+ ]
+}

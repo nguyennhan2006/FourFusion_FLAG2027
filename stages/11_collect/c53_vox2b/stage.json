@@ -1,0 +1,214 @@
+{
+ "id": "c53_vox2b",
+ "group": "11_collect",
+ "title": "VoxCeleb2 extra speakers + extra samples of FLAG_53, part 0 only (1 235 new + 4 877 old speakers; 36 426 faces, 47 529 voices)",
+ "kind": "collect",
+ "role_in_1354": "score",
+ "modes": {
+  "train": "not run by default: collect stages run only when forced (configs/modes.json collect_kind_runs_only_when_forced) and every collected dataset is read from FF_DATA/01_collected (class 'collected' is in always_saved_classes). Re-collecting: force the whole collect closure in ONE run, with a fresh FF_WORK and FF_USE_SAVED=collected (README.md of 11_collect): FF_FORCE=c37_vox2,c53_vox2b,c46_voxblink,c45_frames_vox2,c_frames_index,c63_frames,c87_frames_bridge,c63v_audio_cache. Forcing this stage alone mixes its new rows with the old frames / audio cache (sampling is not deterministic).",
+  "infer": "not run",
+  "assemble": "not run"
+ },
+ "compute": {
+  "device": "gpu",
+  "gpus": 2,
+  "accelerator": "T4x2",
+  "minutes_original": 484,
+  "internet": true,
+  "secrets": [
+   "HF_TOKEN"
+  ],
+  "note": "part 0 took 29 064 s in the original log (faces 8 790 s, voices ~20 270 s); the whole run incl. the dropped experiment 30 752 s. the design estimate of 1.5-2.5 h was wrong. HF_TOKEN: gated repo (not needed at the time)"
+ },
+ "origin": {
+  "run": "nguynlcnhtho/flag-2027-nb-53-scaleid",
+  "exactness": "exact-executed-copy",
+  "source_file": "kaggle/FLAG_53_scaleid.ipynb",
+  "notebook_md5": "ef50745327c79dbae1c08f154aa6ca4f",
+  "builder": "kaggle/build_e2e_lab.py EXPS['SCALE-ID-01'] (untracked; modified after the run) + kaggle/vendor_scaleid/vox2b_cell.py + kaggle/vendor_t3enc/t3enc_cell.py + the FLAG_12 AUDIO cell"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p",
+   "mount": "datasets/ngnnguynchn/flag2027-lab-data",
+   "why": "FLAG_37 keys (lab/Experiment/VOX2-01/feats_vox2/*_meta.csv) through ROOTS; the run attached the older public copy ngnnguynchn/flag2027-lab-data (same zip kaggle/flag2027-lab-data.zip, team dataset log line 43, internal provenance)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-feats-vox2b-p": {
+    "feats_vox2b/face_clipL.npy": "feats_vox2b/face_clipL.npy",
+    "feats_vox2b/face_farl16.npy": "feats_vox2b/face_farl16.npy",
+    "feats_vox2b/face_meta.csv": "feats_vox2b/face_meta.csv",
+    "feats_vox2b/feats_manifest.json": "feats_vox2b/feats_manifest.json",
+    "feats_vox2b/lid_summary.json": "feats_vox2b/lid_summary.json",
+    "feats_vox2b/voice_lid_probs.npy": "feats_vox2b/voice_lid_probs.npy",
+    "feats_vox2b/voice_meta.csv": "feats_vox2b/voice_meta.csv",
+    "feats_vox2b/voice_sam100f.npy": "feats_vox2b/voice_sam100f.npy",
+    "feats_vox2b/voice_sam100p.npy": "feats_vox2b/voice_sam100p.npy"
+   }
+  }
+ },
+ "scratch": [
+  "sp",
+  "e2e_out"
+ ],
+ "env": {
+  "E2E_SPLIT": "dev",
+  "FLAG_LOCAL": "0",
+  "FLAG_SMOKE": "0"
+ },
+ "env_note": "FLAG_LOCAL / FLAG_SMOKE pinned to \"0\" so a value left in the caller's environment cannot switch the notebook into its local / smoke mode during a real run (smoke_env sets \"1\" under FF_SMOKE=1). FLAG_IN / FLAG_OUT would also bypass the runner's /kaggle paths if set by the caller and cannot be pinned here (a fixed value would be wrong): WP-A drops them from the inherited environment; never export them.",
+ "smoke_env": {
+  "FLAG_SMOKE": "1",
+  "VOX_SMOKE_IDS": "2"
+ },
+ "patches": [
+  {
+   "id": "drop_experiment_inputs",
+   "old": "eda = sorted(IN.rglob(\"eda_bundle_manifest.json\"))\nassert len(eda) == 1, f\"attach exactly one flag2027-eda-bundle (found {len(eda)})\"\ncreated = json.loads(eda[0].read_text())[\"created\"]\nassert created == MAN[\"eda_bundle_created\"], f\"eda bundle {created} != the lab's {MAN['eda_bundle_created']}\"\ne2e = [(m.parent, json.loads(m.read_text())) for m in sorted(IN.rglob(\"e2e_manifest.json\"))]\ne2e = [(d, m) for d, m in e2e if m.get(\"split\") == SPLIT and (d / f\"components_{SPLIT}.npz\").exists()]\nassert len(e2e) >= 1, f\"attach flag2027-e2e-dev (or, for E2E_SPLIT=eval, the output of FLAG_50 on the Evaluation data)\"\nE2E_DIR, E2E_MAN = e2e[0]",
+   "new": "# [FF dev-exclusion] eda-bundle and e2e-dev served only the SCALE-ID-01 experiment cells, which this stage drops; part 0 (the\n# VoxCeleb2 extraction) reads neither, and e2e-dev holds dev-derived tables: not attached, their checks disabled. Original:\n# eda = sorted(IN.rglob(\"eda_bundle_manifest.json\"))\n# assert len(eda) == 1, f\"attach exactly one flag2027-eda-bundle (found {len(eda)})\"\n# created = json.loads(eda[0].read_text())[\"created\"]\n# assert created == MAN[\"eda_bundle_created\"], f\"eda bundle {created} != the lab's {MAN['eda_bundle_created']}\"\n# e2e = [(m.parent, json.loads(m.read_text())) for m in sorted(IN.rglob(\"e2e_manifest.json\"))]\n# e2e = [(d, m) for d, m in e2e if m.get(\"split\") == SPLIT and (d / f\"components_{SPLIT}.npz\").exists()]\n# assert len(e2e) >= 1, f\"attach flag2027-e2e-dev (or, for E2E_SPLIT=eval, the output of FLAG_50 on the Evaluation data)\"\n# E2E_DIR, E2E_MAN = e2e[0]\ncreated, E2E_DIR, E2E_MAN = None, None, {\"created\": None}   # [FF dev-exclusion] placeholders for the log line below",
+   "count": 1,
+   "why": "the dropped SCALE-ID-01 experiment needed eda-bundle + e2e-dev (dev-derived tables); part 0 does not: stop requiring them",
+   "type": "dev-exclusion",
+   "effect": "none"
+  },
+  {
+   "id": "hf_revision",
+   "old": "    HF = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/main/vox2/\"",
+   "new": "    # [FF pin] HF revision parameter added for the reproduction repo (CHANGES.md): FF_HF_REVS = JSON {\"<repo id>\": \"<commit>\"};\n    # unset, or a repo not listed -> \"main\" = the original behaviour (the original run read resolve/main, unpinned).\n    FF_HF_REV = lambda repo: __import__(\"json\").loads(__import__(\"os\").environ.get(\"FF_HF_REVS\") or \"{}\").get(repo, \"main\")\n    # [FF url] ProgramComputer/voxceleb became gated (auto-approved terms) after the run: token from the environment only, never\n    # printed; no HF_TOKEN -> {} = the original anonymous request.\n    FF_HF_HDR = {\"Authorization\": \"Bearer \" + __import__(\"os\").environ[\"HF_TOKEN\"]} if __import__(\"os\").environ.get(\"HF_TOKEN\") else {}\n    HF = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/\" + FF_HF_REV(\"ProgramComputer/voxceleb\") + \"/vox2/\"",
+   "count": 1,
+   "why": "HF revision parameter (G27) + token header for the gated repo; unset = original strings",
+   "type": "pin",
+   "effect": "none"
+  },
+  {
+   "id": "auth_remote_r",
+   "old": "requests.get(HF + n, headers={\"Range\": \"bytes=0-0\"}, allow_redirects=True, timeout=120, stream=True) as r:",
+   "new": "requests.get(HF + n, headers={\"Range\": \"bytes=0-0\", **FF_HF_HDR}, allow_redirects=True, timeout=120, stream=True) as r:",
+   "count": 1,
+   "why": "Remote(): resolve each part with the token (ProgramComputer/voxceleb is gated now); no HF_TOKEN = original request",
+   "type": "url",
+   "effect": "none"
+  },
+  {
+   "id": "auth_remote_q",
+   "old": "requests.get(HF + n, headers={\"Range\": \"bytes=0-0\"}, allow_redirects=True, timeout=120, stream=True) as q:",
+   "new": "requests.get(HF + n, headers={\"Range\": \"bytes=0-0\", **FF_HF_HDR}, allow_redirects=True, timeout=120, stream=True) as q:",
+   "count": 1,
+   "why": "Remote._get(): re-resolve an expired signed URL with the token (same reason)",
+   "type": "url",
+   "effect": "none"
+  },
+  {
+   "id": "auth_meta",
+   "old": "requests.get(HF + \"vox2_meta.csv\", timeout=120)",
+   "new": "requests.get(HF + \"vox2_meta.csv\", timeout=120, headers=FF_HF_HDR)",
+   "count": 1,
+   "why": "vox2_meta.csv of the gated repo: send the token",
+   "type": "url",
+   "effect": "none"
+  }
+ ],
+ "drop_cells": [
+  "^# embedded code \\(= the local files",
+  "^# resume: a previous version's e2e_out/",
+  "^# JOBS: every SAFE-04 fold",
+  "^# registered gate, computed here",
+  "^# final fuser \\(CA-FUSE refit",
+  "^prog\\.update\\(gpu=GPU"
+ ],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "01_collected/voxceleb2_flag53"
+ ],
+ "skip_with_requires": {
+  "files": [
+   "feats_vox2b/face_meta.csv",
+   "feats_vox2b/listing_dev_mp4.parquet",
+   "feats_vox2b/listing_test_mp4.parquet"
+  ],
+  "why": "skip_with is served as a saved copy of the KERNEL output (runner); the only consumer of the kernel output, c_frames_index, needs these three files under a folder named feats_vox2b. The published feats-vox2b-p holds the face meta but not the two listings: copy them from the frames-index dataset (vox2b/listing_dev_mp4.parquet sha256 49ac66949802fb5b…, vox2b/listing_test_mp4.parquet 6b560e7733249460…) into FF_DATA/01_collected/voxceleb2_flag53/feats_vox2b/ (the layout of design §3.1). Without them a forced c_frames_index stops at its find() assertion."
+ },
+ "verify": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+   "file": "feats_vox2b/face_meta.csv",
+   "sha256": "2a06d5204f5c6719862c53dcab07f0ac495268eef2efdfb2a8faedbf465593ac",
+   "mode": "informational"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+   "file": "feats_vox2b/voice_meta.csv",
+   "sha256": "d064feb74c411afb8a688461b8614ea0d70fa2349776e0c0f2060cace46f54fc",
+   "mode": "informational"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+   "file": "feats_vox2b/lid_summary.json",
+   "sha256": "b7d8c82ca889998d42d6a657103dacdbec8f4aba154dc5f80a0e49685da04c5a",
+   "mode": "informational"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+   "file": "feats_vox2b/feats_manifest.json",
+   "mode": "informational",
+   "expect": {
+    "new_identities": 1235,
+    "more_identities": 4877,
+    "faces": 36426,
+    "voices": 47529,
+    "face_speakers": 6112,
+    "broken": {
+     "audio": 0,
+     "image": 18
+    },
+    "lid": {
+     "speakers_dropped": 42,
+     "clips_dropped": 323
+    }
+   }
+  }
+ ],
+ "external_sources": [
+  {
+   "repo": "ProgramComputer/voxceleb",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": true,
+   "what": "VoxCeleb2 face tracks: vox2/vox2_mp4_{2..6}.zip (FLAG_37), official split archives vox2/vox2_dev_mp4_parta[a-i], vox2_dev_aac_parta[a-h], vox2_test_{mp4,aac}.zip, vox2/vox2_meta.csv",
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded (todo, WP-K LICENSES.md)"
+  }
+ ],
+ "models": [
+  "FaRL ViT-B/16 ep16 (GitHub release, size-checked); licence: FaRL repository MIT; checkpoint terms not re-checked",
+  "openai/clip-vit-large-patch14@32bd64288804d66eefd0ccbe215aa642df71cc41; licence: openai/CLIP repository MIT; model-card terms not re-checked",
+  "WeSpeaker SimAM-ResNet100 VoxBlink2 + ft (ModelScope zips, size-checked); licence: WeSpeaker code Apache-2.0; checkpoint terms not re-checked",
+  "speechbrain/lang-id-voxlingua107-ecapa (unpinned; @0253049ae131d6a4be1c4f0d8b0ff483a0f8c8e9 in FLAG_46's HF cache record); licence: licence per model card (Apache-2.0 as recalled; not re-checked offline)"
+ ],
+ "run_policy": "Sampling is not deterministic (broken tar streams / failed range reads are skipped, spares fill in): a re-collection gives other rows than the arrays every later stage was trained on, so the 13.54 chain ALWAYS uses the collected data (skip_with). FLAG_53 picks NV + 4 spare voice candidates per speaker (68 733 candidates -> 47 529 clips kept) and lost 18 face reads.",
+ "private": true,
+ "private_why": "VoxCeleb2-derived features; aligned with configs/data_map.json (feats-vox2b-p private)",
+ "todo": [
+  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
+  "ProgramComputer/voxceleb is gated (auto-approved terms; 403 with the team token on 18/11, team run log, internal provenance): a re-collection needs HF_TOKEN of an account that accepted the terms. 13.54 itself never needs it (collected data are the raw input).",
+  "The run log in original/ is the only execution record of part 0 (the executed notebook was never pulled; md5 of the pushed notebook = the repo file, so the code is exact). original/ keeps the log cut after part 0 (first 267 lines + the closing ']'); the full log's size / sha256 and its source are in original/SOURCE.json.",
+  "WP-A (configs/data_map.json): (1) files{} of datasets/ngnnguynchn/flag2027-feats-vox2b-p should list the two listing parquets above next to the 9 published files; (2) add a SEPARATE entry for notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid (class collected, producer c53_vox2b, path 01_collected/voxceleb2_flag53) so c_frames_index can run under the default FF_USE_SAVED=collected. Not an alias: an alias would give the kernel and the export the same FF_WORK/art folder, and collect() would delete the kernel output when it writes the export.",
+  "Compliance decision pending (repo-wide, WP-J / WP-K / user): original/flag-2027-nb-53-scaleid.ipynb must stay byte-exact (md5 ef507453… = pushed notebook) and its dropped cell 9 (CODE_B64, 24 lab files) contains kaggle/build_l0_notebooks.py with the constant OVERLAP (two MAV-Celeb v1/v2 identity labels linked to persons of the organisers' v4 set: an identity linkage that is still an open user decision; the labels are deliberately not repeated here). If it must not be public, move the notebook to $FF_PRIVATE/c53_vox2b/ or FF_DATA/_private_originals/c53_vox2b/ (runner/check_stage.py finds it there) or declare it in docs/COMPLIANCE_NOTES.md; src/ (WP-J) carries the same file."
+ ],
+ "notes": [
+  "'dev' in E2E_SPLIT is the SAFE-04 lab mode name of the FLAG_53 notebook (cell 7 extracts only when SPLIT == 'dev'), not the organiser dev set; no organiser data is read by part 0.",
+  "Kernel output also holds feats_vox2b/listing_{dev,test}_{mp4,aac}.parquet (remote zip central directories) and parts_*/: c_frames_index takes listing_{dev,test}_mp4.parquet + face_meta.csv from here.",
+  "The 117 VoxCeleb2 TEST speakers of kind 'new' have their audio only in vox2_test_aac.zip: their 936 wanted clips are the 936 clips missing from the audio cache (c63v, G22; checked by counts 18/11)."
+ ],
+ "stage_ipy": {
+  "sha256": "67150fc4ddf95c11eddbbb7e650d798f5aa8a9bac0362945a0a12508ebf2a495",
+  "cells": 6,
+  "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
+  "original": "original/flag-2027-nb-53-scaleid.ipynb"
+ }
+}

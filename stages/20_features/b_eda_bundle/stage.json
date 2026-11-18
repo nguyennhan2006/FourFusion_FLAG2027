@@ -1,0 +1,132 @@
+{
+ "id": "b_eda_bundle",
+ "group": "20_features",
+ "title": "Pack the eda bundle (v4 train organiser features + FLAG_10 / FLAG_04 arrays; MAV-Celeb rows + FLAG_10 / FLAG_12 arrays as float16)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 5,
+  "internet": false,
+  "secrets": [],
+  "note": "original: local run on the team's machine 29/09/2026 08:06 (not timed; minutes is an estimate)"
+ },
+ "origin": {
+  "run": "local script (team machine, 29/09/2026 08:06); zip kaggle/flag2027-eda-bundle.zip sha256 a8350df70bc133ca96caf326083a5cb195efeaad94a03dfb3d5d48705c89cb23 uploaded as ngnnguynchn/flag2027-eda-bundle-p",
+  "exactness": "local-script",
+  "source_file": "kaggle/build_eda_bundle.py (in git, unchanged since a89a071; blob 5921e8b0)",
+  "notebook_md5": null,
+  "original_copy": "original/build_eda_bundle.py",
+  "original_sha256": "32df6b2d72ee144465dd5b705698e9bdab9bfc9a0594594eee1dcc5adc3bf4c0"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "exclude": [
+    "dev_set.zip",
+    "dev_set"
+   ],
+   "exclude_why": "dev-exclusion: this stage reads only train_set.zip / meta_file_train_set.csv; requested per-input mount filter (repo_map/build/WP-D.md H8; runner/ffcore.py build_vin applies only the data_map 'exclude' today)"
+  },
+  {
+   "artifact": "notebooks/ff/r08_mav_rows"
+  },
+  {
+   "artifact": "notebooks/ff/f10_models"
+  },
+  {
+   "artifact": "notebooks/ff/f12_eval_feats"
+  }
+ ],
+ "inputs_dropped": [],
+ "outputs": {
+  "kernel": "notebooks/ff/b_eda_bundle",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-eda-bundle-p": "eda_bundle_dataset"
+  },
+  "main_folder": "eda_bundle_dataset",
+  "note": "eda_bundle_dataset/eda_bundle/* = the dataset content; bundle_report.json = sha256 per file + comparison with the original",
+  "private": true,
+  "licence": "repacks the organisers' own MAV-Celeb features verbatim (v4_face_vgg / v4_voice_btc and the v1 / v2 VGGFace / BTC arrays) with team features of the same rows: organiser data, no redistribution; private, never in the repository"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/eda_bundle"
+ ],
+ "verify": [
+  {
+   "file": "bundle_report.json",
+   "key": "vs_original/extra",
+   "equals": [],
+   "why": "no member beyond the original's (warning only)"
+  }
+ ],
+ "script_patches": [
+  {
+   "file": "build_eda_bundle.py",
+   "old": "import json, time, zipfile, io\n",
+   "new": "import json, time, zipfile, io\nimport os  # FF path (CHANGES.md): FF_REPO_ROOT / FF_EDA_CREATED\n",
+   "count": 1,
+   "type": "path",
+   "why": "needed by the two changes below",
+   "effect": "none"
+  },
+  {
+   "file": "build_eda_bundle.py",
+   "old": "R = Path(__file__).resolve().parents[1]\n",
+   "new": "R = Path(os.environ[\"FF_REPO_ROOT\"]) if os.environ.get(\"FF_REPO_ROOT\") else Path(__file__).resolve().parents[1]   # FF path (CHANGES.md): repository root given by the stage\n",
+   "count": 1,
+   "type": "path",
+   "why": "the script resolved every input from the team's repository root; the stage gives a stand-in root built from the input artifacts",
+   "effect": "none"
+  },
+  {
+   "file": "build_eda_bundle.py",
+   "old": "manifest = {\"created\": time.strftime(\"%Y-%m-%d %H:%M\"), \"arrays\"",
+   "new": "manifest = {\"created\": os.environ.get(\"FF_EDA_CREATED\") or time.strftime(\"%Y-%m-%d %H:%M\"), \"arrays\"",
+   "count": 1,
+   "type": "wiring",
+   "why": "the manifest stamp is a version check: kaggle/build_lab_bundle.py writes eda_bundle_created = '2026-09-29 08:06' into lab-data and the notebooks 164f, 112s-f0s, 112s-f1s, 184, 50cc, 112f0sx, 112f1sx assert equality; the stage sets the original stamp",
+   "effect": "none on any array"
+  }
+ ],
+ "scripts": [
+  {
+   "file": "build_eda_bundle.py",
+   "original": "original/build_eda_bundle.py",
+   "sha256_after_patches": "60bbca1d36727247dc6ac1e26865cc4fbddd631caeb644e427c39921a8a56d95",
+   "line_endings": "LF (original bytes kept in original/)"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 3,
+  "sha256": "364be89a31a0203a83a9cdd2b191ed4da206a11e245c141514ce33082ce3627a",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "new cells (see CHANGES.md)",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "t164f (cleancomp final), t112sf0s, t112sf1s, t184 report, e50cc, e112f0sx, e112f1sx (dataset input per package E: RUNS.json); safe04_lab (pf_m / pv_m columns)"
+ ],
+ "todo": [
+  "The eda tables (csv) are re-written by pandas.to_csv: float columns of the MAV-Celeb meta tables may format differently under another pandas version (not checked)."
+ ],
+ "verify_notes": [
+  "vs_original.identical should cover every .npy and table when the producing stages are the frozen ones (only float formatting of the re-written csv tables can differ across pandas versions); with re-extracted features compare arrays by row cosine (>= 0.999)"
+ ],
+ "post_checks": [
+  {
+   "file": "bundle_report.json",
+   "json_path": "vs_original/missing",
+   "equals": [],
+   "why": "every member of the original dataset (expected_members.json) is in the new bundle"
+  }
+ ]
+}

@@ -1,0 +1,1450 @@
+{
+ "_doc": "Artifact id -> location under FF_DATA (DESIGN 3). Artifact ids are the original Kaggle ids (datasets/<owner>/<slug>, notebooks/<owner>/<slug>); new stages use notebooks/ff/<stage_id>; raw/... and scores/..., pretrained/... are repository ids for inputs that never were Kaggle datasets. FF_DATA (= the Google Drive folder FourFusion_FLAG2027_data/) may be a list of roots separated by os.pathsep. The runner looks for a saved artifact at, in order: <root>/<path>, <root>/<alt_paths...>, <root>/<id> (Kaggle layout), <root>/datasets/<owner>__<slug>[.zip] and <root>/outputs/<slug>/ (layout of the team package E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl), <root>/art/<id>/ (an earlier FF_WORK). A .zip is unpacked once into FF_WORK/unpacked/. Whether a saved copy may be used depends on 'class', the run mode and FF_USE_SAVED (configs/modes.json). 'private' = share only with the organisers (never in the public repository); 'voxblink' = contains VoxBlink-derived media / features / weights (CC BY-NC-SA, no redistribution); 'dev_data' = contains organisers' dev data (present only because original code checks for it). zip_sha256 = SHA-256 of the Kaggle download zip in the team package; files = SHA-256 of files inside the artifact (full); files_prefix = first hex digits only (from the layer maps, full value not re-measured). path null = no folder of its own (a stage's skip_with files are its saved copy); exclude = top-level names never mounted; verified_by = a check stage the runner schedules before the first consumer (stage.json outputs.verifies). Optional fields: required_files (top-level names a saved folder must hold to count), dev_files (left out with FF_NO_DEV=1), requirement1_gap / origin_run (see requirement1_gap_doc), unused (why no stage consumes the id), voxblink (VoxBlink-derived), redistribute.",
+ "classes": {
+  "raw": "organisers' data / public dataset release; always taken from FF_DATA",
+  "collected": "data the team collected from public HuggingFace sources (counts as raw for 13.54); always taken from FF_DATA unless the collect stage is forced",
+  "intermediate": "rows / LID lists / frozen features / bundles; producing stage in the repository",
+  "checkpoint": "learned weights or tables; producing stage in the repository",
+  "run_output": "a run's /kaggle/working that later runs attach as kernel input",
+  "score": "per-pair scores and small tables for mode (c)",
+  "pretrained": "public pretrained models (tools/fetch_models.py)",
+  "wiring": "datasets only needed because the original code checks for them (not in the 13.54 numbers); always taken from FF_DATA",
+  "forbidden": "must not be mounted by any stage of the 13.54 chain",
+  "embedded": "small data files carried INSIDE stage code (base64 zip of Experiment/... modules decoded at run time), not mounted inputs: listed with their sha256 and the stages that carry them so that `ffrun.py dag` shows them; runner/check_stage.py compares the embedded copy with this sha256"
+ },
+ "artifacts": {
+  "datasets/ngnnguynchn/flag2027-raw-v4-p": {
+   "path": "00_raw/btc_mavceleb_v4",
+   "class": "raw",
+   "producer": null,
+   "private": true,
+   "verified_by": "raw_btc",
+   "files": {
+    "train_set.zip": "1803739f059860d5aede064839a17b01c6297f3160ab80cc9d3c929b27ae2ad9",
+    "dev_set.zip": "f29cc4139bc3e40bf9e9cd6533b6822e41296de972589d85ac71953cd1a92983",
+    "meta_file_train_set.csv": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030"
+   },
+   "sizes": {
+    "train_set.zip": 1428601179,
+    "dev_set.zip": 989881860
+   },
+   "e_package": "datasets/ngnnguynchn__flag2027-raw-v4-p/",
+   "dev_data": true,
+   "notes": "organisers' MAV-Celeb v4 files, unchanged (= Input/ of the team repository). dev_set.zip is present because the original Kaggle dataset had it; the chain reads only the train split (dev-exclusion patches per stage).",
+   "dev_files": [
+    "dev_set.zip"
+   ],
+   "dev_files_why": "FF_NO_DEV=1 mounts this dataset without the organisers' dev_set.zip (smoke-without-dev test, DESIGN G11); team dev score files inside wiring artifacts are not covered (COMPLIANCE_NOTES)"
+  },
+  "raw/btc_evaluation_original": {
+   "path": "00_raw/btc_evaluation/evaluation_phase.zip",
+   "class": "raw",
+   "producer": null,
+   "private": true,
+   "files": {
+    "evaluation_phase.zip": "c9efa2100dc54188fbd9739970a98c1cd966985d9c6f7d46148e5a3af96fc9f9"
+   },
+   "sizes": {
+    "evaluation_phase.zip": 472428761
+   },
+   "notes": "organisers' Evaluation-phase zip as downloaded (input of raw_evalphase)"
+  },
+  "datasets/ngnnguynchn/flag2027-evalphase-p": {
+   "path": "00_raw/btc_evaluation/flag2027-evalphase-p",
+   "class": "raw",
+   "producer": "raw_evalphase",
+   "private": true,
+   "zip_sha256": "411c9f1682b05d56f791e9cc62c3d455933f41c0f01d23b1843d489c60d6e0d7",
+   "e_package": "datasets/ngnnguynchn__flag2027-evalphase-p.zip",
+   "notes": "the EXTRACTED dataset view as Kaggle served it (evaluation_phase/... at the root; Kaggle auto-extracted the uploaded eval_set.zip), NOT a folder holding eval_set.zip: the Evaluation notebooks scan their inputs and may unpack any zip whose name starts with 'eval' (request of WP-B, stage raw_evalphase). Deterministic rebuild of the organisers' zip (*_valid -> *_test, 416 lines of gender/English_valid.txt fixed, original lists under btc_original/). eval_set.zip itself (a70762a3...) is in the kernel output notebooks/ff/raw_evalphase. In MODE=infer it is always rebuilt (configs/modes.json never_saved)."
+  },
+  "notebooks/ff/raw_evalphase": {
+   "path": "00_raw/btc_evaluation",
+   "class": "intermediate",
+   "producer": "raw_evalphase",
+   "private": true,
+   "files": {
+    "eval_set.zip": "a70762a3fb52af6bbf52c14a86c79a4d074ec319b78d6ffedcdf195d71f9381e"
+   },
+   "sizes": {
+    "eval_set.zip": 473574461
+   },
+   "notes": "kernel layout of raw_evalphase: eval_set.zip (the zip uploaded to Kaggle; the DP branch reads the zip), flag2027-evalphase-p/ (the extracted view), raw_evalphase_check.json; evaluation_phase.zip of the organisers may sit in the same folder. class 'intermediate' (was 'raw'): the folder also holds the organisers' evaluation_phase.zip, so it only counts as a saved copy of this kernel output when eval_set.zip (sha256 a70762a3...) and raw_evalphase_check.json are present (required_files); otherwise raw_evalphase runs (1 min CPU)",
+   "required_files": [
+    "eval_set.zip",
+    "raw_evalphase_check.json"
+   ]
+  },
+  "raw/mavceleb_v1_v2_zips": {
+   "path": "00_raw/mavceleb_v1_v2_zips",
+   "class": "raw",
+   "producer": null,
+   "private": true,
+   "sizes": {
+    "mavceleb_v1 zip": 12245623417,
+    "mavceleb_v2 zip": 13477476090
+   },
+   "notes": "the two original MAV-Celeb v1 / v2 zips (organisers' public release); input of raw_mavceleb. Kept in a SIBLING folder of the extracted data (not 00_raw/mavceleb_v1_v2/zips/ as DESIGN 3.1 first proposed): if the extracted folder also held the zips, flag_extract.find_attached_zip (stage r08_mav_rows) would read the zip and the row tables would change (request of WP-B)",
+   "files": {
+    "mavceleb_v1_complete-001.zip": "2082a9ee5f7d3634f687d682e98cd223606a5b01debc90c3e7ab566a9f86512b",
+    "mavceleb_v2_complete-002.zip": "daff513527d7cea698243594a18795cab6d47aea64d64c3c74035154abd6246c"
+   },
+   "files_measured": "sha256sum by WP-B (stages/10_raw/raw_mavceleb cells/00_locate.py), 2026-11-18; mavceleb_v1_train-004.zip is not needed"
+  },
+  "datasets/chnnhnnguyn/external-data-mavceleb": {
+   "path": "00_raw/mavceleb_v1_v2",
+   "class": "raw",
+   "producer": "raw_mavceleb",
+   "private": true,
+   "exclude": [
+    "zips"
+   ],
+   "notes": "MAV-Celeb v1 / v2 media extracted with the exact Kaggle layout mavceleb_v1_complete-001/v1/..., mavceleb_v2_complete-002/v2/... (layout is load-bearing: the original LoRA C1 data search stops at the first v1 / v2 folder, DESIGN 4.1). 'exclude': a zips/ folder left inside by mistake is not mounted.",
+   "verified_by": "raw_mavceleb_check",
+   "e_package_partial": "datasets/chnnhnnguyn__external-data-mavceleb/",
+   "e_package_partial_why": "the team package folder holds only mavceleb_v1_complete-001/{meta_v1.csv, v1/faces} (130 000 of 714 390 files): never a saved copy of this dataset (WP-B raw_mavceleb_check)"
+  },
+  "raw/voxceleb2_vox2_meta": {
+   "path": "01_collected/voxceleb2_meta/vox2_meta.csv",
+   "class": "collected",
+   "producer": null,
+   "private": true,
+   "files": {
+    "vox2_meta.csv": "9a4f437fcf78b8030e597941703ab82a4d1af314f6eba3952afafe8a3664bd1b"
+   },
+   "sizes": {
+    "vox2_meta.csv": 159126
+   },
+   "notes": "official VoxCeleb2 meta CSV (HF ProgramComputer/voxceleb vox2/vox2_meta.csv, answers 403 without accepted terms); team copy Experiment/SCALE-CC-01/vox2_meta.csv; input of l_groups (request of WP-B)"
+  },
+  "datasets/ngnnguynchn/flag2027-vox2-keys": {
+   "path": "01_collected/voxceleb2_flag37_keys",
+   "class": "collected",
+   "producer": "c37_vox2",
+   "private": true,
+   "files": {
+    "face_meta.csv": "abf8cb53cd22415606393962a9f0c6ee5731843e8dc3ebee6e1366eb98ca4da2",
+    "voice_meta.csv": "3db779d3e58e1bdda05ea460335b808c5e17b66d67aab32dc6adeb4fb84cdfa4"
+   },
+   "notes": "FLAG_37 sample keys (4 877 persons; 29 251 faces, 38 345 voices). The sampling depends on broken tars at collection time: 13.54 always uses these collected keys."
+  },
+  "datasets/ngnnguynchn/flag2027-feats-vox2b-p": {
+   "path": "01_collected/voxceleb2_flag53",
+   "class": "collected",
+   "producer": "c53_vox2b",
+   "private": true,
+   "zip_sha256": "01b870c6197c3069b163b10eb6989b232fd21bfacdf296e2efc07ed41d462bc0",
+   "e_package": "datasets/ngnnguynchn__flag2027-feats-vox2b-p.zip",
+   "files_prefix": {
+    "face_meta.csv": "2a06d520",
+    "voice_meta.csv": "d064feb7"
+   }
+  },
+  "notebooks/ff/c46_voxblink": {
+   "path": "01_collected/voxblink_flag46",
+   "class": "collected",
+   "producer": "c46_voxblink",
+   "private": true,
+   "voxblink": true,
+   "files_prefix": {
+    "face_meta": "60ee5ca2",
+    "voice_meta": "952c3c72",
+    "lid_summary.json": "a345b2b0"
+   },
+   "status": "local only: Experiment/SCALE-VB/results_flag46.zip (548 MB) on the team machine",
+   "notes": "VoxBlink-clean (FLAG_46); CC BY-NC-SA: never public"
+  },
+  "datasets/ngnnguynchn/flag2027-frames-index-p": {
+   "path": "01_collected/frames_index",
+   "class": "collected",
+   "producer": "c_frames_index",
+   "private": true,
+   "voxblink": true
+  },
+  "datasets/onnhqunhh/flag2027-lora-frames-p": {
+   "path": "01_collected/face_frames_png",
+   "class": "collected",
+   "producer": "c87_frames_bridge",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "20cf33248449b40d3cc18bd6bffe2d0a2656bb311d0547e4406d344eff34d427",
+   "e_package": "datasets/onnhqunhh__flag2027-lora-frames-p.zip",
+   "notes": "only remaining copy of the VoxCeleb2 / VoxBlink face frames (PNG); 7.7 GB zip"
+  },
+  "datasets/duongphihoang/flag2027-audio-cache-p": {
+   "path": "01_collected/audio_cache_3s",
+   "class": "collected",
+   "producer": "c63v_audio_cache",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "4c0de5060ea84e0b5659f36286eb1406720f6d4866cf4f3df54d1b29159db6a2",
+   "e_package": "datasets/duongphihoang__flag2027-audio-cache-p.zip",
+   "notes": "3 s middle segments, 16 kHz int16 (VoxBlink 67 616 / VoxCeleb2 84 415 rows); 12.4 GB zip. The bare 'video' cache key is the root of the LoRA C1 key bug: keep as is."
+  },
+  "datasets/ngnnguynchn/flag2027-ext-meta-p": {
+   "path": "02_intermediate/ext_meta",
+   "class": "intermediate",
+   "producer": "r08_mav_rows",
+   "private": true,
+   "zip_sha256": "61ff3019285043ff65d30b8ba6e8abba471a0f40acf5aee92252f5e000780bfe",
+   "e_package": "datasets/ngnnguynchn__flag2027-ext-meta-p.zip",
+   "files": {
+    "ext_v1_complete_face_meta.csv": "7b385161cfb9bcf998110b4f969c7268aaddb8c5567482d2888cc617f92601ae",
+    "ext_v1_complete_voice_meta.csv": "3fac359f6a5b4fcab53032296c063fdf3adb73ba587a5107507c67982164635e",
+    "ext_v2_complete_face_meta.csv": "9db02bfc517ddf5ea5e52d0c54d937d0887d87038ad969b24172c86a37534c23",
+    "ext_v2_complete_voice_meta.csv": "1e22f7667044afe9bbcfa228d66ab4931f76a5df239ecc905e2bc31fa766378b"
+   },
+   "notes": "team-machine zip of the same four tables: 4da564db... (DESIGN 3.2)"
+  },
+  "notebooks/ff/r08_mav_rows": {
+   "path": "02_intermediate/feats_ext_full",
+   "class": "intermediate",
+   "producer": "r08_mav_rows",
+   "private": true,
+   "files_prefix": {
+    "voice float32 (v1)": "27b668a1",
+    "voice float32 (v2)": "3a83056d"
+   },
+   "notes": "FLAG_08 kernel output, 189 MB. The saved copy keeps the KERNEL layout: 02_intermediate/feats_ext_full/feats_ext/ext_v{1,2}_complete_{face.npy, face_meta.csv, voice.npy, voice_meta.csv}, ext_v1_complete_speakers.csv, feats_manifest.json (the team machine folder kaggle/output/feats_ext_full is that feats_ext/ folder) (request of WP-B)"
+  },
+  "notebooks/nguynlcnhtho/flag-2027-nb-42": {
+   "path": "02_intermediate/feats_vox2lid",
+   "class": "intermediate",
+   "producer": "l42_vox2_lid",
+   "private": true,
+   "aliases": [
+    "notebooks/ff/l42_vox2_lid"
+   ],
+   "files": {
+    "lid_summary.json": "4d05cb34fc0fa66951750bb8f37d1f01b18f32a3e26847c7f42caad8e3341085"
+   },
+   "status": "voice_lid_probs.npy only on the team machine (Experiment/T3ENC-01/feats_vox2lid/)",
+   "default_saved": true,
+   "default_saved_why": "the exact Bengali filter list of 13.54 (lid_strict.json f4065711...) comes from the STORED LID outputs; a GPU re-run is not bit-identical and could move speakers across the cut (WP-B l42 / l150 / l152 / l_lid_strict, WP-D f41)"
+  },
+  "notebooks/ff/l_groups": {
+   "path": "02_intermediate/vox2_groups",
+   "class": "intermediate",
+   "producer": "l_groups",
+   "private": true,
+   "unused": "output of an evidence stage: the chain reads the copies embedded in the stage code (embedded/Experiment/... entries, same sha256 as the CRLF files)"
+  },
+  "notebooks/duongphihoang/flag-2027-nb-150-lidwhisper": {
+   "path": "02_intermediate/lid_whisper",
+   "class": "intermediate",
+   "producer": "l150_whisper",
+   "private": true,
+   "aliases": [
+    "notebooks/ff/l150_whisper"
+   ],
+   "files_prefix": {
+    "lid_whisper.json": "9dcd9ca2",
+    "mav.parquet": "0a676403"
+   },
+   "default_saved": true,
+   "default_saved_why": "the exact Bengali filter list of 13.54 (lid_strict.json f4065711...) comes from the STORED LID outputs; a GPU re-run is not bit-identical and could move speakers across the cut (WP-B l42 / l150 / l152 / l_lid_strict, WP-D f41)"
+  },
+  "notebooks/phantrnanna/flag-2027-nb-152-mmslid": {
+   "path": "02_intermediate/lid_mms",
+   "class": "intermediate",
+   "producer": "l152_mms",
+   "private": true,
+   "aliases": [
+    "notebooks/ff/l152_mms"
+   ],
+   "files_prefix": {
+    "mms.parquet": "f9a436f8"
+   },
+   "default_saved": true,
+   "default_saved_why": "the exact Bengali filter list of 13.54 (lid_strict.json f4065711...) comes from the STORED LID outputs; a GPU re-run is not bit-identical and could move speakers across the cut (WP-B l42 / l150 / l152 / l_lid_strict, WP-D f41)"
+  },
+  "notebooks/ff/l_dqual_g3": {
+   "path": "02_intermediate/dqual_g3",
+   "class": "intermediate",
+   "producer": "l_dqual_g3",
+   "private": true,
+   "voxblink": true,
+   "notes": "G3 class (5 % lowest within-person consistency) for VoxCeleb2 (454) / VoxBlink (1 388) persons; compare with persons.parquet e4c8deb7..."
+  },
+  "notebooks/ff/l_lid_audit": {
+   "path": "02_intermediate/lid_audit",
+   "class": "intermediate",
+   "producer": "l_lid_audit",
+   "private": true,
+   "files_prefix": {
+    "mav_w.json": "62919289"
+   }
+  },
+  "datasets/ngnnguynchn/flag2027-lid-strict-p": {
+   "path": "02_intermediate/lid_strict",
+   "class": "intermediate",
+   "producer": "l_lid_strict",
+   "private": true,
+   "zip_sha256": "78a6026c52cece60bab35d220d6b3747ac5101cc3961c47ad757e9345d07634b",
+   "e_package": "datasets/ngnnguynchn__flag2027-lid-strict-p.zip",
+   "files": {
+    "lid_strict.json": "f4065711e01e6284d70b213fedec2823e7b942ca3c470e8b2b896670c5ed3fad"
+   },
+   "notes": "strict Bengali-voice filter v2 (VoxCeleb2 608, VoxBlink 1 637 persons, 58 MAV files)",
+   "default_saved": true,
+   "default_saved_why": "the exact Bengali filter list of 13.54 (lid_strict.json f4065711...) comes from the STORED LID outputs; a GPU re-run is not bit-identical and could move speakers across the cut (WP-B l42 / l150 / l152 / l_lid_strict, WP-D f41)"
+  },
+  "notebooks/ff/f10_models": {
+   "path": "02_intermediate/feats_models",
+   "class": "intermediate",
+   "producer": "f10_models",
+   "private": true,
+   "files": {
+    "face_adaface_train.npy": "c806596c394b1c94912cada2bf5d1f6fb3e158a410a68a594cae5a39e4f9112c",
+    "ext_v1_complete_face_adaface.npy": "d160e51b74941f561e0ddd89165c0df3b4dc51926b75d6b15dd14fd3fd2a1863",
+    "ext_v2_complete_face_adaface.npy": "0844ca81857500168f8ef2cf7eaca4c10621085f56c3b5cfcdb98c4070d8eee1"
+   },
+   "notes": "hashes = copies inside lab-data (lab/kaggle/output/feats_models/)"
+  },
+  "notebooks/ff/f12_eval_feats": {
+   "path": "02_intermediate/feats_eval",
+   "class": "intermediate",
+   "producer": "f12_eval_feats",
+   "private": true,
+   "files": {
+    "voice_ecapa6144_train.npy (lab-data copy)": "91f0587426deb0206d6ff12e89bc95175cf1b5b28b98cac40afebea05eedc94e"
+   },
+   "files_prefix": {
+    "face_arcface_train.npy": "55491b54",
+    "voice_ecapa_train.npy": "b3bd0a64",
+    "voice_ecapa6144_train.npy (kaggle/output/feats_v2)": "195490e2"
+   },
+   "notes": "train ArcFace / ECAPA arrays are byte-identical to FLAG_04 (DESIGN 4.5)"
+  },
+  "notebooks/ff/f04_v2_ref": {
+   "path": "02_intermediate/feats_v2",
+   "class": "intermediate",
+   "producer": "f04_v2_ref",
+   "private": true,
+   "notes": "optional reference (FLAG_04, n_crops=0 mandatory)",
+   "unused": "output of an optional stage (role optional in its stage.json): no stage of the 13.54 chain mounts it"
+  },
+  "notebooks/ff/f14_av": {
+   "path": "02_intermediate/feats_av",
+   "class": "wiring",
+   "producer": "f14_av",
+   "private": true,
+   "notes": "AudioCLIP / ImageBind-align / LanguageBind arrays packed into lab-data (row-count checks only)",
+   "requirement1_gap": "class wiring is always taken saved (configs/modes.json always_saved_classes); the producing stage f14_av runs only with FF_FORCE=f14_av",
+   "alt_paths": [
+    "02_intermediate/lab_data/lab/kaggle/output/feats_av",
+    "datasets/ngnnguynchn__flag2027-lab-data-p/lab/kaggle/output/feats_av"
+   ]
+  },
+  "notebooks/ff/f40_t3enc_mav": {
+   "path": "02_intermediate/feats_t3enc",
+   "class": "intermediate",
+   "producer": "f40_t3enc_mav",
+   "private": true
+  },
+  "notebooks/ff/f41_t3enc_vox2": {
+   "path": "02_intermediate/feats_vox2t3",
+   "class": "intermediate",
+   "producer": "f41_t3enc_vox2",
+   "private": true,
+   "aliases": [
+    "notebooks/nguynlcnhtho/flag-2027-nb-41"
+   ],
+   "default_saved": true,
+   "default_saved_why": "the exact Bengali filter list of 13.54 (lid_strict.json f4065711...) comes from the STORED LID outputs; a GPU re-run is not bit-identical and could move speakers across the cut (WP-B l42 / l150 / l152 / l_lid_strict, WP-D f41)"
+  },
+  "datasets/ngnnguynchn/flag2027-eda-bundle-p": {
+   "path": "02_intermediate/eda_bundle",
+   "class": "intermediate",
+   "producer": "b_eda_bundle",
+   "private": true,
+   "zip_sha256": "a710be3f63d03959a935cc44ca51fd4de21c7732f48cb9d8bc66f1b03e0a3ece",
+   "e_package": "datasets/ngnnguynchn__flag2027-eda-bundle-p.zip",
+   "notes": "team-machine zip a8350df7... (DESIGN 3.2)"
+  },
+  "datasets/ngnnguynchn/flag2027-lab-data-p": {
+   "path": "02_intermediate/lab_data",
+   "class": "intermediate",
+   "producer": "b_lab_data",
+   "private": true,
+   "e_package": "datasets/ngnnguynchn__flag2027-lab-data-p/",
+   "files": {
+    "lab/lab_manifest.json": "8062f5e938fc30d49bb487a00d060a102371b5674e1f0c49dc6af9e6b1470464"
+   },
+   "notes": "content root holds lab/...; older runs mounted it at /kaggle/input/flag2027-lab-data (stage.json 'mount'). Team-machine zip d660d8c2... (DESIGN 3.2)"
+  },
+  "datasets/ngnnguynchn/flag2027-lab-vb-p": {
+   "path": "02_intermediate/lab_vb",
+   "class": "intermediate",
+   "producer": "b_lab_vb",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "e1a55d95bc47e6c56b77faaac6cd4a3dbead1c3c191dd9f74d9ceb117ec006fb",
+   "e_package": "datasets/ngnnguynchn__flag2027-lab-vb-p.zip",
+   "notes": "team-machine zip ced0230b... (DESIGN 3.2)"
+  },
+  "datasets/ngnnguynchn/flag2027-feats-screen2-p": {
+   "path": "02_intermediate/feats_screen2",
+   "class": "intermediate",
+   "producer": "f47b_screen2",
+   "private": true,
+   "zip_sha256": "28cc84869d38136d820d3b0d37c0c41e8df1484f0d11f6b3a77ac286c7346e91",
+   "e_package": "datasets/ngnnguynchn__flag2027-feats-screen2-p.zip",
+   "notes": "also produced (same 21 files, cos 1.000000) by e47rs; producer preference per mode in configs/pipeline_1354.json"
+  },
+  "datasets/hthlin/flag2027-aux-voice-feats-p": {
+   "path": "02_intermediate/aux_voice_feats",
+   "class": "intermediate",
+   "producer": "f63w_aux_voice",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "7e879ff26825f8cca5d0e8f4e81bcbcdf98221172bca6cfcfa056cd37eb48f5f",
+   "e_package": "datasets/hthlin__flag2027-aux-voice-feats-p.zip"
+  },
+  "datasets/dnq1209/flag2027-feats-tap01-voice-p": {
+   "path": "02_intermediate/feats_tap01_voice",
+   "class": "intermediate",
+   "producer": "f103c_tap01",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "a15691aad2f55ea60d371df52a64637aa648200bd1dcd05a4ee12c13d02ab71f",
+   "e_package": "datasets/dnq1209__flag2027-feats-tap01-voice-p.zip"
+  },
+  "notebooks/dnq1209/flag-2027-nb-103c-tap01-voice": {
+   "path": "04_run_outputs/flag-2027-nb-103c-tap01-voice",
+   "class": "run_output",
+   "producer": null,
+   "private": true,
+   "voxblink": true,
+   "status": "not downloaded",
+   "todo": [
+    "kernel output of the first FLAG_103c run (input of f103c_tap01 r2); download or keep using the saved feats-tap01-voice-p"
+   ],
+   "unused": "no stage consumes it: f103c_tap01 recomputes the arrays of the first FLAG_103c run (stages/20_features/f103c_tap01/CHANGES.md)"
+  },
+  "datasets/tranthuytien2511/flag2027-feats-whv3-a-p": {
+   "path": "02_intermediate/feats_whv3_a",
+   "class": "intermediate",
+   "producer": "t160a",
+   "private": true,
+   "voxblink": false,
+   "zip_sha256": "f43b9ae9a323c23a7fe34e85f9b1e1b94ea7b2c6368316058ec59733c5a50e6a",
+   "e_package": "datasets/tranthuytien2511__flag2027-feats-whv3-a-p.zip"
+  },
+  "datasets/thanhhuyen11/flag2027-feats-whv3-b-p": {
+   "path": "02_intermediate/feats_whv3_b",
+   "class": "intermediate",
+   "producer": "t160b",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "9170a05d93e5c3282e4197ba303b5f3e22d5215c41c1251d7ecee6690e4b9d0c",
+   "e_package": "datasets/thanhhuyen11__flag2027-feats-whv3-b-p.zip"
+  },
+  "datasets/phuonggmaii/flag2027-feats-whv3-c-p": {
+   "path": "02_intermediate/feats_whv3_c",
+   "class": "intermediate",
+   "producer": "t160c",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "785811ad0ce294b209b6a907fbff5715f4dd1c44d7de2356d75b05bd22286140",
+   "e_package": "datasets/phuonggmaii__flag2027-feats-whv3-c-p.zip"
+  },
+  "datasets/nguynchnngn1/flag2027-feats-rfs-a-p": {
+   "path": "02_intermediate/feats_rfs_a",
+   "class": "intermediate",
+   "producer": "t162a",
+   "private": true,
+   "voxblink": false,
+   "zip_sha256": "6e086e0f8fd796e6e8e83495ab75ad794c4c59fca4aa693c41d3c0b121eb2399",
+   "e_package": "datasets/nguynchnngn1__flag2027-feats-rfs-a-p.zip"
+  },
+  "datasets/phanththui/flag2027-feats-rfs-b-p": {
+   "path": "02_intermediate/feats_rfs_b",
+   "class": "intermediate",
+   "producer": "t162b",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "0d8bb909a74eaff23f32c6ce7dc315737ff7fddb4c3a905caa37cf3bec02d2ec",
+   "e_package": "datasets/phanththui__flag2027-feats-rfs-b-p.zip"
+  },
+  "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p": {
+   "path": "02_intermediate/feats_rfs_c",
+   "class": "intermediate",
+   "producer": "t162c",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "e3972feae13303dede484802b7b036c7c34afe19392e50b4d62d91a73e093570",
+   "e_package": "datasets/phanvnnnnn6789__flag2027-feats-rfs-c-p.zip"
+  },
+  "datasets/ngnnguynchn/flag2027-e2e-dev-p": {
+   "path": "02_intermediate/e2e_dev_frozen",
+   "class": "intermediate",
+   "producer": "safe04_lab",
+   "private": true,
+   "default_saved": true,
+   "zip_sha256": "0795818f7c1f2cfa32be86d2c7408601d127bddd81e6e356691d250f78579d26",
+   "e_package": "datasets/ngnnguynchn__flag2027-e2e-dev-p.zip",
+   "notes": "frozen SAFE-04 tables (the only copy; original scratch lost 1/11). Team-machine zip kaggle/flag2027-e2e-dev.zip sha256 0257b1fe2be4f2fde704c9662b845a4531d1ab8787eeb6c44e917d79014d130e. Default for 13.54 even in MODE=train (default_saved); rebuild with FF_FORCE=safe04_lab.",
+   "requirement1_gap": "producing stage safe04_lab exists but every mode uses this frozen copy by default (default_saved, DESIGN G1); rebuild with FF_FORCE=safe04_lab or FF_USE_SAVED=none",
+   "dev_data": true
+  },
+  "datasets/ff-frozen/flag2027-e2e-dev-p": {
+   "path": "02_intermediate/e2e_dev_frozen",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "e_package": "datasets/ngnnguynchn__flag2027-e2e-dev-p.zip",
+   "notes": "the frozen SAFE-04 tables under a distinct id (input of safe04_lab / safe04_compare with resolve: saved_only), so that the DAG has no cycle; same folder as datasets/ngnnguynchn/flag2027-e2e-dev-p (request of WP-E)",
+   "origin_run": "SAFE-04 lab chain (original scratch lost 1/11; frozen zip 0795818f...)",
+   "requirement1_gap": "frozen SAFE-04 tables used by default (G1); a producing stage exists (safe04_lab, FF_FORCE=safe04_lab) but the 13.54 chain reads the frozen copy; the rebuilt tables may differ slightly (GPU / versions)",
+   "dev_data": true
+  },
+  "datasets/ngnnguynchn/flag2027-rfs-bundle-p": {
+   "path": "02_intermediate/rfs_bundle",
+   "class": "intermediate",
+   "producer": "t163b",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "f5f38463f682d1021fc47a8ed1b6b2cb68eee2cf70ccabbf1213c20cfba40467",
+   "e_package": "datasets/ngnnguynchn__flag2027-rfs-bundle-p.zip",
+   "notes": "ext.npz 1.44 GB + v4.npz 206 MB (bundle version 5)"
+  },
+  "notebooks/ff/dp_feats_layout": {
+   "path": "02_intermediate/dp_features",
+   "class": "intermediate",
+   "producer": "dp_feats_layout",
+   "private": true,
+   "status": "local only: kaggle/output/feats_{v2,models,eval,ext_full} on the team machine (~0.9 GB float32 used by the DP branch)"
+  },
+  "datasets/ngnnguynchn/flag2027-cc5-oof-p": {
+   "path": "02_intermediate/_wiring/flag2027-cc5-oof-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "6766081fe11978cc1b9f7e52505b04fab2044deb883b292b5de19e4ca1f31012",
+   "e_package": "datasets/ngnnguynchn__flag2027-cc5-oof-p.zip",
+   "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: FLAG_57 / T3RECIPE-02 (DESIGN G18)",
+   "origin_run": "FLAG_57 / T3RECIPE-02 (CC5 OOF tables)",
+   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 6766081fe11978cc...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+  },
+  "datasets/ngnnguynchn/flag2027-dsel02-oof-p": {
+   "path": "02_intermediate/_wiring/flag2027-dsel02-oof-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "3849c9924d2f40db8a7f7bf4907bc8a918f416246677839187b416d2cca2542c",
+   "e_package": "datasets/ngnnguynchn__flag2027-dsel02-oof-p.zip",
+   "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: FLAG_58 / DSEL-02 (DESIGN G18)",
+   "origin_run": "FLAG_58 / DSEL-02 (OOF tables)",
+   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 3849c9924d2f40db...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+  },
+  "datasets/ngnnguynchn/flag2027-facelora03-tables-p": {
+   "path": "02_intermediate/_wiring/flag2027-facelora03-tables-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "8ab8e33d813171251350c65a157197fd98c3f683516818abad1ec45b3f12f151",
+   "e_package": "datasets/ngnnguynchn__flag2027-facelora03-tables-p.zip",
+   "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: FLAG_86 / 86b (DESIGN G18)",
+   "origin_run": "FLAG_86 / 86b (FACELORA-03 tables)",
+   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 8ab8e33d81317125...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+  },
+  "datasets/ngnnguynchn/flag2027-lab-avfull-p": {
+   "path": "02_intermediate/_wiring/flag2027-lab-avfull-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "b5febc059547e3c08650a2cbba6ca55d34eb01f3ed327efdc96d6d6365a2493c",
+   "e_package": "datasets/ngnnguynchn__flag2027-lab-avfull-p.zip",
+   "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: package labavfull/ (DESIGN G18)",
+   "origin_run": "team package labavfull/ (lab AV tables)",
+   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 b5febc059547e3c0...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+  },
+  "datasets/ngnnguynchn/flag2027-members-p": {
+   "path": "02_intermediate/_wiring/flag2027-members-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "cba6a339c7b91d8e22c3c1fddbb07433efd932d107bacb00a86dcab3249751b5",
+   "e_package": "datasets/ngnnguynchn__flag2027-members-p.zip",
+   "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: old members package (DESIGN G18)",
+   "origin_run": "old members package (BEST/v6-v7 members)",
+   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 cba6a339c7b91d8e...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+  },
+  "datasets/ngnnguynchn/flag2027-best-v7-p": {
+   "path": "02_intermediate/_wiring/flag2027-best-v7-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "9bac62044510eff79d524c7f69c909c91d6ffc14b1f12150d71b518729e70a33",
+   "e_package": "datasets/ngnnguynchn__flag2027-best-v7-p.zip",
+   "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: old BEST/v7_safe package (DESIGN G18)",
+   "origin_run": "old BEST/v7_safe package",
+   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 9bac62044510eff7...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+  },
+  "datasets/ngnnguynchn/flag2027-t3s01-tables-p": {
+   "path": "02_intermediate/_wiring/flag2027-t3s01-tables-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "bf9a8d1dcb7b081093640a2564307a35435d1f463702b5163055458fab54cb6a",
+   "e_package": "datasets/ngnnguynchn__flag2027-t3s01-tables-p.zip",
+   "notes": "T3S-01 job tables (FLAG_167, 5 fold runs + kaggle/sat_push.sh 167g, docs/DATASETS.md:133); exact notebooks lost (staging folders empty, 18/11). Since 18/11 (integration fixer r1) consumed ONLY by t184_report (evidence, resolve: saved_only); t219_dumpv4 (sigma) reads datasets/ff/flag2027-t3s01-trca-p (stage t3s01_trca: row keys + trCA of ct02s-r2ca-tables-p, identical to this dataset's keys / trCA, WP-F 18/11).",
+   "origin_run": "FLAG_167 T3S-01 (5 fold runs + 167g)",
+   "requirement1_gap": "evidence-only exception: consumed by t184_report (FACTOR-01 gate report, not in the 13.54 numbers); the FLAG_167 producing runs cannot be rebuilt"
+  },
+  "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p": {
+   "path": "02_intermediate/_wiring/flag2027-feats-scout-wsvrdn-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "badbcb545b7fcced65f7971043491f6e1bf9a1da7efcc9c37bf08c61f8c81136",
+   "e_package": "datasets/ngnnguynchn__flag2027-feats-scout-wsvrdn-p.zip",
+   "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: scout features (DESIGN G18)",
+   "origin_run": "scout features (WavLM / SimAM / VoxResNet / DINO scout run)",
+   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 badbcb545b7fcced...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+  },
+  "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p": {
+   "path": "02_intermediate/_wiring/flag2027-ct02s-g1-tables-p",
+   "class": "wiring",
+   "producer": "gather_g1",
+   "private": true,
+   "zip_sha256": "8d09a3af0c25e96c71b9cb1f8c3a10b45ce9fd41348909f8ee14e37cd12d5302",
+   "e_package": "datasets/ngnnguynchn__flag2027-ct02s-g1-tables-p.zip",
+   "notes": "g1 fold tables for the B0s head (wiring); rebuild only with FF_FORCE=gather_g1 (staging copies of the three 154 runs are empty)",
+   "requirement1_gap": "class wiring is always taken saved (configs/modes.json always_saved_classes); the producing stage gather_g1 runs only with FF_FORCE=gather_g1"
+  },
+  "datasets/trngsnam/flag2027-feats-peface01-pe0-p": {
+   "path": "02_intermediate/_wiring/flag2027-feats-peface01-pe0-p",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "zip_sha256": "3c147dfb1ea265e9b185fc2d382b43fa79506058fb976c34b4748603cfe92d25",
+   "e_package": "datasets/trngsnam__flag2027-feats-peface01-pe0-p.zip",
+   "notes": "PE-Core features; only the f_pel block reads them, c5rl does not (wiring)",
+   "origin_run": "PEFACE-01 PE-Core feature run (CLAUDE.md: FLAG_129a; slug not verified here)",
+   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 3c147dfb1ea265e9...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+  },
+  "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p": {
+   "path": "03_checkpoints/face_lora_b3s",
+   "class": "checkpoint",
+   "producer": "t153b",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "3f8922a6b320b4b3294aa9fbb6bb8fb775c7dc790eb3bf12687195b3d134a805",
+   "e_package": "datasets/phanvnhtrng__flag2027-feats-ls-b3s-p.zip",
+   "files": {
+    "facelora_state.pt": "b06a65c862a579589b252e3324499e67e6a8e5174f98fbe587e69722dcc52a15"
+   },
+   "notes": "wiring (B3s adapter)",
+   "dev_data": true,
+   "dev_data_why": "the SAVED original copy holds face_<arr>_<dev list>.npy; a train-only rebuild has none (WP-E t153b / t153c)"
+  },
+  "datasets/quynhnhu82/flag2027-feats-ls-c5s-p": {
+   "path": "03_checkpoints/face_lora_c5s",
+   "class": "checkpoint",
+   "producer": "t153c",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "ab8ef258d035f5fd2853155bd4078320454fd74dae289750c815f11959afba29",
+   "e_package": "datasets/quynhnhu82__flag2027-feats-ls-c5s-p.zip",
+   "files": {
+    "facelora_state.pt": "4dab964c83addaadde32221dba59637c639812e0835899658b792f80e35c2d7b",
+    "train_log.json": "a7d8efa1cd6d0c4e53e07c28e9cf7cd40f693c54bffba682581a00335674a984",
+    "bn42_clean.json": "5dee5d7f9155fe28ad6fe873d95e1f1377f7b74d48ca02d989a2944e9d30fd61"
+   },
+   "dev_data": true,
+   "dev_data_why": "the SAVED original copy holds face_<arr>_<dev list>.npy; a train-only rebuild has none (WP-E t153b / t153c)"
+  },
+  "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p": {
+   "path": "03_checkpoints/f1s_safe04_tables",
+   "class": "checkpoint",
+   "producer": "cleancomp_tables",
+   "private": true,
+   "dev_data": true,
+   "zip_sha256": "a36698fa78f2a3ace06921353b1c08071988273356312990cedd4fd0343aa4ce",
+   "e_package": "datasets/ngnnguynchn__flag2027-cleancomp-e2e-p.zip",
+   "notes": "SAFE-04 tables used to fit the F1s' fuser; also carries dev score zips used only for wiring checks (DESIGN 2.8)"
+  },
+  "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p": {
+   "path": "03_checkpoints/f1s_ca_oof_tables",
+   "class": "checkpoint",
+   "producer": "gather_r2ca",
+   "private": true,
+   "zip_sha256": "c14efb900d374c51ececfd32e31a43d239f3535aca30ea6007da7a4e61b259e9",
+   "e_package": "datasets/ngnnguynchn__flag2027-ct02s-r2ca-tables-p.zip",
+   "files": {
+    "tables/ct01r2_fold1.parquet": "00cf0c5fb8dbac74f1c6306a5f8caf594d336221ff41fdcf95d902ac61c63c48",
+    "tables/ct01r2_fold2.parquet": "a0e2c0338037b44d35d13f9b3baba10c12c9509c2f29db3eb5179347523de822",
+    "tables/ct01r2_fold3.parquet": "712ad675021874b695249cb6fe02477a2624e0b388b5181688f4a2f11c97b71d",
+    "tables/ct01r2_fold4.parquet": "f110c5cceda5787bd40b778885458520fde3208e321f9f9196aeb0f5690e2883",
+    "tables/ct01r2_fold5.parquet": "2f0d14d9df9c91be4a19bf13621811cb603750ae49abcd2b470fb56f19783588"
+   }
+  },
+  "datasets/ngnnguynchn/flag2027-cleancomp-final-p": {
+   "path": "03_checkpoints/f1s_xall_t3v11",
+   "class": "checkpoint",
+   "producer": "t164f",
+   "private": true,
+   "zip_sha256": "611d31b7c6d481290ddb9b02c69ba6d887ebafc24c21ef6fa2a91fade910a524",
+   "e_package": "datasets/ngnnguynchn__flag2027-cleancomp-final-p.zip",
+   "files": {
+    "s007_xall.pt": "e6b74a101221cfb817efd976bd6338979692af7306952e5e0a0d688284ece0cb",
+    "v11_head/v11_t3head.pt": "84ab8690e2dbf6ca0dbfc916848fdf3f82c16970f7ee89e5298e4f0df2e5de29",
+    "v11_head/t3_streams.npz": "09867a3f2b6440954d604988e847020e5e049b0d8dc83f9af7a0d2156a4450a7",
+    "final_info.json": "4c7ba5e1c689eafccab943c0a608228faf23bd74aaea28b33dd92ae5e8b3957f"
+   },
+   "dev_data": true,
+   "dev_data_why": "the SAVED original (package E zip, 4 members) holds v11_head/t3_streams.npz (dev per-pair streams); the rebuilt export has 3 members (WP-E t164f)"
+  },
+  "datasets/ngnnguynchn/flag2027-evalu-f1s-p": {
+   "path": "03_checkpoints/f1s_ca_head",
+   "class": "checkpoint",
+   "producer": "t112sf1s",
+   "private": true,
+   "dev_data": true,
+   "zip_sha256": "cfcfe04e211b28393b669d57de2a7052e9575f99bb6ec41abcedffc3f099d2ab",
+   "e_package": "datasets/ngnnguynchn__flag2027-evalu-f1s-p.zip",
+   "files": {
+    "ct01r2_final_models.pt": "19285c5ca08a9454b120148177f7544cca938aff8afd202c505cf920c085d569"
+   },
+   "notes": "also contains submission_cleantune01_F1_CA_dev/ (dev score files, wiring only)",
+   "voxblink": true,
+   "voxblink_why": "head trained with VoxBlink rows (S3_F_family.md: 'VOICELORA-01 VoxBlink rows: 59826 rows, 13471 speakers'; g1 frame FACELORA-03 vb_rows4): CC BY-NC-SA, not redistributed (run outputs: if they keep model files)"
+  },
+  "datasets/ngnnguynchn/flag2027-evalu-f0s-p": {
+   "path": "03_checkpoints/_wiring_b0s_head",
+   "class": "checkpoint",
+   "producer": "t112sf0s",
+   "private": true,
+   "dev_data": true,
+   "zip_sha256": "20d42076fa0709aefed056974fdac66c067ee1080f45fab3953150de0eed2251",
+   "e_package": "datasets/ngnnguynchn__flag2027-evalu-f0s-p.zip",
+   "files": {
+    "ct01g1_final_models.pt": "1933286f1d4c7a54d2e802b3298b27e306acca74e81a41038c02236c7f525d44"
+   },
+   "notes": "wiring (B0s head); contains a dev score zip",
+   "voxblink": true,
+   "voxblink_why": "head trained with VoxBlink rows (S3_F_family.md: 'VOICELORA-01 VoxBlink rows: 59826 rows, 13471 speakers'; g1 frame FACELORA-03 vb_rows4): CC BY-NC-SA, not redistributed (run outputs: if they keep model files)"
+  },
+  "datasets/onnhqunhh/flag2027-rfs-lora-p": {
+   "path": "03_checkpoints/rfs_lora_c1_original",
+   "class": "checkpoint",
+   "producer": "t163l_orig",
+   "private": true,
+   "aliases": [
+    "datasets/ngnnguynchn/flag2027-backup-rfs-lora-p"
+   ],
+   "zip_sha256": "14ddbcf579e051114ad9302b6512572ee81ff26447baea4e7bdfdeb545353596",
+   "e_package": "datasets/onnhqunhh__flag2027-rfs-lora-p.zip",
+   "files": {
+    "lora_C1.pt": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c",
+    "v4_extra.npz": "793f81bd3909597cd9d60b5f062c85b64b81d1b56e169b424391853a1a4a8fb9"
+   },
+   "notes": "ORIGINAL LoRA C1 (variant guard: configs/variant_1354.json)",
+   "default_saved": true,
+   "default_saved_why": "variant-defining (ORIGINAL LoRA C1, b97372e3...): every mode uses the stored copy; t163l_orig (force_only) retrains it only with FF_FORCE=t163l_orig, then the lineage guard applies (configs/variant_1354.json file_checks rule)"
+  },
+  "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p": {
+   "path": "03_checkpoints/rfx_c5rl",
+   "class": "checkpoint",
+   "producer": "t163p_c5rl",
+   "private": true,
+   "voxblink": true,
+   "zip_sha256": "12da5398b819f0ce63046e2fadf07d879b65a0065c2a64645a01afdd69fb5bfb",
+   "e_package": "datasets/ngnnguynchn__flag2027-rfsfxc5rl-art-p.zip",
+   "files": {
+    "projector_Q.pt": "17eb47ac20ddf2f01aae50b3ebbca87f3b04403f772d124d74442da848e362f2",
+    "final_params.npz": "ed76bf64ab9e3b16825ed429a8b7f021faea466e129e6bb8f1f9591d32a4d1b8",
+    "manifest_final.json": "21adffb32edd59767079d1287c9aa3d971165cab8702f266defff492c7d04736",
+    "fuse_report.json": "75f26e60777e4f870b7b414e1a57daf96b9c84fa0da56bc7d176e969b706040b",
+    "split.json": "97be1d64b930ec1581b63dbf1386ec74a2fab55a7023b0875b5a5afd8f052bc0",
+    "lora_C1.pt": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c"
+   }
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0": {
+   "path": "03_checkpoints/fvbind_b2",
+   "class": "checkpoint",
+   "producer": "t189_b2",
+   "private": true,
+   "voxblink": true,
+   "files": {
+    "fvb_out/fvbB2_state.pt": "d691a44933b252cf2e2aa02bff15b8e0c89b949b2ae10dfd9ca20fe3d1e7377a",
+    "fvb_out/fvbB2_emb.npz": "bf6d03a3aadc0e72afc6bc705bf7ce4fb47895e31fa9b58264756ee50df1c886"
+   },
+   "status": "team machine copy: Experiment/FVBIND-01/out/fvbx_in/b2/fvb_out/"
+  },
+  "datasets/thanhhuyen11/flag2027-rfsfxfvb-art-p": {
+   "path": "03_checkpoints/rfx_fvb",
+   "class": "checkpoint",
+   "producer": "t163p_fvb",
+   "private": true,
+   "voxblink": true,
+   "status": "not downloaded (only on Kaggle, account thanhhuyen11)",
+   "todo": [
+    "kaggle datasets download thanhhuyen11/flag2027-rfsfxfvb-art-p; check lora_C1.pt = b97372e3..."
+   ]
+  },
+  "notebooks/ff/dp_train": {
+   "path": "03_checkpoints/dp_towers",
+   "class": "checkpoint",
+   "producer": "dp_train",
+   "private": true,
+   "status": "does not exist yet (DESIGN G5: xjf.py never saved the two towers)",
+   "files": {
+    "xjf_scores.npz (English only)": "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779",
+    "consts.json": "356242de47674dfb0c3a245bf3c504ee9f37417e6928040313b155d6bade6324"
+   },
+   "required_files": [
+    "out/dp_towers.pt"
+   ]
+  },
+  "notebooks/phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4": {
+   "path": "03_checkpoints/sigma_source",
+   "class": "checkpoint",
+   "producer": "t219_dumpv4",
+   "private": true,
+   "files": {
+    "sp/out/safe04/xjfdump_v4.parquet": "9f0a5af468d1f973e1ff33264ff10239cf21f1813a0f370740e8c2d8e02f7a09"
+   },
+   "files_prefix": {
+    "flag-2027-nb-219-fusenet-dumpv4.log": "7f5cf325"
+   },
+   "status": "kernel deleted on Kaggle; team machine copy Experiment/XJF-01/out/dumpv4/ (parquet + log)",
+   "dev_data": true,
+   "dev_data_why": "the saved 219 output kept whole includes lab/ with dev-phase tables (WP-F t219_dumpv4); only xjfdump_v4.parquet feeds sigma"
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval": {
+   "path": "04_run_outputs/flag-2027-nb-65xbs-b3sx-eval",
+   "class": "run_output",
+   "producer": "e65xbs",
+   "private": true,
+   "alt_paths": [
+    "05_scores/flag-2027-nb-65xbs-b3sx-eval"
+   ],
+   "e_package": "outputs/flag-2027-nb-65xbs-b3sx-eval/",
+   "dev_data": false,
+   "voxblink": true,
+   "voxblink_why": "outputs contain vb_face_clip*.npy and facelora_state.pt copied from the adapter dataset (WP-G)"
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval": {
+   "path": "04_run_outputs/flag-2027-nb-65xcs-c5sx-eval",
+   "class": "run_output",
+   "producer": "e65xcs",
+   "private": true,
+   "alt_paths": [
+    "05_scores/flag-2027-nb-65xcs-c5sx-eval"
+   ],
+   "e_package": "outputs/flag-2027-nb-65xcs-c5sx-eval/",
+   "dev_data": false,
+   "voxblink": true,
+   "voxblink_why": "outputs contain vb_face_clip*.npy and facelora_state.pt copied from the adapter dataset (WP-G)"
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval": {
+   "path": "04_run_outputs/flag-2027-nb-47rs-screen2-eval",
+   "class": "run_output",
+   "producer": "e47rs",
+   "private": true,
+   "alt_paths": [
+    "05_scores/flag-2027-nb-47rs-screen2-eval"
+   ],
+   "e_package": "outputs/flag-2027-nb-47rs-screen2-eval/",
+   "dev_data": false
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval": {
+   "path": "04_run_outputs/flag-2027-nb-50cc-e2e-eval",
+   "class": "run_output",
+   "producer": "e50cc",
+   "private": true,
+   "alt_paths": [
+    "05_scores/flag-2027-nb-50cc-e2e-eval"
+   ],
+   "e_package": "outputs/flag-2027-nb-50cc-e2e-eval/",
+   "dev_data": false
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-112f0sx-eval": {
+   "path": "04_run_outputs/flag-2027-nb-112f0sx-eval",
+   "class": "run_output",
+   "producer": "e112f0sx",
+   "private": true,
+   "alt_paths": [
+    "05_scores/flag-2027-nb-112f0sx-eval"
+   ],
+   "e_package": "outputs/flag-2027-nb-112f0sx-eval/",
+   "dev_data": true
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval": {
+   "path": "04_run_outputs/flag-2027-nb-112f1sx-eval",
+   "class": "run_output",
+   "producer": "e112f1sx",
+   "private": true,
+   "alt_paths": [
+    "05_scores/flag-2027-nb-112f1sx-eval"
+   ],
+   "e_package": "outputs/flag-2027-nb-112f1sx-eval/",
+   "dev_data": true
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval": {
+   "path": "04_run_outputs/flag-2027-nb-163i-rfsfxc5rl-eval",
+   "class": "run_output",
+   "producer": "e163i",
+   "private": true,
+   "alt_paths": [
+    "05_scores/flag-2027-nb-163i-rfsfxc5rl-eval"
+   ],
+   "e_package": "outputs/flag-2027-nb-163i-rfsfxc5rl-eval/",
+   "dev_data": false
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval": {
+   "path": "04_run_outputs/flag-2027-nb-163i-rfsfxfvb-eval",
+   "class": "run_output",
+   "producer": "e163i_fvb",
+   "private": true,
+   "alt_paths": [
+    "05_scores/flag-2027-nb-163i-rfsfxfvb-eval"
+   ],
+   "status": "team machine copy: Experiment/FVBIND-01/out/eval163i/"
+  },
+  "notebooks/thanhhuyen11/flag-2027-nb-192-fvbx3": {
+   "path": "04_run_outputs/flag-2027-nb-192-fvbx3",
+   "class": "run_output",
+   "producer": "t192_fvbx",
+   "private": true,
+   "voxblink": true,
+   "status": "not downloaded (only on Kaggle)",
+   "todo": [
+    "kaggle kernels output thanhhuyen11/flag-2027-nb-192-fvbx3 (v_fvb block)"
+   ]
+  },
+  "notebooks/locnguyentruongan/flag-2027-nb-112s-f0s": {
+   "path": "04_run_outputs/flag-2027-nb-112s-f0s",
+   "class": "run_output",
+   "producer": "t112sf0s",
+   "private": true,
+   "dev_data": true,
+   "e_package": "outputs/flag-2027-nb-112s-f0s/",
+   "notes": "wiring: kernel input of t112sf1s (F0 dev zip)",
+   "voxblink": true,
+   "voxblink_why": "head trained with VoxBlink rows (S3_F_family.md: 'VOICELORA-01 VoxBlink rows: 59826 rows, 13471 speakers'; g1 frame FACELORA-03 vb_rows4): CC BY-NC-SA, not redistributed (run outputs: if they keep model files)"
+  },
+  "notebooks/phantrnhuyntrn/flag-2027-nb-213-seedrep-p1": {
+   "path": "04_run_outputs/flag-2027-nb-213-seedrep-p1",
+   "class": "run_output",
+   "producer": "t213_p1",
+   "private": true,
+   "status": "unknown whether still on Kaggle; tables copied to Experiment/XJF-01/out/dumpv4/sp/out/safe04/"
+  },
+  "notebooks/phantrnhuyntrn/flag-2027-nb-213-seedrep-p2": {
+   "path": "04_run_outputs/flag-2027-nb-213-seedrep-p2",
+   "class": "run_output",
+   "producer": "t213_p2",
+   "private": true,
+   "status": "unknown whether still on Kaggle; tables copied to Experiment/XJF-01/out/dumpv4/sp/out/safe04/"
+  },
+  "notebooks/phantrnhuyntrn/flag-2027-nb-216-seedrep3": {
+   "path": "04_run_outputs/flag-2027-nb-216-seedrep3",
+   "class": "run_output",
+   "producer": "t216_p3",
+   "private": true,
+   "status": "unknown whether still on Kaggle; tables copied to Experiment/XJF-01/out/dumpv4/sp/out/safe04/"
+  },
+  "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p1": {
+   "path": "04_run_outputs/flag-2027-nb-183-factor-p1",
+   "class": "run_output",
+   "producer": "t183_p1",
+   "private": true,
+   "e_package": "outputs/flag-2027-nb-183-factor-p1/",
+   "notes": "evidence (gate report that chose c5rl)"
+  },
+  "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p2": {
+   "path": "04_run_outputs/flag-2027-nb-183-factor-p2",
+   "class": "run_output",
+   "producer": "t183_p2",
+   "private": true,
+   "e_package": "outputs/flag-2027-nb-183-factor-p2/",
+   "notes": "evidence (gate report that chose c5rl)"
+  },
+  "notebooks/phantrnhuyntrn/flag-2027-nb-184-factor-report": {
+   "path": "04_run_outputs/flag-2027-nb-184-factor-report",
+   "class": "run_output",
+   "producer": "t184_report",
+   "private": true,
+   "e_package": "outputs/flag-2027-nb-184-factor-report/",
+   "notes": "evidence (gate report that chose c5rl)",
+   "unused": "output of an evidence stage (FACTOR report); no stage mounts it"
+  },
+  "notebooks/nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12": {
+   "path": "04_run_outputs/flag-2027-nb-155s-ct02ca-f12",
+   "class": "run_output",
+   "producer": "t155s_f12",
+   "private": true,
+   "status": "unknown whether still on Kaggle (DESIGN 9.3)",
+   "voxblink": true,
+   "voxblink_why": "head trained with VoxBlink rows (S3_F_family.md: 'VOICELORA-01 VoxBlink rows: 59826 rows, 13471 speakers'; g1 frame FACELORA-03 vb_rows4): CC BY-NC-SA, not redistributed (run outputs: if they keep model files)"
+  },
+  "notebooks/nguyenchonnhan/flag-2027-nb-155s-ct02ca-f34": {
+   "path": "04_run_outputs/flag-2027-nb-155s-ct02ca-f34",
+   "class": "run_output",
+   "producer": "t155s_f34",
+   "private": true,
+   "status": "unknown whether still on Kaggle (DESIGN 9.3)",
+   "voxblink": true,
+   "voxblink_why": "head trained with VoxBlink rows (S3_F_family.md: 'VOICELORA-01 VoxBlink rows: 59826 rows, 13471 speakers'; g1 frame FACELORA-03 vb_rows4): CC BY-NC-SA, not redistributed (run outputs: if they keep model files)"
+  },
+  "notebooks/locnguyentruongan/flag-2027-nb-155s-ct02ca-f5": {
+   "path": "04_run_outputs/flag-2027-nb-155s-ct02ca-f5",
+   "class": "run_output",
+   "producer": "t155s_f5",
+   "private": true,
+   "status": "unknown whether still on Kaggle (DESIGN 9.3)",
+   "voxblink": true,
+   "voxblink_why": "head trained with VoxBlink rows (S3_F_family.md: 'VOICELORA-01 VoxBlink rows: 59826 rows, 13471 speakers'; g1 frame FACELORA-03 vb_rows4): CC BY-NC-SA, not redistributed (run outputs: if they keep model files)"
+  },
+  "notebooks/nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123": {
+   "path": "04_run_outputs/flag-2027-nb-164-cleancomp01-f123",
+   "class": "run_output",
+   "producer": "t164_f123",
+   "private": true,
+   "status": "unknown whether still on Kaggle (DESIGN 9.3)"
+  },
+  "notebooks/dngxunqun/flag-2027-nb-164-cleancomp01-f45": {
+   "path": "04_run_outputs/flag-2027-nb-164-cleancomp01-f45",
+   "class": "run_output",
+   "producer": "t164_f45",
+   "private": true,
+   "status": "unknown whether still on Kaggle (DESIGN 9.3)"
+  },
+  "notebooks/ff/a_factor": {
+   "path": null,
+   "class": "score",
+   "producer": "a_factor",
+   "private": true,
+   "files": {
+    "posteval_FACTOR_ENFUSE_c5rl.zip": "9cf5bbe4e3af14184c26eef08104d3ddd94fc5357569c09fc657a93d4549fd93",
+    "posteval_FACTOR_U_c5rl.zip": "23702a4295b7189c1aeb24da3f34a4c5a788e0a621261230c5f1e6550d9d2c09"
+   },
+   "notes": "no folder of its own: the stage's skip_with (flat files FF_DATA/05_scores/posteval_FACTOR_*.zip) is its saved copy; recomputed in mode (c)",
+   "private_why": "per-pair scores / assembly outputs: shared only with the organisers until question Q-D (public or private repository) is decided (DESIGN 1)"
+  },
+  "notebooks/ff/a_fvbind": {
+   "path": null,
+   "class": "score",
+   "producer": "a_fvbind",
+   "private": true,
+   "files": {
+    "posteval_FVBIND_ENFUSE_fvb.zip": "bb0e0175e9e9448128a529db8ed537cec0eef427d044729f030c4984830b0bbc",
+    "posteval_FVBIND_U_fvb.zip": "b61c84edca2921fc8e313994f3f5d66247d5fa378a4f4f76a2789e516036b401"
+   },
+   "notes": "no folder of its own: the stage's skip_with (flat file FF_DATA/05_scores/posteval_FVBIND_ENFUSE_fvb.zip) is its saved copy; recomputed in mode (c)",
+   "private_why": "per-pair scores / assembly outputs: shared only with the organisers until question Q-D (public or private repository) is decided (DESIGN 1)"
+  },
+  "notebooks/ff/dp_extract_eval": {
+   "path": "05_scores/dp_eval_feats",
+   "class": "score",
+   "producer": "dp_extract_eval",
+   "private": true,
+   "notes": "DP features of the two English Evaluation files (71 MB)"
+  },
+  "notebooks/ff/dp_score": {
+   "path": "05_scores/dp",
+   "class": "score",
+   "producer": "dp_score",
+   "private": true,
+   "files": {
+    "xjf_scores.npz (English only)": "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779"
+   },
+   "notes": "the ORIGINAL xjf_scores.npz (686c1188... English only, or 6a039faf... with Bangla: same English z) as the saved output of dp_score, so that mode (c) needs no DP re-run (request of WP-I)",
+   "private_why": "per-pair scores / assembly outputs: shared only with the organisers until question Q-D (public or private repository) is decided (DESIGN 1)"
+  },
+  "notebooks/ff/dp_sigma": {
+   "path": "05_scores/dp_sigma",
+   "class": "score",
+   "producer": "dp_sigma",
+   "private": true,
+   "notes": "sigma.json = {no_gender: 5.0983, gender: 3.8376}",
+   "private_why": "per-pair scores / assembly outputs: shared only with the organisers until question Q-D (public or private repository) is decided (DESIGN 1)"
+  },
+  "scores/1354_inputs": {
+   "path": "05_scores",
+   "class": "score",
+   "producer": null,
+   "private": true,
+   "notes": "flat folder of the 10 per-pair score files of mode (c) (DESIGN 5.3), for assembly stages that read it directly",
+   "unused": "not a declared stage input: the assembly stages (a_factor, a_fvbind, final_blend) and assembly/assemble_exact.py read FF_DATA/05_scores directly (soft inputs of mode c)",
+   "private_why": "per-pair scores / assembly outputs: shared only with the organisers until question Q-D (public or private repository) is decided (DESIGN 1)"
+  },
+  "pretrained/models": {
+   "path": "06_pretrained",
+   "class": "pretrained",
+   "producer": "models_fetch",
+   "private": true,
+   "notes": "public pretrained models at pinned revisions, layout of the E: package pretrained/ folder (imagebind_huge.pth, cache/flag/, cache/huggingface/hub/, rfs_models/, wespeaker/, insightface/); written by tools/fetch_models.py; SOURCES.json lists URL, revision, SHA-256, license",
+   "unused": "not a declared stage input yet: the runner seeds FLAG_CACHE / HF_HUB_CACHE / CLIP / insightface caches from it at run time (ffcore models_env) and `plan` reports whether it is found; adding it as a soft input of the frozen-encoder stages is for the stage owners (WP-A report)",
+   "redistribute": false,
+   "private_why": "holds models whose licences forbid redistribution (insightface buffalo_l and vgg_face_dag: non-commercial research; SimAM / ImageBind: CC BY-NC-SA): re-fetch with tools/fetch_models.py"
+  },
+  "datasets/ngnnguynchn/flag2027-rfs-lorafix1-p": {
+   "path": null,
+   "class": "forbidden",
+   "producer": null,
+   "private": true,
+   "notes": "FORBIDDEN in the 13.54 chain: key-fixed LoRA C1 (16.18 family) (configs/variant_1354.json)"
+  },
+  "datasets/ngnnguynchn/flag2027-c1fix-lora-p": {
+   "path": null,
+   "class": "forbidden",
+   "producer": null,
+   "private": true,
+   "notes": "FORBIDDEN in the 13.54 chain: C1FIX-01 LoRA (16.18) (configs/variant_1354.json)"
+  },
+  "datasets/ngnnguynchn/flag2027-c1fix-rfx-art-p": {
+   "path": null,
+   "class": "forbidden",
+   "producer": null,
+   "private": true,
+   "notes": "FORBIDDEN in the 13.54 chain: C1FIX-01 RFX artefact (16.18) (configs/variant_1354.json)"
+  },
+  "datasets/ngnnguynchn/flag2027-rfsc4lf-art-p": {
+   "path": null,
+   "class": "forbidden",
+   "producer": null,
+   "private": true,
+   "notes": "FORBIDDEN in the 13.54 chain: CELL4-01 lf (fixed LoRA) (configs/variant_1354.json)"
+  },
+  "datasets/ngnnguynchn/flag2027-rf092-dev-emb-p": {
+   "path": null,
+   "class": "forbidden",
+   "producer": null,
+   "private": true,
+   "notes": "FORBIDDEN in the 13.54 chain: dev embeddings (configs/variant_1354.json)"
+  },
+  "embedded/Experiment/VBSEL-01/vox2_sa_speakers.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": null,
+   "private": false,
+   "sha256": "eccc765365323b2ea52a97822b17eb33ffaa4dc46e0aca00f85f2df1911dd278",
+   "bytes": 4094,
+   "carried_by": [
+    "e112f0sx",
+    "e112f1sx",
+    "t112sf0s",
+    "t112sf1s",
+    "t154_g1_f12",
+    "t154_g1_f34",
+    "t154_g1_f5",
+    "t155s_f12",
+    "t155s_f34",
+    "t155s_f5",
+    "t164_f123",
+    "t164_f45",
+    "t164f",
+    "t184_report",
+    "t219_dumpv4"
+   ],
+   "notes": "VBSEL-01 (10/10) frozen list of 310 VoxCeleb2 speakers with >= 50 % of clips whose top language is South-Asian, Bengali-flagged speakers removed (Experiment/VBSEL-01/README.md); read when VBSEL-01/run.py is imported (line 20); no stage rebuilds it",
+   "requirement1_gap": "embedded frozen file without a producing stage (derivable only by hand from the run named in notes)"
+  },
+  "embedded/Experiment/STACK-02/eligible.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": null,
+   "private": false,
+   "sha256": "9b4fe3f56fdb1a05fa3a832da3522e34d6bd8e7e9f92bd3cb9390c69c4216897",
+   "bytes": 673,
+   "carried_by": [
+    "e112f0sx",
+    "e112f1sx",
+    "t112sf0s",
+    "t112sf1s",
+    "t154_g1_f12",
+    "t154_g1_f34",
+    "t154_g1_f5",
+    "t155s_f12",
+    "t155s_f34",
+    "t155s_f5",
+    "t184_report",
+    "t219_dumpv4"
+   ],
+   "notes": "SAFE-04 eligible persons list (STACK-02); no stage of this repository writes it",
+   "requirement1_gap": "embedded frozen file without a producing stage (derivable only by hand from the run named in notes)"
+  },
+  "embedded/Experiment/STACK-02/fold_persons.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": "safe04_lab",
+   "private": false,
+   "sha256": "d76f684d719e5c4c47085e2d6763c55650899eef8def7637b506f1a0020ee27e",
+   "bytes": 5481,
+   "carried_by": [
+    "e112f0sx",
+    "e112f1sx",
+    "t112sf0s",
+    "t112sf1s",
+    "t154_g1_f12",
+    "t154_g1_f34",
+    "t154_g1_f5",
+    "t155s_f12",
+    "t155s_f34",
+    "t155s_f5",
+    "t184_report",
+    "t219_dumpv4"
+   ],
+   "notes": "SAFE-04 fold assignment (G1); safe04_lab writes fold_persons.json (its stage.json: 'fold_persons.json identical')",
+   "requirement1_gap": "producer exists, but the chain reads the copy embedded in the stage code"
+  },
+  "embedded/Experiment/SCALE-CC-01/vox2b_groups.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": "l_groups",
+   "private": false,
+   "sha256": "7beb7ce7f67de74bcc753e1d8f2be10560b105d74dbcbf220c493d65d27fc742",
+   "bytes": 46751,
+   "carried_by": [
+    "e112f0sx",
+    "e112f1sx",
+    "t112sf0s",
+    "t112sf1s",
+    "t154_g1_f12",
+    "t154_g1_f34",
+    "t154_g1_f5",
+    "t155s_f12",
+    "t155s_f34",
+    "t155s_f5",
+    "t184_report",
+    "t219_dumpv4"
+   ],
+   "notes": "= l_groups output groups/vox2b_groups.json (its verify sha256_crlf 7beb7ce7...: the embedded copy is the CRLF file)",
+   "requirement1_gap": "producer l_groups exists (role evidence), but the chain reads the copy embedded in the stage code: re-running l_groups changes nothing downstream; check_stage compares the hashes"
+  },
+  "embedded/Experiment/SCALE-CC-01/vox2_gender.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": "l_groups",
+   "private": false,
+   "sha256": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089",
+   "bytes": 103941,
+   "carried_by": [
+    "e112f0sx",
+    "e112f1sx",
+    "t112sf0s",
+    "t112sf1s",
+    "t154_g1_f12",
+    "t154_g1_f34",
+    "t154_g1_f5",
+    "t155s_f12",
+    "t155s_f34",
+    "t155s_f5",
+    "t184_report",
+    "t219_dumpv4"
+   ],
+   "notes": "= l_groups output groups/vox2_gender.json (verify sha256_crlf 1d229fdd...)",
+   "requirement1_gap": "producer l_groups exists (role evidence), but the chain reads the copy embedded in the stage code: re-running l_groups changes nothing downstream; check_stage compares the hashes"
+  },
+  "embedded/Experiment/DSEL-01/vox2_groups.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": "l_groups",
+   "private": false,
+   "sha256": "4f44f5cee3f9a3ae1109962158c07dcb0101a2a3bdd7c99cf27ed787c7a35cc6",
+   "bytes": 150156,
+   "carried_by": [
+    "e112f0sx",
+    "e112f1sx",
+    "t112sf0s",
+    "t112sf1s",
+    "t154_g1_f12",
+    "t154_g1_f34",
+    "t154_g1_f5",
+    "t155s_f12",
+    "t155s_f34",
+    "t155s_f5",
+    "t184_report",
+    "t219_dumpv4"
+   ],
+   "notes": "= l_groups output groups/vox2_groups.json (verify sha256_crlf 4f44f5ce...)",
+   "requirement1_gap": "producer l_groups exists (role evidence), but the chain reads the copy embedded in the stage code: re-running l_groups changes nothing downstream; check_stage compares the hashes"
+  },
+  "embedded/Experiment/CLEANTUNE-01/ct_round2.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": null,
+   "private": false,
+   "sha256": "d251142dec126de8776e9ebd5e8dc7b916a28f92f3f224a847e73b590197fcf3",
+   "bytes": 4185,
+   "carried_by": [
+    "e112f0sx",
+    "e112f1sx",
+    "t112sf0s",
+    "t112sf1s",
+    "t154_g1_f12",
+    "t154_g1_f34",
+    "t154_g1_f5",
+    "t155s_f12",
+    "t155s_f34",
+    "t155s_f5",
+    "t184_report",
+    "t219_dumpv4"
+   ],
+   "notes": "CLEANTUNE-01 round-2 configuration (arms / seeds), written by hand before the run; configuration, not data",
+   "requirement1_gap": "embedded frozen file without a producing stage (derivable only by hand from the run named in notes)"
+  },
+  "datasets/ff-frozen/flag2027-e2e-dev-wiring-p": {
+   "path": "02_intermediate/_wiring/e2e_dev_wiring",
+   "class": "wiring",
+   "producer": null,
+   "private": true,
+   "dev_data": true,
+   "files": {
+    "e2edev/components_dev.npz": "b8da75dc9f44df0720d5a39879c9d410a54637c53f18eb1fab6f9c3bccf29120",
+    "e2edev/e2e_manifest.json": "50282866de6852fc38f8f6d1d88b05a1862518688831af72f4d16bb1408ebfcd",
+    "e2edev/fusers/v11_bangla.json": "1c0b3602204d6ed20369c749a047895fcaac0cb305fbbefafd86443b03e2c540",
+    "e2edev/fusers/v9_bangla.json": "8251fce449eb67ca253869a5bad12f2db765cf6d940c7915f1cd536b0c934e46",
+    "e2edev/fusers/v9_english.json": "72badd03045484de45a7bbfca2114d19420e1aeb736478adb6eb0760736fdb82",
+    "e2edev/fusers/v12_english.json": "470731ce73d41e34564baf5c3d5f8b8be12c7f2e9d120fd4151c39ab4d04e17c",
+    "e2edev/ref/submission_v9.zip": "9830c4075a003f2a1878f46a1c7c093130a4f66b806a0b4c2aeb7f07d43728d2",
+    "e2edev/ref/submission_v11.zip": "51eb09960eecfdeffef1ea44eab8150d0a81abdf2978b1a9cb32d02ca6cb0daf",
+    "e2edev/ref/submission_v12.zip": "4b25d4d2267aeca18e37ce3e6ea96ae9d2455457483adbe495e73bfb687a4647"
+   },
+   "sizes": {
+    "e2edev/components_dev.npz": 36298310,
+    "e2edev/e2e_manifest.json": 3205,
+    "e2edev/fusers/v11_bangla.json": 6084,
+    "e2edev/fusers/v9_bangla.json": 4150,
+    "e2edev/fusers/v9_english.json": 4303,
+    "e2edev/fusers/v12_english.json": 5933,
+    "e2edev/ref/submission_v9.zip": 90879,
+    "e2edev/ref/submission_v11.zip": 90757,
+    "e2edev/ref/submission_v12.zip": 90712
+   },
+   "origin_run": "frozen bundle kaggle/flag2027-e2e-dev.zip (sha256 0257b1fe...; = package E datasets/ngnnguynchn__flag2027-e2e-dev-p.zip)",
+   "requirement1_gap": "wiring members of the frozen SAFE-04 bundle (dev-phase files the verbatim lab code checks); no producing stage",
+   "notes": "input of safe04_lab (resolve saved_only): extract exactly these 9 members (no safe04/ member) of the frozen bundle kaggle/flag2027-e2e-dev.zip (sha256 0257b1fe2be4f2fde704c9662b845a4531d1ab8787eeb6c44e917d79014d130e; = package E datasets/ngnnguynchn__flag2027-e2e-dev-p.zip content) into FF_DATA/02_intermediate/_wiring/e2e_dev_wiring/ (path proposed to WP-A), keeping the e2edev/ prefix"
+  },
+  "notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid": {
+   "path": "01_collected/voxceleb2_flag53",
+   "class": "collected",
+   "producer": "c53_vox2b",
+   "private": true,
+   "notes": "kernel output of FLAG_53 (separate from its export feats-vox2b-p, not an alias: collect() would delete the kernel output when it writes the export); lets c_frames_index run under FF_USE_SAVED=collected (WP-C)"
+  },
+  "notebooks/onnhqunhh/flag-2027-nb-45-facelora-farl": {
+   "path": null,
+   "class": "collected",
+   "producer": "c45_frames_vox2",
+   "private": true,
+   "voxblink": false,
+   "notes": "kernel output not saved (no FF_DATA folder): forcing a stage that needs it stops with a clear message instead of mounting the bridged frames (01_collected/face_frames_png = export of c87) as this kernel"
+  },
+  "notebooks/onnhqunhh/flag-2027-nb-63-frames": {
+   "path": null,
+   "class": "collected",
+   "producer": "c63_frames",
+   "private": true,
+   "voxblink": true,
+   "notes": "kernel output not saved (no FF_DATA folder): forcing a stage that needs it stops with a clear message instead of mounting the bridged frames (01_collected/face_frames_png = export of c87) as this kernel"
+  },
+  "notebooks/nguynthanhnhnn/flag-2027-nb-154-ct02-g1-f12": {
+   "path": "04_run_outputs/flag-2027-nb-154-ct02-g1-f12",
+   "class": "run_output",
+   "producer": "t154_g1_f12",
+   "private": true,
+   "voxblink": true,
+   "status": "not downloaded"
+  },
+  "notebooks/hdonqu/flag-2027-nb-154-ct02-g1-f34": {
+   "path": "04_run_outputs/flag-2027-nb-154-ct02-g1-f34",
+   "class": "run_output",
+   "producer": "t154_g1_f34",
+   "private": true,
+   "voxblink": true,
+   "status": "not downloaded"
+  },
+  "notebooks/thanhtruc02/flag-2027-nb-154-ct02-g1-f5": {
+   "path": "04_run_outputs/flag-2027-nb-154-ct02-g1-f5",
+   "class": "run_output",
+   "producer": "t154_g1_f5",
+   "private": true,
+   "voxblink": true,
+   "status": "not downloaded"
+  },
+  "scores/xjf_r10_trsig_submitted": {
+   "path": "05_scores/xjf_r10_trsig.zip",
+   "class": "score",
+   "producer": null,
+   "private": true,
+   "files": {
+    "xjf_r10_trsig.zip": "b4354eaf988b2b4ea8c4e1c3fa44d7bcf631ea5cb3cd635ab2965021fe82e507"
+   },
+   "unused": "reference only: final_verify compares with it when present (not a declared input)"
+  },
+  "datasets/ff/flag2027-t3s01-trca-p": {
+   "path": null,
+   "class": "intermediate",
+   "producer": "t3s01_trca",
+   "private": false,
+   "notes": "tables/ct01r2{b3s,c5s,clip,farl}_fold<s>.parquet = row keys + trCA (farl only) of datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p; the part of the frozen t3s01-tables-p that t219_dumpv4 (sigma) reads. Made in the session (CPU, seconds); no saved copy needed. Added 18/11/2026 (integration fixer r1)"
+  },
+  "embedded/BEST/v7_safe/cafuse_fuser.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": null,
+   "private": false,
+   "sha256": "4148202185fa0c1b90bd47d3c6e32ed347a360b56c34920b1031b7b1446233e9",
+   "bytes": 3959,
+   "carried_by": [
+    "e50cc"
+   ],
+   "embedded_as": "Python raw string SRC_BEST_V7_SAFE_CAFUSE_FUSER_JSON at stages/50_eval/e50cc/stage.ipy:3553 (written to WORKDIR/repo/BEST/v7_safe/cafuse_fuser.json by the cell that follows; not a base64 payload, so runner/check_stage.py does not see it)",
+   "team_file": "BEST/v7_safe/cafuse_fuser.json of the team repository (same bytes after CRLF -> LF; checked 18/11)",
+   "notes": "frozen fuser weights of the old v9 / v11 / v12 systems, fitted by team scripts that are not stages of this repository (BEST/v7_safe/, Experiment/BIGB-01/build_v11.py, Experiment/EN-T3-01/build_v12.py, all on the SAFE-04 validation tables). Use in e50cc: v9 Bangla CA-FUSE logistic model (mean / scale / coef / intercept); FUS['v9_bangla'], also passed to SY.System -> S.CAFuse, whose conditions() (the 7 conditions is_en, pf_m, pv_m, gdiff, agef, agev, agegap) do not read the model values; only CAFuse.__call__ (the v9 score) does. Not in the 13.54 numbers: the F1s' head (e112f1sx) reads the streams and conditions of components_eval.npz, not d['v9'] / d['v11'] / d['v12'] (INTEGRATION_r1 \u00a72; conditions checked in CAFuse 18/11). Registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)",
+   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)"
+  },
+  "embedded/BEST/v7_safe/fuser_en.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": null,
+   "private": false,
+   "sha256": "8c042484b55b0cd54691504f463910771104c8fe2d7b7049a8a25b5f0546532e",
+   "bytes": 4103,
+   "carried_by": [
+    "e50cc"
+   ],
+   "embedded_as": "Python raw string SRC_BEST_V7_SAFE_FUSER_EN_JSON at stages/50_eval/e50cc/stage.ipy:3750 (written to WORKDIR/repo/BEST/v7_safe/fuser_en.json by the cell that follows; not a base64 payload, so runner/check_stage.py does not see it)",
+   "team_file": "BEST/v7_safe/fuser_en.json of the team repository (same bytes after CRLF -> LF; checked 18/11)",
+   "notes": "frozen fuser weights of the old v9 / v11 / v12 systems, fitted by team scripts that are not stages of this repository (BEST/v7_safe/, Experiment/BIGB-01/build_v11.py, Experiment/EN-T3-01/build_v12.py, all on the SAFE-04 validation tables). Use in e50cc: v9 English fuser; FUS['v9_english'] -> SY.scores -> d['v9']. Not in the 13.54 numbers: the F1s' head (e112f1sx) reads the streams and conditions of components_eval.npz, not d['v9'] / d['v11'] / d['v12'] (INTEGRATION_r1 \u00a72; conditions checked in CAFuse 18/11). Registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)",
+   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)"
+  },
+  "embedded/Experiment/BIGB-01/cafuse_t3_fuser_v11.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": null,
+   "private": false,
+   "sha256": "ec8a201ef8e598643ccd9797c8c07a638485c6393c59b77d2a56e3d623eb1dc3",
+   "bytes": 5806,
+   "carried_by": [
+    "e50cc"
+   ],
+   "embedded_as": "Python raw string SRC_EXPERIMENT_BIGB_01_CAFUSE_T3_FUSER_V11_JSON at stages/50_eval/e50cc/stage.ipy:3956 (written to WORKDIR/repo/Experiment/BIGB-01/cafuse_t3_fuser_v11.json by the cell that follows; not a base64 payload, so runner/check_stage.py does not see it)",
+   "team_file": "Experiment/BIGB-01/cafuse_t3_fuser_v11.json of the team repository (same bytes after CRLF -> LF; checked 18/11)",
+   "notes": "frozen fuser weights of the old v9 / v11 / v12 systems, fitted by team scripts that are not stages of this repository (BEST/v7_safe/, Experiment/BIGB-01/build_v11.py, Experiment/EN-T3-01/build_v12.py, all on the SAFE-04 validation tables). Use in e50cc: v11 Bangla fuser (head P512); FUS['v11_bangla'] -> SY.scores -> d['v11'] (also the v11 submission.zip of the run). Not in the 13.54 numbers: the F1s' head (e112f1sx) reads the streams and conditions of components_eval.npz, not d['v9'] / d['v11'] / d['v12'] (INTEGRATION_r1 \u00a72; conditions checked in CAFuse 18/11). Registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)",
+   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)"
+  },
+  "embedded/Experiment/EN-T3-01/fuser_en_t3.json": {
+   "path": null,
+   "class": "embedded",
+   "producer": null,
+   "private": false,
+   "sha256": "fd549d18e983b415991110f2f8adf72acdcca113d71efeb20cc7e57c800534d9",
+   "bytes": 5663,
+   "carried_by": [
+    "e50cc"
+   ],
+   "embedded_as": "Python raw string SRC_EXPERIMENT_EN_T3_01_FUSER_EN_T3_JSON at stages/50_eval/e50cc/stage.ipy:4240 (written to WORKDIR/repo/Experiment/EN-T3-01/fuser_en_t3.json by the cell that follows; not a base64 payload, so runner/check_stage.py does not see it)",
+   "team_file": "Experiment/EN-T3-01/fuser_en_t3.json of the team repository (same bytes after CRLF -> LF; checked 18/11)",
+   "notes": "frozen fuser weights of the old v9 / v11 / v12 systems, fitted by team scripts that are not stages of this repository (BEST/v7_safe/, Experiment/BIGB-01/build_v11.py, Experiment/EN-T3-01/build_v12.py, all on the SAFE-04 validation tables). Use in e50cc: v12 English fuser; FUS['v12_english'] -> SY.v12_scores -> d['v12']. Not in the 13.54 numbers: the F1s' head (e112f1sx) reads the streams and conditions of components_eval.npz, not d['v9'] / d['v11'] / d['v12'] (INTEGRATION_r1 \u00a72; conditions checked in CAFuse 18/11). Registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)",
+   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)"
+  }
+ },
+ "requirement1_gap_doc": "User requirement 1: every intermediate table / bundle must have a producing stage that starts from raw data. Entries with 'requirement1_gap' do NOT meet it: they are consumed by stages of the chain, no stage of this repository produces them (or the modes take them frozen by default), and mode (a) takes the frozen copy (sha256 recorded). `python runner/ffrun.py dag` and `plan` list them under REQUIREMENT-1 GAPS. Planned removal (DESIGN G18, after 20/11): a 'wiring' patch that drops the presence / row-count check of the verbatim code, proving they do not enter the numbers; or rebuilding the original runs named in origin_run."
+}

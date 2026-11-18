@@ -1,0 +1,13 @@
+{
+ "stage": "e163i_fvb",
+ "files": [
+  {
+   "cell_index": 2,
+   "written_by_the_notebook_to": "/kaggle/working/FLAG_RF_E2E/code/flag_e2e_core.py",
+   "bytes": 67709,
+   "sha256": "3cad7b8a83d3817c3178e867cd6e7782bd2c77d48539a7051dbcef78066c8f3a",
+   "repo_copy": "embedded/code/flag_e2e_core.py",
+   "note": "the run printed 'Code SHA256: 3cad7b8a...'; same core as the FACTOR_ENFUSE run thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval; equals Experiment/RFS-01/ref/flag_final_core_092.py (sha256 25abe24d..., CRLF) after CRLF -> LF"
+  }
+ ]
+}

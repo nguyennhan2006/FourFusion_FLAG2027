@@ -1,0 +1,100 @@
+{
+ "stage": "t216_p3",
+ "run": "phantrnhuyntrn/flag-2027-nb-216-seedrep3",
+ "files": [
+  {
+   "path": "t216_p3/original/flag-2027-nb-216-seedrep3.redacted.ipynb",
+   "bytes": 70794,
+   "sha256": "677fc1a29dc68a7f31af31bc8dd360ff23f962c6c9fec4d5ae2f9706068eebf6",
+   "md5": "6fbaaa404a23247682a086cce86bd2e0",
+   "role": "rebuild source of stage.ipy (redacted copy of the exact Kaggle push staging notebook)",
+   "derived_from": {
+    "path": "NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-216-seedrep3_n0dnhkzw/flag-2027-nb-216-seedrep3.ipynb",
+    "temp_original": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-216-seedrep3_n0dnhkzw/flag-2027-nb-216-seedrep3.ipynb",
+    "bytes": 70889,
+    "md5": "810d598115f04069d44e0816c7404b79",
+    "sha256": "35e21e5e884eba6dde104b804923257e6ebc2abcfb24bab44f47f979397fadd7",
+    "md5_equals_kapi_runs": true
+   },
+   "redactions": [
+    {
+     "cell": 1,
+     "kind": "redaction",
+     "what": "string literal of the (\"train/gender.csv\", ...) entry of the embedded-file loop",
+     "original_literal_chars": 228,
+     "original_literal_sha256": "5af7e8b8d87b0d1d4aa4f59c495150e2f305b45236466f8f31930678578e372c",
+     "decoded_bytes": 560,
+     "decoded_sha256": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030",
+     "decoded_is": "organisers' file meta_file_train_set.csv (sha256 identical)",
+     "replacement": "FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030"
+    }
+   ]
+  },
+  {
+   "path": "t216_p3/original/kernel-metadata.json",
+   "bytes": 982,
+   "sha256": "2254bb8d3cc203a2c26aca31ab8fec2ce4edc1f8888c89be697cf4d5469da824",
+   "md5": "6cbb75004650010d8c4373c18c5352ce",
+   "role": "kernel-metadata.json of the push (verbatim)",
+   "copied_from": "NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-216-seedrep3_n0dnhkzw/kernel-metadata.json"
+  },
+  {
+   "path": "t216_p3/original/OUTPUTS.sha256",
+   "bytes": 662,
+   "sha256": "1e736002a577878628a0a2a4dc1a4f2bf55ff0dfe235f9e833efcc798a18d2c4",
+   "md5": "7dcd171d26d03d63908eee9b4af312eb",
+   "role": "expected / saved output hashes (evidence)"
+  }
+ ],
+ "kapi_runs": {
+  "file": "kaggle/kapi_runs.jsonl",
+  "line": 1700,
+  "time": "2026-11-15 19:34",
+  "account": "phantrnhuyntrn",
+  "source": "kaggle/FLAG_216_seedrep3.ipynb",
+  "notebook_md5_pushed": "810d598115f04069d44e0816c7404b79",
+  "gpu": true,
+  "datasets": [
+   "ngnnguynchn/flag2027-rfs-bundle-p",
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "onnhqunhh/flag2027-rfs-lora-p",
+   "ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+   "quynhnhu82/flag2027-feats-ls-c5s-p",
+   "trngsnam/flag2027-feats-peface01-pe0-p",
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "ngnnguynchn/flag2027-lab-vb-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-feats-screen2-p",
+   "nguynchnngn1/flag2027-feats-rfs-a-p",
+   "phanththui/flag2027-feats-rfs-b-p",
+   "phanvnnnnn6789/flag2027-feats-rfs-c-p"
+  ],
+  "kernels": [],
+  "is_last_push_of_kernel": true
+ },
+ "kernel_metadata": {
+  "id": "phantrnhuyntrn/flag-2027-nb-216-seedrep3",
+  "enable_gpu": true,
+  "enable_internet": false,
+  "machine_shape": "NvidiaTeslaT4",
+  "is_private": true,
+  "dataset_sources": [
+   "ngnnguynchn/flag2027-rfs-bundle-p",
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "onnhqunhh/flag2027-rfs-lora-p",
+   "ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+   "quynhnhu82/flag2027-feats-ls-c5s-p",
+   "trngsnam/flag2027-feats-peface01-pe0-p",
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "ngnnguynchn/flag2027-lab-vb-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-feats-screen2-p",
+   "nguynchnngn1/flag2027-feats-rfs-a-p",
+   "phanththui/flag2027-feats-rfs-b-p",
+   "phanvnnnnn6789/flag2027-feats-rfs-c-p"
+  ],
+  "kernel_sources": []
+ }
+}

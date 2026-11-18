@@ -1,0 +1,20 @@
+{
+ "stage": "b_lab_data",
+ "files": [
+  {
+   "copy": "original/build_lab_bundle.py",
+   "source": "kaggle/build_lab_bundle.py",
+   "obtained_by": "copy of the working-tree file (not in git; md5 9dd882e023c86a4f21a9311195024847, mtime 2026-10-10 18:15, CRLF line endings)",
+   "bytes": 7232,
+   "md5": "9dd882e023c86a4f21a9311195024847",
+   "sha256": "d4bc3e02396ffa36f5a8cf838210556420df44af391180057c2decc7b79d79f9",
+   "git": "untracked",
+   "mtime": "2026-10-10 18:15",
+   "check": "its DATA / PLACEHOLDERS / VB_FILES lists equal, in order, the file lists of the original lab-data manifest (58 files + 3 placeholders, built 2026-10-08 21:02) and lab-vb manifest (8 files, built 2026-10-10 08:50) in package E: (checked 18/11/2026)"
+  }
+ ],
+ "run": "local script (team machine, 8/10/2026 21:02); zip kaggle/flag2027-lab-data.zip sha256 d660d8c279599679acc59421e17ac3c5f11b9aec5b7a41594acd70925de7fc2c uploaded as ngnnguynchn/flag2027-lab-data-p",
+ "evidence": [
+  "its DATA / PLACEHOLDERS / VB_FILES lists equal, in order, the file lists of the original lab-data manifest (58 files + 3 placeholders, built 2026-10-08 21:02) and lab-vb manifest (8 files, built 2026-10-10 08:50) in package E: (checked 18/11/2026)"
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "stage": "b_eda_bundle",
+ "files": [
+  {
+   "copy": "original/build_eda_bundle.py",
+   "source": "kaggle/build_eda_bundle.py",
+   "obtained_by": "copy of the working-tree file (= git blob 5921e8b0002b0025af5d9790ca966e972d85ae18 of commit a89a071)",
+   "bytes": 4154,
+   "md5": "eaa48c15ff35691eda1ada1e97c23021",
+   "sha256": "32df6b2d72ee144465dd5b705698e9bdab9bfc9a0594594eee1dcc5adc3bf4c0",
+   "git_blob": "5921e8b0002b0025af5d9790ca966e972d85ae18",
+   "mtime": "2026-09-29 08:06"
+  }
+ ],
+ "run": "local script (team machine, 29/09/2026 08:06); zip kaggle/flag2027-eda-bundle.zip sha256 a8350df70bc133ca96caf326083a5cb195efeaad94a03dfb3d5d48705c89cb23 uploaded as ngnnguynchn/flag2027-eda-bundle-p",
+ "evidence": [
+  "The script's file mtime (29/09 08:06) equals the bundle's manifest stamp (created 2026-09-29 08:06, package E: copy).",
+  "kaggle_upload/train/*.csv / .txt are byte-identical to the train_set.zip members (CRC32 0xc6b3bc03 / 0x0f15a6e5 / 0x0860a460; meta 0x0535112a), checked 18/11/2026."
+ ]
+}

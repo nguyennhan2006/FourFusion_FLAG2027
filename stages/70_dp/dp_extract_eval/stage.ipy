@@ -1,0 +1,261 @@
+print("[cell] dp_extract_eval: Python packages, inputs (eval_set.zip, organisers' train_set.zip, dp_feats)", flush=True)
+# Runs the team's script extract_eval.py (copied, paths read from the environment: see CHANGES.md) with the same helper modules
+# flag_extract.py / flag_models.py, on CPU like the original run (16/11 01:22-01:56).
+import importlib.util
+import hashlib, json, os, shutil, subprocess, sys, tempfile, zipfile
+from pathlib import Path
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+assert os.environ.get("FF_STAGE_DIR"), "FF_STAGE_DIR (this stage's folder in the repo) must be set by the runner"
+SD = Path(os.environ["FF_STAGE_DIR"]).resolve()
+REPO = Path(os.environ.get("FF_REPO") or SD.parents[2]).resolve()
+EVAL_SET_SHA256 = "a70762a3fb52af6bbf52c14a86c79a4d074ec319b78d6ffedcdf195d71f9381e"   # eval_set.zip read by the DP branch on 16/11
+ALLOW_MISMATCH = os.environ.get("DP_ALLOW_INPUT_MISMATCH") == "1"
+
+
+def fresh_tmp(stage):
+    """Scratch folder of this stage run (unpacked media, rebuilt zips, model copies), outside the stage output. It is emptied at every
+    run, so nothing of an earlier run (a smoke run, other inputs, another FF_DATA) is reused."""
+    base = os.environ.get("DP_TMP") or (str(Path(os.environ["FF_WORK"]) / "tmp") if os.environ.get("FF_WORK") else "") \
+        or ("/kaggle/tmp" if Path("/kaggle/tmp").is_dir() else tempfile.gettempdir())
+    t = Path(base) / "ff_dp" / stage
+    shutil.rmtree(t, ignore_errors=True)
+    t.mkdir(parents=True, exist_ok=True)
+    return t
+
+
+TMP = fresh_tmp("dp_extract_eval")
+
+
+def sha256(p, bs=1 << 20):
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(bs), b""):
+            h.update(b)
+    return h.hexdigest()
+
+
+def one(root, name, env=None):
+    """The file called `name` below `root`: the shallowest one when the artifact holds several copies (a producing stage's own
+    output sits at its top level); `env` names a variable that may give the path directly."""
+    if env and os.environ.get(env):
+        p = Path(os.environ[env]); assert p.is_file(), f"{env}={p}: not a file"; return p
+    R = Path(root)
+    hits = sorted(q for q in R.rglob(name) if q.is_file())
+    if len(hits) > 1:
+        d = min(len(q.relative_to(R).parts) for q in hits)
+        hits = [q for q in hits if len(q.relative_to(R).parts) == d]
+        print(f"  {name}: several copies under {R}; the shallowest is taken: {[str(q) for q in hits]}", flush=True)
+    assert len(hits) == 1, f"{name}: {len(hits)} files under {R}: {[str(q) for q in hits[:5]]}" + (f" (set {env})" if env else "")
+    return hits[0]
+
+
+def as_zip(root, zip_name, probe, env=None):
+    """`zip_name` below `root`. When the dataset is mounted unpacked, an equivalent zip (same member paths, stored) is rebuilt from
+    the folder that holds `probe` (a member path of the zip); only that top folder is packed (never the dev set)."""
+    if env and os.environ.get(env):
+        return one(root, zip_name, env)
+    if any(q.is_file() for q in Path(root).rglob(zip_name)):
+        return one(root, zip_name)
+    top, leaf = probe.split("/")[0], probe.split("/")[-1]
+    cands = [q for q in Path(root).rglob(leaf) if q.is_file() and q.as_posix().endswith("/" + probe)]
+    assert len(cands) == 1, f"neither {zip_name} nor one unpacked folder holding {probe} under {root}"
+    base = cands[0].parents[probe.count("/")]
+    z = TMP / f"rebuilt_{zip_name}"
+    with zipfile.ZipFile(z.with_suffix(".part"), "w", zipfile.ZIP_STORED) as w:
+        for q in sorted((base / top).rglob("*")):
+            if q.is_file():
+                w.write(q, q.relative_to(base).as_posix())
+    z.with_suffix(".part").replace(z)
+    print(f"  {zip_name} is not attached as a zip: rebuilt from the unpacked folder {base / top} -> {z}", flush=True)
+    return z
+
+
+def eval_zip():
+    """eval_set.zip of the Evaluation phase: $DP_EVAL_ZIP, else the zip in the output of stage raw_evalphase (the zip the DP branch read
+    on 16/11), else a zip rebuilt from the extracted dataset view. Unless the file is byte-identical to the submitted one, every member
+    is checked against stages/10_raw/raw_evalphase/expected/eval_set_members.sha256 (zip bytes carry the build time, members do not)."""
+    if os.environ.get("DP_EVAL_ZIP"):
+        z = one(None, "eval_set.zip", "DP_EVAL_ZIP")
+    else:
+        K = IN / "notebooks/ff/raw_evalphase"
+        if K.is_dir() and any(q.is_file() for q in K.rglob("eval_set.zip")):
+            z = one(K, "eval_set.zip")
+        else:
+            z = as_zip(IN / "datasets/ngnnguynchn/flag2027-evalphase-p", "eval_set.zip", "evaluation_phase/no_gender/features/English_test_faces.csv")
+    h = sha256(z)
+    if h == EVAL_SET_SHA256:
+        print(f"  eval_set.zip: {z} = the file used for the submission (sha256 {h[:16]}...)", flush=True)
+        return z
+    man = REPO / "stages/10_raw/raw_evalphase/expected/eval_set_members.sha256"
+    assert man.is_file(), f"{man} is missing: the members of {z} cannot be checked"
+    want = {}
+    for line in man.read_text(encoding="utf-8").splitlines():
+        if line.strip() and not line.startswith("#"):
+            want[line[64:].lstrip(" *")] = line[:64]
+    bad = []
+    with zipfile.ZipFile(z) as zf:
+        names = {i.filename for i in zf.infolist() if not i.is_dir()}
+        for n, s in want.items():
+            if n not in names:
+                bad.append(f"{n} (missing)")
+                continue
+            hh = hashlib.sha256()
+            with zf.open(n) as f:
+                for b in iter(lambda: f.read(1 << 20), b""):
+                    hh.update(b)
+            if hh.hexdigest() != s:
+                bad.append(n)
+    extra = sorted(names - set(want))
+    print(f"  eval_set.zip: {z} (sha256 {h[:16]}..., other zip bytes): {len(want) - len(bad)} of {len(want)} members equal to those of the "
+          f"submitted zip; {len(extra)} extra member(s) {extra[:5]}", flush=True)
+    assert not bad or ALLOW_MISMATCH, f"eval_set.zip: {len(bad)} member(s) differ from the submitted zip: {bad[:5]} (DP_ALLOW_INPUT_MISMATCH=1 to go on)"
+    return z
+
+
+def run(cmd, env):
+    """Run a script of this stage; its output is streamed line by line."""
+    cmd = [str(c) for c in cmd]
+    print("$", " ".join(cmd), flush=True)
+    p = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", bufsize=1, errors="replace")
+    for line in p.stdout:
+        print(line, end="", flush=True)
+    assert p.wait() == 0, f"{Path(cmd[2]).name} failed (exit code {p.returncode})"
+
+
+def feats_root():
+    """dp_feats/ (feats_v2, feats_models, feats_eval, feats_ext_full): $DP_FEATS_DIR, else the one folder under the output of stage
+    dp_feats_layout that holds all 20 files of stages/70_dp/dp_feats_layout/dp_features.json. It is found by its structure, so a saved
+    copy uploaded without dp_feats_manifest.json (gap G13) works too; such a copy is checked file by file against the sha256 values."""
+    spec = json.loads((SD.parent / "dp_feats_layout" / "dp_features.json").read_text(encoding="utf-8"))["files"]
+    if os.environ.get("DP_FEATS_DIR"):
+        cands = [Path(os.environ["DP_FEATS_DIR"])]
+    else:
+        K, first = IN / "notebooks/ff/dp_feats_layout", spec[0]["target"]
+        cands = sorted({q.parents[first.count("/")] for q in K.rglob(Path(first).name) if q.is_file() and q.as_posix().endswith("/" + first)})
+    cands = [c for c in cands if all((c / f["target"]).is_file() for f in spec)]
+    assert len(cands) == 1, f"dp_feats: {len(cands)} folders hold all 20 files of dp_features.json: {[str(c) for c in cands]} (set DP_FEATS_DIR)"
+    R = cands[0]
+    if (R / "dp_feats_manifest.json").is_file():
+        m = json.loads((R / "dp_feats_manifest.json").read_text(encoding="utf-8"))
+        print(f"  dp_feats: {R} (laid out by stage dp_feats_layout; identical to the submission arrays: "
+              f"{m.get('all_identical_to_submission_arrays')})", flush=True)
+    else:
+        bad = [f["target"] for f in spec if sha256(R / f["target"]) != f["sha256"]]
+        print(f"  dp_feats: {R} (no dp_feats_manifest.json: saved copy) - {len(spec) - len(bad)} of {len(spec)} files have the bytes of "
+              f"the submission arrays", flush=True)
+        assert not bad or ALLOW_MISMATCH, f"dp_feats saved copy: {bad} differ from dp_features.json (DP_ALLOW_INPUT_MISMATCH=1 to go on)"
+    return R
+
+
+# Packages that the 13.54 environment installs on top of the Kaggle base image (docker/requirements-kaggle-pinned.txt) or that the
+# team CPU machine had (docker/requirements-dp-local.txt). pip_policy is 'skip': stop here with a clear message instead of failing later.
+NEED = {"numpy": "numpy", "pandas": "pandas", "torch": "torch", "torchaudio": "torchaudio", "soundfile": "soundfile", "librosa": "librosa",
+        "cv2": "opencv-python", "PIL": "pillow", "onnxruntime": "onnxruntime==1.31.1", "insightface": "insightface==2.0 (--no-deps)",
+        "speechbrain": "speechbrain==1.1.2", "yaml": "PyYAML", "omegaconf": "omegaconf==2.4.0", "huggingface_hub": "huggingface_hub==1.33.0"}
+missing = [pip for mod, pip in NEED.items() if importlib.util.find_spec(mod) is None]
+assert not missing, (f"missing Python packages {missing}: install them at the pinned versions, e.g. pip install -r docker/requirements-dp-local.txt (team CPU machine) or the DP lines of docker/requirements-kaggle-pinned.txt (insightface with --no-deps; onnxruntime instead of onnxruntime-gpu on CPU)")
+print("  packages OK:", sorted(NEED), flush=True)
+
+EVZ = eval_zip()
+TRZ = as_zip(IN / "datasets/ngnnguynchn/flag2027-raw-v4-p", "train_set.zip", "train_set/train_set/train_English.txt", "DP_TRAIN_ZIP_PATH")
+if not TRZ.name.startswith("rebuilt_"):
+    h, ref = sha256(TRZ), "1803739f059860d5aede064839a17b01c6297f3160ab80cc9d3c929b27ae2ad9"
+    print(f"  train_set.zip: {TRZ} sha256 {h[:16]}... {'(as used for the submission)' if h == ref else '(DIFFERS from the file used for the submission: ' + ref[:16] + '...)'}", flush=True)
+FEATS = feats_root()                                                # dp_feats/ (feats_v2, feats_models, ...)
+# <<<FF-CELL>>>
+print("[cell] dp_extract_eval: pinned pretrained models (buffalo_l, AdaFace IR-101, SpeechBrain ECAPA)", flush=True)
+# The original code did not pin versions; models.json holds the versions that were on the team machine on 16/11 (sha256 checked).
+# A copy stored under FF_DATA/06_pretrained is used when present, otherwise the pinned version is downloaded.
+M = json.loads((SD / "models.json").read_text(encoding="utf-8"))
+PRE = [p for p in (Path(r) / "06_pretrained" for r in os.environ.get("FF_DATA", "").split(os.pathsep) if r) if p.is_dir()]
+
+
+def find_by_sha(name, h):
+    for root in PRE:
+        for q in root.rglob(name):
+            if q.is_file() and sha256(q) == h:
+                return q
+    return None
+
+
+# (1) insightface buffalo_l: insightface only looks in ~/.insightface/models/buffalo_l (FaceAnalysis(name="buffalo_l"))
+BL = Path("~/.insightface/models/buffalo_l").expanduser()
+want = M["insightface_buffalo_l"]["sha256"]
+if not all((BL / n).is_file() for n in want):
+    src = find_by_sha("w600k_r50.onnx", want["w600k_r50.onnx"])
+    if src is not None:
+        BL.mkdir(parents=True, exist_ok=True)
+        for q in src.parent.glob("*.onnx"):
+            shutil.copyfile(q, BL / q.name)
+        print("  buffalo_l copied from", src.parent, flush=True)
+    else:
+        from insightface.utils.storage import ensure_available
+        ensure_available("models", "buffalo_l", root="~/.insightface")   # insightface's own download of buffalo_l.zip
+for n, h in want.items():
+    got = sha256(BL / n)
+    assert got == h, f"buffalo_l/{n}: sha256 {got} != pinned {h}"
+print("  buffalo_l OK", {n: h[:12] for n, h in want.items()}, flush=True)
+
+# (2) AdaFace IR-101 WebFace12M: Hugging Face snapshot at the pinned revision (flag_models.py passes the same revision, patch FM1)
+ada = M["adaface"]
+if os.environ.get("DP_HF_CACHE"):
+    os.environ["HF_HUB_CACHE"] = os.environ["DP_HF_CACHE"]
+else:
+    for root in PRE:
+        hit = next((q for q in root.rglob("models--" + ada["repo"].replace("/", "--")) if q.is_dir()), None)
+        if hit is not None and (hit / "snapshots" / ada["revision"]).is_dir():
+            HFC = TMP / "hf_cache"
+            shutil.copytree(hit, HFC / hit.name, dirs_exist_ok=True)   # writable copy (files, not links)
+            os.environ["HF_HUB_CACHE"] = str(HFC)
+            print("  AdaFace snapshot copied from", hit, flush=True)
+            break
+from huggingface_hub import snapshot_download
+snap = Path(snapshot_download(ada["repo"], revision=ada["revision"]))
+for rel, h in ada["sha256"].items():
+    got = sha256(snap / rel)
+    assert got == h, f"AdaFace {rel}: sha256 {got} != pinned {h}"
+print("  AdaFace OK", snap, flush=True)
+
+# (3) SpeechBrain spkrec-ecapa-voxceleb: a ready savedir (speechbrain reuses existing files and does not fetch them again)
+sbm = M["speechbrain_ecapa"]
+SB = TMP / "_ecapa_sb"
+SB.mkdir(parents=True, exist_ok=True)
+for n, h in sbm["savedir_files"].items():
+    if (SB / n).is_file() and sha256(SB / n) == h:
+        continue
+    hub = sbm["hub_name_of"].get(n, n)
+    src = find_by_sha(n, h) or (find_by_sha(hub, h) if hub != n else None)
+    if src is None:
+        from huggingface_hub import hf_hub_download
+        src = Path(hf_hub_download(sbm["repo"], hub, revision=sbm["revision"]))
+    shutil.copyfile(src, SB / n)
+    got = sha256(SB / n)
+    assert got == h, f"speechbrain {n}: sha256 {got} != pinned {h}"
+print("  SpeechBrain ECAPA savedir OK", SB, flush=True)
+# <<<FF-CELL>>>
+print("[cell] dp_extract_eval: extract_eval.py on the English Evaluation files (CPU)", flush=True)
+FE = OUT / "feats_evalphase"
+env = dict(os.environ, DP_CODE=str(SD), DP_FEATS=str(FEATS), DP_EVAL_FEATS=str(FE), DP_TRAIN_ZIP=str(TRZ), DP_ECAPA_SB=str(SB),
+           PYTHONDONTWRITEBYTECODE="1", PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8")
+if os.environ.get("DP_DEVICE", "cpu") == "cpu":
+    env["CUDA_VISIBLE_DEVICES"] = ""                                 # the original run had no GPU; GPU kernels change the last digits
+run([sys.executable, "-u", SD / "extract_eval.py", EVZ, TMP / "evalphase_x", os.environ.get("DP_LANGS", "English")], env)
+# <<<FF-CELL>>>
+print("[cell] dp_extract_eval: self-check (20 train rows) and manifest", flush=True)
+import numpy as np
+EXPO = json.loads((SD / "expected_outputs.json").read_text(encoding="utf-8"))
+ver = json.loads((FE / "verify.json").read_text())
+assert "adaface_error" not in ver, ver
+for k, lo in EXPO["min_cos_required"].items():
+    assert ver[k][0] >= lo, f"{k}: min cos {ver[k][0]:.6f} < {lo}: a pretrained model or a reference array is not the one of the submission"
+    print(f"  {k}: min {ver[k][0]:.7f} mean {ver[k][1]:.7f} (16/11 run: min {EXPO['verify_json'][k][0]:.7f})", flush=True)
+man = {"stage": "dp_extract_eval", "verify": ver, "files": {}}
+for f in sorted(FE.iterdir()):
+    e = EXPO["files"].get(f.name)                                   # keys = the names extract_eval.py writes
+    h = sha256(f)
+    man["files"][f.name] = {"bytes": f.stat().st_size, "sha256": h, "same_bytes_as_16_11_run": bool(e and e["sha256"] == h)}
+    if f.name.startswith("face_arcface_detok_"):
+        man["files"][f.name]["detected_share"] = float(np.load(f).mean())
+n_same = sum(v["same_bytes_as_16_11_run"] for v in man["files"].values())
+print(f"  {n_same} of {len(man['files'])} output files have the bytes of the 16/11 run (all expected only on the team machine)", flush=True)
+(OUT / "dp_extract_eval_manifest.json").write_text(json.dumps(man, indent=1) + "\n", encoding="utf-8")

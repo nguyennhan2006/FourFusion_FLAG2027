@@ -1,0 +1,15 @@
+== FVBIND-01 gate 2: 37110 trials, folds [1, 2, 3, 4, 5], arms ['c0', 'fvb']
+  arm F1s          7 streams [23s]
+  arm R_c0         1 streams [4s]
+  arm R_fvb        1 streams [4s]
+EER (oof, mean of folds):
+cell   en_ext g  en_ext ng  hindi ng  urdu g  urdu ng   v4 g  v4 ng
+F1s       26.02      18.59     18.24   27.18    19.34  23.11  16.11
+R_c0      29.24      19.56     20.84   32.40    19.42  23.65  15.76
+R_fvb     29.21      19.70     21.30   32.72    19.64  24.67  15.92
+U_c0      26.17      17.83     18.65   28.17    18.50  21.63  14.50
+U_fvb     26.08      17.94     18.69   28.95    18.53  22.11  14.79
+
+  U_fvb - U_c0 (g cells): f1 -0.41, f2 -0.15, f3 -0.14, f4 -1.26, f5 +0.01 | mean -0.39, 1/5 | held-out {'hold_urdu': -0.157, 'hold_hindi': 0.049} | CI95 person bootstrap [-0.67, +0.42]
+  R_fvb - R_c0 (g cells): f1 -1.13, f2 +0.60, f3 -0.16, f4 -1.15, f5 -0.35 | mean -0.44, 1/5 | held-out {'hold_urdu': -0.358, 'hold_hindi': -0.399}
+  GATE 2: FAIL -> keep FACTOR_ENFUSE, paper only (>= +0.30, >= 4/5 folds, held-out >= -0.20)

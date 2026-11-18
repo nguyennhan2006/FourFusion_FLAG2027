@@ -1,0 +1,19 @@
+{
+ "meta_sha256": {
+  "ext_v1_complete_face_meta.csv": "7b385161cfb9bcf998110b4f969c7268aaddb8c5567482d2888cc617f92601ae",
+  "ext_v1_complete_voice_meta.csv": "3fac359f6a5b4fcab53032296c063fdf3adb73ba587a5107507c67982164635e",
+  "ext_v2_complete_face_meta.csv": "9db02bfc517ddf5ea5e52d0c54d937d0887d87038ad969b24172c86a37534c23",
+  "ext_v2_complete_voice_meta.csv": "1e22f7667044afe9bbcfa228d66ab4931f76a5df239ecc905e2bc31fa766378b",
+  "ext_v1_complete_speakers.csv": "46da520173c773a66f9a9910e2d82d31a20b31db7d675a67532f87ea2b1dd4d9"
+ },
+ "rows": {
+  "v1_complete": {
+   "voice": 19556,
+   "face": 7580
+  },
+  "v2_complete": {
+   "voice": 20715,
+   "face": 8953
+  }
+ }
+}

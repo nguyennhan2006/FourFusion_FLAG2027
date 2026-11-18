@@ -1,0 +1,185 @@
+{
+ "stage": "t184_report",
+ "run": "phantrnhuyntrn/flag-2027-nb-184-factor-report",
+ "files": [
+  {
+   "path": "t184_report/original/18_flag-2027-nb-184-factor-report.redacted.ipynb",
+   "bytes": 350273,
+   "sha256": "9cdd9c7485c31418024f6a29ea97b502aa9e744c8c078ddb1a7a1f2f0615db7c",
+   "md5": "a6b4ca836bed5a60dbedb65fbde2d025",
+   "role": "rebuild source of stage.ipy (redacted copy of the exact E: package notebook)",
+   "derived_from": {
+    "path": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/18_flag-2027-nb-184-factor-report.ipynb",
+    "bytes": 428721,
+    "md5": "c7b54a775ce9c57bd7b16285931339f2",
+    "sha256": "b92faf9a9fc01682b21e78e75efabc98abaca0071fecb5f2ce650b41aad39cf6",
+    "e_package_manifest_sha256_match": true,
+    "note": "notebook as stored in the E: package (pulled from Kaggle, re-serialised), so its md5 is not the pushed md5 of kapi_runs"
+   },
+   "redactions": [
+    {
+     "cell": 4,
+     "kind": "dev-exclusion",
+     "what": "member Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip removed from the code zip CODE_B64 (other members copied byte for byte)",
+     "original_literal_chars": 366708,
+     "original_literal_sha256": "558d7d33a09152d59a6f5c2d23becddf3c0148bb268ed04e77352e5707205444",
+     "original_zip_sha256": "225a250aa6b3ec356aca63b6eab471c7e0797fd6c1eba58ace15f459ce848dff",
+     "removed_member_sha256": "b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d",
+     "removed_member_md5": "ae902d1c7e87783bf88e345b459e39f2",
+     "removed_member_bytes": 91043,
+     "new_zip_sha256": "604f650d74fda24c36d41092a180b088796bc4cd6d4330b8571d6d2bfe2dec17",
+     "new_literal_chars": 288260,
+     "new_literal_sha256": "45c419921af152d6c954282f2094e4759f15b0d5413ad60c5052c41db8387699"
+    }
+   ]
+  },
+  {
+   "path": "t184_report/original/18_flag-2027-nb-184-factor-report.log",
+   "bytes": 42427,
+   "sha256": "08c9781b8fb2680c6ecedfe35c5b1d1c29d85745d9f02fe804401cdaba257f79",
+   "md5": "24ade63151f4e5f02a379377c32b3849",
+   "role": "log of the original Kaggle run (E: package, verbatim)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/18_flag-2027-nb-184-factor-report.log",
+   "e_package_manifest_sha256_match": true
+  },
+  {
+   "path": "t184_report/original/staging/flag-2027-nb-184-factor-report.redacted.ipynb",
+   "bytes": 353236,
+   "sha256": "83ab0bc044e67bf9c5660a3f93fedb9f3f9378641444d354c18d0eff0afae036",
+   "md5": "9bf72073cbeec35efc2cb7e7906b063e",
+   "role": "second exact source (pushed bytes); code cells identical to the E: package copy (redacted copy of the exact Kaggle push staging notebook)",
+   "derived_from": {
+    "path": "NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-184-factor-report_xj6ye6od/flag-2027-nb-184-factor-report.ipynb",
+    "temp_original": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-184-factor-report_xj6ye6od/flag-2027-nb-184-factor-report.ipynb",
+    "bytes": 431684,
+    "md5": "3bcb7ce1495f194756b9314ce32da588",
+    "sha256": "373438bec7340eea9c5b396b0ffe804f9e25bd4220c014cfc65d6580a18eb988",
+    "md5_equals_kapi_runs": true
+   },
+   "redactions": [
+    {
+     "cell": 4,
+     "kind": "dev-exclusion",
+     "what": "member Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip removed from the code zip CODE_B64 (other members copied byte for byte)",
+     "original_literal_chars": 366708,
+     "original_literal_sha256": "558d7d33a09152d59a6f5c2d23becddf3c0148bb268ed04e77352e5707205444",
+     "original_zip_sha256": "225a250aa6b3ec356aca63b6eab471c7e0797fd6c1eba58ace15f459ce848dff",
+     "removed_member_sha256": "b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d",
+     "removed_member_md5": "ae902d1c7e87783bf88e345b459e39f2",
+     "removed_member_bytes": 91043,
+     "new_zip_sha256": "604f650d74fda24c36d41092a180b088796bc4cd6d4330b8571d6d2bfe2dec17",
+     "new_literal_chars": 288260,
+     "new_literal_sha256": "45c419921af152d6c954282f2094e4759f15b0d5413ad60c5052c41db8387699"
+    }
+   ]
+  },
+  {
+   "path": "t184_report/original/staging/kernel-metadata.json",
+   "bytes": 1205,
+   "sha256": "2db5b3e6bcd1750701b0e35fbdda6519397acd66aebcd16b56e868104c089507",
+   "md5": "94811769443c1df8e62b5acb85f9080d",
+   "role": "kernel-metadata.json of the push (verbatim)",
+   "copied_from": "NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-184-factor-report_xj6ye6od/kernel-metadata.json"
+  },
+  {
+   "path": "t184_report/original/OUTPUTS.sha256",
+   "bytes": 2450,
+   "sha256": "075f6093aa871a1e2a4c50dd86ab270ac317902cc26796678a548ad1779654f0",
+   "md5": "e1c0c5b70fc85c884b5c48a5e68d479c",
+   "role": "expected / saved output hashes (evidence)"
+  }
+ ],
+ "kapi_runs": {
+  "file": "kaggle/kapi_runs.jsonl",
+  "line": 1549,
+  "time": "2026-11-13 10:04",
+  "account": "phantrnhuyntrn",
+  "source": "kaggle/FLAG_184_factor_report.ipynb",
+  "notebook_md5_pushed": "3bcb7ce1495f194756b9314ce32da588",
+  "gpu": false,
+  "datasets": [
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-lab-vb-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-e2e-dev-p",
+   "ngnnguynchn/flag2027-cc5-oof-p",
+   "ngnnguynchn/flag2027-dsel02-oof-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "phanvnhtrng/flag2027-feats-ls-b3s-p",
+   "ngnnguynchn/flag2027-facelora03-tables-p",
+   "ngnnguynchn/flag2027-lab-avfull-p",
+   "quynhnhu82/flag2027-feats-ls-c5s-p",
+   "dnq1209/flag2027-feats-tap01-voice-p",
+   "ngnnguynchn/flag2027-feats-screen2-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+   "ngnnguynchn/flag2027-t3s01-tables-p"
+  ],
+  "kernels": [
+   "phantrnhuyntrn/flag-2027-nb-183-factor-p1",
+   "phantrnhuyntrn/flag-2027-nb-183-factor-p2"
+  ],
+  "is_last_push_of_kernel": true
+ },
+ "runs_json": {
+  "file": "notebooks/1_train/18_flag-2027-nb-184-factor-report.ipynb",
+  "gpu": false,
+  "internet": false,
+  "datasets": [
+   "ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-cc5-oof-p",
+   "ngnnguynchn/flag2027-dsel02-oof-p",
+   "ngnnguynchn/flag2027-e2e-dev-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-facelora03-tables-p",
+   "phanvnhtrng/flag2027-feats-ls-b3s-p",
+   "quynhnhu82/flag2027-feats-ls-c5s-p",
+   "ngnnguynchn/flag2027-feats-screen2-p",
+   "dnq1209/flag2027-feats-tap01-voice-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "ngnnguynchn/flag2027-lab-avfull-p",
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-lab-vb-p",
+   "ngnnguynchn/flag2027-t3s01-tables-p"
+  ],
+  "kernel_inputs": [
+   "phantrnhuyntrn/flag-2027-nb-183-factor-p1",
+   "phantrnhuyntrn/flag-2027-nb-183-factor-p2"
+  ],
+  "outputs": "outputs/flag-2027-nb-184-factor-report/",
+  "status": "phantrnhuyntrn/flag-2027-nb-184-factor-report has status \"KernelWorkerStatus.COMPLETE\""
+ },
+ "kernel_metadata": {
+  "id": "phantrnhuyntrn/flag-2027-nb-184-factor-report",
+  "enable_gpu": false,
+  "enable_internet": false,
+  "machine_shape": "",
+  "is_private": true,
+  "dataset_sources": [
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-lab-vb-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-e2e-dev-p",
+   "ngnnguynchn/flag2027-cc5-oof-p",
+   "ngnnguynchn/flag2027-dsel02-oof-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "phanvnhtrng/flag2027-feats-ls-b3s-p",
+   "ngnnguynchn/flag2027-facelora03-tables-p",
+   "ngnnguynchn/flag2027-lab-avfull-p",
+   "quynhnhu82/flag2027-feats-ls-c5s-p",
+   "dnq1209/flag2027-feats-tap01-voice-p",
+   "ngnnguynchn/flag2027-feats-screen2-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+   "ngnnguynchn/flag2027-t3s01-tables-p"
+  ],
+  "kernel_sources": [
+   "phantrnhuyntrn/flag-2027-nb-183-factor-p1",
+   "phantrnhuyntrn/flag-2027-nb-183-factor-p2"
+  ]
+ }
+}

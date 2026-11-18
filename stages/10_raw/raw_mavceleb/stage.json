@@ -1,0 +1,109 @@
+{
+ "id": "raw_mavceleb",
+ "group": "10_raw",
+ "title": "Extract the original MAV-Celeb v1 / v2 zips exactly as the Kaggle dataset chnnhnnguyn/external-data-mavceleb",
+ "kind": "raw",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 45,
+  "minutes_is_estimate": true,
+  "internet": false,
+  "secrets": [],
+  "disk_gb": 60,
+  "platform": "Linux / Docker (on Kaggle attach the public dataset chnnhnnguyn/external-data-mavceleb instead: /kaggle/working holds about 20 GB)"
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "notebook_md5": null,
+  "builder": null,
+  "notes": "the public dataset chnnhnnguyn/external-data-mavceleb was made by uploading the two organisers' zips; Kaggle extracted each into a folder named after the zip (E: package copy: mavceleb_v1_complete-001/{meta_v1.csv, v1/})"
+ },
+ "inputs": [
+  {
+   "artifact": "raw/mavceleb_v1_v2_zips",
+   "note": "FF_DATA/00_raw/mavceleb_v1_v2_zips/ (the two zips; keep them OUTSIDE the extracted dataset folder)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/raw_mavceleb",
+  "exports": {
+   "datasets/chnnhnnguyn/external-data-mavceleb": "external-data-mavceleb"
+  },
+  "kernel_layout": {
+   "external-data-mavceleb/mavceleb_v1_complete-001/{meta_v1.csv,v1/faces,v1/voices}": "MAV-Celeb v1 (70 ids)",
+   "external-data-mavceleb/mavceleb_v2_complete-002/v2/{faces,voices}": "MAV-Celeb v2 (84 ids)",
+   "_ff_raw_mavceleb/raw_mavceleb_check.json": "report + resume markers (outside the dataset folder)"
+  }
+ },
+ "env": {},
+ "smoke_env": {
+  "FF_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "00_raw/mavceleb_v1_v2"
+ ],
+ "skip_with_note": "the two extracted folders only (mavceleb_v1_complete-001/, mavceleb_v2_complete-002/); no zip inside: keep the zips in 00_raw/mavceleb_v1_v2_zips/",
+ "verify": [
+  {
+   "file": "_ff_raw_mavceleb/raw_mavceleb_check.json",
+   "check": "zip sizes + sha256, file counts per release, meta_v1.csv sha256, no zip inside the dataset folder"
+  }
+ ],
+ "todo": [
+  "WP-A: DESIGN §3.1 puts zips/ INSIDE 00_raw/mavceleb_v1_v2/; if that folder is mounted as datasets/chnnhnnguyn/external-data-mavceleb, flag_extract.find_attached_zip (stage r08_mav_rows) reads the zip instead of the extracted folder and the row tables change (path column 'v1/voices/...', zip order). Keep the zips in a sibling folder (proposed FF_DATA/00_raw/mavceleb_v1_v2_zips/, artifact raw/mavceleb_v1_v2_zips) or make the runner exclude zips/ when mounting; r08's guard cell refuses such a mount",
+  "the runner's export step copies ~25 GB (orch._collect copytree); a move / hard link would halve the disk need",
+  "WP-A: configs/data_map.json datasets/chnnhnnguyn/external-data-mavceleb: drop the e_package hint 'datasets/chnnhnnguyn__external-data-mavceleb/' (the team package holds only mavceleb_v1_complete-001/{meta_v1.csv, v1/faces}: 130 000 MANIFEST entries against 714 390 files in the two releases) or tag it partial so find_saved refuses it; add verified_by: raw_mavceleb_check",
+  "WP-A: raw/mavceleb_v1_v2_zips: files {mavceleb_v1_complete-001.zip: 2082a9ee5f7d3634f687d682e98cd223606a5b01debc90c3e7ab566a9f86512b, mavceleb_v2_complete-002.zip: daff513527d7cea698243594a18795cab6d47aea64d64c3c74035154abd6246c} (measured 18/11/2026 with sha256sum, cells/00_locate.py) -> data_map 'files' + configs/expected_sha256.json, remove the 'not measured' todo; WP-K: DATA.md: same two sha256, and mavceleb_v1_train-004.zip (also in the team folder) is not needed"
+ ],
+ "notes": [
+  "Both parent folders are kept as they are (mavceleb_v1_complete-001/, mavceleb_v2_complete-002/): stage r08_mav_rows finds the roots by their '/v1/' and '/v2/' folders, and the RFS LoRA C1 run (t163l_orig, kaggle/build_flag163.py:93) stops at the first v1 / v2 folder it meets, so a different layout could change what C1 learned (DESIGN §4.1, G8).",
+  "Release content (central directory read 18/11/2026): v1 = meta_v1.csv + v1/ (302 492 jpg, 19 556 wav; 2 337 directory entries); v2 = v2/ (371 626 jpg, 20 715 wav; 2 767 directory entries). mavceleb_v1_train-004.zip is not used.",
+  "A saved copy of the extracted dataset (raw class: always taken from FF_DATA, so this stage does not run then) is checked by stage raw_mavceleb_check (outputs.verifies), which the runner schedules before the first MAV consumer."
+ ],
+ "changes_summary": [
+  "new: cells/00_locate.py .. 02_check.py (whole stage): new: zip sha256 check, zipfile extraction into the folder named after each zip, file-count / layout check"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_locate.py"
+   },
+   {
+    "new": "cells/01_extract.py"
+   },
+   {
+    "new": "cells/02_check.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_locate.py",
+    "title": "raw_mavceleb: locate and check the two original MAV-Celeb zips"
+   },
+   {
+    "new": "cells/01_extract.py",
+    "title": "raw_mavceleb: extract each zip into the folder named after it (= Kaggle's auto-extraction)"
+   },
+   {
+    "new": "cells/02_check.py",
+    "title": "raw_mavceleb: count files and check the layout of the dataset folder"
+   }
+  ],
+  "n_cells": 3,
+  "stage_ipy_sha256": "8536d574ac7671aa3b8e9ff99653e50422478c63578cb2d6d84b524d91696b8c"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)"
+}

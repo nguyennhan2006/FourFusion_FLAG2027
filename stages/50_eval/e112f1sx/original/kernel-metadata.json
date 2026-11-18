@@ -1,0 +1,35 @@
+{
+ "id": "thanhhuyen11/flag-2027-nb-112f1sx-eval",
+ "title": "flag-2027-nb-112f1sx-eval",
+ "code_file": "flag-2027-nb-112f1sx-eval.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_internet": false,
+ "machine_shape": "",
+ "dataset_sources": [
+  "ngnnguynchn/flag2027-lab-data-p",
+  "ngnnguynchn/flag2027-lab-vb-p",
+  "ngnnguynchn/flag2027-eda-bundle-p",
+  "ngnnguynchn/flag2027-cc5-oof-p",
+  "ngnnguynchn/flag2027-dsel02-oof-p",
+  "ngnnguynchn/flag2027-feats-vox2b-p",
+  "ngnnguynchn/flag2027-facelora03-tables-p",
+  "ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+  "ngnnguynchn/flag2027-lab-avfull-p",
+  "dnq1209/flag2027-feats-tap01-voice-p",
+  "hthlin/flag2027-aux-voice-feats-p",
+  "ngnnguynchn/flag2027-lid-strict-p",
+  "ngnnguynchn/flag2027-evalu-f1s-p"
+ ],
+ "kernel_sources": [
+  "thanhhuyen11/flag-2027-nb-112f0sx-eval",
+  "thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+  "thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+  "thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+  "thanhhuyen11/flag-2027-nb-50cc-e2e-eval"
+ ],
+ "competition_sources": [],
+ "model_sources": []
+}

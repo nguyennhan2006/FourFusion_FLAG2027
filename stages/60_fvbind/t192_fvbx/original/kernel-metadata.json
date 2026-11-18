@@ -1,0 +1,27 @@
+{
+ "id": "thanhhuyen11/flag-2027-nb-192-fvbx3",
+ "title": "flag-2027-nb-192-fvbx3",
+ "code_file": "flag-2027-nb-192-fvbx3.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_internet": true,
+ "machine_shape": "NvidiaTeslaT4",
+ "dataset_sources": [
+  "ngnnguynchn/flag2027-rfs-bundle-p",
+  "ngnnguynchn/flag2027-lid-strict-p",
+  "onnhqunhh/flag2027-rfs-lora-p",
+  "ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+  "duongphihoang/flag2027-audio-cache-p",
+  "chnnhnnguyn/external-data-mavceleb",
+  "ngnnguynchn/flag2027-raw-v4-p",
+  "ngnnguynchn/flag2027-evalphase-p"
+ ],
+ "kernel_sources": [
+  "thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0",
+  "thanhhuyen11/flag-2027-nb-47rs-screen2-eval"
+ ],
+ "competition_sources": [],
+ "model_sources": []
+}

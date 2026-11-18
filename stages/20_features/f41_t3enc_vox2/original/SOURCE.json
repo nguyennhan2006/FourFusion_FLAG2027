@@ -1,0 +1,18 @@
+{
+ "stage": "f41_t3enc_vox2",
+ "files": [
+  {
+   "copy": "original/flag-2027-nb-41.ipynb",
+   "source": "Experiment/T3ENC-01/flag-2027-nb-41.ipynb",
+   "obtained_by": "copy of the executed notebook (with outputs) downloaded by the team (not in git)",
+   "bytes": 103430,
+   "md5": "3abd94d18d4293f2eb34011dcc28141f",
+   "sha256": "a90de79c9efda146b73bd9d9828fbe4f48472530eedc30b785f586450b4029fb"
+  }
+ ],
+ "run": "slug unknown; docs/DATASETS.md:112 names nguynlcnhtho/flag-2027-nb-41 as 'output gốc' (CHƯA CHẮC that it is this 7/10 run)",
+ "evidence": [
+  "Its 8 code cells are identical to kaggle/FLAG_41_vox2_t3enc.ipynb (builder output, md5 e814e8d9...).",
+  "Log: keys 29 251 faces / 38 345 voices / 4 877 ids read from /kaggle/input/datasets/hthlin/flag2027-feats-vox2/feats_vox2; 13 face chunks with 0 failures; every voice key found (38 345 / 38 345)."
+ ]
+}

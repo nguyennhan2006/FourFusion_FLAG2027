@@ -1,0 +1,68 @@
+{
+ "id": "dp_feats_layout",
+ "group": "70_dp",
+ "title": "DP (Different Profile) branch: lay out the frozen-encoder arrays of the FLAG train set and MAV-Celeb v1/v2 as the DP scripts read them",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": null,
+  "minutes_estimate": 3,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "notebook_md5": null,
+  "builder": null,
+  "basis": "file list of Experiment/XJF-01/xjf.py lines 54-77 and extract_eval.py lines 39, 60, 79 (reads under <team repo>/kaggle/output/)"
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/ff/f12_eval_feats"
+  },
+  {
+   "artifact": "notebooks/ff/f10_models"
+  },
+  {
+   "artifact": "notebooks/ff/r08_mav_rows"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/dp_feats_layout",
+  "exports": {},
+  "files": [
+   "dp_feats/{feats_v2,feats_models,feats_eval,feats_ext_full}/<20 files of dp_features.json>",
+   "dp_feats/dp_feats_manifest.json"
+  ]
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/dp_features"
+ ],
+ "verify": [
+  {
+   "file": "dp_feats/dp_feats_manifest.json",
+   "sha256_of_each_file_from": "dp_features.json",
+   "rule": "equal when the producing stages are skipped with the stored arrays (strict by default outside FF_MODE=train); rebuilt arrays (GPU, mode (a)) may differ: reported. Shape / dtype mismatches always stop the stage"
+  }
+ ],
+ "todo": [
+  "G13: the arrays used for 13.54 exist only on the team machine (<team repo>/kaggle/output/feats_v2, feats_models, feats_eval, feats_ext_full; ~0.9 GB for these 20 files): upload them to FF_DATA/02_intermediate/dp_features/dp_feats/<sub-folder>/<file> (sub-folders and sha256 in dp_features.json). No dp_feats_manifest.json is needed in the upload: dp_extract_eval and dp_train find the folder by its structure and, when the manifest is absent, check the 20 sha256 values themselves",
+  "WP-A configs/data_map.json: give notebooks/ff/dp_feats_layout a 'files' list (the 20 targets and sha256 of dp_features.json); give notebooks/ff/f12_eval_feats the real hashes of the arrays the DP branch reads (face_arcface_train.npy 55491b54..., voice_ecapa_train.npy / voice_ecapa192_train.npy b3bd0a64..., voice_ecapa6144_train.npy 195490e2..., full values in dp_features.json) and mark the lab-data hash 91f05874... (an empty 6485 x 0 placeholder, layer map S7) as 'placeholder, not the array'",
+  "input artifact ids follow DESIGN 3.2 (notebooks/ff/f12_eval_feats, notebooks/ff/f10_models, notebooks/ff/r08_mav_rows); if WP-B / WP-D name their kernels differently, update inputs + the MOUNT table of stage.ipy cell 1"
+ ],
+ "env_spec": "docker/requirements-dp-local.txt (team CPU machine: Python 3.14.0, torch 2.12.1+cpu, numpy 2.3.5, pandas 3.0.5, insightface 2.0, onnxruntime 1.31.1, speechbrain 1.1.2; S8 E3)",
+ "env_overrides": {
+  "DP_FEATS_STRICT": "1 = stop when a laid-out file differs from the submission array, 0 = report only; default 1, except in FF_MODE=train (mode (a): the producing GPU stages are re-run). Shape and dtype of the .npy files are always checked (a wrong source bundle stops the stage)"
+ }
+}

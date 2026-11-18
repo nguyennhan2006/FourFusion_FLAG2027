@@ -1,0 +1,37 @@
+{
+ "stage": "final_blend",
+ "exactness": "local-script",
+ "local_run": {
+  "where": "team machine, Windows 11, Python 3.14.0 (zlib-ng 2.2.4)",
+  "when": "2026-11-16 11:08:08 (+07:00, time in the zip headers)",
+  "command": "XJF_SIG=\"5.0983,3.8376\" python Experiment/XJF-01/blend.py 1.0  (Experiment/XJF-01/README.md section 6)",
+  "log": "none kept"
+ },
+ "files": [
+  {
+   "path": "original/blend.py",
+   "bytes": 3890,
+   "mtime": "2026-11-16 17:08:00",
+   "md5": "8561bf2362fbe1fd0763e0607d294f01",
+   "sha256": "ece86b2ad25621bfba6b2d46c3d6ec12ad2d568d8c3bb2598a8a743ed144fb99",
+   "git": "untracked (??) in the team repo",
+   "note": "mtime 2026-11-16 17:08 = AFTER the submission zip (11:08:08): the XJF_BASE=lf branch (lines 17-22 and the '_lf' name parts) was added for the later, unsubmitted xjf_r10_trsig_lf.zip. With XJF_BASE unset this code path is the one of the 11:08 run; S7 0.1 / S8 K1 recomputed all four members byte for byte with this logic.",
+   "copied_from": "Experiment/XJF-01/blend.py"
+  }
+ ],
+ "stage_files": {
+  "blend.py": {
+   "sha256": "116b83510e5d73442202dd9024eef068c93ded63344afe3e98cd4b6c9f8b64e5",
+   "from": "original/blend.py + script_patches BL1-BL10"
+  }
+ },
+ "inputs_of_the_run": {
+  "posteval_FACTOR_ENFUSE_c5rl.zip": "9cf5bbe4e3af14184c26eef08104d3ddd94fc5357569c09fc657a93d4549fd93",
+  "posteval_FVBIND_ENFUSE_fvb.zip": "bb0e0175e9e9448128a529db8ed537cec0eef427d044729f030c4984830b0bbc",
+  "out/xjf_scores.npz (English-only file of the 02:11 run)": "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779"
+ },
+ "output_of_the_run": {
+  "zips/xjf_r10_trsig.zip": "b4354eaf988b2b4ea8c4e1c3fa44d7bcf631ea5cb3cd635ab2965021fe82e507",
+  "copy": "<team archive>/FLAG2027_submit/xjf_r10_trsig.zip (identical)"
+ }
+}

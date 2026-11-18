@@ -1,0 +1,61 @@
+{
+ "id": "safe04_compare",
+ "group": "30_F_family",
+ "title": "Compare the rebuilt SAFE-04 tables (safe04_lab, level full) with the frozen e2e-dev bundle",
+ "kind": "data",
+ "role_in_1354": "evidence",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": null,
+  "internet": false,
+  "secrets": [],
+  "estimate": "about a minute"
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "builder": null
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-e2e-dev-p"
+  },
+  {
+   "artifact": "datasets/ff-frozen/flag2027-e2e-dev-p",
+   "resolve": "saved_only"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/safe04_compare",
+  "exports": {}
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not_used (no input of this stage is a LoRA C1 artifact; the F1s' family does not use the ImageBind-audio LoRA)"
+ },
+ "skip_with": [],
+ "verify": [
+  {
+   "file": "safe04_compare.json",
+   "status": "PASS"
+  }
+ ],
+ "dev_usage": "none (the compared tables are SAFE-04 validation tables; the dev wiring files are not opened)",
+ "todo": [
+  "WP-A: data_map entry datasets/ff-frozen/flag2027-e2e-dev-p -> 02_intermediate/e2e_dev_frozen/ (the whole frozen bundle; input of safe04_compare and safe04_lab_core only, never of the producer safe04_lab)"
+ ],
+ "stage_ipy": {
+  "file": "stage.ipy",
+  "sha256": "d4e46c17a6115fc0c17699f670527c00b8f4c786fe2c0fdb48a46ea2a88adb10",
+  "bytes": 5609,
+  "cells": 2,
+  "cell_separator": "\\n# <<<FF-CELL>>>\\n"
+ }
+}

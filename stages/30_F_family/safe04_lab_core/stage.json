@@ -1,0 +1,82 @@
+{
+ "id": "safe04_lab_core",
+ "group": "30_F_family",
+ "title": "Partial SAFE-04 rebuild (level core, evidence only): pair keys, pf_m / pv_m and the other Extra columns, stack02_rows, fold_persons spliced into the frozen safe04/ tables",
+ "kind": "data",
+ "role_in_1354": "evidence",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": null,
+  "internet": false,
+  "secrets": [],
+  "estimate": "CPU, tens of minutes (unverified; never run)"
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "original_procedure": "October 2026, local CPU (scratch C:/Users/ASUS/AppData/Local/Temp/claude/.../969f2c71-.../scratchpad, deleted 1/11): python Experiment/SAFE-04/lab_streams.py; FOLDS=1,2,3,4,5 python rel_sweep2.py / rel_sweep5.py; VOX_LID=... T3_ARMS=B python Experiment/T3ENC-01/run.py; BIGB-01 on Kaggle (FLAG_48 lab, lab_entry.py); FOLDS=... python Experiment/CAFUSE-EN/run2.py; python Experiment/STACK-02/export.py; VOX_LID=... python kaggle/build_e2e_dev_bundle.py -> kaggle/flag2027-e2e-dev.zip (10/10/2026 21:00, sha256 0257b1fe2be4f2fde704c9662b845a4531d1ab8787eeb6c44e917d79014d130e)",
+  "code": "stage.ipy = safe04_lab/stage.ipy (same text); code read from ../safe04_lab/code (CODE_MANIFEST.json)",
+  "builder": null
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-eda-bundle-p"
+  },
+  {
+   "artifact": "datasets/ff-frozen/flag2027-e2e-dev-p",
+   "resolve": "saved_only"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/safe04_lab_core",
+  "exports": {},
+  "kernel_note": "e2e_dev_core/e2edev/safe04/ + SAFE04_REBUILT.json (no dev wiring copied); never exported as flag2027-e2e-dev-p"
+ },
+ "env": {
+  "FF_SAFE04_LEVEL": "core"
+ },
+ "smoke_env": {
+  "FF_SAFE04_FOLDS": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not_used (no input of this stage is a LoRA C1 artifact; the F1s' family does not use the ImageBind-audio LoRA)"
+ },
+ "skip_with": [],
+ "verify": [
+  {
+   "in_stage": [
+    "keys of every streams_fold equal to the frozen table (assert)",
+    "stack02_rows_identical",
+    "fold_persons_identical",
+    "max |diff| of each Extra column per fold (SAFE04_REBUILT.json checks)"
+   ]
+  }
+ ],
+ "dev_usage": "none (SAFE-04 validation tables only; the dev wiring of the frozen bundle is not copied)",
+ "todo": [
+  "WP-A: register safe04_lab_core in configs/pipeline_1354.json (role evidence, force_only)"
+ ],
+ "force_only": true,
+ "default_policy": "evidence only; runs when forced (FF_FORCE=safe04_lab_core)",
+ "stage_ipy": {
+  "file": "stage.ipy",
+  "sha256": "2b2041650ad3ead83e0015de555e2acd3815d02253bace319779c9d0b067840f",
+  "bytes": 16141,
+  "cells": 5,
+  "cell_separator": "\\n# <<<FF-CELL>>>\\n"
+ },
+ "levels": {
+  "core": "PARTIAL rebuild: the XALL_* / CTRL_* columns of streams_fold<s> and every relonly_multi / relonly_g / t3enc01f / bigb01f / cafuse_en2 table stay frozen; this output is evidence that the cheap part of the SAFE-04 lab (keys, pf_m, pv_m, stack02_rows, fold_persons) reproduces, nothing more. Under NOREL=1 + CLEANCOMP=1 they feed no F1s' fuser input of 13.54 (cleancomp_tables replaces XALL_* / relc_fia_eb / relg_fia_eb / anP512_* / t3_relg; NOREL drops rel / relg / t3_relg); they feed the F0 English fuser (CTRL_ib / CTRL_age through EN-T3-01 table_en + cafuse_en2 in CLEANTUNE-01 fit_en_clean, the t112sf0s / e112f0sx zip step) and wiring checks (check_v11_fuser). Whether any 13.54 number uses the F0 English file is for WP-G to confirm (WP-E's reading: no, the FACTOR_ENFUSE English scores come from the Bangla fuser of F1s'). Either way a core output is partial and must not stand in for the bundle."
+ },
+ "identity_linkage": "code/kaggle/build_l0_notebooks.py line 92 OVERLAP = {\"v1_complete:shaukat_tarin\", \"v2_complete:id0073\"} (MAV-Celeb persons matched to v4 persons) is part of the lab code (lab_streams imports its module globals); disclosure: docs/COMPLIANCE_NOTES.md (DESIGN G17, WP-K)",
+ "code_manifest_ref": "../safe04_lab/code/CODE_MANIFEST.json"
+}

@@ -1,0 +1,155 @@
+{
+ "stage": "c45_frames_vox2",
+ "run": "onnhqunhh/flag-2027-nb-45-facelora-farl",
+ "exactness": "exact-executed-copy",
+ "files": [
+  {
+   "path": "original/flag-2027-nb-45-facelora-farl.ipynb",
+   "copied_from": "reconstructed from kaggle/FLAG_45_facelora.ipynb (see exactness_note)",
+   "bytes": 68009,
+   "md5": "a0558cc91281bb8b9c93616d5da59d06",
+   "sha256": "6c40653b30234a1244d05bd1f108274cb15ff33b56fd460a1d01bdfb00d3f2b3"
+  }
+ ],
+ "notes": [],
+ "repo_file": {
+  "path": "kaggle/FLAG_45_facelora.ipynb",
+  "bytes": 68233,
+  "md5": "c36c1385cd16cd73c1d91ac34b8eef6f",
+  "sha256": "47604aa379754377bc2c54368709daef387eac61994e4244180325d85773f6ab"
+ },
+ "derivation": "json.loads(repo file); drop element 0 (the '[boot]' print) of the first code cell's source list; json.dumps(nb, indent=1, ensure_ascii=False); '\\n' -> '\\r\\n'; UTF-8 -> md5 a0558cc91281bb8b9c93616d5da59d06",
+ "exactness_note": "md5-verified reconstruction: kaggle/FLAG_45_facelora.ipynb (md5 c36c1385…) minus the [boot] line of its first code cell = md5 a0558cc91281bb8b9c93616d5da59d06 = push log line 30 (kaggle/kapi_runs.jsonl, internal provenance) (the pushed bytes)",
+ "notebook_md5": "a0558cc91281bb8b9c93616d5da59d06",
+ "push_records": [
+  {
+   "kapi_runs_line": 24,
+   "record": {
+    "time": "2026-10-12 07:56",
+    "account": "onnhqunhh",
+    "kernel": "onnhqunhh/flag-2027-nb-45-facelora-smoke",
+    "source": "kaggle/FLAG_45_facelora.ipynb",
+    "notebook_md5": "7990e5eeb4d671c73d309c3849e78e1d",
+    "gpu": false,
+    "smoke": {
+     "FLAG_SMOKE": "1",
+     "FLAG_SMOKE_ROWS": "6",
+     "VOX_SMOKE_IDS": "6",
+     "LORA_STEPS": "3",
+     "LORA_P": "4",
+     "LORA_K": "2"
+    },
+    "datasets": [
+     "trngsnam/flag-input",
+     "chnnhnnguyn/external-data-mavceleb",
+     "nguynchnngn/flag2027-ext-meta",
+     "ngnnguynchn/flag2027-lab-data"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  },
+  {
+   "kapi_runs_line": 26,
+   "record": {
+    "time": "2026-10-12 08:17",
+    "account": "onnhqunhh",
+    "kernel": "onnhqunhh/flag-2027-nb-45-facelora-smoke",
+    "source": "kaggle/FLAG_45_facelora.ipynb",
+    "notebook_md5": "47aef83e35be812ffbbc5b7f371bdaf2",
+    "gpu": false,
+    "smoke": {
+     "FLAG_SMOKE": "1",
+     "FLAG_SMOKE_ROWS": "6",
+     "VOX_SMOKE_IDS": "6",
+     "LORA_STEPS": "3",
+     "LORA_P": "4",
+     "LORA_K": "2"
+    },
+    "datasets": [
+     "trngsnam/flag-input",
+     "chnnhnnguyn/external-data-mavceleb",
+     "nguynchnngn/flag2027-ext-meta",
+     "ngnnguynchn/flag2027-lab-data"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  },
+  {
+   "kapi_runs_line": 29,
+   "record": {
+    "time": "2026-10-12 08:28",
+    "account": "onnhqunhh",
+    "kernel": "onnhqunhh/flag-2027-nb-45-facelora-farl-smoke",
+    "source": "kaggle/FLAG_45_facelora.ipynb",
+    "notebook_md5": "47aef83e35be812ffbbc5b7f371bdaf2",
+    "gpu": false,
+    "smoke": {
+     "FLAG_SMOKE": "1",
+     "FLAG_SMOKE_ROWS": "6",
+     "VOX_SMOKE_IDS": "6",
+     "LORA_STEPS": "3",
+     "LORA_P": "4",
+     "LORA_K": "2"
+    },
+    "datasets": [
+     "trngsnam/flag-input",
+     "chnnhnnguyn/external-data-mavceleb",
+     "nguynchnngn/flag2027-ext-meta",
+     "ngnnguynchn/flag2027-lab-data"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  },
+  {
+   "kapi_runs_line": 30,
+   "record": {
+    "time": "2026-10-12 08:34",
+    "account": "onnhqunhh",
+    "kernel": "onnhqunhh/flag-2027-nb-45-facelora-farl",
+    "source": "kaggle/FLAG_45_facelora.ipynb",
+    "notebook_md5": "a0558cc91281bb8b9c93616d5da59d06",
+    "gpu": true,
+    "smoke": {},
+    "datasets": [
+     "trngsnam/flag-input",
+     "chnnhnnguyn/external-data-mavceleb",
+     "nguynchnngn/flag2027-ext-meta",
+     "ngnnguynchn/flag2027-lab-data"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  }
+ ],
+ "builders_today": [
+  {
+   "path": "kaggle/build_facelora_notebook.py",
+   "bytes": 27867,
+   "md5": "43cc28d4b3060bf50dc3b4f0322999f9",
+   "sha256": "b5a461214cd4738f35a1e992857621f4c98872a905db98f9758ed8c648722894",
+   "mtime_local": "2026-10-12 08:16:48"
+  },
+  {
+   "path": "kaggle/vendor_t3enc/t3enc_cell.py",
+   "bytes": 6751,
+   "md5": "9ee869ae454df33442705f6fa8a19252",
+   "sha256": "5083111e0beabcae34b3655b37ae05412bd0fa14ecdd40a5844d889b2851917a",
+   "mtime_local": "2026-10-09 18:19:28"
+  },
+  {
+   "path": "kaggle/build_rep_notebooks.py",
+   "bytes": 37826,
+   "md5": "308fc9f8f5ec43fd4d327c5cfa54f3c8",
+   "sha256": "96e9fe36ab86d6a7038515cd91ace1170ce76cd3acaca29a2d99f2739a6485f2",
+   "mtime_local": "2026-10-04 14:18:24"
+  }
+ ],
+ "builders_git": "all untracked in the source repo (git status '??'); kaggle/build_eval_notebooks.py (notebook writer) is tracked + modified",
+ "evidence": [
+  "internal provenance (not shipped): NOP_BTC_2026-11-20/repo_map/DESIGN.md §4.2, §6 WP-C, §7 G2 G9 G22 G27",
+  "internal provenance (not shipped): S1 A13; S2 3.2"
+ ]
+}

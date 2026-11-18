@@ -1,0 +1,34 @@
+{
+ "organisers_files": {
+  "train_set.zip": {
+   "bytes": 1428601179,
+   "sha256": "1803739f059860d5aede064839a17b01c6297f3160ab80cc9d3c929b27ae2ad9"
+  },
+  "dev_set.zip": {
+   "bytes": 989881860,
+   "sha256": "f29cc4139bc3e40bf9e9cd6533b6822e41296de972589d85ac71953cd1a92983"
+  },
+  "meta_file_train_set.csv": {
+   "bytes": 560,
+   "sha256": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030"
+  }
+ },
+ "sha256_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/MANIFEST.sha256 lines 130088-130090; team copy d:/.../FLAG_2027_FourFusion/Input/",
+ "train_members_checked_18_11": "train_set/train_set/train_English.txt 9da76d23..., faces csv 3f96079d..., voices csv be650b98... (= kaggle_upload/train/* byte for byte); 13 122 entries; 6 485 pairs; 70 speakers",
+ "stage": "raw_btc",
+ "files": [],
+ "stage_files": [
+  {
+   "path": "cells/00_check.py",
+   "bytes": 4419,
+   "md5": "6c8f92123f834411e98b99b2babba620",
+   "sha256": "e6885b70341622c99a1f2269816a45d78ec0eb130b4b6bb40f417fbc5e72810e"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 801,
+   "md5": "80bba6a9ea88d93735a741940044a692",
+   "sha256": "5752aee981c2d21fc3fcefc3e237ed4fe6131d45b76881c5f57e94bbc970798a"
+  }
+ ]
+}

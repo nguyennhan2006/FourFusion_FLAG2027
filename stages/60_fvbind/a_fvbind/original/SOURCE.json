@@ -1,0 +1,99 @@
+{
+ "stage": "a_fvbind",
+ "exactness": "local-script",
+ "what": "the two zips built by hand on the team machine on 15/11/2026 at about 08:24 (zip timestamps 08:24:24 and 08:24:32), no log of the commands; commands reconstructed in S6 1.5 / 1.6 and checked: XTEAM-03 arithmetic on (rfsfxfvb_eval.zip, f1s_eval.zip) reproduces both Bangla members byte for byte (S6 section 5, S8 K2); ENFUSE-U wrote original/posteval_FVBIND_ENFUSE_fvb.txt",
+ "original_commands": [
+  "bash Experiment/EVALPATH-U/make_eval_zip.sh Experiment/EVALPATH-U/eval_out/f1s_eval.zip Experiment/FVBIND-01/out/rfsfxfvb_eval.zip Experiment/FVBIND-01/zips/posteval_FVBIND_U_fvb.zip eval --counts 'no_gender/sub_score_v4_English_heard.txt=392,no_gender/sub_score_v4_Bangla_unheard.txt=802,gender/sub_score_v4_English_heard.txt=416,gender/sub_score_v4_Bangla_unheard.txt=716'",
+  "PYTHONIOENCODING=utf-8 ENF_RFS=Experiment/FVBIND-01/out/rfsfxfvb_eval.zip ENF_U=Experiment/FVBIND-01/zips/posteval_FVBIND_U_fvb.zip ENF_OUT=Experiment/FVBIND-01/zips/posteval_FVBIND_ENFUSE_fvb.zip python Experiment/ENFUSE-U/run.py"
+ ],
+ "cross_check": "python release/factor_enfuse/rebuild_final.py <IN> <OUT> <REF> with IN/rfx_eval.zip := rfsfxfvb_eval.zip (DESIGN N5): same arithmetic (CA-FUSE design matrix, (X - mean) / scale @ coef + intercept, -s + RFX', %.8f in the F1s' pair order); verified on FACTOR_ENFUSE (E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/rebuild_report.txt: 'OK: identical'); NOT yet run for FVBIND",
+ "scripts": [
+  {
+   "repo_file": "tree/Experiment/EVALPATH-U/make_eval_zip.sh",
+   "copied_from": "Experiment/EVALPATH-U/make_eval_zip.sh",
+   "bytes": 1400,
+   "sha256": "896a28226b3a340b55a5557dad00655ea2bde228086a1916cf227a86a2a60494",
+   "md5": "c44fc7ecc05315ca0a2b5fd186defd64",
+   "mtime": "2026-11-03 18:22:52",
+   "in_git": false,
+   "line_endings": "LF"
+  },
+  {
+   "repo_file": "tree/Experiment/EVALPATH-U/check_eval_zip.py",
+   "copied_from": "Experiment/EVALPATH-U/check_eval_zip.py",
+   "bytes": 3244,
+   "sha256": "bde629bc8473c60440e7ecdc7c0618680e5a459aa816b4b34aafb37d199dce16",
+   "md5": "40a27e648bf411995a60323c3adb268a",
+   "mtime": "2026-11-03 18:22:40",
+   "in_git": false,
+   "line_endings": "LF"
+  },
+  {
+   "repo_file": "tree/Experiment/XTEAM-03/run.py",
+   "copied_from": "Experiment/XTEAM-03/run.py",
+   "bytes": 1633,
+   "sha256": "3c1003dd9c70ae887e0890bf95fb06a0eaba4cd79552b2798be693e20f361fb8",
+   "md5": "064f61134d1512f3cf4327d610e76290",
+   "mtime": "2026-11-15 09:33:40",
+   "in_git": false,
+   "line_endings": "CRLF"
+  },
+  {
+   "repo_file": "tree/Experiment/ENFUSE-U/run.py",
+   "copied_from": "Experiment/ENFUSE-U/run.py",
+   "bytes": 5484,
+   "sha256": "03858efa3fb034c841cbde91a4c79b7dc256530f0580e080d0611c9ad018c2ef",
+   "md5": "5250aaf7c006eb2316950c93078206a9",
+   "mtime": "2026-11-15 09:33:42",
+   "in_git": false,
+   "line_endings": "LF"
+  },
+  {
+   "repo_file": "tree/Experiment/E2E/e2e_lib.py",
+   "copied_from": "Experiment/E2E/e2e_lib.py",
+   "bytes": 16836,
+   "sha256": "a609cebb35be09b3d6fa7edbb2ced1e9652bd5fe8c4174ee938388393ac19def",
+   "md5": "f8efa92934ba217d2b1e6c665815a729",
+   "mtime": "2026-11-05 15:38:00",
+   "in_git": false,
+   "line_endings": "CRLF"
+  },
+  {
+   "repo_file": "tree/release/factor_enfuse/rebuild_final.py",
+   "copied_from": "release/factor_enfuse/rebuild_final.py",
+   "bytes": 4103,
+   "sha256": "0878da7f24dc91ce345c7a455cb98880258ba8c022fe733b47387fb76753a1b9",
+   "md5": "659da47422dcdcdd1941b19feeb61e14",
+   "mtime": "2026-11-13 18:18:52",
+   "in_git": false,
+   "line_endings": "LF"
+  }
+ ],
+ "script_notes": [
+  "Experiment/XTEAM-03/run.py and Experiment/ENFUSE-U/run.py were edited on 15/11 at 09:33 (one hour after the build) to add the optional knobs XT_W / ENF_W (FUSEDIM-02); with them unset (the driver removes them) the code computes r + f and -s + rfa exactly as before. No earlier copy of the two files exists (Experiment/ is not in git).",
+  "make_eval_zip.sh, check_eval_zip.py (3/11), e2e_lib.py (5/11) and rebuild_final.py (13/11) predate the build."
+ ],
+ "inputs_used_on_15_11": {
+  "f1s_eval.zip": "Experiment/EVALPATH-U/eval_out/f1s_eval.zip 1b43b14ff763bd0e...",
+  "rfsfxfvb_eval.zip": "Experiment/FVBIND-01/out/rfsfxfvb_eval.zip 45044189ae4b228b...",
+  "cleantune01_fuser_bangla_CA.json": "Experiment/ENFUSE-U/in/f1/e2e_out/ c4737367e787da6d...",
+  "ct01r2_final_eval.npz": "Experiment/ENFUSE-U/in/f1/e2e_out/ bbad53ed8e320662...",
+  "components_eval.npz": "Experiment/ENFUSE-U/in/c50/e2e_eval/ 2cd160ae456447c0...",
+  "e2e_manifest.json": "Experiment/ENFUSE-U/in/c50/e2e_eval/ b0ba27c2982f9171..."
+ },
+ "files": [
+  {
+   "repo_file": "posteval_FVBIND_ENFUSE_fvb.txt",
+   "copied_from": "Experiment/ENFUSE-U/out/posteval_FVBIND_ENFUSE_fvb.txt",
+   "sha256": "f357fbf246be6b47d8bcf082c186f30a1bd1d64dcab89695d9740a0a61ce5fb9"
+  },
+  {
+   "repo_file": "POSTEVAL-01_manifest_FVBIND_entries.json",
+   "copied_from": "Experiment/POSTEVAL-01/manifest.json (extract)"
+  }
+ ],
+ "outputs_on_15_11": {
+  "posteval_FVBIND_U_fvb.zip": "b61c84edca2921fc8e313994f3f5d66247d5fa378a4f4f76a2789e516036b401",
+  "posteval_FVBIND_ENFUSE_fvb.zip": "bb0e0175e9e9448128a529db8ed537cec0eef427d044729f030c4984830b0bbc (Evaluation submission 8, 16.90)"
+ }
+}

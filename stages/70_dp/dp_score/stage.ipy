@@ -1,0 +1,162 @@
+print("[cell] dp_score: inputs (tower checkpoint of dp_train, DP Evaluation features, eval_set.zip)", flush=True)
+# New code: scores the Evaluation trials from the saved tower pairs (same arithmetic as the end of xjf.py). When dp_train wrote both the
+# checkpoint and its own scores from the same DP Evaluation features, the two must be bit-identical: the stage stops otherwise.
+import hashlib, json, os, shutil, subprocess, sys, tempfile, zipfile
+from pathlib import Path
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+assert os.environ.get("FF_STAGE_DIR"), "FF_STAGE_DIR (this stage's folder in the repo) must be set by the runner"
+SD = Path(os.environ["FF_STAGE_DIR"]).resolve()
+REPO = Path(os.environ.get("FF_REPO") or SD.parents[2]).resolve()
+EVAL_SET_SHA256 = "a70762a3fb52af6bbf52c14a86c79a4d074ec319b78d6ffedcdf195d71f9381e"   # eval_set.zip read by the DP branch on 16/11
+ALLOW_MISMATCH = os.environ.get("DP_ALLOW_INPUT_MISMATCH") == "1"
+
+
+def fresh_tmp(stage):
+    """Scratch folder of this stage run (unpacked media, rebuilt zips, model copies), outside the stage output. It is emptied at every
+    run, so nothing of an earlier run (a smoke run, other inputs, another FF_DATA) is reused."""
+    base = os.environ.get("DP_TMP") or (str(Path(os.environ["FF_WORK"]) / "tmp") if os.environ.get("FF_WORK") else "") \
+        or ("/kaggle/tmp" if Path("/kaggle/tmp").is_dir() else tempfile.gettempdir())
+    t = Path(base) / "ff_dp" / stage
+    shutil.rmtree(t, ignore_errors=True)
+    t.mkdir(parents=True, exist_ok=True)
+    return t
+
+
+TMP = fresh_tmp("dp_score")
+
+
+def sha256(p, bs=1 << 20):
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(bs), b""):
+            h.update(b)
+    return h.hexdigest()
+
+
+def one(root, name, env=None):
+    """The file called `name` below `root`: the shallowest one when the artifact holds several copies (a producing stage's own
+    output sits at its top level); `env` names a variable that may give the path directly."""
+    if env and os.environ.get(env):
+        p = Path(os.environ[env]); assert p.is_file(), f"{env}={p}: not a file"; return p
+    R = Path(root)
+    hits = sorted(q for q in R.rglob(name) if q.is_file())
+    if len(hits) > 1:
+        d = min(len(q.relative_to(R).parts) for q in hits)
+        hits = [q for q in hits if len(q.relative_to(R).parts) == d]
+        print(f"  {name}: several copies under {R}; the shallowest is taken: {[str(q) for q in hits]}", flush=True)
+    assert len(hits) == 1, f"{name}: {len(hits)} files under {R}: {[str(q) for q in hits[:5]]}" + (f" (set {env})" if env else "")
+    return hits[0]
+
+
+def as_zip(root, zip_name, probe, env=None):
+    """`zip_name` below `root`. When the dataset is mounted unpacked, an equivalent zip (same member paths, stored) is rebuilt from
+    the folder that holds `probe` (a member path of the zip); only that top folder is packed (never the dev set)."""
+    if env and os.environ.get(env):
+        return one(root, zip_name, env)
+    if any(q.is_file() for q in Path(root).rglob(zip_name)):
+        return one(root, zip_name)
+    top, leaf = probe.split("/")[0], probe.split("/")[-1]
+    cands = [q for q in Path(root).rglob(leaf) if q.is_file() and q.as_posix().endswith("/" + probe)]
+    assert len(cands) == 1, f"neither {zip_name} nor one unpacked folder holding {probe} under {root}"
+    base = cands[0].parents[probe.count("/")]
+    z = TMP / f"rebuilt_{zip_name}"
+    with zipfile.ZipFile(z.with_suffix(".part"), "w", zipfile.ZIP_STORED) as w:
+        for q in sorted((base / top).rglob("*")):
+            if q.is_file():
+                w.write(q, q.relative_to(base).as_posix())
+    z.with_suffix(".part").replace(z)
+    print(f"  {zip_name} is not attached as a zip: rebuilt from the unpacked folder {base / top} -> {z}", flush=True)
+    return z
+
+
+def eval_zip():
+    """eval_set.zip of the Evaluation phase: $DP_EVAL_ZIP, else the zip in the output of stage raw_evalphase (the zip the DP branch read
+    on 16/11), else a zip rebuilt from the extracted dataset view. Unless the file is byte-identical to the submitted one, every member
+    is checked against stages/10_raw/raw_evalphase/expected/eval_set_members.sha256 (zip bytes carry the build time, members do not)."""
+    if os.environ.get("DP_EVAL_ZIP"):
+        z = one(None, "eval_set.zip", "DP_EVAL_ZIP")
+    else:
+        K = IN / "notebooks/ff/raw_evalphase"
+        if K.is_dir() and any(q.is_file() for q in K.rglob("eval_set.zip")):
+            z = one(K, "eval_set.zip")
+        else:
+            z = as_zip(IN / "datasets/ngnnguynchn/flag2027-evalphase-p", "eval_set.zip", "evaluation_phase/no_gender/features/English_test_faces.csv")
+    h = sha256(z)
+    if h == EVAL_SET_SHA256:
+        print(f"  eval_set.zip: {z} = the file used for the submission (sha256 {h[:16]}...)", flush=True)
+        return z
+    man = REPO / "stages/10_raw/raw_evalphase/expected/eval_set_members.sha256"
+    assert man.is_file(), f"{man} is missing: the members of {z} cannot be checked"
+    want = {}
+    for line in man.read_text(encoding="utf-8").splitlines():
+        if line.strip() and not line.startswith("#"):
+            want[line[64:].lstrip(" *")] = line[:64]
+    bad = []
+    with zipfile.ZipFile(z) as zf:
+        names = {i.filename for i in zf.infolist() if not i.is_dir()}
+        for n, s in want.items():
+            if n not in names:
+                bad.append(f"{n} (missing)")
+                continue
+            hh = hashlib.sha256()
+            with zf.open(n) as f:
+                for b in iter(lambda: f.read(1 << 20), b""):
+                    hh.update(b)
+            if hh.hexdigest() != s:
+                bad.append(n)
+    extra = sorted(names - set(want))
+    print(f"  eval_set.zip: {z} (sha256 {h[:16]}..., other zip bytes): {len(want) - len(bad)} of {len(want)} members equal to those of the "
+          f"submitted zip; {len(extra)} extra member(s) {extra[:5]}", flush=True)
+    assert not bad or ALLOW_MISMATCH, f"eval_set.zip: {len(bad)} member(s) differ from the submitted zip: {bad[:5]} (DP_ALLOW_INPUT_MISMATCH=1 to go on)"
+    return z
+
+
+def run(cmd, env):
+    """Run a script of this stage; its output is streamed line by line."""
+    cmd = [str(c) for c in cmd]
+    print("$", " ".join(cmd), flush=True)
+    p = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", bufsize=1, errors="replace")
+    for line in p.stdout:
+        print(line, end="", flush=True)
+    assert p.wait() == 0, f"{Path(cmd[2]).name} failed (exit code {p.returncode})"
+
+
+KT = IN / "notebooks/ff/dp_train"
+assert os.environ.get("DP_TOWERS") or (KT.is_dir() and any(q.is_file() for q in KT.rglob("dp_towers.pt"))), (
+    f"dp_towers.pt is not in the dp_train artifact mounted at {KT}. The original run kept the towers in memory only (gap G5), so a saved "
+    "copy that holds only xjf_scores.npz / consts.json is not a checkpoint. Run stage dp_train (FF_FORCE=dp_train, about 12 CPU-minutes) "
+    "or upload the out/dp_towers.pt it writes to FF_DATA/03_checkpoints/dp_towers/out/ (or set DP_TOWERS)")
+TOW = one(KT, "dp_towers.pt", "DP_TOWERS")
+OWN = sorted(q for q in KT.rglob("xjf_scores.npz") if q.is_file()) if KT.is_dir() else []   # written by xjf.py itself next to the checkpoint
+if OWN:                                                             # the shallowest copy(ies): dp_train's own out/ folder
+    _d = min(len(q.relative_to(KT).parts) for q in OWN)
+    OWN = [q for q in OWN if len(q.relative_to(KT).parts) == _d]
+CHK = sorted(q for q in KT.rglob("dp_train_check.json") if q.is_file()) if KT.is_dir() else []
+FE = one(IN / "notebooks/ff/dp_extract_eval", "ids_no_gender_English.txt").parent
+FE_SHA = {f.name: sha256(f) for f in sorted(FE.iterdir()) if f.is_file() and f.suffix in (".npy", ".txt")}
+EVZ = eval_zip()
+print(f"  checkpoint {TOW}\n  DP Evaluation features {FE}\n  eval_set {EVZ}\n  scores of dp_train itself: {[str(q) for q in OWN] or 'none'}", flush=True)
+# <<<FF-CELL>>>
+print("[cell] dp_score: score the Evaluation trials from the checkpoint", flush=True)
+cmd = [sys.executable, "-u", SD / "dp_score.py", "--towers", TOW, "--eval-feats", FE, "--eval-zip", EVZ, "--out", OUT / "out/xjf_scores.npz"]
+if len(OWN) == 1:
+    cmd += ["--compare", OWN[0]]
+run(cmd, dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8"))
+# <<<FF-CELL>>>
+print("[cell] dp_score: summary", flush=True)
+cmpf = OUT / "out/dp_score_compare.json"
+same_feats = None                                                   # did dp_train use the same DP Evaluation features?
+if CHK:
+    same_feats = json.loads(CHK[0].read_text(encoding="utf-8")).get("eval_feats_sha256") == FE_SHA
+if cmpf.is_file():
+    rep = json.loads(cmpf.read_text(encoding="utf-8"))
+    ident = all(isinstance(v, dict) and v.get("bit_identical_z") for v in rep.values())
+    print("  vs the scores written by dp_train (verbatim xjf.py):", "bit-identical" if ident else rep, "| same DP Evaluation features:", same_feats, flush=True)
+    must = bool(same_feats) or (same_feats is None and os.environ.get("FF_MODE") == "train")
+    if must and not ident:
+        assert ALLOW_MISMATCH, ("the checkpoint path (dp_score.py) and the verbatim xjf.py disagree on the same features: final_blend would not "
+                                "get the scores of the original script (DP_ALLOW_INPUT_MISMATCH=1 to go on)")
+    elif not ident:
+        print("  NOTE: dp_train used other DP Evaluation features (e.g. the stored checkpoint of the team machine): differences are expected", flush=True)
+else:
+    print("  no scores of dp_train next to the checkpoint: nothing to compare (mode infer with a stored checkpoint)", flush=True)

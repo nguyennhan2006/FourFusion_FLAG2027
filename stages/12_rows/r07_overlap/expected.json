@@ -1,0 +1,23 @@
+{
+ "flagged": [
+  "v1_complete:shaukat_tarin",
+  "v2_complete:id0073"
+ ],
+ "persons": 153,
+ "original_max_cos_v4train": {
+  "v1_complete:shaukat_tarin": 0.6503481268882751,
+  "v2_complete:id0073": 0.898135781288147,
+  "highest_not_flagged (v2_complete:id0060)": 0.6212396621704102
+ },
+ "threshold": {
+  "rule": "THR = (p99.5 of different-person centroid cosines + p1 of same-person split-half cosines) / 2 on v4 train (overlap.py)",
+  "log_37_value": 0.624,
+  "log_37_source": "Experiment/EXPERIMENT_LOG.md entry (37), same rule in the FLAG_08 identity-overlap cell; dev threshold 0.659",
+  "bracket_from_original_output": [
+   0.6212396621704102,
+   0.6503481268882751
+  ],
+  "derivation": "the dev rule flagged nobody (highest top20_cos_dev 0.6039 is not flagged, so THR_DEV >= 0.6039, and both flagged persons have top20_cos_dev <= 0.513); hence both were flagged by the centroid rule: THR < 0.6503 (v1_complete:shaukat_tarin) and THR >= 0.6212 (v2_complete:id0060 not flagged)",
+  "near_threshold_window": 0.01
+ }
+}

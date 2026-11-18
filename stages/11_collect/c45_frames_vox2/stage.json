@@ -1,0 +1,160 @@
+{
+ "id": "c45_frames_vox2",
+ "group": "11_collect",
+ "title": "Lossless PNG middle frames of the 29 251 FLAG_37 face tracks (vox_frames_png.zip), frames part of FLAG_45 only",
+ "kind": "collect",
+ "role_in_1354": "score",
+ "modes": {
+  "train": "not run by default: collect stages run only when forced (configs/modes.json collect_kind_runs_only_when_forced) and every collected dataset is read from FF_DATA/01_collected (class 'collected' is in always_saved_classes). Re-collecting: force the whole collect closure in ONE run, with a fresh FF_WORK and FF_USE_SAVED=collected (README.md of 11_collect): FF_FORCE=c37_vox2,c53_vox2b,c46_voxblink,c45_frames_vox2,c_frames_index,c63_frames,c87_frames_bridge,c63v_audio_cache. Forcing this stage alone mixes its new rows with the old frames / audio cache (sampling is not deterministic). Its kernel output (feats_facelora/vox_frames_png.zip) is kept nowhere except, renamed, inside face_frames_png.",
+  "infer": "not run",
+  "assemble": "not run"
+ },
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "accelerator": "none (the original run used a T4 for the dropped LoRA training)",
+  "minutes_original": 70,
+  "internet": true,
+  "secrets": [
+   "HF_TOKEN"
+  ],
+  "note": "70 min = the whole original run (frames + FaRL LoRA + MAV embedding, team dataset log line 215, internal provenance); the frames part alone is shorter (unverified). HF_TOKEN: gated repo"
+ },
+ "origin": {
+  "run": "onnhqunhh/flag-2027-nb-45-facelora-farl",
+  "exactness": "exact-executed-copy",
+  "exactness_note": "md5-verified reconstruction: kaggle/FLAG_45_facelora.ipynb (md5 c36c1385…) minus the [boot] line of its first code cell = md5 a0558cc91281bb8b9c93616d5da59d06 = push log line 30 (kaggle/kapi_runs.jsonl, internal provenance, not shipped) (the pushed bytes)",
+  "source_file": "kaggle/FLAG_45_facelora.ipynb",
+  "notebook_md5": "a0558cc91281bb8b9c93616d5da59d06",
+  "builder": "kaggle/build_facelora_notebook.py farl16 (untracked; frame cell = TRAIN string, middle_frame_png)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "mount": "datasets/trngsnam/flag-input",
+   "why": "the FLAG_12 data cell (kept verbatim) stops without an organiser list with media; only train_set.zip is unpacked (patches); the run attached the older public copy trngsnam/flag-input"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p",
+   "mount": "datasets/ngnnguynchn/flag2027-lab-data",
+   "why": "FLAG_37 keys, FLAG_41 arrays (row-count check), FLAG_42 lid_summary.json (required Bengali filter)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/onnhqunhh/flag-2027-nb-45-facelora-farl",
+  "exports": {}
+ },
+ "scratch": [
+  "raw"
+ ],
+ "env": {
+  "FLAG_LOCAL": "0",
+  "FLAG_SMOKE": "0"
+ },
+ "env_note": "FLAG_LOCAL / FLAG_SMOKE pinned to \"0\" so a value left in the caller's environment cannot switch the notebook into its local / smoke mode during a real run (smoke_env sets \"1\" under FF_SMOKE=1). FLAG_IN / FLAG_OUT would also bypass the runner's /kaggle paths if set by the caller and cannot be pinned here (a fixed value would be wrong): WP-A drops them from the inherited environment; never export them.",
+ "smoke_env": {
+  "FLAG_SMOKE": "1",
+  "VOX_SMOKE_IDS": "6",
+  "FLAG_SMOKE_ROWS": "6"
+ },
+ "patches": [
+  {
+   "id": "train_only",
+   "old": "SPLIT_FILTER = None            # e.g.",
+   "new": "SPLIT_FILTER = [\"train\"]      # [FF dev-exclusion] only the train list; orig. None. e.g.",
+   "count": 1,
+   "why": "dev never read (design rule): the stage reads organiser TRAIN data only because the verbatim FLAG_12 data cell requires an organiser list with media; it unpacks train_set.zip, reads the duration of every train wav and copies train_English.txt (as feats_facelora/index_train.txt) and meta_file_train_set.csv into its output; no dev data is read",
+   "type": "dev-exclusion",
+   "effect": "none"
+  },
+  {
+   "id": "train_zip_only",
+   "old": "ZIP_PREFIXES = (\"train_set\", \"dev_set\", \"eval\", \"test\")             # organiser zips unpacked when not extracted",
+   "new": "ZIP_PREFIXES = (\"train_set\",)   # [FF dev-exclusion] only train_set.zip is unpacked; orig. (\"train_set\", \"dev_set\", \"eval\", \"test\")",
+   "count": 1,
+   "why": "without it the data cell would unpack dev_set.zip too (SPLIT_FILTER only filters afterwards)",
+   "type": "dev-exclusion",
+   "effect": "none"
+  },
+  {
+   "id": "hf_revision",
+   "old": "ZIP_PATH = \"datasets/ProgramComputer/voxceleb/vox2/vox2_mp4_{}.zip\"\nZIP_URL = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/main/vox2/vox2_mp4_{}.zip\"",
+   "new": "# [FF pin] HF revision parameter added for the reproduction repo (CHANGES.md): FF_HF_REVS = JSON {\"<repo id>\": \"<commit>\"};\n# unset, or a repo not listed -> \"main\" = the original behaviour (the original run read resolve/main, unpinned).\nFF_HF_REV = lambda repo: __import__(\"json\").loads(__import__(\"os\").environ.get(\"FF_HF_REVS\") or \"{}\").get(repo, \"main\")\nFF_HF_AT = lambda repo: \"\" if FF_HF_REV(repo) == \"main\" else \"@\" + FF_HF_REV(repo)   # [FF pin] HfFileSystem form of the same revision\n# [FF url] ProgramComputer/voxceleb became gated (auto-approved terms) after the run: token from the environment only, never\n# printed; no HF_TOKEN -> {} = the original anonymous request.\nFF_HF_HDR = {\"Authorization\": \"Bearer \" + __import__(\"os\").environ[\"HF_TOKEN\"]} if __import__(\"os\").environ.get(\"HF_TOKEN\") else {}\nZIP_PATH = \"datasets/ProgramComputer/voxceleb\" + FF_HF_AT(\"ProgramComputer/voxceleb\") + \"/vox2/vox2_mp4_{}.zip\"\nZIP_URL = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/\" + FF_HF_REV(\"ProgramComputer/voxceleb\") + \"/vox2/vox2_mp4_{}.zip\"",
+   "count": 1,
+   "why": "HF revision parameter (G27) + token header; unset = original strings",
+   "type": "pin",
+   "effect": "none"
+  },
+  {
+   "id": "auth_resolve",
+   "old": "requests.get(ZIP_URL.format(k), headers={\"Range\": \"bytes=0-0\"}, allow_redirects=True, timeout=120, stream=True)",
+   "new": "requests.get(ZIP_URL.format(k), headers={\"Range\": \"bytes=0-0\", **FF_HF_HDR}, allow_redirects=True, timeout=120, stream=True)",
+   "count": 1,
+   "why": "resolve(): the gated repo needs the token",
+   "type": "url",
+   "effect": "none"
+  },
+  {
+   "id": "frames_only",
+   "old": "# ---- the face encoder + LoRA, voice projection\nif LORA_ENC == \"farl16\":\n    import clip as _clip\n    _base, PRE = _clip.load(\"ViT-B/16\", device=\"cpu\", download_root=str(CACHE / \"clip\"))\n    _sd = torch.load(fetch(FARL16_URL, CACHE / \"FaRL-ep16.pth\", FARL16_SIZE), map_location=\"cpu\", weights_only=False)[\"state_dict\"]\n    _vis = [k for k in _base.state_dict() if k.startswith(\"visual.\")]\n    assert all(k in _sd and _sd[k].shape == _base.state_dict()[k].shape for k in _vis)\n    _base.load_state_dict(_sd, strict=False)\n    VIS = _base.visual.float()\n    LAYERS, MLP_NAMES = VIS.transformer.resblocks, (\"c_fc\", \"c_proj\")\n    ENC_FWD = lambda x: VIS(x)\n    DIM = int(VIS.proj.shape[1])\nelse:\n    from transformers import CLIPModel, CLIPImageProcessor\n    _proc = CLIPImageProcessor.from_pretrained(CLIPL_ID, revision=CLIPL_REV)\n    _cm = CLIPModel.from_pretrained(CLIPL_ID, revision=CLIPL_REV, torch_dtype=torch.float32)\n    VIS = nn.ModuleDict(dict(vm=_cm.vision_model, proj=_cm.visual_projection)).float()\n    del _cm\n    PRE = lambda im: _proc(images=im.convert(\"RGB\"), return_tensors=\"pt\").pixel_values[0]\n    LAYERS, MLP_NAMES = VIS[\"vm\"].encoder.layers, (\"fc1\", \"fc2\")\n    ENC_FWD = lambda x: VIS[\"proj\"](VIS[\"vm\"](pixel_values=x).pooler_output)     # = get_image_features\n    DIM = int(VIS[\"proj\"].out_features)\nassert DIM == {\"farl16\": 512, \"clipL\": 768}[LORA_ENC]\nREF = REF_FACE[LORA_ENC]\nfor p in VIS.parameters():\n    p.requires_grad = False\n\n\nclass LoRALinear(nn.Module):\n    def __init__(self, base, r, alpha):\n        super().__init__()\n        self.base, self.scale = base, alpha / r\n        self.A = nn.Parameter(torch.randn(r, base.in_features) / math.sqrt(base.in_features))\n        self.B = nn.Parameter(torch.zeros(base.out_features, r))\n\n    def forward(self, x):\n        return self.base(x) + F.linear(x, self.B @ self.A) * self.scale\n\n\nclass Ckpt(nn.Module):\n    \"\"\"Gradient checkpointing of one adapted block during training (memory only; the same function).\"\"\"\n    def __init__(self, blk):\n        super().__init__(); self.blk = blk\n\n    def forward(self, *a, **k):\n        if self.training and torch.is_grad_enabled():\n            return checkpoint(self.blk, *a, use_reentrant=False, **k)\n        return self.blk(*a, **k)\n\n\ndef add_lora(cfg):\n    names = []\n    for i in cfg[\"blocks\"]:\n        mlp = LAYERS[i].mlp\n        for n in MLP_NAMES:\n            setattr(mlp, n, LoRALinear(getattr(mlp, n), cfg[\"rank\"], cfg[\"alpha\"])); names.append(f\"layer{i}.mlp.{n}\")\n    if cfg[\"grad_ckpt\"]:\n        for i in cfg[\"blocks\"]:\n            LAYERS[i] = Ckpt(LAYERS[i])\n    return names\n\n\nLORA_NAMES = add_lora(CFG)\nVIS = VIS.to(DEV)\nVPROJ = nn.Linear(VE.shape[1], DIM).to(DEV)\nwith torch.no_grad():\n    VPROJ.bias.zero_()\nlora_params = [p for n, p in VIS.named_parameters() if p.requires_grad]\nlog(f\"{LORA_ENC} LoRA: {len(LORA_NAMES)} layers, {sum(p.numel() for p in lora_params) / 1e6:.2f} M trainable \"\n    f\"(+ vproj {sum(p.numel() for p in VPROJ.parameters()) / 1e6:.2f} M), output {DIM}\")\n\n# ---- identities, held-out, batch sampler\nfrom PIL import Image\nrng = np.random.RandomState(CFG[\"seed\"]); torch.manual_seed(CFG[\"seed\"])\nfv = FK.groupby(\"spk\").indices; vv = VK.groupby(\"spk\").indices\nids = sorted(s for s in set(fv) & set(vv) if s not in DROP and any(i in JPG for i in fv[s]))\nheld = sorted(rng.choice(ids, min(CFG[\"held_out\"], max(1, len(ids) // 10)), replace=False)) if len(ids) > 2 else []\ntrain_ids = [s for s in ids if s not in set(held)]\nfvid, vvid = FK.video.values, VK.video.values\nGEN = dict(zip(FK.spk, FK.gender)) if \"gender\" in FK else {}\nlog(f\"identities: {len(ids)} usable ({len(DROP)} dropped) -> train {len(train_ids)}, held out {len(held)}\")\n\n\ndef prep_jpg(i, flip):\n    im = Image.open(io.BytesIO(JPG[i])).convert(\"RGB\")\n    if flip:\n        im = im.transpose(Image.FLIP_LEFT_RIGHT)\n    return PRE(im)\n\n\ndef sample_batch():\n    P, K = CFG[\"P\"], CFG[\"K\"]\n    spk = rng.choice(train_ids, min(P, len(train_ids)), replace=False)\n    fi, vi, lab = [], [], []\n    for j, s in enumerate(spk):\n        faces = [i for i in fv[s] if i in JPG]\n        for _ in range(K):\n            v = rng.choice(vv[s])\n            cand = [i for i in faces if fvid[i] != vvid[v]] or faces\n            fi.append(int(rng.choice(cand))); vi.append(int(v)); lab.append(j)\n    flips = rng.rand(len(fi)) < CFG[\"flip\"]\n    with cf.ThreadPoolExecutor(8) as ex:\n        X = torch.stack(list(ex.map(prep_jpg, fi, flips)))\n    return X, torch.from_numpy(VE[vi]), torch.tensor(lab)\n\n\ndef multi_pos_infonce(S, lab):\n    \"\"\"S: logits (n x n), lab: identity of every row; positives = same identity (K per row); symmetric over rows and columns.\"\"\"\n    same = (lab[:, None] == lab[None, :]).float()\n    def one(L):\n        logp = L - torch.logsumexp(L, 1, keepdim=True)\n        return -((logp * same).sum(1) / same.sum(1)).mean()\n    return 0.5 * (one(S) + one(S.t()))\n\n\n@torch.no_grad()\ndef embed_faces(rows, bs=128):\n    VIS.eval(); out = []\n    for s in range(0, len(rows), bs):\n        X = torch.stack([prep_jpg(i, False) for i in rows[s:s + bs]]).to(DEV)\n        with torch.autocast(\"cuda\", enabled=DEV.type == \"cuda\"):\n            out.append(F.normalize(ENC_FWD(X).float(), dim=1).cpu())\n    return torch.cat(out).numpy()\n\n\ndef sanity_eer():\n    \"\"\"Held-out identities: face of one video vs voice of ANOTHER video; negatives = other held-out identities (all / same gender).\"\"\"\n    from sklearn.metrics import roc_curve\n    if not held:\n        return {}\n    rows = [i for s in held for i in fv[s] if i in JPG]\n    Fh = dict(zip(rows, embed_faces(rows)))\n    VPROJ.eval()\n    with torch.no_grad():\n        Vh = F.normalize(VPROJ(torch.from_numpy(VE).to(DEV)).float(), dim=1).cpu().numpy()\n    r2 = np.random.RandomState(1); pos, neg, negg = [], [], []\n    for s in held:\n        fr = [i for i in fv[s] if i in JPG]\n        for v in vv[s][:4]:\n            cand = [i for i in fr if fvid[i] != vvid[v]]\n            if cand:\n                pos.append(float(Fh[r2.choice(cand)] @ Vh[v]))\n            o = held[r2.randint(len(held))]\n            if o != s:\n                fo = [i for i in fv[o] if i in JPG]\n                sc = float(Fh[r2.choice(fo)] @ Vh[v]); neg.append(sc)\n                if GEN.get(o) == GEN.get(s):\n                    negg.append(sc)\n    def eer(p, n):\n        if len(p) < 2 or len(n) < 2:\n            return None\n        y = np.r_[np.ones(len(p)), np.zeros(len(n))]; s_ = np.r_[p, n]\n        fpr, tpr, _ = roc_curve(y, s_); fnr = 1 - tpr; i = np.nanargmin(np.abs(fnr - fpr)); return round(100 * float(fpr[i] + fnr[i]) / 2, 2)\n    return {\"ng\": eer(pos, neg), \"g\": eer(pos, negg) if len(negg) > 20 else None, \"pos\": len(pos), \"neg\": len(neg)}\n\n\n# ---- train (or load)\nSTATE = OUT / \"facelora_state.pt\"\nif STATE.exists():\n    st = torch.load(STATE, map_location=\"cpu\", weights_only=False)\n    assert st[\"cfg\"][\"enc\"] == LORA_ENC, st[\"cfg\"]\n    VIS.load_state_dict({**VIS.state_dict(), **{k: v for k, v in st[\"vis\"].items()}}); VPROJ.load_state_dict(st[\"vproj\"])\n    log(\"adapter loaded from the previous output:\", st[\"cfg\"])\n    WIRING = st.get(\"wiring\")\nelse:\n    # wiring check: at step 0 (B = 0) the adapter is the frozen encoder -> FLAG_41's frozen arrays on the same frames\n    chk = [i for i in range(len(FK)) if i in JPG][:64]\n    ref = l2n_(np.load(V41 / REF, mmap_mode=\"r\")[FK.row0.values[chk]].astype(np.float32))\n    cos = (embed_faces(chk) * ref).sum(1)\n    WIRING = dict(rows=len(chk), mean_cos=round(float(cos.mean()), 5), min_cos=round(float(cos.min()), 5))\n    log(f\"wiring check vs FLAG_41 {REF} at step 0: {WIRING}\")\n    assert WIRING[\"mean_cos\"] >= 0.99, f\"the adapter at step 0 does not reproduce the frozen {LORA_ENC} arrays: {WIRING}\"\n    opt = torch.optim.AdamW([{\"params\": lora_params, \"lr\": CFG[\"lr_lora\"]}, {\"params\": VPROJ.parameters(), \"lr\": CFG[\"lr_proj\"]}], weight_decay=CFG[\"wd\"])\n    sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min(1.0, (s + 1) / CFG[\"warmup\"]) * 0.5 * (1 + math.cos(math.pi * min(1.0, s / max(1, CFG[\"steps\"])))))\n    scaler = torch.amp.GradScaler(enabled=DEV.type == \"cuda\")\n    LOG = {\"cfg\": CFG, \"filtered\": FILTERED, \"wiring\": WIRING, \"loss\": [], \"sanity\": {}}\n    LOG[\"sanity\"][\"0\"] = sanity_eer(); log(\"sanity EER before training:\", LOG[\"sanity\"][\"0\"])\n    t0 = time.time()\n    for step in range(1, CFG[\"steps\"] + 1):\n        VIS.train(); VPROJ.train()\n        X, V_, lab = sample_batch()\n        X, V_, lab = X.to(DEV), V_.to(DEV), lab.to(DEV)\n        with torch.autocast(\"cuda\", enabled=DEV.type == \"cuda\"):\n            f = F.normalize(ENC_FWD(X).float(), dim=1); v = F.normalize(VPROJ(V_).float(), dim=1)\n            loss = multi_pos_infonce(f @ v.t() / CFG[\"tau\"], lab)\n        opt.zero_grad(set_to_none=True); scaler.scale(loss).backward(); scaler.step(opt); scaler.update(); sched.step()\n        LOG[\"loss\"].append(float(loss))\n        if step % 50 == 0 or step == CFG[\"steps\"]:\n            log(f\"step {step}/{CFG['steps']} loss {np.mean(LOG['loss'][-50:]):.4f} [{time.time() - t0:.0f}s]\"\n                + (f\" | GPU peak {torch.cuda.max_memory_allocated() / 2 ** 30:.1f} GB\" if DEV.type == \"cuda\" else \"\"))\n        if step in (500, 1000, CFG[\"steps\"]):\n            LOG[\"sanity\"][str(step)] = sanity_eer(); log(f\"sanity EER at step {step}:\", LOG[\"sanity\"][str(step)])\n    torch.save({\"vis\": {k: v.cpu() for k, v in VIS.state_dict().items() if k.endswith((\".A\", \".B\"))}, \"vproj\": VPROJ.state_dict(),\n                \"cfg\": CFG, \"lora_names\": LORA_NAMES, \"filtered\": FILTERED, \"dropped\": sorted(DROP), \"wiring\": WIRING}, STATE)\n    (OUT / \"train_log.json\").write_text(json.dumps(LOG, indent=1))\n    log(\"adapter saved ->\", STATE.name)\nVIS.eval(); VPROJ.eval()\nnp.save(OUT / \"vproj_W.npy\", VPROJ.weight.detach().cpu().numpy()); np.save(OUT / \"vproj_b.npy\", VPROJ.bias.detach().cpu().numpy())",
+   "new": "# [FF scope] the rest of this cell (FaRL LoRA adapter, wiring check, training) is not part of the 13.54 chain: removed (CHANGES.md). Kept above: the frame cache vox_frames_png.zip.\n",
+   "count": 1,
+   "why": "frames-only stage: the LoRA FaRL training of FLAG_45 is not part of the 13.54 chain (design notes, internal); it shares one notebook cell with the frame fetching, so drop_cells cannot remove it",
+   "type": "wiring",
+   "effect": "none (vox_frames_png.zip is written before this point)"
+  }
+ ],
+ "drop_cells": [
+  "^# =+ audio \\+ bat",
+  "^# =+ T3ENC-01 en",
+  "^# =+ the adapted$",
+  "^# =+ running$",
+  "^man = \\{\"created\": time\\.strftime"
+ ],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "verify": [
+  {
+   "artifact": "notebooks/onnhqunhh/flag-2027-nb-45-facelora-farl",
+   "file": "feats_facelora/vox_frames_png.zip",
+   "bytes": 1576077666,
+   "mode": "informational"
+  }
+ ],
+ "external_sources": [
+  {
+   "repo": "ProgramComputer/voxceleb",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": true,
+   "what": "VoxCeleb2 face tracks: vox2/vox2_mp4_{2..6}.zip (FLAG_37), official split archives vox2/vox2_dev_mp4_parta[a-i], vox2_dev_aac_parta[a-h], vox2_test_{mp4,aac}.zip, vox2/vox2_meta.csv",
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded (todo, WP-K LICENSES.md)"
+  }
+ ],
+ "models": [
+  "none in the kept cells (PNG decode only)"
+ ],
+ "run_policy": "Sampling is not deterministic (broken tar streams / failed range reads are skipped, spares fill in): a re-collection gives other rows than the arrays every later stage was trained on, so the 13.54 chain ALWAYS uses the collected data (skip_with). The frames themselves are deterministic for a given track, but the gated mirror may refuse access.",
+ "private": true,
+ "private_why": "VoxCeleb2 face PNGs plus copies of organiser TRAIN files (index_train.txt, meta_file_train_set.csv) in feats_facelora/",
+ "todo": [
+  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
+  "ProgramComputer/voxceleb is gated (auto-approved terms; 403 with the team token on 18/11, team run log, internal provenance): a re-collection needs HF_TOKEN of an account that accepted the terms. 13.54 itself never needs it (collected data are the raw input).",
+  "Optional: pull onnhqunhh/flag-2027-nb-45-facelora-farl (kaggle kernels pull -m) to keep its log; its notebook must have md5 a0558cc9… (= original/ here)."
+ ],
+ "notes": [
+  "Kept cells: setup (1), install (2), FLAG_12 data cell (3, needed for SCAN), and the frame part of the training cell (4). Dropped cells: audio helpers, T3 encoder helpers, adapted encoder, MAV loop, VoxCeleb2 embedding, manifest.",
+  "The organiser train_set.zip is unpacked into /kaggle/working/raw by the verbatim data cell; 'scratch': ['raw'] keeps it out of the artifact (orch._collect skips scratch names).",
+  "No skip_with: the runner serves skip_with as a saved copy of the stage's KERNEL output, and no such copy exists (the FF_DATA/01_collected folders hold the exported datasets, which configs/data_map.json maps by their own ids). The stage is skipped by default because collect stages run only when forced.",
+  "vox_frames_png.zip: one <FLAG_37 face row>.png per fetched track (29 251 rows wanted); published later, renamed vox_frames_png.zipdata (1 576 077 666 B), inside onnhqunhh/flag2027-lora-frames-p (verify compares the size only).",
+  "Organiser files in the kernel output: the verbatim data cell copies the organiser train list to feats_facelora/index_train.txt and meta_file_train_set.csv to feats_facelora/ (stage.ipy lines 142-146); 'scratch' skips top-level names only, so these copies stay in the artifact (private; for docs/COMPLIANCE_NOTES, WP-K)."
+ ],
+ "stage_ipy": {
+  "sha256": "3908d03dd30ebeeaa9bb73a29e3a10743bcff141789c19d7934aaba51e776493",
+  "cells": 4,
+  "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
+  "original": "original/flag-2027-nb-45-facelora-farl.ipynb"
+ }
+}

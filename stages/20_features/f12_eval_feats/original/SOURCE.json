@@ -1,0 +1,30 @@
+{
+ "stage": "f12_eval_feats",
+ "files": [
+  {
+   "copy": "original/FLAG_12_features.ipynb",
+   "source": "git show a89a071:kaggle/FLAG_12_features.ipynb",
+   "obtained_by": "git show (read-only)",
+   "bytes": 47080,
+   "md5": "dfdd852d01e8350f95d0e388bd0d92ce",
+   "sha256": "16c0491eaac03f4882da4f7ff28c0e94f0b59d92845e3d9726bab85184052a4a",
+   "git_commit": "a89a071",
+   "git_blob": "cfc2225ec3ac16e93f28a2c10757d29c07018a4e",
+   "working_tree_status": "modified after a89a071 (+58/-10 builder lines: broken-file handling, [boot], ImageBind URL)"
+  },
+  {
+   "copy": "original/build_eval_notebooks.a89a071.py",
+   "source": "git show a89a071:kaggle/build_eval_notebooks.py",
+   "obtained_by": "git show (read-only); the builder (provenance only)",
+   "bytes": 39446,
+   "md5": "385c42eccfc5fcd5983c9b12d8c1553c",
+   "sha256": "e3b11ded2af78861873339db5ea179573a581a9eeec883fff0f239e003a46947",
+   "git_blob": "2155d14f1e36508b156ff4c727300ca8ef9e51ee"
+  }
+ ],
+ "run": "slug unknown (web-UI run 28-29/09/2026; feats_eval manifest 2026-09-29 04:37 with check_vs_reference.csv)",
+ "evidence": [
+  "The 8 code cells equal the builder's constants ENV12, PIP12, DATA12, AUDIO12, ENC12, RUN12, CHECK12, DONE12 at a89a071 (ast parse of the builder, 18/11/2026; no builder run).",
+  "Train ArcFace / ECAPA-192 / ECAPA-6144 of this run are byte-identical to FLAG_04's (sha256 55491b54..., b3bd0a64..., 195490e2..., team copies kaggle/output/feats_v2 vs feats_eval, 18/11/2026); train ImageBind arrays byte-identical to FLAG_10's (1d410365..., 1a369c2d...)."
+ ]
+}

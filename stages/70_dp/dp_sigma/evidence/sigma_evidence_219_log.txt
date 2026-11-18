@@ -1,0 +1,13 @@
+Excerpt of the console log of the Kaggle CPU run phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4 (16/11 04:00:43 UTC; notebook deleted after
+an ERROR in a copy step that came AFTER these lines; output downloaded to <team repo>/Experiment/XJF-01/out/dumpv4/).
+Full log: Experiment/XJF-01/out/dumpv4/flag-2027-nb-219-fusenet-dumpv4.log, sha256 7f5cf32531c79ff2549ab98f5a2fe93e99a43a12d6e61e4195fa22a3e43f1152
+sd_all = numpy std (ddof 0) of U_<replicate> over one cell; XJF_SIG = mean of the three replicates per cell, 4 decimals
+(v4 ng: (5.1007+5.0980+5.0961)/3 -> 5.0983; v4 g from full precision 3.837570 -> 3.8376; the rounded log values would give 3.8375).
+----
+== dumpv4: 12896 v4 trials, columns ['fold', 'data', 'protocol', 'y', 'pf', 'pv', 'fi', 'vi', 'cell', 'vp', 'fp', 'is_gp', 'F1s|oof', 'U_c0r', 'U_c0s', 'U_c0t']
+  dumpv4 v4 g c0r: n 6448 pos 3224 | sd_all 3.8331 sd_pos 2.2860 sd_neg 3.7779 mean_pos 2.5409 mean_neg -1.9060
+  dumpv4 v4 g c0s: n 6448 pos 3224 | sd_all 3.8481 sd_pos 2.2910 sd_neg 3.7950 mean_pos 2.5327 mean_neg -1.9317
+  dumpv4 v4 g c0t: n 6448 pos 3224 | sd_all 3.8314 sd_pos 2.2982 sd_neg 3.7702 mean_pos 2.5272 mean_neg -1.9144
+  dumpv4 v4 ng c0r: n 6448 pos 3224 | sd_all 5.1007 sd_pos 2.2728 sd_neg 4.4684 mean_pos 2.5540 mean_neg -4.7811
+  dumpv4 v4 ng c0s: n 6448 pos 3224 | sd_all 5.0980 sd_pos 2.2821 sd_neg 4.4612 mean_pos 2.5489 mean_neg -4.7816
+  dumpv4 v4 ng c0t: n 6448 pos 3224 | sd_all 5.0961 sd_pos 2.2828 sd_neg 4.4633 mean_pos 2.5418 mean_neg -4.7806

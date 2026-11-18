@@ -1,0 +1,149 @@
+{
+ "id": "l42_vox2_lid",
+ "group": "13_lid",
+ "title": "FLAG_42: VoxLingua107 language ID of the 38 345 FLAG_37 VoxCeleb2 clips (12 s centre crop, streamed from the HF tars)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "accelerator": "T4",
+  "minutes_original": 130,
+  "minutes_is_estimate": true,
+  "internet": true,
+  "secrets": [],
+  "timing_note": "notebook generated 2026-10-08 07:40 (+07), manifest 'created' 02:54 UTC the same day: the run took at most ~2.2 h"
+ },
+ "origin": {
+  "run": "nguynlcnhtho/flag-2027-nb-42",
+  "exactness": "builder-regenerated",
+  "source_file": "kaggle/FLAG_42_vox2_lid.ipynb",
+  "notebook_md5": "79fac62e63fc88c516d30df5ca2f3aaf",
+  "builder": "kaggle/build_vox2lid_notebook.py",
+  "notes": "no push log (kapi_runs.jsonl starts 11/10); the generated notebook and its builder have the same mtime (2026-10-08 07:40:28 +07) and the run's outputs were written 10:41 the same day, so this file is most likely the pushed one (unverified until the run is pulled)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-vox2-keys"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/nguynlcnhtho/flag-2027-nb-42",
+  "aliases": [
+   "notebooks/ff/l42_vox2_lid"
+  ],
+  "exports": {},
+  "kernel_layout": {
+   "feats_vox2lid/": "voice_lid_probs.npy (fp16, 38 345 x 107), voice_meta.csv, lid_labels.json, lid_summary.json (speakers_dropped_ids = drop42), feats_manifest.json, parts_lid/tar*.npz",
+   "ff_l42_compare.json": "comparison with the original output"
+  }
+ },
+ "env": {},
+ "smoke_env": {
+  "FLAG_LOCAL": "1",
+  "VOX_SMOKE_IDS": "2"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "pretrained": [
+  {
+   "name": "speechbrain/lang-id-voxlingua107-ecapa",
+   "how": "EncoderClassifier.from_hparams (unpinned)",
+   "revision_used": "0253049ae131d6a4be1c4f0d8b0ff483a0f8c8e9 (Kaggle __huggingface_repos__.json of the run)"
+  }
+ ],
+ "skip_with": [
+  "02_intermediate/feats_vox2lid"
+ ],
+ "skip_with_note": "= Experiment/T3ENC-01/feats_vox2lid of the team machine (voice_lid_probs.npy exists nowhere else; flag2027-lab-data-p holds only lid_summary.json)",
+ "verify": [
+  {
+   "file": "feats_vox2lid/lid_summary.json",
+   "sha256": "4d05cb34fc0fa66951750bb8f37d1f01b18f32a3e26847c7f42caad8e3341085",
+   "note": "only with the stored output; a rerun is compared by ff_l42_compare.json (report only)"
+  }
+ ],
+ "todo": [
+  "pull nguynlcnhtho/flag-2027-nb-42 (`kaggle kernels pull -m`) to confirm the notebook and replace original/ if it differs",
+  "the VoxLingua107 model was fetched unpinned; the run used commit 0253049ae131d6a4be1c4f0d8b0ff483a0f8c8e9 (Kaggle's __huggingface_repos__.json in the output) -> WP-A fetch_models",
+  "13.54: consumers need the STORED output of this stage for the exact filter list (a rerun is not bit-identical: GPU; 779 tars streamed over the network, a tar failing 4 retries is skipped; drop42 / lid_strict.json could change). Machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict (FF_MODE=train warns, infer fails). WP-A: data_map default_saved: true for this artifact so FF_MODE=train keeps the stored copy and a rebuild needs FF_FORCE=l42_vox2_lid"
+ ],
+ "notes": [
+  "The FLAG_42 cell finds the key lists with IN.rglob('face_meta.csv') / ('voice_meta.csv') and takes the first hit: mount only flag2027-vox2-keys (or the FLAG_37 output), nothing else with such files.",
+  "Rule in the notebook = the OLD rule (top-1 bn or p(bn) >= 0.2); the strict rule (bn + as) is applied later by merge.py (stage l_lid_strict) on the stored probabilities.",
+  "Kept as in the run: `!pip -q install -U \"speechbrain>=1.1.1\" av` (pip_policy original)."
+ ],
+ "changes_summary": [
+  "new: new cells/99_compare.py (after the last original cell): compares lid_summary counts / drop list digest and file sha256 with the original output (report only)"
+ ],
+ "build": {
+  "base": "original/FLAG_42_vox2_lid.ipynb",
+  "sequence": [
+   {
+    "orig": 1
+   },
+   {
+    "orig": 2
+   },
+   {
+    "orig": 4
+   },
+   {
+    "orig": 6
+   },
+   {
+    "orig": 8
+   },
+   {
+    "orig": 10
+   },
+   {
+    "new": "cells/99_compare.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "orig": 1,
+    "title": "import os, sys, io, re, time, json, types, shutil, zipfile, warnings"
+   },
+   {
+    "orig": 2,
+    "title": "# speechbrain -U: Kaggle's preinstalled one breaks on recent torchaudio; av = PyAV decodes"
+   },
+   {
+    "orig": 4,
+    "title": "# ============================================================================ audio + bat"
+   },
+   {
+    "orig": 6,
+    "title": "# ============================================================================ the FLAG_37"
+   },
+   {
+    "orig": 8,
+    "title": "# ============================================================================ language ID"
+   },
+   {
+    "orig": 10,
+    "title": "# ============================================================================ assemble in"
+   },
+   {
+    "new": "cells/99_compare.py",
+    "title": "l42 compare: this run vs the original FLAG_42 output (new cell, report only)"
+   }
+  ],
+  "n_cells": 7,
+  "stage_ipy_sha256": "a0e59ea0dd3b596191424913bd26aeb456b67e24564a0fe081be27d931e6a67d",
+  "base_hash": {
+   "bytes": 22530,
+   "md5": "79fac62e63fc88c516d30df5ca2f3aaf",
+   "sha256": "dc6d5eba69f640be5e5ee8243cbf476e0117f0545a33f89087f567b3d28eef93"
+  }
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)"
+}

@@ -1,0 +1,84 @@
+{
+ "id": "raw_btc",
+ "group": "10_raw",
+ "title": "Check the organisers' MAV-Celeb v4 train / dev release (no producing code)",
+ "kind": "raw",
+ "role_in_1354": "evidence",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 2,
+  "minutes_is_estimate": true,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "notebook_md5": null,
+  "builder": null,
+  "notes": "organisers' data uploaded unchanged as the private Kaggle dataset ngnnguynchn/flag2027-raw-v4-p (older public copy trngsnam/flag-input); sha256 from E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/MANIFEST.sha256"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/raw_btc",
+  "exports": {},
+  "verifies": [
+   "datasets/ngnnguynchn/flag2027-raw-v4-p"
+  ],
+  "kernel_layout": {
+   "raw_btc_check.json": "sha256 / members report"
+  }
+ },
+ "env": {},
+ "smoke_env": {
+  "FF_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [],
+ "verify": [
+  {
+   "file": "raw_btc_check.json",
+   "check": "ok == true (train_set.zip, meta_file_train_set.csv sha256; train_set.zip members)"
+  }
+ ],
+ "todo": [
+  "WP-A: register datasets/ngnnguynchn/flag2027-raw-v4-p -> FF_DATA/00_raw/btc_mavceleb_v4/ (train_set.zip, meta_file_train_set.csv; dev_set.zip optional) as raw data; the runner should schedule raw_btc before the first stage that reads it (no artifact edge)"
+ ],
+ "notes": [
+  "The stage has no artifact output the chain consumes: raw data is always taken from FF_DATA (DESIGN §2.4); raw_btc only checks it.",
+  "dev_set.zip is reported if present and never required: no stage of the 13.54 chain reads dev data (DESIGN §2.8)."
+ ],
+ "changes_summary": [
+  "new: cells/00_check.py (whole stage): new verification cell (no original code: organisers' data)"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_check.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_check.py",
+    "title": "raw_btc: check the organisers' MAV-Celeb v4 release (sha256, members)"
+   }
+  ],
+  "n_cells": 1,
+  "stage_ipy_sha256": "11c5eca4e5525aa6b5005cc797efc69098c6617af947b5199b035b685b02744b"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)"
+}

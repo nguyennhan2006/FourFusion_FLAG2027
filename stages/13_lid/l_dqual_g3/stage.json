@@ -1,0 +1,115 @@
+{
+ "id": "l_dqual_g3",
+ "group": "13_lid",
+ "title": "DQUAL-01 layer G3 only (bottom 5 % within-person consistency) for VoxCeleb2 and VoxBlink",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 3,
+  "minutes_is_estimate": true,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "Experiment/DQUAL-01/run.py on the team machine, 14/10/2026 (all layers, seven sources)",
+  "exactness": "new",
+  "source_file": null,
+  "notebook_md5": null,
+  "builder": "dqual_g3.py = Experiment/DQUAL-01/run.py:48-51, 68-72, 87-94 (G3 lines verbatim) on sources loaded as Experiment/EDA-NEWDATA/run.py:14, 18-21, 41-57"
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/ff/f41_t3enc_vox2"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-vox2-keys"
+  },
+  {
+   "artifact": "notebooks/nguynlcnhtho/flag-2027-nb-42"
+  },
+  {
+   "artifact": "notebooks/ff/c46_voxblink"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/l_dqual_g3",
+  "exports": {},
+  "kernel_layout": {
+   "dqual_g3/persons_g3.parquet": "source, spk, n_face, n_voice, cons_face, cons_voice, G3",
+   "dqual_g3/dqual_g3_report.json": "counts, quantiles, digests, match flags"
+  }
+ },
+ "env": {},
+ "smoke_env": {
+  "FF_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/dqual_g3"
+ ],
+ "skip_with_note": "a saved copy may be the stage output (dqual_g3/persons_g3.parquet) or Experiment/DQUAL-01/persons.parquet itself (sha256 e4c8deb7...; same source / spk / G3 columns): l_lid_strict accepts either file name (persons_g3.parquet first)",
+ "verify": [
+  {
+   "file": "dqual_g3/dqual_g3_report.json",
+   "check": "VoxCeleb2 4 852 ids / 454 G3 fails, VoxBlink 15 175 / 1 388, sorted-list sha256 = expected.json"
+  }
+ ],
+ "todo": [
+  "G3 of VoxCeleb2 covers only the 4 852 FLAG_37 speakers (after drop42); the 1 235 FLAG_53 'new' speakers never went through G3 (as in the original)",
+  "13.54: the stored FLAG_41 / FLAG_42 / FLAG_46 outputs give the exact G3 lists (re-extracted arrays could move a speaker across the 5 % quantile); with re-run inputs the guard warns (FF_MODE=train) or fails (guard_policy)"
+ ],
+ "notes": [
+  "Exactness check without shipping data: expected.json holds the counts and the sha256 of the sorted speaker lists (all ids and G3 fails) per source, computed 18/11 from Experiment/DQUAL-01/persons.parquet; the script fails on a mismatch unless FF_ALLOW_MISMATCH=1 (cell) / --allow-mismatch.",
+  "13.54 policy for the Bengali-speech filter (machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict; data_map default_saved requested from WP-A): the exact list f4065711... is rebuilt only from the STORED outputs of FLAG_42 (l42_vox2_lid), FLAG_150 (l150_whisper), FLAG_152 (l152_mms), FLAG_41 (f41_t3enc_vox2) and the collected FLAG_53 / FLAG_46 data. In FF_MODE=infer / assemble a mismatch fails; in FF_MODE=train (inputs possibly re-run on GPU, not bit-identical) it warns and the run continues as a recipe-level rebuild with the new list; FF_ALLOW_MISMATCH=1 forces the warning in any mode."
+ ],
+ "changes_summary": [
+  "new: dqual_g3.py (whole stage): new reduced copy of DQUAL-01: only layer G3, only VoxCeleb2 / VoxBlink; no AVSpeech / LRS3 (NEW_DIR), no AUXP-01 CC head (CC_MODELS), no v4 / MAV sources (rel_sweep5), no G1 / G2 / G4",
+  "new: dqual_g3.py sources(): drop list = FLAG_42 lid_summary speakers_dropped_ids; LID_STRICT not applied",
+  "new: guard made mode-aware (guard_policy in stage.json, read by the cell): mismatch -> warn in FF_MODE=train or with FF_ALLOW_MISMATCH=1 / FF_SMOKE=1, fail otherwise; the decision is written to the check file (fixer pass 18/11)"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_g3.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_g3.py",
+    "title": "l_dqual_g3: DQUAL-01 layer G3 (mixed identities) for VoxCeleb2 and VoxBlink, CPU"
+   }
+  ],
+  "n_cells": 1,
+  "stage_ipy_sha256": "9dc30a53c4b12cced285742c23a017779f12353440b6453d1b04c86bf9fb59c6"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)",
+ "guard_policy": {
+  "check": "G3 lists (counts + sha256 of the sorted speaker ids) == Experiment/DQUAL-01/persons.parquet (expected.json)",
+  "on_mismatch": {
+   "train": "warn",
+   "infer": "fail",
+   "assemble": "fail"
+  },
+  "when_FF_MODE_unset": "fail",
+  "overrides": {
+   "FF_ALLOW_MISMATCH=1": "warn in any mode",
+   "FF_SMOKE=1": "warn (smoke data)"
+  },
+  "read_by": "the stage's own cell (FF_STAGE_DIR/stage.json; FF_MODE is set by the runner)",
+  "why": "the inputs come from GPU runs (VoxLingua107, Whisper-large-v3, MMS-LID, T3 encoders) that are not bit-identical when re-run; with the stored outputs the result is byte-identical. A rebuild (FF_MODE=train) must not dead-stop here, a reproduction from saved inputs must.",
+  "exact_list_requires": "stored outputs of l42_vox2_lid, l150_whisper, l152_mms, f41_t3enc_vox2 (configs/data_map.json default_saved requested from WP-A) + collected FLAG_53 / FLAG_46 data"
+ },
+ "env_doc": {
+  "FF_ALLOW_MISMATCH": "1 = a sha256 / list mismatch only warns, in any FF_MODE (the stage then writes the rebuilt list and the check file records it). Not needed in FF_MODE=train, where guard_policy already warns. Never set it for the 13.54 reproduction in FF_MODE=infer."
+ }
+}

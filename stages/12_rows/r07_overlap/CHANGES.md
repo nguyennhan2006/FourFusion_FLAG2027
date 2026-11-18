@@ -1,0 +1,24 @@
+# CHANGES: `r07_overlap`
+
+Stage r07_overlap (12_rows): Evidence: MAV <-> v4 identity overlap list (SET-07), train-only rule; the chain hard-codes the result.
+
+Origin: local-script (`Experiment/SET-07/overlap.py`).
+
+| # | where | old -> new | why | effect on numbers | type |
+|---|---|---|---|---|---|
+| 1 | overlap.py lines 4-10 | R / 'kaggle', R / 'kaggle_upload', R / 'kaggle/output/feats_ext_full', R / 'kaggle/output/feats_v2', cwd overlap.csv -> --lib, --data, --feats-ext, --feats-dir (default = --feats-ext), --out | team-machine paths | none (feats_v2 = FLAG_04 output holds no array this script reads: FeatureStore takes ext_* from feats_ext_full and the faces from the organiser csv) | path |
+| 2 | overlap.py, new flag --train-only (default of the stage) | skip lines 24-27 (THR_DEV from the 20 nearest dev faces) and the dev term of line 36-37; stub flag_lib.load_dev so FeatureStore reads no dev file | DESIGN §4.3 / G11: no dev data in the reproduction. With --train-only the list depends only on THR, the v4-train centroid threshold. The SET-07 run did not save THR; the same rule printed THR = 0.624 in FLAG_08 (EXPERIMENT_LOG entry 37; dev threshold 0.659). Derivation from the original output: the dev rule flagged nobody (the highest top20_cos_dev, 0.6039, is not flagged, so THR_DEV >= 0.6039, and both flagged persons have top20_cos_dev <= 0.513), so both were flagged by the centroid rule: THR < 0.6503 (v1_complete:shaukat_tarin, flagged) and THR >= 0.6212 (v2_complete:id0060, not flagged); 0.898 (v2_complete:id0073) is far above. THR in [0.6212, 0.6503) gives the same list without the dev term | none on the list with the original arrays. Margin is small (0.624 - 0.6212 = 0.003): VGG-Face arrays regenerated on another GPU (mode a) could move a person across THR; cell 01 prints THR and both margins and only warns when every differing person is within 0.01 of THR (the chain hard-codes the list) | dev-exclusion |
+| 3 | lib/flag_v2.py, lib/flag_lib.py | copies of git a89a071 kaggle/flag_v2.py and kaggle/flag_lib.py (the run imported the working copy of 27/09) | the stage folder must be self-contained | none: FeatureStore.__init__, ext_source, load_train, load_dev, find_file, l2n, NAMES are identical (ast) in the executed FLAG_08 copy (26/09), a89a071 (29/09) and today's working copy | pin |
+| 4 | cells/00_data.py, cells/01_overlap.py | new: unpack the three organiser files from train_set.zip (+ dev csv / lists only with R07_WITH_DEV=1), run overlap.py, compare with the hard-coded list | run inside the stage runner | none | new |
+| 5 | cells/00_data.py, cells/01_overlap.py | the organiser csv files (r07_data/) and overlap.csv are written to a tempfile.mkdtemp folder outside /kaggle/working and deleted after the check (they were in /kaggle/working, so the runner saved them as the kernel output); lines printed by overlap.py that name a v4 train identity (its top-rows table with the v4train_id column) are replaced by a placeholder; r07_check.json keeps MAV person keys, THR, margins and the comparison only | the organisers' data must not end up in a saved run output; overlap.csv pairs every MAV person with its nearest v4 train identity, an identity-linkage table whose use is a pending team decision (docs/COMPLIANCE_NOTES.md) | none (the list is computed from the same table before it is deleted) | new |
+| 6 | stage.json `force_only: true` | the stage runs only when named in FF_FORCE (FF_FORCE=r07_overlap) | evidence only (nothing consumes it: the chain hard-codes the two keys) and the linkage decision is pending | none | new |
+
+## Notes
+
+- R07_WITH_DEV=1 reruns the original rule (reads dev feature csv files and lists from dev_set.zip); not used for the 13.54 reproduction.
+- The original overlap.csv (team machine) is not copied into the repo and the stage keeps no such table: it pairs each MAV person with its nearest v4 train identity (a linkage table). original/SOURCE.json records only the two flagged MAV keys and their max_cos_v4train values.
+- expected.json `threshold` holds THR = 0.624 (log 37), the bracket [0.6212, 0.6503) and its derivation.
+
+## How stage.ipy is built
+
+Recipe `ff-stage-ipy/1` (same convention as `release/flag2027_e2e/build_notebook.py:stage_cells`): take the cells listed in `stage.json` `build.sequence` in that order (`orig`: index of the cell in the original notebook's `nb["cells"]` list, markdown cells counted, and the referenced cell must be a non-empty code cell, as in `runner/check_stage.py`; CRLF -> LF; `new`: a file of `cells/`), apply every `patches` entry to the original cells only (each must match exactly `count` times in total), and join every cell as `cell.rstrip('\n') + '\n# <<<FF-CELL>>>\n'`. The sha256 of the result is `build.stage_ipy_sha256`. Original code cells not in the sequence are the ones matched by `drop_cells` (regex on the cell title = its `print("[cell] ...")` text or first line).

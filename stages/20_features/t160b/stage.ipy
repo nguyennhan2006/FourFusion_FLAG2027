@@ -1,0 +1,1062 @@
+print("[cell] 01 run parameters (kapi --env): environment variables of this r", flush=True)
+# run parameters (kapi --env): environment variables of this run
+import os
+# FF: no upload to a Kaggle dataset (the output becomes an artifact). Original: os.environ['WH_UPLOAD'] = 'thanhhuyen11/flag2027-feats-whv3-b-p'
+# <<<FF-CELL>>>
+print("[boot] FLAG_160b_whisper_auxb | python", __import__("sys").version.split()[0], "| start", __import__("time").strftime("%Y-%m-%d %H:%M:%S"), flush=True)  # heartbeat rule: first output, before any import
+print("[cell] b1", flush=True)
+import os, sys, io, re, time, json, types, shutil, zipfile, warnings
+from pathlib import Path
+warnings.filterwarnings("ignore", category=FutureWarning)
+LOCAL = os.environ.get("FLAG_LOCAL") == "1"          # CPU smoke test on a mini copy of the data
+IN = Path(os.environ.get("FLAG_IN", "/kaggle/input"))
+WORKDIR = Path(os.environ.get("FLAG_OUT", "/kaggle/working"))
+CACHE = Path(os.environ.get("FLAG_CACHE", "/tmp/flag_cache"))           # checkpoints stay out of the output
+ECAPA_DIR = Path(os.environ.get("FLAG_ECAPA", str(CACHE / "ecapa_sb")))
+OUT = WORKDIR / "feats_whv3_b"
+for d in (WORKDIR, CACHE, OUT):
+    d.mkdir(parents=True, exist_ok=True)
+os.chdir(WORKDIR)
+
+# ------------------------------------------------------------------ what to run (edit here)
+ENCODERS = ['whv3']   # Whisper-large-v3 encoder
+EXT_SOURCES = ["v1_complete", "v2_complete"]                        # MAV-Celeb rows for STRESS-01; [] = skip
+EXT_ENCODERS = list(ENCODERS)                                       # every model also on the v1/v2 rows
+SPLIT_FILTER = ["train"]      # FF dev-exclusion: organiser train list only (original: None). e.g. ["no_gender/English"]; None = every split found (train + every test list)
+ZIP_PREFIXES = ("train_set", "eval", "test")                        # FF dev-exclusion: dev_set.zip is never unpacked (original: ("train_set", "dev_set", "eval", "test")). organiser zips unpacked when not extracted
+ONLY_UNDER = None              # e.g. "eval": keep only lists whose path contains this (dev and eval both attached)
+print("LOCAL" if LOCAL else "KAGGLE", "| input", IN, "| output", OUT, "| cache", CACHE)
+SMOKE_ROWS = int(os.environ.get("FLAG_SMOKE_ROWS", "0"))   # local smoke test only: rows kept per split / source
+if (LOCAL or os.environ.get("FLAG_SMOKE") == "1") and os.environ.get("FLAG_ENCODERS"):              # local smoke test only: a subset of the encoders
+    ENCODERS = EXT_ENCODERS = os.environ["FLAG_ENCODERS"].split(",")
+if (LOCAL or os.environ.get("FLAG_SMOKE") == "1") and os.environ.get("FLAG_SPLITS"):                # local smoke test only: a subset of the organiser lists
+    SPLIT_FILTER = os.environ["FLAG_SPLITS"].split(",")
+# <<<FF-CELL>>>
+print("[cell] b2", flush=True)
+# speechbrain -U: Kaggle's preinstalled one breaks on recent torchaudio. insightface / ImageBind --no-deps: their
+# declared deps would replace onnxruntime-gpu by the CPU build and pin an old torch. ImageBind's data loaders need
+# pytorchvideo, so the two loaders used here are reimplemented below and its module is stubbed.
+if not LOCAL:
+    !pip -q install -U "speechbrain>=1.1.1" onnxruntime-gpu onnx iopath ftfy omegaconf fvcore 2>&1 | tail -2
+    !pip -q install --no-deps "insightface==2.0" "git+https://github.com/facebookresearch/ImageBind" 2>&1 | tail -2
+import numpy as np, pandas as pd, torch, torch.nn as nn, torch.nn.functional as F, soundfile as sf, transformers
+DEV = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("torch", torch.__version__, "| transformers", transformers.__version__, "| device", DEV,
+      torch.cuda.get_device_name(0) if torch.cuda.is_available() else "")
+
+
+def log(*a):
+    print(time.strftime("%H:%M:%S"), *a, flush=True)
+# <<<FF-CELL>>>
+print("[cell] b3", flush=True)
+# ============================================================================ finding the data
+def scan_inputs(inp: Path, media=("faces", "voices")):
+    """One os.walk over the inputs that never enters a faces/ or voices/ folder (an extracted MAV-Celeb holds hundreds of
+    thousands of files; every rglob over it costs minutes). The organiser csv live in features/{faces,voices}/: entered.
+    -> {"files": name -> [paths], "roots": folders holding both faces/ and voices/}"""
+    files, roots = {}, []
+    for dp, dns, fns in os.walk(inp, followlinks=True):
+        feat = Path(dp).name == "features"
+        if not feat and all(m in dns for m in media):
+            roots.append(Path(dp))
+        dns[:] = sorted(d for d in dns if feat or d not in media)
+        for f in fns:
+            files.setdefault(f, []).append(Path(dp) / f)
+    log(f"scanned {inp}: {sum(map(len, files.values()))} files outside media folders, {len(roots)} media roots")
+    return dict(files=files, roots=roots)
+
+
+def media_cols(txt: Path):
+    """Column of the .wav and of the image in an organiser list (train: 2 / 3; test: 1 / 2), or None."""
+    try:
+        row = pd.read_csv(txt, sep=" ", header=None, nrows=1).iloc[0]
+    except Exception:
+        return None
+    wav = [i for i, v in enumerate(row) if str(v).lower().endswith(".wav")]
+    jpg = [i for i, v in enumerate(row) if str(v).lower().endswith((".jpg", ".jpeg", ".png"))]
+    if not wav or not jpg:
+        return None
+    return wav[0], jpg[0]
+
+
+def has_media(txt: Path, cols):
+    row = pd.read_csv(txt, sep=" ", header=None, nrows=1).iloc[0]
+    return (txt.parent / row[cols[0]]).exists() and (txt.parent / row[cols[1]]).exists()
+
+
+def split_name(txt: Path):
+    """train_English.txt -> 'train'; <folder>/English_test.txt -> '<folder>/English' (dev: 'no_gender/English')."""
+    if txt.name == "train_English.txt":
+        return "train"
+    return f"{txt.parent.name}/{re.sub(r'_test$', '', txt.stem)}"
+
+
+tag = lambda split: split.replace("/", "_")
+
+
+def find_splits(scan):
+    """Every organiser list whose media sit beside it. A features-only copy of a list (no media) is ignored.
+    Two different lists with the same split name (dev and Evaluation both attached) stop the run: set ONLY_UNDER."""
+    S = {}
+    for name, paths in scan["files"].items():
+        if not name.endswith(".txt") or not (name == "train_English.txt" or name.endswith("_test.txt")):
+            continue
+        for p in sorted(paths, key=lambda q: len(q.as_posix())):
+            if ONLY_UNDER and ONLY_UNDER not in p.as_posix() and name != "train_English.txt":
+                continue
+            cols = media_cols(p)
+            if cols is None or not has_media(p, cols):
+                continue
+            k = split_name(p)
+            df = pd.read_csv(p, sep=" ", header=None)
+            if k in S:
+                same = len(df) == len(S[k]["wav"]) and df[cols[0]].tolist() == S[k]["wav"]
+                assert same, f"two different lists named {k}: {S[k]['txt']} and {p} -> set ONLY_UNDER"
+                continue
+            S[k] = dict(txt=p, root=p.parent, wav=df[cols[0]].tolist(), jpg=df[cols[1]].tolist())
+    return S
+
+
+def unpack_zips(scan, work: Path):
+    zips = [p for n, ps in scan["files"].items() if n.lower().endswith(".zip") and n.lower().startswith(ZIP_PREFIXES)
+            for p in ps]
+    for zp in zips:
+        marker = work / f".{zp.stem}.done"
+        if not marker.exists():
+            log("unpacking", zp)
+            with zipfile.ZipFile(zp) as z:
+                z.extractall(work)
+            marker.touch()
+    return bool(zips)
+
+
+SCAN = scan_inputs(IN)
+S = find_splits(SCAN)
+if "train" not in S or len(S) == 1:                  # something may still be zipped (Kaggle keeps some uploads as .zip)
+    if unpack_zips(SCAN, WORKDIR / "raw"):
+        for k, v in find_splits(scan_inputs(WORKDIR / "raw")).items():
+            S.setdefault(k, v)
+if SPLIT_FILTER:
+    S = {k: v for k, v in S.items() if k in SPLIT_FILTER}
+assert S, "no organiser list with media found: attach the raw v4 data (or the Evaluation data)"
+def wav_duration(p):
+    """Seconds; 1.0 for a file soundfile cannot open (load_audio then returns 1 s of silence for it)."""
+    try:
+        return sf.info(str(p)).duration
+    except Exception:
+        return 1.0
+
+
+for k, v in S.items():
+    v["dur"] = np.array([wav_duration(v["root"] / p) for p in v["wav"]], dtype=np.float32)
+    shutil.copy(v["txt"], OUT / f"index_{tag(k)}.txt")
+    log(f"{k:22s} {len(v['wav']):5d} rows | voice median {np.median(v['dur']):.1f}s, max {v['dur'].max():.1f}s | {v['txt']}")
+meta = SCAN["files"].get("meta_file_train_set.csv")
+if meta:
+    shutil.copy(meta[0], OUT / "meta_file_train_set.csv")
+
+
+# ============================================================================ MAV-Celeb v1/v2 rows (optional)
+def media_key(member):
+    """'.../faces/<id>/<lang>/<video>/<file>' -> 'faces/<id>/<lang>/<video>/<file>' (drops any version folder)."""
+    p = member.replace("\\", "/").split("/")
+    for kind in ("faces", "voices"):
+        if kind in p:
+            return "/".join(p[p.index(kind):])
+    return None
+
+
+def ext_source(scan, name):
+    """The attached zip for `name` (largest copy), else the extracted folder whose path names the source."""
+    norm = lambda t: t.lower().replace("-", "_")
+    zips = [p for n, ps in scan["files"].items() if n.lower().endswith(".zip") and norm(name) in norm(n) for p in ps]
+    if zips:
+        return max(zips, key=lambda p: p.stat().st_size)
+    short = name.split("_")[0]
+    for r in scan["roots"]:
+        hint = norm(r.as_posix()) + "/"
+        if f"/{short}/" in hint or name in hint:
+            return r
+    return None
+
+
+class ExtRows:
+    """The exact rows of ext_<name>_{face,voice}_meta.csv, read from the attached zip or folder (row order = csv)."""
+
+    def __init__(self, src, name, meta_dir: Path, max_sec=12.0):
+        fm = pd.read_csv(meta_dir / f"ext_{name}_face_meta.csv").path
+        vm = pd.read_csv(meta_dir / f"ext_{name}_voice_meta.csv").path
+        src = Path(src)
+        if src.is_dir():
+            from concurrent.futures import ThreadPoolExecutor
+            self.face, self.voice = [src / media_key(p) for p in fm], [src / media_key(p) for p in vm]
+            with ThreadPoolExecutor(32) as ex:
+                ok = list(ex.map(lambda q: q.exists(), self.face + self.voice))
+            if not all(ok):
+                raise KeyError(f"{ok.count(False)} rows missing, e.g. {(self.face + self.voice)[ok.index(False)]}")
+            self.read = lambda q: q.read_bytes()
+        else:
+            z = zipfile.ZipFile(src)
+            by = {media_key(i.filename): i.filename for i in z.infolist() if not i.is_dir() and media_key(i.filename)}
+            self.face, self.voice = [by[media_key(p)] for p in fm], [by[media_key(p)] for p in vm]
+            self.read = z.read
+        self.L = int(max_sec * 16000)          # 12 s centre crop, as the organiser-space features of these rows
+        log(f"{name}: {len(self.face)} face rows, {len(self.voice)} voice rows in {src}")
+
+
+EXT = {}
+for name in EXT_SOURCES:
+    metas = sorted(SCAN["files"].get(f"ext_{name}_voice_meta.csv", []), key=lambda p: -p.stat().st_size)
+    src = ext_source(SCAN, name)
+    if metas and src is not None:
+        try:
+            EXT[name] = ExtRows(src, name, metas[0].parent)
+        except Exception as e:                    # optional: a bad zip or a missing row must not stop the run
+            log(f"{name}: skipped ({type(e).__name__}: {e})")
+    else:
+        log(f"{name}: skipped (meta csv found: {bool(metas)}, source found: {src is not None})")
+
+
+# ============================================================================ resume
+def seed_from_previous(scan, out: Path):
+    """Copy arrays of an earlier run of THIS notebook (a folder named like flag2027-feats-eval / feats_eval), so finished
+    work is skipped. Arrays of other datasets (feats_v2, feats_models) are references for the check, never copied."""
+    copied = []
+    for n, ps in scan["files"].items():
+        if not n.endswith(".npy") or (out / n).exists():
+            continue
+        for p in ps:
+            if re.search(r"feats[-_]whv3[-_]b", p.as_posix()) and out not in p.parents:
+                shutil.copy(p, out / n); copied.append(n); break
+    log(f"resume: {len(copied)} arrays copied from an earlier run")
+    return copied
+
+
+SEEDED = seed_from_previous(SCAN, OUT)
+print({k: len(v["wav"]) for k, v in S.items()}, "| external:", list(EXT))
+if (LOCAL or os.environ.get("FLAG_SMOKE") == "1") and SMOKE_ROWS:                     # local smoke test: the first rows of every split and source
+    for v in S.values():
+        v.update(wav=v["wav"][:SMOKE_ROWS], jpg=v["jpg"][:SMOKE_ROWS], dur=v["dur"][:SMOKE_ROWS])
+    for r in EXT.values():
+        r.face, r.voice = r.face[:SMOKE_ROWS], r.voice[:SMOKE_ROWS]
+    log(f"smoke test: every split and source cut to {SMOKE_ROWS} rows")
+# <<<FF-CELL>>>
+print("[cell] b4", flush=True)
+# ============================================================================ audio + batching
+TARGET_SR = 16000
+AUDIO_STATS = {"files": 0, "resampled": 0, "multichannel": 0, "short": 0}
+MIN_SEC = 0.1                  # shorter clips are tiled to 0.1 s (w2v2 / AudioCLIP STFT fail on a few ms; v4 clips are >= 2 s)
+BROKEN = {"audio": [], "image": []}   # unreadable sources: scored from a stand-in, listed in the manifest
+
+
+def _src_name(src):
+    """Full path of a file source (base names repeat across splits); the archive member name of a zip stream."""
+    if isinstance(src, (bytes, bytearray)):
+        return f"<{len(src)} bytes>"
+    return str(src) if isinstance(src, (str, Path)) else str(getattr(src, "name", None) or src)
+
+
+def load_audio(src):
+    """Mono float32 at 16 kHz as the organiser loads audio (librosa.load(sr=16000, mono=True): channel mean + soxr_hq).
+    All v4 wavs are 16 kHz mono; MAV-Celeb v1 has 44.1 kHz files. `src` = path or file-like.
+    A file that cannot be read (or is empty / non-finite) -> 1 s of silence, listed in BROKEN["audio"]."""
+    try:
+        w, sr = sf.read(src if hasattr(src, "read") else str(src), dtype="float32", always_2d=True)
+        if w.size == 0 or not np.isfinite(w).all():
+            raise ValueError(f"{w.shape[0]} samples, finite {bool(np.isfinite(w).all())}")
+    except Exception as e:
+        BROKEN["audio"].append(f"{_src_name(src)} | {type(e).__name__}: {e}")
+        log("!! unreadable audio -> 1 s of silence:", BROKEN["audio"][-1])
+        return np.zeros(TARGET_SR, np.float32)
+    AUDIO_STATS["files"] += 1
+    if w.shape[1] > 1:
+        AUDIO_STATS["multichannel"] += 1
+        w = w.mean(1, keepdims=True)
+    w = w[:, 0]
+    if sr != TARGET_SR:
+        import librosa
+        w = librosa.resample(w, orig_sr=sr, target_sr=TARGET_SR).astype(np.float32)
+        AUDIO_STATS["resampled"] += 1
+    if len(w) < int(MIN_SEC * TARGET_SR):
+        AUDIO_STATS["short"] += 1
+        w = np.tile(w, int(np.ceil(MIN_SEC * TARGET_SR / len(w))))[:int(MIN_SEC * TARGET_SR)]
+    return w
+
+
+def centre_crop(w, L):
+    if len(w) <= L:
+        return w
+    s = (len(w) - L) // 2
+    return w[s:s + L]
+
+
+def pack_batches(durs, max_padded_sec=240.0, max_bs=32):
+    """Longest first; a batch costs len(batch) * longest item after padding."""
+    order = np.argsort(-np.asarray(durs), kind="stable")
+    batches, cur = [], []
+    for i in order:
+        longest = durs[cur[0]] if cur else durs[i]
+        if cur and ((len(cur) + 1) * longest > max_padded_sec or len(cur) >= max_bs):
+            batches.append(cur); cur = []
+        cur.append(int(i))
+    if cur:
+        batches.append(cur)
+    return batches
+
+
+def run_batched(items, fn, durs, max_padded_sec=240.0, max_bs=32, cpu_fn=None, label=""):
+    """fn(list of items) -> list of outputs, in item order. A CUDA OOM halves the batch; a single item goes to CPU."""
+    out = [None] * len(items)
+    t0, done_n = time.time(), 0
+
+    def go(idx):
+        try:
+            res = fn([items[i] for i in idx])
+        except torch.cuda.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            if len(idx) == 1:
+                res = (cpu_fn or fn)([items[idx[0]]])
+            else:
+                h = len(idx) // 2
+                go(idx[:h]); go(idx[h:])
+                return
+        for i, r in zip(idx, res):
+            out[i] = r
+
+    batches = pack_batches(durs, max_padded_sec, max_bs)
+    for bi, b in enumerate(batches):
+        go(b)
+        done_n += len(b)
+        if bi % 50 == 0 or done_n == len(items):
+            el = time.time() - t0
+            log(f"  {label} {done_n}/{len(items)}  {el:.0f}s  eta {el / done_n * (len(items) - done_n):.0f}s")
+    return out
+
+
+def cos_rows(a, b):
+    a, b = np.asarray(a, np.float64), np.asarray(b, np.float64)
+    return np.sum(a * b, 1) / (np.linalg.norm(a, axis=1) * np.linalg.norm(b, axis=1) + 1e-12)
+
+
+def amp(flag):
+    return torch.autocast("cuda", dtype=torch.float16, enabled=bool(flag) and DEV.type == "cuda")
+
+
+def read_rgb(src):
+    """PIL RGB image; an image that cannot be read -> a black 224 x 224 image, listed in BROKEN["image"]."""
+    from PIL import Image
+    try:
+        return Image.open(io.BytesIO(src) if isinstance(src, (bytes, bytearray)) else src).convert("RGB")
+    except Exception as e:
+        BROKEN["image"].append(f"{_src_name(src)} | {type(e).__name__}: {e}")
+        log("!! unreadable image -> black image:", BROKEN["image"][-1])
+        return Image.new("RGB", (224, 224))
+# <<<FF-CELL>>>
+print("[cell] b5", flush=True)
+# ============================================================================ encoders
+# Face encoders: embed(list of sources) -> {suffix: (N, d)}; "" is the main array. A source is a path or raw bytes.
+# Voice encoders: embed(list of waveforms, durations) -> {suffix: (N, d)}.
+
+class ArcFace:
+    """insightface buffalo_l: SCRFD detection + 5-point norm_crop + ArcFace R100 (512). fp32, as FLAG_04."""
+    kind = "face"
+
+    def __init__(self):
+        import onnxruntime as ort
+        from insightface.app import FaceAnalysis
+        prov = [p for p in ["CUDAExecutionProvider", "CPUExecutionProvider"] if p in ort.get_available_providers()]
+        try:
+            self.app = FaceAnalysis(name="buffalo_l", allowed_modules=["detection", "recognition"], providers=prov)
+        except TypeError:
+            self.app = FaceAnalysis(name="buffalo_l", allowed_modules=["detection", "recognition"])
+        self.app.prepare(ctx_id=0 if DEV.type == "cuda" else -1, det_size=(224, 224), det_thresh=0.3)
+        self.rec = self.app.models["recognition"]
+        log("ArcFace recognition runs on", self.rec.session.get_providers())
+
+    def align(self, img):
+        """BGR image -> (112 x 112 crop on the ArcFace 5-point template, detected?). Keeps the big central face."""
+        import cv2
+        from insightface.utils import face_align
+        faces = self.app.det_model.detect(img, max_num=0, metric="default")
+        bboxes, kpss = faces if isinstance(faces, tuple) else (faces, None)
+        if bboxes is not None and len(bboxes) and kpss is not None:
+            h, w = img.shape[:2]
+            ctr = np.array([w / 2, h / 2])
+            area = (bboxes[:, 2] - bboxes[:, 0]) * (bboxes[:, 3] - bboxes[:, 1])
+            dist = np.linalg.norm((bboxes[:, :2] + bboxes[:, 2:4]) / 2 - ctr, axis=1)
+            j = int(np.argmax(area - 2.0 * dist ** 2))
+            return face_align.norm_crop(img, landmark=kpss[j], image_size=112), True
+        h, w = img.shape[:2]; m = int(min(h, w) * 0.15)
+        return cv2.resize(img[m:h - m, m:w - m], (112, 112)), False
+
+    def embed(self, srcs, label=""):
+        import cv2
+        E, OK, t0 = [], [], time.time()
+        for i, s in enumerate(srcs):
+            img = cv2.imdecode(np.frombuffer(s, np.uint8), cv2.IMREAD_COLOR) if isinstance(s, (bytes, bytearray)) \
+                else cv2.imread(str(s))
+            if img is None:                                # unreadable: black image (the pair is still scored)
+                BROKEN["image"].append(f"{_src_name(s)} | cv2 could not decode it")
+                log("!! unreadable image -> black image:", BROKEN["image"][-1])
+                img = np.zeros((224, 224, 3), np.uint8)
+            a, ok = self.align(img)
+            E.append(self.rec.get_feat(a).flatten().astype(np.float32)); OK.append(ok)
+            if i % 2000 == 0:
+                log(f"  arcface {label} {i}/{len(srcs)} {time.time() - t0:.0f}s")
+        log(f"  arcface {label}: detection + alignment {100 * np.mean(OK):.1f}%")
+        return {"": np.stack(E), "_detok": np.array(OK)}
+
+
+def speechbrain_import():
+    import torchaudio
+    for n, f in [("list_audio_backends", lambda: ["soundfile"]), ("get_audio_backend", lambda: "soundfile"),
+                 ("set_audio_backend", lambda *a, **k: None)]:
+        if not hasattr(torchaudio, n):
+            setattr(torchaudio, n, f)
+    from speechbrain.inference.speaker import EncoderClassifier
+    return EncoderClassifier
+
+
+class Ecapa:
+    """speechbrain/spkrec-ecapa-voxceleb -> 192 (ecapa192) + attentive-statistics pooling 6144 (ecapa6144). fp32."""
+    kind = "voice"
+
+    def __init__(self):
+        EncoderClassifier = speechbrain_import()
+        kw = {}
+        try:
+            from speechbrain.utils.fetching import LocalStrategy
+            kw["local_strategy"] = LocalStrategy.COPY
+        except Exception:
+            pass
+        self.m = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", savedir=str(ECAPA_DIR),
+                                                run_opts={"device": str(DEV)}, **kw)
+        self.m.eval()
+        self._pool = {}
+        self.m.mods.embedding_model.asp.register_forward_hook(lambda mod, i, o: self._pool.__setitem__("x", o))
+
+    @torch.no_grad()
+    def batch(self, sigs, device=None):
+        device = device or DEV
+        lens = [len(s) for s in sigs]
+        L = max(lens)
+        x = torch.zeros(len(sigs), L)
+        for i, s in enumerate(sigs):
+            x[i, :len(s)] = torch.from_numpy(s)
+        rel = torch.tensor([l / L for l in lens], dtype=torch.float32, device=device)
+        mods = self.m.mods if device == DEV else self._cpu_mods()
+        f = mods.mean_var_norm(mods.compute_features(x.to(device)), rel)
+        e = mods.embedding_model(f, rel).squeeze(1)
+        p = self._pool["x"].squeeze(-1)
+        return list(zip(e.float().cpu().numpy(), p.float().cpu().numpy()))
+
+    def _cpu_mods(self):
+        if not hasattr(self, "_cpu"):
+            import copy
+            self._cpu = copy.deepcopy(self.m.mods).to("cpu")
+            self._cpu.embedding_model.asp.register_forward_hook(lambda mod, i, o: self._pool.__setitem__("x", o))
+        return self._cpu
+
+    def embed(self, load, n, durs, label=""):
+        res = run_batched(list(range(n)), lambda ii: self.batch([load(i) for i in ii]), durs,
+                          cpu_fn=lambda ii: self.batch([load(i) for i in ii], device="cpu"), label=f"ecapa {label}")
+        return {"192": np.stack([r[0] for r in res]).astype(np.float32),
+                "6144": np.stack([r[1] for r in res]).astype(np.float32)}
+
+
+class ViTAge:
+    """nateraw/vit-age-classifier: post-LayerNorm CLS (768) + the 9 FairFace age-bin probabilities (fp16 autocast)."""
+    kind = "face"
+    ID = "nateraw/vit-age-classifier"
+
+    def __init__(self):
+        from transformers import ViTImageProcessor, ViTForImageClassification
+        self.proc = ViTImageProcessor.from_pretrained(self.ID)
+        self.m = ViTForImageClassification.from_pretrained(self.ID).to(DEV).eval()
+
+    def prep(self, im):
+        return self.proc(images=im, return_tensors="pt").pixel_values[0]
+
+    @torch.no_grad()
+    def __call__(self, x, use_amp=True):
+        with amp(use_amp):
+            h = self.m.vit(x.to(DEV)).last_hidden_state[:, 0]
+            p = torch.softmax(self.m.classifier(h).float(), 1)
+        return {"": h.float().cpu().numpy(), "prob": p.cpu().numpy()}
+
+
+class AgeGenderHead(nn.Module):
+    def __init__(self, config, num_labels):
+        super().__init__()
+        self.dense = nn.Linear(config.hidden_size, config.hidden_size)
+        self.dropout = nn.Dropout(config.final_dropout)
+        self.out_proj = nn.Linear(config.hidden_size, num_labels)
+
+    def forward(self, x):
+        return self.out_proj(self.dropout(torch.tanh(self.dense(self.dropout(x)))))
+
+
+class W2V2AgeGender:
+    """audeering/wav2vec2-large-robust-24-ft-age-gender: mean hidden state (1024), age (x 100 = years), gender
+    probabilities (female, male, child). 20 s windows, 10 s hop, length-weighted mean. fp16 autocast."""
+    kind = "voice"
+    ID = "audeering/wav2vec2-large-robust-24-ft-age-gender"
+
+    def __init__(self):
+        from transformers import Wav2Vec2Processor
+        from transformers.models.wav2vec2.modeling_wav2vec2 import Wav2Vec2Model, Wav2Vec2PreTrainedModel
+
+        class AgeGenderModel(Wav2Vec2PreTrainedModel):
+            def __init__(self, config):
+                super().__init__(config)
+                self.config = config
+                self.wav2vec2 = Wav2Vec2Model(config)
+                self.age = AgeGenderHead(config, 1)
+                self.gender = AgeGenderHead(config, 3)
+                self.post_init()        # not init_weights(): transformers >= 5 sets all_tied_weights_keys here
+
+        # transformers 5.0 reads sys.modules[cls.__module__].__file__; a class defined in a notebook lives in __main__,
+        # which has no __file__ under Jupyter (w2v2ag failed on Kaggle). Point it at the real wav2vec2 module.
+        AgeGenderModel.__module__ = Wav2Vec2Model.__module__
+        self.proc = Wav2Vec2Processor.from_pretrained(self.ID)
+        self.m = AgeGenderModel.from_pretrained(self.ID).to(DEV).eval()
+        self.W, self.H = 20 * 16000, 10 * 16000
+
+    def windows(self, w):
+        starts = [0] if len(w) <= self.W else list(range(0, len(w) - self.W + self.H, self.H))
+        for i, s in enumerate(starts):
+            seg = w[s:s + self.W]
+            if i and len(seg) < 16000:
+                break
+            yield seg
+
+    @torch.no_grad()
+    def __call__(self, w, use_amp=True):
+        acc, tot = None, 0
+        for seg in self.windows(w):
+            x = self.proc(seg, sampling_rate=16000, return_tensors="pt").input_values.to(DEV)
+            with amp(use_amp):
+                h = self.m.wav2vec2(x)[0].float().mean(1)[0]
+            acc = h * len(seg) if acc is None else acc + h * len(seg)
+            tot += len(seg)
+        h = (acc / tot)[None]
+        return {"": h[0].cpu().numpy(), "age": self.m.age(h)[0].cpu().numpy(),
+                "gen": torch.softmax(self.m.gender(h), 1)[0].cpu().numpy()}
+
+
+IB_URL = "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth"
+_IB = {}
+
+
+def imagebind():
+    """ImageBind-huge, loaded once for vision and audio. imagebind/__init__ imports imagebind.data (needs
+    pytorchvideo): stubbed, the two loaders used are reimplemented below."""
+    if "m" not in _IB:
+        sys.modules.setdefault("imagebind.data", types.ModuleType("imagebind.data"))
+        from imagebind.models import imagebind_model
+        from imagebind.models.imagebind_model import ModalityType
+        f = CACHE / "imagebind_huge.pth"
+        if not f.exists():
+            log("downloading", IB_URL)
+            torch.hub.download_url_to_file(IB_URL, str(f) + ".part", progress=False)
+            Path(str(f) + ".part").rename(f)
+        m = imagebind_model.imagebind_huge(pretrained=False)
+        m.load_state_dict(torch.load(f, map_location="cpu", mmap=True))
+        _IB.update(m=m.to(DEV).eval(), MT=ModalityType)
+    return _IB
+
+
+class IBVision:
+    kind = "face"
+
+    def __init__(self):
+        from torchvision import transforms as T
+        self.ib = imagebind()
+        self.tf = T.Compose([T.Resize(224, interpolation=T.InterpolationMode.BICUBIC), T.CenterCrop(224), T.ToTensor(),
+                             T.Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711))])
+
+    def prep(self, im):
+        return self.tf(im)
+
+    @torch.no_grad()
+    def __call__(self, x, use_amp=True):
+        with amp(use_amp):
+            e = self.ib["m"]({self.ib["MT"].VISION: x.to(DEV)})[self.ib["MT"].VISION]
+        return {"": e.float().cpu().numpy()}
+
+
+def ib_audio_clips(w, sr=16000, clip=2.0, mel=128, frames=204, mean=-4.268, std=9.138):
+    """imagebind.data.load_and_transform_audio_data for one waveform, with n = max(3, ceil(duration / 2 s)) clips evenly
+    spaced from start to end (covers the whole file; ImageBind's default n = 3 is identical up to 6 s)."""
+    import torchaudio
+    n = max(3, int(np.ceil(len(w) / sr / clip)))
+    mx = max(len(w) / sr - clip, 0.0)
+    out = []
+    for k in range(n):
+        s = mx * k / max(n - 1, 1)
+        seg = torch.from_numpy(np.ascontiguousarray(w[int(s * sr):int((s + clip) * sr)], dtype=np.float32))[None]
+        if seg.shape[1] < 400:
+            seg = F.pad(seg, (0, 400 - seg.shape[1]))
+        seg = seg - seg.mean()
+        fb = torchaudio.compliance.kaldi.fbank(seg, htk_compat=True, sample_frequency=sr, use_energy=False,
+                                               window_type="hanning", num_mel_bins=mel, dither=0.0,
+                                               frame_length=25, frame_shift=10).T
+        fb = F.pad(fb, (0, frames - fb.shape[1])) if fb.shape[1] < frames else fb[:, :frames]
+        out.append((fb[None] - mean) / std)
+    return torch.stack(out)
+
+
+class IBAudio:
+    kind = "voice"
+
+    def __init__(self):
+        self.ib = imagebind()
+
+    @torch.no_grad()
+    def __call__(self, w, use_amp=True):
+        x = ib_audio_clips(w)[None].to(DEV)                       # the model averages the clips
+        with amp(use_amp):
+            e = self.ib["m"]({self.ib["MT"].AUDIO: x})[self.ib["MT"].AUDIO]
+        return {"": e[0].float().cpu().numpy()}
+
+
+def build(name):
+    return {"arcface": ArcFace, "ecapa": Ecapa, "vitage": ViTAge, "w2v2ag": W2V2AgeGender,
+            "ibv": IBVision, "iba": IBAudio}[name]()
+
+
+def release(keep_ib=False):
+    if not keep_ib:
+        _IB.clear()
+    import gc
+    gc.collect()
+    torch.cuda.empty_cache()
+# <<<FF-CELL>>>
+print("[cell] b6", flush=True)
+# ============================================================================ WHISPER-01: frozen Whisper-large-v3 encoder, mean of the first-30 s frames
+import math, torch
+WH_REPO, WH_REV = "openai/whisper-large-v3", "06f233fe06e710322aca913c1bc4249a0d71fce1"
+WH_MODE = "auxb"
+if WH_MODE != "mav":                       # aux lanes: the MAV loop of this framework does nothing (no encoder)
+    ENCODERS = EXT_ENCODERS = []
+
+
+class WhisperV3:
+    """Whisper-large-v3 encoder only, fp16 (fp32 on CPU). x = feature_extractor(w[:30 s]); h = encoder(x).last_hidden_state (1500 frames);
+    n = max(1, min(1500, ceil(len(w) / 16000 / 30 * 1500))); vector = h[:n].mean(0) (1280-d). Padding frames beyond the clip are dropped."""
+    kind = "voice"
+
+    def __init__(self, dev=None):
+        from transformers import WhisperFeatureExtractor, WhisperModel
+        self.dev = torch.device(dev) if dev is not None else DEV
+        self.dt = torch.float16 if self.dev.type == "cuda" else torch.float32
+        self.fe = WhisperFeatureExtractor.from_pretrained(WH_REPO, revision=WH_REV, cache_dir=str(CACHE / "hf"))
+        m = WhisperModel.from_pretrained(WH_REPO, revision=WH_REV, torch_dtype=self.dt, cache_dir=str(CACHE / "hf"))
+        self.enc = m.encoder.to(self.dev).eval()
+        del m
+
+    @torch.no_grad()
+    def embed(self, ws):
+        ws = [np.ascontiguousarray(w[:16000 * 30], dtype=np.float32) for w in ws]
+        try:                                                       # STFT on the GPU (the numpy one is the bottleneck)
+            x = self.fe(ws, sampling_rate=16000, return_tensors="pt", device=str(self.dev)).input_features
+        except TypeError:
+            x = self.fe(ws, sampling_rate=16000, return_tensors="pt").input_features
+        h = self.enc(x.to(self.dev, self.dt)).last_hidden_state
+        out = []
+        for i, w in enumerate(ws):
+            n = max(1, min(h.shape[1], math.ceil(len(w) / 16000 / 30 * h.shape[1])))
+            out.append(h[i, :n].float().mean(0).cpu().numpy())
+        return np.stack(out)
+
+    def __call__(self, w, use_amp=True):
+        return {"": self.embed([w])[0]}
+
+
+NEW = {"whv3": WhisperV3}
+ARRAYS_NEW = {"whv3": ("voice", {"": "whv3"})}
+MAIN_NEW = {"whv3": ""}
+RESHAPE = {}
+
+
+def build(name):
+    return NEW[name]()
+
+
+if WH_MODE == "mav":                       # wiring: batched = single, GPU STFT = CPU STFT (cos > 0.999)
+    _m = WhisperV3(); _r = np.random.default_rng(0)
+    _w = [(_r.standard_normal(16000 * k) * 0.05).astype(np.float32) for k in (3, 7)]
+    _b = _m.embed(_w); _s = np.stack([_m.embed([w])[0] for w in _w])
+    _c = float((np.sum(_b * _s, 1) / (np.linalg.norm(_b, axis=1) * np.linalg.norm(_s, axis=1))).min())
+    print(f"WhisperV3 wiring: dim {_b.shape[1]}, min cos(batched, single) = {_c:.6f}", flush=True)
+    assert _b.shape[1] == 1280 and _c > 0.999, _c
+    del _m
+    release()
+print("WHISPER-01 cell ready, mode", WH_MODE, flush=True)
+# <<<FF-CELL>>>
+print("[cell] b7", flush=True)
+# ============================================================================ running
+def run_faces_tensor(enc, srcs, bs=64, label=""):
+    out, t0 = {}, time.time()
+    for s in range(0, len(srcs), bs):
+        x = torch.stack([enc.prep(read_rgb(p() if callable(p) else p)) for p in srcs[s:s + bs]])
+        for k, v in enc(x).items():
+            out.setdefault(k, []).append(v)
+        if (s // bs) % 40 == 0:
+            log(f"  {label} {s + len(x)}/{len(srcs)}  {time.time() - t0:.0f}s")
+    return {k: np.concatenate(v).astype(np.float32) for k, v in out.items()}
+
+
+def run_voices_single(enc, n, load, label=""):
+    """One file at a time: no padding enters a mean."""
+    out, t0 = {}, time.time()
+    for i in range(n):
+        for k, v in enc(load(i)).items():
+            out.setdefault(k, []).append(np.atleast_1d(v))
+        if i % 1000 == 0 or i == n - 1:
+            el = time.time() - t0
+            log(f"  {label} {i + 1}/{n}  {el:.0f}s  eta {el / (i + 1) * (n - i - 1):.0f}s")
+    return {k: np.stack(v).astype(np.float32) for k, v in out.items()}
+
+
+# output names: {kind}_{array}_{split}.npy for organiser splits, ext_{src}_{kind}_{array}.npy for v1/v2
+ARRAYS = {"arcface": ("face", {"": "arcface", "_detok": "arcface_detok"}),
+          "ecapa": ("voice", {"192": "ecapa192", "6144": "ecapa6144"}),
+          "vitage": ("face", {"": "vitage", "prob": "vitageprob"}),
+          "w2v2ag": ("voice", {"": "w2v2ag", "age": "w2v2agage", "gen": "w2v2aggen"}),
+          "ibv": ("face", {"": "ibv"}), "iba": ("voice", {"": "iba"})}
+MAIN = {"arcface": "", "ecapa": "192", "vitage": "", "w2v2ag": "", "ibv": "", "iba": ""}
+ARRAYS.update(ARRAYS_NEW); MAIN.update(MAIN_NEW)                         # this notebook's arrays
+
+
+def _dt(v, split):
+    """float16 for the v1/v2 rows (as FLAG_12) and for every wide array (layers / tokens); float32 otherwise."""
+    return v if (split and v.ndim == 2 and v.shape[1] <= 4096) or v.ndim == 1 else v.astype(np.float16)
+
+
+def target(name, suffix, split=None, src=None):
+    kind, names = ARRAYS[name]
+    return OUT / (f"{kind}_{names[suffix]}_{tag(split)}.npy" if split else f"ext_{src}_{kind}_{names[suffix]}.npy")
+
+
+def complete(name, split=None, src=None):
+    return all(target(name, s, split, src).exists() for s in ARRAYS[name][1])
+
+
+def save(name, R, split=None, src=None):
+    for s, v in R.items():                         # main array last: its presence marks the job as done
+        if s != MAIN[name]:
+            np.save(target(name, s, split, src), _dt(v, split))
+    np.save(target(name, MAIN[name], split, src), _dt(R[MAIN[name]], split))
+
+
+def extract(name, enc, split=None, src=None):
+    kind = ARRAYS[name][0]
+    if split:
+        sp = S[split]
+        faces = [sp["root"] / p for p in sp["jpg"]]
+        load = lambda i: load_audio(sp["root"] / sp["wav"][i])
+        n, durs, label = len(sp["wav"]), sp["dur"], split
+    else:
+        rows = EXT[src]
+        faces = [rows.read(p) for p in rows.face] if name == "arcface" else [(lambda p=p: rows.read(p)) for p in rows.face]
+        load = lambda i: centre_crop(load_audio(io.BytesIO(rows.read(rows.voice[i]))), rows.L)
+        n, label = len(rows.voice), src
+        durs = np.full(n, 12.0, np.float32)          # upper bound after the crop: batches stay within budget
+    if kind == "face":
+        R = enc.embed(faces, label=label) if name == "arcface" else run_faces_tensor(enc, faces, label=f"{name} {label}")
+    elif name == "ecapa":
+        R = enc.embed(load, n, durs, label=label)
+    else:
+        R = run_voices_single(enc, n, load, label=f"{name} {label}")
+    save(name, R, split, src)
+    log(f"saved {target(name, MAIN[name], split, src).name} {R[MAIN[name]].shape}")
+
+
+def self_check(name, enc):
+    """Batching / fp16 must not change the embeddings (min cosine over a few rows; must be > 0.995)."""
+    k = next(k for k in S if k != "train") if len(S) > 1 else next(iter(S))
+    sp = S[k]
+    if name == "arcface":
+        return {}
+    if name == "ecapa":
+        idx = list(np.argsort(-sp["dur"])[:3]) + list(range(min(5, len(sp["wav"]))))
+        sigs = [load_audio(sp["root"] / sp["wav"][i]) for i in idx]
+        b, s = enc.batch(sigs), [enc.batch([x])[0] for x in sigs]
+        return {"batch192": float(cos_rows([r[0] for r in b], [r[0] for r in s]).min()),
+                "batch6144": float(cos_rows([r[1] for r in b], [r[1] for r in s]).min())}
+    if ARRAYS[name][0] == "face":
+        x = torch.stack([enc.prep(read_rgb(sp["root"] / p)) for p in sp["jpg"][:6]])
+        full = enc(x, use_amp=False)[""]
+        single = np.concatenate([enc(x[i:i + 1], use_amp=False)[""] for i in range(len(x))])
+        return {"batch": float(cos_rows(full, single).min()), "fp16": float(cos_rows(full, enc(x)[""]).min())}
+    waves = [load_audio(sp["root"] / p) for p in sp["wav"][:3]]
+    return {"fp16": float(cos_rows([enc(w, use_amp=False)[""] for w in waves], [enc(w)[""] for w in waves]).min())}
+
+
+CHECKS, FAILED = {}, {}
+for name in ENCODERS:
+    jobs = [("split", k) for k in S if not complete(name, split=k)]
+    if name in EXT_ENCODERS:
+        jobs += [("src", s) for s in EXT if not complete(name, src=s)]
+    if not jobs:
+        log(f"== {name}: every array already exists -> skipped")
+        continue
+    t0 = time.time()
+    try:
+        enc = build(name)
+        CHECKS[name] = self_check(name, enc)
+        log(name, "self-check:", CHECKS[name])
+        assert not CHECKS[name] or min(CHECKS[name].values()) > 0.995, f"{name}: batching / fp16 changes the output"
+        for what, key in jobs:
+            try:
+                extract(name, enc, **({"split": key} if what == "split" else {"src": key}))
+            except Exception as e:                  # one bad source must not cost the other splits
+                FAILED[f"{name}:{key}"] = f"{type(e).__name__}: {e}"
+                log(f"!! {name} on {key} FAILED: {FAILED[f'{name}:{key}']}")
+    except Exception as e:
+        FAILED[name] = f"{type(e).__name__}: {e}"
+        log(f"!! {name} FAILED -> skipped: {FAILED[name]}")
+    enc = None
+    release(keep_ib=(name in ('ibv',)))
+    log(f"== {name} done in {time.time() - t0:.0f}s")
+print("failed:", FAILED or "none")
+# <<<FF-CELL>>>
+print("[cell] b8", flush=True)
+# ============================================================================ zero-shot probe on TRUE labels (no training)
+# v4 train: positives = two rows of the same person (v4 has no video id, so some may share a session);
+# MAV-Celeb v1/v2: positives = face and voice of the same person from DIFFERENT videos. The dev lists are never used.
+from sklearn.metrics import roc_curve
+
+
+def eer(s, y):
+    fpr, tpr, _ = roc_curve(y, s); fnr = 1 - tpr; i = np.nanargmin(np.abs(fnr - fpr)); return 100 * (fpr[i] + fnr[i]) / 2
+
+
+l2n = lambda X: X / (np.linalg.norm(X, axis=-1, keepdims=True) + 1e-8)
+
+
+def load_arr(stem, kind, split=None, src=None):
+    f = OUT / (f"{kind}_{stem}_{tag(split)}.npy" if split else f"ext_{src}_{kind}_{stem}.npy")
+    return np.load(f).astype(np.float32) if f.exists() else None
+
+
+def probe_pairs(n=3000, seed=0):
+    """-> list of (data, protocol, face rows, voice rows, labels, split, src)."""
+    rng, out = np.random.RandomState(seed), []
+    if "train" in S:
+        nr = len(S["train"]["wav"])
+        spk = pd.read_csv(S["train"]["txt"], sep=" ", header=None)[4].astype(str).values[:nr]
+        meta = SCAN["files"].get("meta_file_train_set.csv")
+        gmap = dict(pd.read_csv(meta[0], header=None).values) if meta else {}
+        by = {s: np.where(spk == s)[0] for s in np.unique(spk)}
+        ok = [i for i in range(nr) if len(by[spk[i]]) > 1]
+        if ok:
+            pos = [(i, rng.choice(by[spk[i]][by[spk[i]] != i])) for i in rng.choice(ok, n)]
+            for sg in (False, True):
+                neg, tries = [], 0
+                while len(neg) < n and tries < 100 * n:
+                    i, j = rng.randint(nr, size=2); tries += 1
+                    if spk[i] != spk[j] and (not sg or (gmap.get(spk[i]) == gmap.get(spk[j]) and spk[i] in gmap)):
+                        neg.append((i, j))
+                pr = np.array(pos + neg)
+                out.append(("v4 train", "g" if sg else "ng", pr[:, 0], pr[:, 1], np.r_[np.ones(len(pos)), np.zeros(len(neg))],
+                            "train", None))
+    for s, rws in EXT.items():
+        md = SCAN["files"][f"ext_{s}_voice_meta.csv"][0].parent
+        fm = pd.read_csv(md / f"ext_{s}_face_meta.csv").iloc[:len(rws.face)].reset_index(drop=True)
+        vm = pd.read_csv(md / f"ext_{s}_voice_meta.csv").iloc[:len(rws.voice)].reset_index(drop=True)
+        vidx = rng.choice(len(vm), min(n, len(vm)), replace=False)
+        pos, neg = [], []
+        for vi in vidx:
+            r = vm.iloc[vi]
+            cand = np.where((fm.spk.values == r.spk) & (fm.video.values != r.video))[0]
+            if len(cand):
+                pos.append((rng.choice(cand), vi))
+            other = np.where(fm.spk.values != r.spk)[0]
+            if len(other):
+                neg.append((rng.choice(other), vi))
+        if not pos or not neg:
+            continue
+        pr = np.array(pos + neg); y = np.r_[np.ones(len(pos)), np.zeros(len(neg))]
+        for lang in sorted(vm.lang.unique()):
+            m = vm.lang.values[pr[:, 1]] == lang
+            if m.sum() and len(np.unique(y[m])) == 2:
+                out.append((f"{s} cross-video", f"ng {lang}", pr[m, 0], pr[m, 1], y[m], None, s))
+    return out
+
+
+def run_probe(scorers, name="probe_zeroshot.csv"):
+    """scorers: {label: fn(split, src, face rows, voice rows) -> scores or None}."""
+    rows = []
+    for data_, prot, fi, vi, y, split, src in probe_pairs():
+        for lab, fn in scorers.items():
+            try:
+                s = fn(split, src, fi, vi)
+            except Exception as e:
+                log(f"probe {lab} on {data_}: {type(e).__name__}: {e}"); s = None
+            if s is not None:
+                rows.append(dict(data=data_, protocol=prot, model=lab, n=len(y), eer=round(eer(s, y), 2)))
+    PR = pd.DataFrame(rows)
+    if len(PR):
+        PR.to_csv(OUT / name, index=False)
+        print(PR.pivot_table(index="model", columns=["data", "protocol"], values="eer").round(2).to_string())
+    else:
+        print("probe: nothing to score (arrays missing, or no same-person pairs among these rows)")
+    return PR
+
+# Per-layer VOICE <-> VOICE identity probe on v4 train (no face involved): EER of cosine between two clips of the same
+# person vs two different persons of the same gender. It shows where speaker identity sits in each model; the face <->
+# voice test runs locally (LAYER-ID-01).
+rows = []
+if "train" in S:
+    nr = len(S["train"]["wav"])
+    spk = pd.read_csv(S["train"]["txt"], sep=" ", header=None)[4].astype(str).values[:nr]
+    meta = SCAN["files"].get("meta_file_train_set.csv")
+    gmap = dict(pd.read_csv(meta[0], header=None).values) if meta else {}
+    rng = np.random.RandomState(0)
+    by = {s: np.where(spk == s)[0] for s in np.unique(spk)}
+    ok = [i for i in range(nr) if len(by[spk[i]]) > 1]
+    pos = [(i, rng.choice(by[spk[i]][by[spk[i]] != i])) for i in rng.choice(ok, 3000)] if ok else []
+    neg, tries = [], 0
+    while len(neg) < 3000 and tries < 300000:
+        i, j = rng.randint(nr, size=2); tries += 1
+        if spk[i] != spk[j] and gmap.get(spk[i]) == gmap.get(spk[j]) and spk[i] in gmap:
+            neg.append((i, j))
+    if pos and neg:
+        pr = np.array(pos + neg); y = np.r_[np.ones(len(pos)), np.zeros(len(neg))]
+        for k in ("whv3",):
+            A = load_arr(k, "voice", split="train")
+            if A is None:
+                continue
+            shp = RESHAPE.get(f"voice_{k}", [1, A.shape[1]])
+            A = l2n(A.reshape(len(A), *shp))
+            for l in range(shp[0]):
+                rows.append(dict(model=k, layer=l, eer_same_gender=round(eer(np.sum(A[pr[:, 0], l] * A[pr[:, 1], l], -1), y), 2)))
+LP = pd.DataFrame(rows)
+if len(LP):
+    LP.to_csv(OUT / "probe_layers_voice_identity.csv", index=False)
+    print(LP.pivot_table(index="layer", columns="model", values="eer_same_gender").round(2).to_string())
+# <<<FF-CELL>>>
+print("[cell] b9", flush=True)
+man = {"created": time.strftime("%Y-%m-%d %H:%M"), "splits": {k: len(v["wav"]) for k, v in S.items()},
+       "external": {k: [len(r.face), len(r.voice)] for k, r in EXT.items()}, "encoders": ENCODERS,
+       "checks": CHECKS, "failed": FAILED, "audio": AUDIO_STATS, "broken": BROKEN, "resumed_arrays": len(SEEDED),
+       "versions": {"torch": torch.__version__, "transformers": transformers.__version__},
+       "files": {f.name: list(np.load(f, mmap_mode="r").shape) for f in sorted(OUT.glob("*.npy"))}}
+try:
+    import speechbrain, insightface
+    man["versions"].update(speechbrain=speechbrain.__version__, insightface=insightface.__version__)
+except Exception:
+    pass
+man["reshape"] = RESHAPE                 # flattened wide arrays: row -> (L, D)
+(OUT / "feats_manifest.json").write_text(json.dumps(man, indent=1))
+shutil.rmtree(WORKDIR / "raw", ignore_errors=True)
+tot = sum(p.stat().st_size for p in OUT.glob("*")) / 1e9
+print(f"{len(man['files'])} arrays, {tot:.2f} GB in {OUT} | failed: {FAILED or 'none'}")
+print("NEXT: Save Version (Save & Run All) -> Output -> New Dataset -> name it flag2027-feats-whv3-b (re-run with this output attached until every encoder is done)")
+# <<<FF-CELL>>>
+print("[cell] whisper aux: audio-cache clips", flush=True)
+# VoxCeleb2 (vox = FLAG_37 + FLAG_53 more rows, vox2b = FLAG_53 new) and VoxBlink rows from the audio cache, in each source's voice_meta.csv row order
+import pandas as pd, threading
+import torch.nn.functional as F
+SMOKE = os.environ.get("FLAG_SMOKE") == "1"
+
+
+def _inroots():
+    base = Path("/kaggle/input")
+    out = []
+    for p in (base.iterdir() if base.exists() else []):
+        if p.name in ("datasets", "notebooks", "kernels", "models"):
+            out += [q for o in p.iterdir() if o.is_dir() for q in o.iterdir() if q.is_dir()]
+        elif p.is_dir():
+            out.append(p)
+    return [p for p in out if not any(k in p.name for k in ("mavceleb", "raw-v4", "ext-meta"))]
+
+
+_roots = _inroots()
+_vm = {}
+for r in _roots:
+    for p in r.rglob("voice_meta.csv"):
+        for s, par in (("vox", "feats_vox2"), ("vox2b", "feats_vox2b"), ("vb", "feats_vb")):
+            if p.parent.name == par:
+                _vm.setdefault(s, p)
+assert set(_vm) == {"vox", "vox2b", "vb"}, f"voice_meta.csv found for {sorted(_vm)}: attach lab-data / feats-vox2b / lab-vb"
+_tar = sorted(q for r in _roots for q in r.rglob("tar0000.npz") if q.parent.name == "vox")
+assert _tar, "attach duongphihoang/flag2027-audio-cache-p (vox/tar*.npz, vb/*.npz)"
+ACROOT = _tar[0].parent.parent
+CH = [(p, "vox") for p in sorted((ACROOT / "vox").glob("tar*.npz"))] + [(p, "vb") for p in sorted((ACROOT / "vb").glob("*.npz"))]
+CH = CH[(1 if WH_MODE == "auxc" else 0)::2]                    # b = even chunks, c = odd chunks
+dt = {"spk": str, "video": str, "utt": str}
+VM = {s: pd.read_csv(p, dtype=dt) for s, p in _vm.items()}
+ROW = {s: {k: r for r, k in enumerate(zip(d.spk, d.video, d.utt))} for s, d in VM.items()}
+print("audio cache", ACROOT, len(CH), "chunks of this lane; voice rows", {s: len(d) for s, d in VM.items()}, flush=True)
+DEVS = [f"cuda:{i}" for i in range(torch.cuda.device_count())] or ["cpu"]
+MS = [WhisperV3(d) for d in DEVS]
+BS = 16 if DEVS[0] != "cpu" else 2
+
+
+def wh_many(ws):
+    """the clips split over every GPU, BS per forward"""
+    res, parts = [None] * len(MS), np.array_split(np.arange(len(ws)), len(MS))
+    def run(k):
+        idx = parts[k]
+        res[k] = np.concatenate([MS[k].embed([ws[j] for j in idx[b:b + BS]]) for b in range(0, len(idx), BS)]) if len(idx) else np.zeros((0, 1280), np.float32)
+    th = [threading.Thread(target=run, args=(k,)) for k in range(len(MS))]
+    [t.start() for t in th]; [t.join() for t in th]
+    return np.concatenate(res)
+
+
+def clips(Z, a, b):
+    W = Z["wav"][a:b]
+    ln = Z["n"][a:b].astype(int) if "n" in Z.files else [W.shape[1]] * len(W)
+    return [W[i][:max(int(ln[i]), 16000 // 2)].astype(np.float32) / 32768.0 for i in range(len(W))]
+
+
+_w0 = clips(np.load(CH[0][0]), 0, 2)
+_g = wh_many(_w0)
+_c = MS[0].embed([_w0[0]])[0]
+AUX_WIRING = float(_g[0] @ _c / (np.linalg.norm(_g[0]) * np.linalg.norm(_c) + 1e-8))
+print(f"aux path vs single clip: cos = {AUX_WIRING:.6f}", flush=True)
+assert AUX_WIRING > 0.999, AUX_WIRING
+lim = int(os.environ.get("WH_AUX_MAX", "0")) or (64 if SMOKE else 0)
+A, n_done, t0 = {}, 0, time.time()
+for ci, (p, kind) in enumerate(CH):
+    Z = np.load(p)
+    keys = [tuple(map(str, k)) for k in zip(Z["spk"], Z["video"], Z["utt"])]
+    for c0 in range(0, len(keys), 64):
+        E = wh_many(clips(Z, c0, c0 + 64))
+        for s in (("vb",) if kind == "vb" else ("vox", "vox2b")):
+            if s not in A:
+                A[s] = np.full((len(VM[s]), 1280), np.nan, np.float16)
+            for j, k in enumerate(keys[c0:c0 + 64]):
+                r = ROW[s].get(k)
+                if r is not None:
+                    A[s][r] = E[j]
+        n_done += len(E)
+        if lim and n_done >= lim:
+            break
+    print(f"[aux] chunk {ci + 1}/{len(CH)}: {n_done} clips ({n_done / max(time.time() - t0, 1):.1f} clips/s, {time.time() - t0:.0f}s)", flush=True)
+    if lim and n_done >= lim:
+        break
+for s, X in A.items():
+    (OUT / s).mkdir(exist_ok=True); np.save(OUT / s / "voice_whv3.npy", X)
+AUX_COVER = {f"{s}/whv3": int(np.isfinite(X[:, 0].astype(np.float32)).sum()) for s, X in A.items()}
+print(f"[aux] {n_done} clips [{time.time() - t0:.0f}s]; rows per array {AUX_COVER}", flush=True)
+CHECKS["whisper01_aux"] = dict(wiring=AUX_WIRING, cover=AUX_COVER, chunks=len(CH), mode=WH_MODE, clips=n_done)
+# <<<FF-CELL>>>
+print("[cell] upload", flush=True)
+UPL = os.environ.get("WH_UPLOAD", "")
+(OUT / "whisper01_meta.json").write_text(json.dumps(dict(repo=WH_REPO, revision=WH_REV, mode=WH_MODE, dim=1280, dtype="float16",
+        recipe="first 30 s, encoder last_hidden_state, mean of the first n frames, n=max(1,min(1500,ceil(len/16000/30*1500)))",
+        rows="a: split / ext arrays in the FLAG_12 order; b, c: <vox|vox2b|vb>/voice_whv3.npy in voice_meta.csv order, NaN = not in this lane (b = even chunks, c = odd chunks of the cache list)",
+        unreadable_file="a: framework stand-in (1 s of silence), listed in feats_manifest.json broken")))
+if UPL and os.environ.get("FLAG_SMOKE") != "1":
+    try:
+        import kagglehub
+        kagglehub.dataset_upload(UPL, str(OUT), version_notes=f"WHISPER-01 whv3 lane {WH_MODE}")
+        print("uploaded ->", UPL, flush=True)
+    except Exception as e:
+        print(f"upload to {UPL} failed ({e!r}); the arrays are in the notebook output", flush=True)
+print("ALL CELLS OK", flush=True)
+# <<<FF-CELL>>>

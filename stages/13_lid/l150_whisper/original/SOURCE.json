@@ -1,0 +1,67 @@
+{
+ "copied_from": {
+  "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/01_flag-2027-nb-150-lidwhisper.ipynb": "E: package (MANIFEST.sha256)",
+  "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/01_flag-2027-nb-150-lidwhisper.log": "run log"
+ },
+ "runs_json": {
+  "gpu": true,
+  "internet": true,
+  "datasets": [
+   "chnnhnnguyn/external-data-mavceleb",
+   "duongphihoang/flag2027-audio-cache-p"
+  ],
+  "kernel_inputs": [],
+  "status": "COMPLETE"
+ },
+ "log_summary": {
+  "risk speakers": {
+   "vox2": 829,
+   "vb": 2501
+  },
+  "audio cache chunks": 1469,
+  "MAV voice files": {
+   "v1": 19556,
+   "v2": 20715
+  },
+  "FLAGGED speakers": {
+   "vox2": 29,
+   "vb": 43,
+   "mav_v1": 46,
+   "mav_v2": 71
+  },
+  "listen candidates": 55
+ },
+ "run_output_team_machine": {
+  "Experiment/LIDSTRICT-01/out/lid_whisper.json": "9dcd9ca21f24d982fb3f1e047276c96304198c8a26f4d544c9ca21a98e6df357",
+  "Experiment/LIDSTRICT-01/out/mav.parquet": "0a6764035e8053da58c19a02ca78595c776fb036b802a2f2d5a52a5f9c3e0a0d"
+ },
+ "stage": "l150_whisper",
+ "files": [
+  {
+   "path": "original/01_flag-2027-nb-150-lidwhisper.ipynb",
+   "bytes": 57953,
+   "md5": "9440704a3127dd97c01c3727770f4f76",
+   "sha256": "746ab052d5073cc0ff8815ff3322c0dac8e9f68ff05c0026786cebd56d39cf32"
+  },
+  {
+   "path": "original/01_flag-2027-nb-150-lidwhisper.log",
+   "bytes": 386872,
+   "md5": "bca428281f5e6551f081ed85c6ccd70d",
+   "sha256": "68256f87aa681a3dc9fd92bd3942e5626321882980d878176f450c296469b721"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/99_compare.py",
+   "bytes": 2272,
+   "md5": "6a9fe479e910066fe81f399b0ed4a3e5",
+   "sha256": "c54dba0070b10ef9868825638aec8983a4311028b926e9b5bc0adfc317a85379"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 359,
+   "md5": "159b5bf641641bf8a6362bb04f05914d",
+   "sha256": "6f2a9724d39fb425deafd5d93af4a576b811ab797f1fcf14e53ea77114b9eb58"
+  }
+ ]
+}

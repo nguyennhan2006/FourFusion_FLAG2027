@@ -1,0 +1,89 @@
+{
+ "stage": "t163b",
+ "run": "ngnnguynchn/flag-2027-nb-163-rfs-b",
+ "files": [
+  {
+   "path": "t163b/original/14_flag-2027-nb-163-rfs-b.redacted.ipynb",
+   "bytes": 51593,
+   "sha256": "f41468ac09b70fa8c1d2e7aaeb725e4eb29f52b6e1053620bf998d0eb5ac775f",
+   "md5": "e7a83974cffbea8758557e474692eda9",
+   "role": "rebuild source of stage.ipy (redacted copy of the exact E: package notebook)",
+   "derived_from": {
+    "path": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/14_flag-2027-nb-163-rfs-b.ipynb",
+    "bytes": 51688,
+    "md5": "4fd83ff36e12b0d36eb2ee6e22c10866",
+    "sha256": "50c147da0094dd8bd6fb4f51cf8387f1d9ad9718e0bad64617a8c4fe04865df7",
+    "e_package_manifest_sha256_match": true,
+    "note": "notebook as stored in the E: package (pulled from Kaggle, re-serialised), so its md5 is not the pushed md5 of kapi_runs"
+   },
+   "redactions": [
+    {
+     "cell": 2,
+     "kind": "redaction",
+     "what": "string literal of the (\"train/gender.csv\", ...) entry of the embedded-file loop",
+     "original_literal_chars": 228,
+     "original_literal_sha256": "5af7e8b8d87b0d1d4aa4f59c495150e2f305b45236466f8f31930678578e372c",
+     "decoded_bytes": 560,
+     "decoded_sha256": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030",
+     "decoded_is": "organisers' file meta_file_train_set.csv (sha256 identical)",
+     "replacement": "FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030"
+    }
+   ]
+  },
+  {
+   "path": "t163b/original/14_flag-2027-nb-163-rfs-b.log",
+   "bytes": 42166,
+   "sha256": "15fa3de3e1c8f13152d3a2d851454f4db83ce5d2a6434bcb94df60b99084b300",
+   "md5": "47662ee023c713bfd2362ed92a690fcb",
+   "role": "log of the original Kaggle run (E: package, verbatim)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/14_flag-2027-nb-163-rfs-b.log",
+   "e_package_manifest_sha256_match": true
+  },
+  {
+   "path": "t163b/original/OUTPUTS.sha256",
+   "bytes": 382,
+   "sha256": "8383eb2cbfc3cf7948f08299e85f4f55159be7ad5c45a789a6ad755cf7e5c99f",
+   "md5": "21dd6254f92ac4f40da3e14edb5922c9",
+   "role": "expected / saved output hashes (evidence)"
+  }
+ ],
+ "kapi_runs": {
+  "file": "kaggle/kapi_runs.jsonl",
+  "line": 1327,
+  "time": "2026-11-04 02:10",
+  "account": "ngnnguynchn",
+  "source": "kaggle/FLAG_163_rfs.ipynb",
+  "notebook_md5_pushed": "d2ed403618c620d6f253981b43cbdbf5",
+  "gpu": false,
+  "datasets": [
+   "nguynchnngn1/flag2027-feats-rfs-a-p",
+   "phanththui/flag2027-feats-rfs-b-p",
+   "phanvnnnnn6789/flag2027-feats-rfs-c-p",
+   "tranthuytien2511/flag2027-feats-whv3-a-p",
+   "thanhhuyen11/flag2027-feats-whv3-b-p",
+   "phuonggmaii/flag2027-feats-whv3-c-p",
+   "ngnnguynchn/flag2027-ext-meta-p",
+   "ngnnguynchn/flag2027-raw-v4-p"
+  ],
+  "kernels": [],
+  "is_last_push_of_kernel": true
+ },
+ "runs_json": {
+  "file": "notebooks/1_train/14_flag-2027-nb-163-rfs-b.ipynb",
+  "gpu": false,
+  "internet": true,
+  "datasets": [
+   "ngnnguynchn/flag2027-ext-meta-p",
+   "nguynchnngn1/flag2027-feats-rfs-a-p",
+   "phanththui/flag2027-feats-rfs-b-p",
+   "phanvnnnnn6789/flag2027-feats-rfs-c-p",
+   "tranthuytien2511/flag2027-feats-whv3-a-p",
+   "thanhhuyen11/flag2027-feats-whv3-b-p",
+   "phuonggmaii/flag2027-feats-whv3-c-p",
+   "ngnnguynchn/flag2027-raw-v4-p"
+  ],
+  "kernel_inputs": [],
+  "outputs": null,
+  "status": "ngnnguynchn/flag-2027-nb-163-rfs-b has status \"KernelWorkerStatus.COMPLETE\""
+ }
+}

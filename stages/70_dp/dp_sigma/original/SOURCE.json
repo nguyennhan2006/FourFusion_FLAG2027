@@ -1,0 +1,80 @@
+{
+ "stage": "dp_sigma",
+ "exactness": "new",
+ "what": "In the original work the constants were typed by hand (XJF_SIG=\"5.0983,3.8376\", Experiment/XJF-01/README.md section 6) from the log of FLAG_219 (dumpv4). dp_sigma.py recomputes them from the table written by that run, with the statistic of the log line (numpy std, ddof 0, rows in table order).",
+ "evidence": [
+  {
+   "path": "evidence/sigma_evidence_219_log.txt",
+   "bytes": 1512,
+   "mtime": "2026-11-18 20:46:16",
+   "md5": "bcac44ccfe61da48f3131e53725aa2d0",
+   "sha256": "935e5d334dad623dafcd7da1ed5b6e2424019a11c6e5a4e6ab77870681873073",
+   "kind": "derived excerpt (annotated by the repository build, LF line ends): NOT a byte-exact copy",
+   "excerpt_of": {
+    "file": "flag-2027-nb-219-fusenet-dumpv4.log (console log of the FLAG_219 run)",
+    "lines": "99 (table header) and 100-105 (the six 'dumpv4 ... sd_all' lines; JSON-lines console format, the excerpt keeps only the printed text)",
+    "sha256": "7f5cf32531c79ff2549ab98f5a2fe93e99a43a12d6e61e4195fa22a3e43f1152",
+    "bytes": 21581,
+    "verbatim_copy_in_repo": "stages/40_R_family/t219_dumpv4/original/run_output/flag-2027-nb-219-fusenet-dumpv4.log (stage t219_dumpv4, WP-F)",
+    "team_copy": "Experiment/XJF-01/out/dumpv4/flag-2027-nb-219-fusenet-dumpv4.log"
+   }
+  },
+  {
+   "path": "evidence/fusenet_dumpv4_branch.py.txt",
+   "bytes": 1856,
+   "mtime": "2026-11-18 20:46:16",
+   "md5": "b144f35e7470fb4ef45811f360a7694c",
+   "sha256": "9a78fb0a5d44d309eae371198472e7e0cb96cfb78f8013e0ce875ac6762539b1",
+   "kind": "derived excerpt (annotated by the repository build, LF line ends): NOT a byte-exact copy",
+   "excerpt_of": {
+    "file": "Experiment/FUSENET-01/run.py as run inside FLAG_219 (the copy embedded in that notebook)",
+    "lines": "172-193 (FUSENET_MODE=dumpv4 branch)",
+    "sha256": "df6d739e5fef7b015a423f27ceec87882f4ac81ac6f8b2657b392a7eabd4303d",
+    "verbatim_copy_in_repo": "stages/40_R_family/t219_dumpv4/original/decoded/Experiment/FUSENET-01/run.py (stage t219_dumpv4, WP-F)",
+    "team_copy": "Experiment/XJF-01/out/dumpv4/lab/Experiment/FUSENET-01/run.py",
+    "check": "diff --strip-trailing-cr against sed -n 172,193p of the full file: equal apart from the two added comment lines"
+   }
+  }
+ ],
+ "source_table": {
+  "artifact": "notebooks/phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4",
+  "file": "xjfdump_v4.parquet (sp/out/safe04/ in the downloaded output)",
+  "bytes": 681816,
+  "sha256": "9f0a5af468d1f973e1ff33264ff10239cf21f1813a0f370740e8c2d8e02f7a09",
+  "rows": 12896,
+  "columns": [
+   "fold",
+   "data",
+   "protocol",
+   "y",
+   "pf",
+   "pv",
+   "fi",
+   "vi",
+   "cell",
+   "vp",
+   "fp",
+   "is_gp",
+   "F1s|oof",
+   "U_c0r",
+   "U_c0s",
+   "U_c0t"
+  ]
+ },
+ "values_recomputed_by_the_layer_map (S7 D11/D12, S8 K3)": {
+  "v4 ng": [
+   5.100701,
+   5.098011,
+   5.096098,
+   "mean 5.098270 -> 5.0983"
+  ],
+  "v4 g": [
+   3.833133,
+   3.848139,
+   3.831439,
+   "mean 3.837570 -> 3.8376"
+  ]
+ },
+ "independent_of_LoRA_C1": "U uses the RFX streams t3 / nf / nv only (no ImageBind 'ib' stream), so the constants do not depend on the C1 variant; the three seed runs FLAG_213 p1 / p2 and FLAG_216 attached the ORIGINAL C1 dataset onnhqunhh/flag2027-rfs-lora-p anyway (DESIGN N4)",
+ "original_folder": "dp_sigma is 'new' code: original/ holds only this SOURCE.json. The two annotated excerpts are in evidence/; the byte-exact sources they quote are kept once, in stage t219_dumpv4 (paths above)."
+}

@@ -1,0 +1,140 @@
+{
+ "id": "l_lid_strict",
+ "group": "13_lid",
+ "title": "LIDSTRICT-01 merge: lid_strict.json version 2 (VoxCeleb2 608, VoxBlink 1 637 speakers, 58 MAV files) = flag2027-lid-strict-p",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "team machine, 3/11/2026 14:31 (+07)",
+  "exactness": "local-script",
+  "source_file": "Experiment/LIDSTRICT-01/merge.py",
+  "notebook_md5": null,
+  "builder": null,
+  "script_md5": "69f6d8c3377ffe36eeb7af78fd5fe82e"
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/nguynlcnhtho/flag-2027-nb-42",
+   "note": "13.54: the stored output (or a stage rebuilt from stored inputs); see guard_policy"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  },
+  {
+   "artifact": "notebooks/ff/c46_voxblink"
+  },
+  {
+   "artifact": "notebooks/duongphihoang/flag-2027-nb-150-lidwhisper",
+   "note": "13.54: the stored output (or a stage rebuilt from stored inputs); see guard_policy"
+  },
+  {
+   "artifact": "notebooks/ff/l_lid_audit",
+   "note": "13.54: the stored output (or a stage rebuilt from stored inputs); see guard_policy"
+  },
+  {
+   "artifact": "notebooks/ff/l_dqual_g3",
+   "note": "13.54: the stored output (or a stage rebuilt from stored inputs); see guard_policy"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/l_lid_strict",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-lid-strict-p": {
+    "lid_strict.json": "lid_strict/lid_strict.json"
+   }
+  },
+  "kernel_layout": {
+   "lid_strict/lid_strict.json": "the list (CRLF, as uploaded)",
+   "lid_strict/removed_speakers.csv": "team report",
+   "lid_strict/l_lid_strict_check.json": "sha256 / counts check"
+  }
+ },
+ "env": {
+  "LIDSTRICT_CREATED": "2026-11-03 14:31"
+ },
+ "smoke_env": {
+  "FF_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lid_strict": "version 2 (with mav_files)"
+ },
+ "skip_with": [
+  "02_intermediate/lid_strict"
+ ],
+ "skip_with_note": "= Experiment/LIDSTRICT-01/lid_strict.json = the file of ngnnguynchn/flag2027-lid-strict-p (sha256 f4065711...)",
+ "verify": [
+  {
+   "file": "lid_strict/lid_strict.json",
+   "sha256": "f4065711e01e6284d70b213fedec2823e7b942ca3c470e8b2b896670c5ed3fad"
+  }
+ ],
+ "todo": [
+  "removed_speakers.csv is not identical to the team copy: merge.py merges an existing file's old VoxLingua columns (first version of 3/11 10:30), which a fresh run does not have; the chain never reads this file",
+  "WP-E: the t153b / t153c notes should say they ran on lid-strict-p version 1 (vox2 / vb identical to version 2)",
+  "WP-A: configs/data_map.json default_saved: true (with a note) for notebooks/nguynlcnhtho/flag-2027-nb-42, notebooks/duongphihoang/flag-2027-nb-150-lidwhisper, notebooks/phantrnanna/flag-2027-nb-152-mmslid, notebooks/ff/f41_t3enc_vox2 (or simply datasets/ngnnguynchn/flag2027-lid-strict-p), so FF_MODE=train uses the stored copies and rebuilding them needs FF_FORCE; document FF_ALLOW_MISMATCH under modes.json 'train' and in the README; WP-K: DESIGN 5.1 / docs/VERIFICATION.md: 'lid_strict.json identical in mode (a)' holds only with the stored LID inputs, otherwise the guard warns"
+ ],
+ "notes": [
+  "Inputs actually read: stored VoxLingua probabilities + voice_meta + lid_summary of FLAG_42 (VoxCeleb2 FLAG_37 clips), FLAG_53 (flag2027-feats-vox2b-p, feats_vox2b/) and FLAG_46 (VoxBlink, feats_vb/ from results_flag46.zip: flag2027-lab-vb-p lacks voice_lid_probs.npy), labels of FLAG_42; lid_whisper.json of FLAG_150; mav_w.json of LID-AUDIT-01; G3 of l_dqual_g3.",
+  "Consumers find the file by name (rglob 'lid_strict.json', T3ENC-01 strict_drop) and check counts == list lengths; they apply it with LID_STRICT=1 (+ BN42=1 for the face adapters).",
+  "13.54 policy for the Bengali-speech filter (machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict; data_map default_saved requested from WP-A): the exact list f4065711... is rebuilt only from the STORED outputs of FLAG_42 (l42_vox2_lid), FLAG_150 (l150_whisper), FLAG_152 (l152_mms), FLAG_41 (f41_t3enc_vox2) and the collected FLAG_53 / FLAG_46 data. In FF_MODE=infer / assemble a mismatch fails; in FF_MODE=train (inputs possibly re-run on GPU, not bit-identical) it warns and the run continues as a recipe-level rebuild with the new list; FF_ALLOW_MISMATCH=1 forces the warning in any mode.",
+  "Dataset versions: ngnnguynchn/flag2027-lid-strict-p had two versions on Kaggle (docs/DATASETS.md:76). Version 1 (3/11/2026 10:30): vox2 608 / vb 1 637 speakers, keys mav_v1 / mav_v2 = 46 / 71 (a rule written before, never used), no mav_files. Version 2 (3/11 14:32, the file of this stage, sha256 f4065711...): same vox2 / vb lists, mav_v1 / mav_v2 empty, + mav_files (58). The face-adapter runs t153b / t153c were pushed 3/11 10:59 (kaggle/kapi_runs.jsonl lines 1064-1065), so they mounted version 1; they read only LS['vox2'], LS['vb'] and LS['counts'][vox2 / vb] (t153b/stage.ipy and t153c/stage.ipy lines 539-542; no other use of lid_strict.json, no encoded module), which are equal in both versions (expected.json sha256_sorted vox2 70e36489..., vb 567bb92e... is the invariant). Every later stage of the chain mounted version 2."
+ ],
+ "changes_summary": [
+  "path: merge.py (copy of Experiment/LIDSTRICT-01/merge.py): input / output paths from FF_FLAG42_DIR, FF_FLAG53_DIR, FF_FLAG46_DIR, FF_LID_WHISPER, FF_MAV_W, FF_PERSONS, FF_OUT (defaults = original paths); CRLF -> LF in the copy",
+  "pin: merge.py `created=`: `pd.Timestamp.now()...` -> `CREATED or pd.Timestamp.now()...` (FF_CREATED; the cell sets it to '2026-11-03 14:31', the value in the dataset file)",
+  "new: cells/00_merge.py: new: locate the six inputs, refuse a missing layer file (merge.py silently skips lid_whisper.json / mav_w.json when absent), run merge.py, write the file with CRLF line ends, check sha256 f4065711...",
+  "new: guard made mode-aware (guard_policy in stage.json, read by the cell): mismatch -> warn in FF_MODE=train or with FF_ALLOW_MISMATCH=1 / FF_SMOKE=1, fail otherwise; the decision is written to the check file (fixer pass 18/11)",
+  "new: cells/00_merge.py accepts persons_g3.parquet (stage l_dqual_g3) or, for a saved copy, Experiment/DQUAL-01/persons.parquet itself (merge.py reads only source / spk / G3)"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_merge.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_merge.py",
+    "title": "l_lid_strict: merge the Bengali-speech filter layers -> lid_strict.json (version 2)"
+   }
+  ],
+  "n_cells": 1,
+  "stage_ipy_sha256": "f9e07531fbe537627136f7f627e27ac7ceb7b48fab38797f6263ce1bb8d6aca0"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)",
+ "guard_policy": {
+  "check": "lid_strict/lid_strict.json sha256 == f4065711... (= ngnnguynchn/flag2027-lid-strict-p)",
+  "on_mismatch": {
+   "train": "warn",
+   "infer": "fail",
+   "assemble": "fail"
+  },
+  "when_FF_MODE_unset": "fail",
+  "overrides": {
+   "FF_ALLOW_MISMATCH=1": "warn in any mode",
+   "FF_SMOKE=1": "warn (smoke data)"
+  },
+  "read_by": "the stage's own cell (FF_STAGE_DIR/stage.json; FF_MODE is set by the runner)",
+  "why": "the inputs come from GPU runs (VoxLingua107, Whisper-large-v3, MMS-LID, T3 encoders) that are not bit-identical when re-run; with the stored outputs the result is byte-identical. A rebuild (FF_MODE=train) must not dead-stop here, a reproduction from saved inputs must.",
+  "exact_list_requires": "stored outputs of l42_vox2_lid, l150_whisper, l152_mms, f41_t3enc_vox2 (configs/data_map.json default_saved requested from WP-A) + collected FLAG_53 / FLAG_46 data"
+ },
+ "env_doc": {
+  "FF_ALLOW_MISMATCH": "1 = a sha256 / list mismatch only warns, in any FF_MODE (the stage then writes the rebuilt list and the check file records it). Not needed in FF_MODE=train, where guard_policy already warns. Never set it for the 13.54 reproduction in FF_MODE=infer.",
+  "LIDSTRICT_CREATED": "value of the 'created' field (default 2026-11-03 14:31 = the dataset file)"
+ }
+}

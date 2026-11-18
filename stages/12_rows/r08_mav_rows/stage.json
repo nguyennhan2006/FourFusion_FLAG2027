@@ -1,0 +1,221 @@
+{
+ "id": "r08_mav_rows",
+ "group": "12_rows",
+ "title": "MAV-Celeb row tables (8 frames per video, every wav uncropped) + organiser-space VGG-Face fc7 / ECAPA arrays (FLAG_08 full)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "accelerator": "T4",
+  "minutes_original": 830,
+  "minutes_expected": 570,
+  "internet": true,
+  "secrets": [],
+  "platform": "Linux only (POSIX path order)",
+  "timing_note": "original session 2026-09-26 09:45 UTC -> manifest 23:36 UTC, including v3_train (~260 min, mostly the Drive download); v1_complete took 19 517 s (listing ~1.6 h on Kaggle's input file system); without v3 about 9-10 h on one T4"
+ },
+ "origin": {
+  "run": "<owner unknown>/flag-2027-nb-5-external-identities (slug = file name of the downloaded notebook; owner not recorded)",
+  "exactness": "exact-executed-copy",
+  "source_file": "_from_download/flag-2027-nb-5-external-identities.ipynb",
+  "notebook_md5": "85fd5ba3f82f2f5905453faf9242a91d",
+  "builder": "kaggle/build_ext_notebook.py (current version calls extract_external(..., max_wav_per_spk=150, max_sec=12): NOT the code that ran; the executed copy is the source of truth)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/r08_mav_rows",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-ext-meta-p": {
+    "ext_v1_complete_face_meta.csv": "feats_ext/ext_v1_complete_face_meta.csv",
+    "ext_v1_complete_voice_meta.csv": "feats_ext/ext_v1_complete_voice_meta.csv",
+    "ext_v2_complete_face_meta.csv": "feats_ext/ext_v2_complete_face_meta.csv",
+    "ext_v2_complete_voice_meta.csv": "feats_ext/ext_v2_complete_voice_meta.csv"
+   }
+  },
+  "kernel_layout": {
+   "feats_ext/": "ext_v{1,2}_complete_{face.npy (fp16, VGG-Face fc7), face_meta.csv, voice.npy (fp32, yangwang825 ECAPA), voice_meta.csv}, ext_v1_complete_speakers.csv, feats_manifest.json = what the team machine calls kaggle/output/feats_ext_full",
+   "ff_r08_check.json": "verification report",
+   "flag_lib.py, flag_extract.py, flag_v2.py": "helper modules written by cell 2"
+  },
+  "saved_copy": "FF_DATA/02_intermediate/feats_ext_full/ should keep the kernel layout (feats_ext/...) or every consumer must find files by name; FF_DATA/02_intermediate/ext_meta/ = the four meta tables",
+  "scratch": [
+   "_vggface",
+   "_ecapa_btc"
+  ]
+ },
+ "env": {},
+ "smoke_env": {
+  "FF_R08_ALLOW_MISMATCH": "1",
+  "FF_R08_SMOKE_SPEAKERS": "2",
+  "FF_R08_SMOKE_VIDEOS": "2"
+ },
+ "patches": [
+  {
+   "old": "SOURCES = {\"mini_v3\": None} if LOCAL else {k: ([DRIVE_IDS[k], fid] if k in DRIVE_IDS else fid, gb)\n                                           for k, (fid, gb) in X.EXT_SOURCES.items()}",
+   "new": "SOURCES = {\"mini_v3\": None} if LOCAL else {k: ([DRIVE_IDS[k], fid] if k in DRIVE_IDS else fid, gb)\n                                           for k, (fid, gb) in X.EXT_SOURCES.items()\n                                           if k != \"v3_train\"}   # FF repo: MAV-Celeb v3 is not used by the 13.54 chain (original: also v3_train, downloaded from Google Drive first)",
+   "count": 1,
+   "why": "MAV-Celeb v3 (English + German, Google Drive download) is not used anywhere in the 13.54 chain"
+  }
+ ],
+ "drop_cells": [
+  "^# Identity overlap: an external speaker",
+  "^# Internal validation = v4 speaker-disjoint splits",
+  "^# Dev scores for the control and every external variant"
+ ],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "pretrained": [
+  {
+   "name": "VGG-Face (dag)",
+   "how": "flag_extract.VGGFace downloads vgg_face_dag.py (network definition, exec'd) and vgg_face_dag.pth (weights) from http://www.robots.ox.ac.uk/~albanie/models/pytorch-mcn/ into WORKDIR/_vggface when absent",
+   "sha256": {
+    "vgg_face_dag.pth": "f070b241e3faf17a08c78f8700d334413230bac5de7fbcfd01b3cf05ce10de1a",
+    "vgg_face_dag.py": null
+   },
+   "local_copy": "agreed location = tools/fetch_models.py dest FF_DATA/06_pretrained/cache/flag/vgg_face_dag.pth (seeded into $FLAG_CACHE by the runner); cells/01_vgg_preseed.py also accepts 06_pretrained/rfs_models/vgg_face.pt and 06_pretrained/vgg_face_dag/vgg_face_dag.pth; only the .pth is pre-seeded (sha256 checked); the .py is copied only once its sha256 is recorded, otherwise downloaded by the original code"
+  },
+  {
+   "name": "yangwang825/ecapa-tdnn-vox2 (organiser ECAPA)",
+   "how": "speechbrain Pretrained.from_hparams(source=..., savedir=WORKDIR/_ecapa_btc), unpinned at run time",
+   "sha256": {
+    "embedding_model.ckpt": "a9c25a7b62e68b1ad75831cda9b4c5e5e21672580c9a11cb369db7e1f2250bbf"
+   },
+   "note": "team cache revision c605f571... (DESIGN §9.2)"
+  }
+ ],
+ "skip_with": [
+  "02_intermediate/feats_ext_full"
+ ],
+ "verify": [
+  {
+   "file": "feats_ext/ext_v1_complete_face_meta.csv",
+   "sha256": "7b385161cfb9bcf998110b4f969c7268aaddb8c5567482d2888cc617f92601ae"
+  },
+  {
+   "file": "feats_ext/ext_v1_complete_voice_meta.csv",
+   "sha256": "3fac359f6a5b4fcab53032296c063fdf3adb73ba587a5107507c67982164635e"
+  },
+  {
+   "file": "feats_ext/ext_v2_complete_face_meta.csv",
+   "sha256": "9db02bfc517ddf5ea5e52d0c54d937d0887d87038ad969b24172c86a37534c23"
+  },
+  {
+   "file": "feats_ext/ext_v2_complete_voice_meta.csv",
+   "sha256": "1e22f7667044afe9bbcfa228d66ab4931f76a5df239ecc905e2bc31fa766378b"
+  },
+  {
+   "file": "feats_ext/ext_v1_complete_speakers.csv",
+   "sha256": "46da520173c773a66f9a9910e2d82d31a20b31db7d675a67532f87ea2b1dd4d9"
+  },
+  {
+   "file": "feats_ext/ext_v{1,2}_complete_{voice,face}.npy",
+   "check": "shapes (19556,192) (7580,4096) (20715,192) (8953,4096); GPU output, sha256 of the team copy only for reference (expected.json)"
+  }
+ ],
+ "todo": [
+  "owner of the original run unknown: `kaggle kernels pull <owner>/flag-2027-nb-5-external-identities` would confirm the notebook (the repo copy is a mid-run download: cell 4 'status: running', its log stops at the start of v2_complete)",
+  "pin yangwang825/ecapa-tdnn-vox2 (fetched unpinned by speechbrain at run time; team cache revision c605f571..., embedding_model.ckpt sha256 a9c25a7b62e68b1ad75831cda9b4c5e5e21672580c9a11cb369db7e1f2250bbf) and speechbrain (the cell runs pip install -U 'speechbrain>=1.1.1')",
+  "WP-A: data_map for notebooks/ff/r08_mav_rows (saved copy layout, see outputs.saved_copy)",
+  "record the sha256 of vgg_face_dag.py (from a first successful download in WORKDIR/_vggface) in cells/01_vgg_preseed.py VGG_PY_SHA256 and in tools/fetch_models.py (WP-A: add the file next to the .pth)"
+ ],
+ "notes": [
+  "Source of truth: the executed notebook downloaded from Kaggle (papermill metadata, run start 2026-09-26T09:45:39Z; the attached MAV folder was /kaggle/input/datasets/chnnhnnguyn/external-data-mavceleb/mavceleb_v1_complete-001/v1, branch 'using attached').",
+  "DESIGN N1 says this copy equals `git show 8544b3b:kaggle/FLAG_08_external.ipynb`: checked 18/11, it does not (code cells 2, 4, 8 and markdown 0 differ from 8544b3b; cells 2 and 4 differ from a89a071). The executed copy is used as is.",
+  "Cell 2 embeds flag_lib.py, flag_extract.py, flag_v2.py as base64; they are decoded to original/decoded/ for reading only (flag_lib.py = git 8544b3b; flag_extract.py and flag_v2.py match no commit).",
+  "extract_external of the executed flag_extract.py has no clip limit and no crop (signature: frames_per_video=8, max_padded_sec=240, max_bs=32, face_bs=64); the meta tables depend only on file names / sizes, so they must come out byte-identical on Linux.",
+  "Kept as in the run: `!pip -q install -U \"speechbrain>=1.1.1\"` (pip_policy original), the unpinned yangwang825/ecapa-tdnn-vox2 download, the Drive fallback code (never reached when the dataset is attached).",
+  "Inputs: the executed kernel had four attached dataset versions (metadata.kaggle.dataSources: 19835728, 19969558, 19986689, 20013233; dataset slugs not recorded). The stage declares one (chnnhnnguyn/external-data-mavceleb). The other three were organiser v4 data / feature datasets read only by the dropped cells 6, 8, 10; the extraction cell reads MAV only through find_attached_source / find_attached_zip, and the guard cell enforces exactly the two extracted MAV roots and no MAV-release zip anywhere under /kaggle/input, so the dropped inputs cannot change the tables."
+ ],
+ "changes_summary": [
+  "wiring: original cell 4, `SOURCES = ...`: `for k, (fid, gb) in X.EXT_SOURCES.items()}` -> same + `if k != \"v3_train\"}`",
+  "dev-exclusion: original cells 6, 8, 10: dropped (drop_cells): identity-overlap analysis on v4 train + dev features, internal ablation training, dev scores",
+  "new: new cells/00_guard.py (before cell 4): asserts: POSIX, no MAV zip under /kaggle/input, exactly the v1 / v2 extracted roots, no /v1/ or /v2/ above the mount",
+  "new: new cells/99_verify.py (after cell 4): sha256 of the four meta tables + speaker table, array shapes; fails unless FF_R08_ALLOW_MISMATCH=1",
+  "url: new cells/01_vgg_preseed.py (before cell 4): copies vgg_face_dag.pth (sha256 f070b241... checked) from $FLAG_CACHE or FF_DATA/06_pretrained/{cache/flag/vgg_face_dag.pth, rfs_models/vgg_face.pt, vgg_face_dag/vgg_face_dag.pth} into WORKDIR/_vggface; vgg_face_dag.py only once its sha256 is recorded (not yet), otherwise the original download runs",
+  "new: new cells/02_smoke_subset.py (before cell 4): only with FF_SMOKE=1, patches flag_extract.find_attached_source / open_archive to process the first 2 speakers x 2 videos per language; no effect otherwise",
+  "wiring: inputs: three of the four original attached datasets dropped (only the dropped cells 6, 8, 10 read them); see notes"
+ ],
+ "build": {
+  "base": "original/flag-2027-nb-5-external-identities.ipynb",
+  "sequence": [
+   {
+    "orig": 1
+   },
+   {
+    "orig": 2
+   },
+   {
+    "new": "cells/00_guard.py"
+   },
+   {
+    "new": "cells/01_vgg_preseed.py"
+   },
+   {
+    "new": "cells/02_smoke_subset.py"
+   },
+   {
+    "orig": 4
+   },
+   {
+    "new": "cells/99_verify.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "orig": 1,
+    "title": "import os, sys"
+   },
+   {
+    "orig": 2,
+    "title": "# Writes the helper modules next to this notebook (no .py upload needed)."
+   },
+   {
+    "new": "cells/00_guard.py",
+    "title": "r08 guard: MAV input layout and POSIX path order (new cell, changes nothing)"
+   },
+   {
+    "new": "cells/01_vgg_preseed.py",
+    "title": "r08: optional local copy of the VGG-Face weights (new cell; .pth checked by sha256, .py st"
+   },
+   {
+    "new": "cells/02_smoke_subset.py",
+    "title": "r08 smoke: with FF_SMOKE=1 process only a few MAV speakers (new cell; does nothing otherwi"
+   },
+   {
+    "orig": 4,
+    "title": "if not LOCAL:"
+   },
+   {
+    "new": "cells/99_verify.py",
+    "title": "r08 verify: row tables byte-identical to ngnnguynchn/flag2027-ext-meta-p (new cell)"
+   }
+  ],
+  "n_cells": 7,
+  "stage_ipy_sha256": "b6200054e139fcc5fc7095ba64b53d0c3507d607b08f94e571409db8b7bca085",
+  "base_hash": {
+   "bytes": 136979,
+   "md5": "85fd5ba3f82f2f5905453faf9242a91d",
+   "sha256": "d6664cb5d23d98033a385734af3bf0b70892b7ea4c497afea758ff5399ab61d0"
+  }
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)",
+ "skip_with_note": "only the kernel-output copy (feats_ext/ with the .npy arrays, the meta tables and the speaker table): the runner takes the FIRST existing skip_with folder as the stage output; 02_intermediate/ext_meta is the data_map path of the export flag2027-ext-meta-p (four meta tables only) and must not stand in for it",
+ "scratch": [
+  "_vggface",
+  "_ecapa_btc"
+ ],
+ "env_doc": {
+  "FF_R08_ALLOW_MISMATCH": "1 = the verify cell warns instead of failing when the tables differ (set by smoke_env)",
+  "FF_R08_SMOKE_SPEAKERS / FF_R08_SMOKE_VIDEOS": "smoke only (FF_SMOKE=1): speakers per release and videos per speaker / language processed by cells/02_smoke_subset.py",
+  "FF_ALLOW_NONPOSIX": "1 = the guard cell accepts a non-POSIX system (smoke only: the voice row order would differ)"
+ }
+}

@@ -1,0 +1,216 @@
+{
+ "id": "dp_train",
+ "group": "70_dp",
+ "title": "DP branch: two towers x 10 seeds (FLAG train + MAV-Celeb v1/v2, 58 Bengali-flagged MAV voice files dropped), out-of-fold z constants, English Evaluation scores, tower checkpoint",
+ "kind": "train",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 11,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "local-script",
+  "source_file": "Experiment/XJF-01/xjf.py",
+  "script_sha256": "cb93cd5276cf38678b4a08887de48b75437d79b800c276064f7340ff239c38da",
+  "script_md5": "2c8c22e3b9ace778295b0cb029bd18fe",
+  "notebook_md5": null,
+  "builder": null,
+  "local_run": {
+   "where": "team machine, Windows 11, CPU",
+   "when": "2026-11-16 02:11:06 - 02:21:32 +07:00 (scores used for the zip)",
+   "command": "python Experiment/XJF-01/xjf.py",
+   "log": "original/xjf.log",
+   "determinism": "re-run 21:52-22:03 gave bit-identical English scores (S8 K6)"
+  }
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p"
+  },
+  {
+   "artifact": "notebooks/ff/dp_feats_layout"
+  },
+  {
+   "artifact": "notebooks/ff/dp_extract_eval"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-evalphase-p"
+  },
+  {
+   "artifact": "notebooks/ff/raw_evalphase",
+   "note": "eval_set.zip, the zip the DP branch read on 16/11; when only the extracted dataset view is available the stage rebuilds the zip; either way its members are checked against stages/10_raw/raw_evalphase/expected/eval_set_members.sha256"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/dp_train",
+  "exports": {},
+  "files": [
+   "dp_train_check.json",
+   "out/consts.json",
+   "out/dp_towers.pt",
+   "out/report.txt",
+   "out/xjf_scores.npz"
+  ],
+  "notes": "dp_train_check.json records the sha256 of the DP Evaluation feature files used (eval_feats_sha256); stage dp_score reads it"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {
+  "lid_strict_sha256": "f4065711e01e6284d70b213fedec2823e7b942ca3c470e8b2b896670c5ed3fad",
+  "mav_voice_files_dropped": {
+   "v1": 13,
+   "v2": 45
+  },
+  "seeds": [
+   0,
+   1000,
+   2000,
+   3000,
+   4000,
+   5000,
+   6000,
+   7000,
+   8000,
+   9000
+  ]
+ },
+ "skip_with": [
+  "03_checkpoints/dp_towers"
+ ],
+ "verify": [
+  {
+   "file": "out/consts.json",
+   "values": {
+    "no_gender": [
+     0.2396060824394226,
+     0.24516652524471283
+    ],
+    "gender": [
+     0.29151424765586853,
+     0.2184155285358429
+    ]
+   }
+  },
+  {
+   "file": "out/xjf_scores.npz",
+   "arrays_sha256": {
+    "ids_no_gender_English": "113a8942f76cbdb2f937b38fcf349c008dd5e2004bf08581613a2f7993a4b752",
+    "cos_no_gender_English": "3bed37e7ab8dc91509a4967961adc593d4347b6c714f128f71dfcf6626c8196b",
+    "z_no_gender_English": "60c70ee55e06e428f74e9089e48e51b9d836d977466a0c8708ee7e7efb94ba03",
+    "ids_gender_English": "5b50b4caeb116b8022531b89f972623266a2882f947e9f5374647170086f2c4f",
+    "cos_gender_English": "2f29551e3692d822cd746d0c61b07500f0c2f1456dc0b57686a3b4542feeff54",
+    "z_gender_English": "65b089571a113c578a2c229e2b937583a924f7fae9c8b030ce6792fdd9fa4a78"
+   },
+   "rule": "bit equality shown only on the team machine (S8 K6); elsewhere report max |dz| and Spearman"
+  }
+ ],
+ "todo": [
+  "G5: no tower checkpoint exists yet. Run this stage once on the team machine (CPU ~12 min), check that out/xjf_scores.npz has the arrays_sha256 above, then upload out/dp_towers.pt (+ out/xjf_scores.npz, out/consts.json) to FF_DATA/03_checkpoints/dp_towers/out/",
+  "WP-K docs/COMPLIANCE_NOTES.md must carry the compliance disclosure of the DP (Different Profile) branch (text in this stage's CHANGES.md, section 'Compliance disclosure'): held-out-person EER of the branch alone 25.67 (no_gender) / 34.64 (gender); the English Evaluation gain most likely comes from recordings of the English Evaluation file that are also in MAV-Celeb v1/v2 (team study DPSTUDY-01: gain only when the same video / recording is in training; not checked by identity matching, which the rules forbid); a held-out-person test of the fusion made the system worse (0/5 folds); the organisers have not been asked yet (question drafted 16/11, unsent); submission order: xjf_r10.zip (constants 5.8 / 2.9 read off the test-score scale, not allowed) was scored 13.54 on 16/11 10:31 (CodaBench 1054532) before xjf_r10_trsig.zip (constants from held-out train persons) was built at 11:08 and submitted at 12:02 (1054704)"
+ ],
+ "script_patches": {
+  "xjf.py": [
+   {
+    "id": "XJ1",
+    "type": "path",
+    "count": 1,
+    "where": "line 11",
+    "old": "import io, json, sys, time, zipfile",
+    "new": "import io, json, os, sys, time, zipfile",
+    "why": "os is needed to read the path variables below",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "XJ2",
+    "type": "path",
+    "count": 1,
+    "where": "line 17",
+    "old": "HERE = Path(__file__).resolve().parent; REPO = HERE.parents[1]; KO = REPO / \"kaggle\" / \"output\"",
+    "new": "HERE = Path(__file__).resolve().parent; REPO = HERE.parents[1]; KO = Path(os.environ.get(\"DP_FEATS\", REPO / \"kaggle\" / \"output\"))   # FF repo: dp_feats folder",
+    "why": "feature arrays come from stage dp_feats_layout (same file names and sub-folders as kaggle/output/)",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "XJ3",
+    "type": "path",
+    "count": 1,
+    "where": "line 18",
+    "old": "OUT = HERE / \"out\"; OUT.mkdir(exist_ok=True)",
+    "new": "OUT = Path(os.environ.get(\"DP_OUT\", HERE / \"out\")); OUT.mkdir(exist_ok=True)   # FF repo: output folder",
+    "why": "the stage folder is read-only; output goes to the stage's working folder",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "XJ4",
+    "type": "path",
+    "count": 1,
+    "where": "line 49",
+    "old": "tz = zipfile.ZipFile(REPO / \"Input\" / \"train_set.zip\")",
+    "new": "tz = zipfile.ZipFile(os.environ.get(\"DP_TRAIN_ZIP\", REPO / \"Input\" / \"train_set.zip\"))   # FF repo: organisers' train_set.zip",
+    "why": "organisers' train zip from FF_DATA/00_raw/btc_mavceleb_v4",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "XJ5",
+    "type": "path",
+    "count": 1,
+    "where": "line 52",
+    "old": "(REPO / \"Input\" / \"meta_file_train_set.csv\").read_text()",
+    "new": "Path(os.environ.get(\"DP_TRAIN_META\", REPO / \"Input\" / \"meta_file_train_set.csv\")).read_text()",
+    "why": "organisers' meta_file_train_set.csv (gender of the 70 train persons) from FF_DATA/00_raw/btc_mavceleb_v4",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "XJ6",
+    "type": "path",
+    "count": 1,
+    "where": "line 60",
+    "old": "(REPO / \"Experiment\" / \"LIDSTRICT-01\" / \"lid_strict.json\").read_text()",
+    "new": "Path(os.environ.get(\"DP_LID_STRICT\", REPO / \"Experiment\" / \"LIDSTRICT-01\" / \"lid_strict.json\")).read_text()",
+    "why": "lid_strict.json (58 MAV voice files flagged Bengali) from stage l_lid_strict / dataset ngnnguynchn/flag2027-lid-strict-p",
+    "effect_on_numbers": "none (sha256 f4065711... checked by the stage)"
+   },
+   {
+    "id": "XJ7",
+    "type": "path",
+    "count": 1,
+    "where": "line 85",
+    "old": "FE = HERE / \"feats_evalphase\"",
+    "new": "FE = Path(os.environ.get(\"DP_EVAL_FEATS\", HERE / \"feats_evalphase\"))",
+    "why": "Evaluation features come from stage dp_extract_eval",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "XJ8",
+    "type": "save",
+    "count": 1,
+    "where": "after line 167 (final models)",
+    "old": "ms = [train(s, np.arange(len(t_pid))) for s in SEEDS]; log(\"final models:\", len(ms), \"last losses\", [round(m[2], 3) for m in ms[:3]])",
+    "new": "ms = [train(s, np.arange(len(t_pid))) for s in SEEDS]; log(\"final models:\", len(ms), \"last losses\", [round(m[2], 3) for m in ms[:3]])\n# FF repo (save): checkpoint of the 10 final tower pairs + the constants needed to score from it (stage dp_score).\n# Nothing here draws a random number or changes a model or an input: every score below is unchanged.\ntorch.save({\"format\": \"FourFusion DP two-tower checkpoint v1\", \"seeds\": list(SEEDS), \"dims\": [int(TF.shape[1]), int(TV.shape[1])],\n            \"towers\": [{\"face\": f.state_dict(), \"voice\": v.state_dict()} for f, v, _ in ms],\n            \"MU_F\": torch.from_numpy(MU_F.copy()), \"MU_V\": torch.from_numpy(MU_V.copy()),\n            \"CONST\": {k: [float(a), float(b)] for k, (a, b) in CONST.items()}}, OUT / \"dp_towers.pt\")\nprint(\"saved\", OUT / \"dp_towers.pt\", flush=True)",
+    "why": "the original kept the 10 trained tower pairs only in memory (no checkpoint, gap G5); the organisers ask for checkpoints",
+    "effect_on_numbers": "none: train() re-seeds torch and numpy itself (torch.manual_seed(seed), default_rng(seed)); state_dict() / torch.save draw no random number and do not touch the models; print() keeps report.txt as before"
+   }
+  ]
+ },
+ "env_spec": "docker/requirements-dp-local.txt (team CPU machine: Python 3.14.0, torch 2.12.1+cpu, numpy 2.3.5, pandas 3.0.5, insightface 2.0, onnxruntime 1.31.1, speechbrain 1.1.2; S8 E3)",
+ "env_overrides": {
+  "DP_TRAIN_ZIP_PATH": "path of train_set.zip",
+  "DP_TRAIN_META_PATH": "path of meta_file_train_set.csv",
+  "DP_LID_STRICT_PATH": "path of lid_strict.json",
+  "DP_EVAL_ZIP": "path of eval_set.zip (else the raw_evalphase output, else rebuilt from the evalphase view; members checked)",
+  "DP_ALLOW_INPUT_MISMATCH": "1 = go on when an input differs from the submission's: lid_strict.json not version 2, a saved dp_feats copy whose files differ from dp_features.json, eval_set.zip members that differ from the submitted zip",
+  "DP_TMP": "scratch folder (unpacked media, rebuilt zips, model copies); default FF_WORK/tmp, emptied at every run (<base>/ff_dp/<stage>)",
+  "DP_FEATS_DIR": "folder holding feats_v2/, feats_models/, feats_eval/, feats_ext_full/ with the 20 files of dp_feats_layout/dp_features.json (else found by structure in the dp_feats_layout input)"
+ }
+}

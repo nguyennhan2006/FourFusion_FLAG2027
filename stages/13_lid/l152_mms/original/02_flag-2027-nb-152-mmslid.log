@@ -1,0 +1,112 @@
+[{"stream_name":"stderr","time":5.52293099,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":5.522977226,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":6.301554456,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.301584566,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.301600246,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.301604473,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":6.855646166,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.855683239,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.855688677,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.855692581,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":7.868516168,"data":"[cell] setup\n"}
+,{"stream_name":"stdout","time":7.8692776250000005,"data":"[boot] FLAG_152 LID-AUDIT-01 (MMS-LID-4017 on MAV)\n"}
+,{"stream_name":"stdout","time":13.793421784,"data":"[      0s] risk speakers {} | model openai/whisper-large-v3 | GPUs 2\n"}
+,{"stream_name":"stdout","time":13.808568214,"data":"[cell] MAV-Celeb v1 / v2 voices: file listing\n"}
+,{"stream_name":"stdout","time":230.796241225,"data":"[    217s] MAV voice files 40271 {'v2': 20715, 'v1': 19556}\n"}
+,{"stream_name":"stdout","time":230.814696502,"data":"[cell] MMS-LID-4017 on every MAV-Celeb v1 / v2 voice file (30 s windows)\n"}
+,{"stream_name":"stderr","time":249.900272186,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":249.900301371,"data":"\n"}
+,{"stream_name":"stderr","time":249.900311779,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":283.519503463,"data":"[    270s] MMS ready: facebook/mms-lid-4017 4017 labels on ['cuda:0', 'cuda:1']\n"}
+,{"stream_name":"stdout","time":517.616737725,"data":"[    504s] GPU 1: 500 files (2.1 files/s)\n"}
+,{"stream_name":"stdout","time":532.307823342,"data":"[    519s] GPU 0: 500 files (2.0 files/s)\n"}
+,{"stream_name":"stdout","time":702.18785233,"data":"[    688s] GPU 1: 1000 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":724.622231786,"data":"[    711s] GPU 0: 1000 files (2.3 files/s)\n"}
+,{"stream_name":"stdout","time":900.509204853,"data":"[    887s] GPU 1: 1500 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":923.328790972,"data":"[    910s] GPU 0: 1500 files (2.3 files/s)\n"}
+,{"stream_name":"stdout","time":1092.689479215,"data":"[   1079s] GPU 1: 2000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":1115.027363777,"data":"[   1101s] GPU 0: 2000 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":1274.565080128,"data":"[   1261s] GPU 1: 2500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":1297.412275147,"data":"[   1284s] GPU 0: 2500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":1498.662889805,"data":"[   1485s] GPU 1: 3000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":1513.835262013,"data":"[   1500s] GPU 0: 3000 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":1710.121174264,"data":"[   1696s] GPU 1: 3500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":1731.883628543,"data":"[   1718s] GPU 0: 3500 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":1907.655759431,"data":"[   1894s] GPU 1: 4000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":1937.2779378,"data":"[   1924s] GPU 0: 4000 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":2110.809861112,"data":"[   2097s] GPU 1: 4500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":2139.78768225,"data":"[   2126s] GPU 0: 4500 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":2301.577292496,"data":"[   2288s] GPU 1: 5000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":2337.335089756,"data":"[   2324s] GPU 0: 5000 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":2506.129778944,"data":"[   2492s] GPU 1: 5500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":2544.585260996,"data":"[   2531s] GPU 0: 5500 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":2712.054227563,"data":"[   2698s] GPU 1: 6000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":2749.654775288,"data":"[   2736s] GPU 0: 6000 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":2904.389185372,"data":"[   2891s] GPU 1: 6500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":2947.976727316,"data":"[   2934s] GPU 0: 6500 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":3108.007175667,"data":"[   3094s] GPU 1: 7000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":3154.505959697,"data":"[   3141s] GPU 0: 7000 files (2.4 files/s)\n"}
+,{"stream_name":"stdout","time":3292.725987639,"data":"[   3279s] GPU 1: 7500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":3338.440916362,"data":"[   3325s] GPU 0: 7500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":3489.266751836,"data":"[   3476s] GPU 1: 8000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":3536.316107374,"data":"[   3523s] GPU 0: 8000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":3680.124238013,"data":"[   3666s] GPU 1: 8500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":3735.87789465,"data":"[   3722s] GPU 0: 8500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":3871.50136719,"data":"[   3858s] GPU 1: 9000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":3930.861240447,"data":"[   3917s] GPU 0: 9000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4070.252372375,"data":"[   4056s] GPU 1: 9500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4135.091862117,"data":"[   4121s] GPU 0: 9500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4258.493924188,"data":"[   4245s] GPU 1: 10000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4329.231596799,"data":"[   4315s] GPU 0: 10000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4458.325372124,"data":"[   4445s] GPU 1: 10500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4528.688528398,"data":"[   4515s] GPU 0: 10500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4643.219047842,"data":"[   4629s] GPU 1: 11000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4719.424110307,"data":"[   4706s] GPU 0: 11000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4816.647537881,"data":"[   4803s] GPU 1: 11500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":4895.566296279,"data":"[   4882s] GPU 0: 11500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5028.733495862,"data":"[   5015s] GPU 1: 12000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5105.068159361,"data":"[   5091s] GPU 0: 12000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5233.470471656,"data":"[   5220s] GPU 1: 12500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5303.699713779,"data":"[   5290s] GPU 0: 12500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5429.233479216,"data":"[   5415s] GPU 1: 13000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5511.317444065,"data":"[   5498s] GPU 0: 13000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5647.280016014,"data":"[   5634s] GPU 1: 13500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5712.79296551,"data":"[   5699s] GPU 0: 13500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5835.224840313,"data":"[   5821s] GPU 1: 14000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":5904.046789695,"data":"[   5890s] GPU 0: 14000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6025.370849375,"data":"[   6012s] GPU 1: 14500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6093.882123034,"data":"[   6080s] GPU 0: 14500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6217.600371785,"data":"[   6204s] GPU 1: 15000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6285.956355304,"data":"[   6272s] GPU 0: 15000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6404.352848142,"data":"[   6391s] GPU 1: 15500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6481.926035302,"data":"[   6468s] GPU 0: 15500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6599.451710291,"data":"[   6586s] GPU 1: 16000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6676.46779121,"data":"[   6663s] GPU 0: 16000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6817.262216568,"data":"[   6804s] GPU 1: 16500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":6891.581878545,"data":"[   6878s] GPU 0: 16500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7028.580946605,"data":"[   7015s] GPU 1: 17000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7097.948420491,"data":"[   7084s] GPU 0: 17000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7213.366997308,"data":"[   7200s] GPU 1: 17500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7285.618804489,"data":"[   7272s] GPU 0: 17500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7411.687195444,"data":"[   7398s] GPU 1: 18000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7486.402130209,"data":"[   7473s] GPU 0: 18000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7617.834910776,"data":"[   7604s] GPU 1: 18500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7701.703028146,"data":"[   7688s] GPU 0: 18500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7813.926192635,"data":"[   7800s] GPU 1: 19000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":7903.283579223,"data":"[   7890s] GPU 0: 19000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":8007.582834532,"data":"[   7994s] GPU 1: 19500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":8089.137643525,"data":"[   8075s] GPU 0: 19500 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":8207.559902796,"data":"[   8194s] GPU 1: 20000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":8290.704621224,"data":"[   8277s] GPU 0: 20000 files (2.5 files/s)\n"}
+,{"stream_name":"stdout","time":8347.272663206,"data":"[   8334s] MMS flagged files: 2528 {'mav_v2': 1797, 'mav_v1': 731} | speakers {'mav_v1': 62, 'mav_v2': 80} | read errors 0\n"}
+,{"stream_name":"stdout","time":8347.296956091,"data":"[   8334s] top-1 languages: {'hin': 14487, 'urd': 12717, 'eng': 5254, 'pan': 4199, 'ben': 2451, 'cym': 1277, 'snd': 860, 'tel': 677, 'sin': 668, 'mar': 527, 'zlm': 340, 'guj': 192}\n"}
+,{"stream_name":"stdout","time":8347.297973576,"data":"[   8334s] ALL CELLS OK\n"}
+,{"stream_name":"stderr","time":8353.774579345,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":8353.774614452,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":8353.942958586,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":8353.942984146,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":8354.722993391,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":8354.819742697,"data":"[NbConvertApp] Writing 86732 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":8357.348611617,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":8357.880669352,"data":"[NbConvertApp] Writing 379429 bytes to __results__.html\n"}
+]

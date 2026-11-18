@@ -1,0 +1,3 @@
+# Exact bytes matter here (md5 / sha256 checks against the Kaggle push records and stage.json): no end-of-line conversion.
+*/original/** -text
+*/stage.ipy -text

@@ -1,0 +1,89 @@
+print("[cell] raw_evalphase: locate and check the organisers' Evaluation zip", flush=True)
+# New cell (FourFusion reproduction repo). Input = the organisers' evaluation_phase.zip as released on 11/11/2026
+# (artifact raw/btc_evaluation_original = FF_DATA/00_raw/btc_evaluation/evaluation_phase.zip). Only that exact file name is used,
+# so a copy of eval_set.zip kept in the same folder is ignored.
+import hashlib, json, os, subprocess, sys, time, zipfile
+from pathlib import Path
+
+OUT = Path("/kaggle/working")
+STAGE_DIR = Path(os.environ.get("FF_STAGE_DIR", "."))         # repo folder of this stage (build_evalphase.py, expected/)
+BTC_NAME, BTC_BYTES = "evaluation_phase.zip", 472428761
+BTC_SHA256 = "c9efa2100dc54188fbd9739970a98c1cd966985d9c6f7d46148e5a3af96fc9f9"
+EVAL_SET_SHA256_SUBMITTED = "a70762a3fb52af6bbf52c14a86c79a4d074ec319b78d6ffedcdf195d71f9381e"   # zip bytes carry the build time
+
+
+def sha256_file(p):
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(1 << 22), b""):
+            h.update(b)
+    return h.hexdigest()
+
+
+hits = sorted(p for p in Path("/kaggle/input").rglob(BTC_NAME) if p.is_file())
+assert hits, f"attach the organisers' {BTC_NAME} (artifact raw/btc_evaluation_original)"
+BTC = hits[0]
+REP = {"started": time.strftime("%Y-%m-%d %H:%M:%S"), "btc_zip": str(BTC), "btc_bytes": BTC.stat().st_size,
+       "btc_sha256": sha256_file(BTC)}
+REP["btc_ok"] = REP["btc_bytes"] == BTC_BYTES and REP["btc_sha256"] == BTC_SHA256
+print(json.dumps(REP, indent=1), flush=True)
+assert REP["btc_ok"], "this is not the organisers' evaluation_phase.zip of 11/11/2026 (size / sha256 differ)"
+assert (STAGE_DIR / "build_evalphase.py").is_file(), f"FF_STAGE_DIR must point at stages/10_raw/raw_evalphase (now {STAGE_DIR})"
+# <<<FF-CELL>>>
+print("[cell] raw_evalphase: build eval_set.zip with build_evalphase.py (original local script, unchanged)", flush=True)
+# Original run: on the team machine, 11/11/2026, `python -I Experiment/EVALPATH-U/build_evalphase.py <btc zip> <out zip>`.
+# The script only renames <Lang>_valid -> <Lang>_test, fixes 416 list lines of gender/English (space instead of '/') and keeps the
+# organiser lists under evaluation_phase/btc_original/; ids, row order and media bytes are unchanged.
+EVAL_SET = OUT / "eval_set.zip"
+if EVAL_SET.exists():
+    EVAL_SET.unlink()                                           # never append to a partial zip of an interrupted run
+cmd = [sys.executable, "-I", "-u", str(STAGE_DIR / "build_evalphase.py"), str(BTC), str(EVAL_SET)]
+print("run:", " ".join(cmd), flush=True)
+p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+for line in p.stdout:
+    print(line, end="", flush=True)
+assert p.wait() == 0, "build_evalphase.py failed"
+REP["eval_set_zip_sha256"] = sha256_file(EVAL_SET)
+REP["eval_set_zip_sha256_equals_submitted"] = REP["eval_set_zip_sha256"] == EVAL_SET_SHA256_SUBMITTED
+print("eval_set.zip sha256", REP["eval_set_zip_sha256"],
+      "(= submitted copy)" if REP["eval_set_zip_sha256_equals_submitted"]
+      else "(differs from a70762a3... as expected: zipfile.writestr stamps the build time; members are compared next)", flush=True)
+# <<<FF-CELL>>>
+print("[cell] raw_evalphase: member-by-member check against the dataset the system read", flush=True)
+# expected/eval_set_members.sha256 = sha256 of every member of the eval_set.zip uploaded as ngnnguynchn/flag2027-evalphase-p
+# (D:/ff_data/evalphase/eval_set.zip, sha256 a70762a3..., 4 669 members; measured 18/11/2026).
+EXP = {}
+for line in (STAGE_DIR / "expected/eval_set_members.sha256").read_text(encoding="utf-8").splitlines():
+    if line.strip():
+        h, name = line.split("  ", 1)
+        EXP[name] = h
+with zipfile.ZipFile(EVAL_SET) as z:
+    GOT = {i.filename: hashlib.sha256(z.read(i)).hexdigest() for i in z.infolist() if not i.filename.endswith("/")}
+missing = sorted(set(EXP) - set(GOT))
+extra = sorted(set(GOT) - set(EXP))
+differ = sorted(n for n in set(EXP) & set(GOT) if EXP[n] != GOT[n])
+REP.update(members=len(GOT), members_expected=len(EXP), missing=missing[:20], extra=extra[:20], differ=differ[:20],
+           members_ok=not (missing or extra or differ))
+print(f"members {len(GOT)} (expected {len(EXP)}): missing {len(missing)}, extra {len(extra)}, different {len(differ)}", flush=True)
+(OUT / "raw_evalphase_check.json").write_text(json.dumps(REP, indent=1))
+assert REP["members_ok"], f"eval_set.zip content differs from the dataset the system read: {missing[:3]} {extra[:3]} {differ[:3]}"
+# <<<FF-CELL>>>
+print("[cell] raw_evalphase: unpack as the Kaggle dataset view (flag2027-evalphase-p = evaluation_phase/...)", flush=True)
+# Kaggle extracted the uploaded eval_set.zip on upload: the dataset the Evaluation notebooks mounted holds evaluation_phase/... at its
+# root (no zip). The export datasets/ngnnguynchn/flag2027-evalphase-p is that view; eval_set.zip itself stays in this stage's output
+# (the DP branch reads the zip: stages 70_dp).
+VIEW = OUT / "flag2027-evalphase-p"
+if VIEW.exists():
+    import shutil
+    shutil.rmtree(VIEW)
+VIEW.mkdir(parents=True)
+with zipfile.ZipFile(EVAL_SET) as z:
+    z.extractall(VIEW)
+n = sum(1 for q in VIEW.rglob("*") if q.is_file())
+lists = sorted(q.relative_to(VIEW).as_posix() for q in VIEW.glob("evaluation_phase/*/*_test.txt"))
+REP.update(view_files=n, view_lists=lists, finished=time.strftime("%Y-%m-%d %H:%M:%S"))
+(OUT / "raw_evalphase_check.json").write_text(json.dumps(REP, indent=1))
+print(f"dataset view: {n} files; lists {lists}", flush=True)
+assert n == len(EXP) and len(lists) == 4
+print("raw_evalphase: OK", flush=True)
+# <<<FF-CELL>>>

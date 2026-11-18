@@ -1,0 +1,191 @@
+{
+ "id": "e65xbs",
+ "group": "50_eval",
+ "title": "Faces of the four Evaluation lists: CLIP ViT-L/14 + LoRA face adapter B3s (wiring only)",
+ "kind": "infer",
+ "role_in_1354": "wiring",
+ "role": "Loads the saved B3s adapter (facelora_state.pt of datasets/phanvnhtrng/flag2027-feats-ls-b3s-p; no training in this run, the training cell only builds its sampling pool) and embeds the faces of the four Evaluation lists (face_clipB3_<protocol>_<lang>.npy, 768-d); re-extracts the train / MAV-Celeb v1-v2 rows only to check them against the saved arrays, then copies every saved file of the adapter dataset (train / v1 / v2 / VoxCeleb2 / VoxBlink arrays, adapter, bn42_clean.json) into feats_clipb3c_x/. Not in the numbers of the 13.54 zip: e112f0sx scores the B0s head with these faces (English bytes of F0s, recomputed by a_factor) and e112f1sx asserts that exactly one feats_clipb3c_x folder holding bn42_clean.json is attached.",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "machine_shape": "NvidiaTeslaT4",
+  "minutes_original": 16.4,
+  "internet": true,
+  "secrets": []
+ },
+ "origin": {
+  "run": "thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/01_flag-2027-nb-65xbs-b3sx-eval.ipynb",
+  "notebook": "original/01_flag-2027-nb-65xbs-b3sx-eval.ipynb",
+  "notebook_md5": "20f1741420954dd09f7f9fa206770d45",
+  "notebook_sha256": "21a34cb11dcc598dbe4636cc23d08496a21c41afa32436759f8f53fc164ae9a3",
+  "exact_notebook_md5": "20f1741420954dd09f7f9fa206770d45",
+  "exact_notebook_sha256": "21a34cb11dcc598dbe4636cc23d08496a21c41afa32436759f8f53fc164ae9a3",
+  "redacted": false,
+  "pushed": {
+   "time_utc+7": "2026-11-11 20:46",
+   "kapi_runs_line": 1466,
+   "pushed_notebook_md5": "736f0364842831fcaef1e246180a0c8e"
+  },
+  "log": "original/01_flag-2027-nb-65xbs-b3sx-eval.log",
+  "kernel_metadata": "original/kernel-metadata.json",
+  "builder": "kaggle/build_facelora3_notebook.py (variant b3cx) -> kaggle/FLAG_65xb_clipb3c_extract.ipynb; kaggle/patch_evalphase_checks.py (11/11 fix of the dev-only check of cell 12); pushed by kaggle/sat_push.sh step 65xbs (sed: B3c dataset name -> phanvnhtrng/flag2027-feats-ls-b3s-p, ONLY_UNDER = None -> 'evaluation_phase'), chain kaggle/evalrun_chain.sh lane G; pre-staging patched copy: _staging_backup/tmp.fZdWr92PZL/FLAG_65xb_clipb3c_extract.ipynb (md5 908bc376...)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "mount": "flag2027-raw-v4-p",
+   "use": "organiser MAV-Celeb v4 files as stored in FF_DATA 00_raw/btc_mavceleb_v4 (train_set.zip, dev_set.zip, meta_file_train_set.csv): the train list and media come from train_set.zip, unpacked by the verbatim fallback into /kaggle/working/raw and removed by the stage's last cell; dev_set.zip is mounted but never opened (patch no_dev_zip; the original run saw Kaggle's auto-extracted tree, dev lists skipped by ONLY_UNDER)"
+  },
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb",
+   "mount": "external-data-mavceleb",
+   "use": "MAV-Celeb v1 / v2 media (original Kaggle layout)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ext-meta-p",
+   "mount": "flag2027-ext-meta-p",
+   "use": "MAV-Celeb v1 / v2 row tables of FLAG_08 (row order of the ext_* arrays)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p",
+   "mount": "flag2027-lab-data-p",
+   "use": "cell 06 (FACELORA-03 data of the three sources): sampling pool index only, no training in this run"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p",
+   "mount": "flag2027-lab-vb-p",
+   "use": "cell 06 sampling pool index only (private, VoxBlink)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+   "mount": "flag2027-feats-vox2b-p",
+   "use": "cell 06 sampling pool index only"
+  },
+  {
+   "artifact": "datasets/onnhqunhh/flag2027-lora-frames-p",
+   "mount": "flag2027-lora-frames-p",
+   "use": "cell 06 sampling pool index only (private)"
+  },
+  {
+   "artifact": "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+   "mount": "flag2027-feats-ls-b3s-p",
+   "use": "saved B3s adapter (facelora_state.pt) + saved arrays and bn42_clean.json, copied into the output (stage t153b)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-evalphase-p",
+   "mount": "flag2027-evalphase-p",
+   "use": "organiser Evaluation data, *_valid renamed *_test (stage raw_evalphase): the four lists, media, organiser feature csv"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+  "exports": {},
+  "main_files": [
+   "feats_clipb3c_x/face_clipB3_{no_gender,gender}_{English,Bangla}.npy",
+   "feats_clipb3c_x/bn42_clean.json",
+   "feats_clipb3c_x/feats_manifest.json",
+   "feats_clipb3c_x/face_clipB3_train.npy (copied)",
+   "feats_clipb3c_x/facelora_state.pt (copied)"
+  ],
+  "contains": {
+   "dev_data": false,
+   "voxblink": true,
+   "organiser_media": false,
+   "what": "feats_clipb3c_x/ holds every file copied from the adapter dataset datasets/phanvnhtrng/flag2027-feats-ls-b3s-p (code cell 10 copy loop; log: 'saved file copied in: vb_face_clipB3.npy', vox2b_face_clipB3.npy, vox_face_clipB3.npy), including the VoxBlink face array vb_face_clipB3.npy and facelora_state.pt (adapter B3s learned with VoxBlink frames): private storage only (DESIGN 2.8). Same for the saved copy (FF_DATA 04_run_outputs) and a re-run."
+  }
+ },
+ "flags_in_code": {
+  "ONLY_UNDER": "'evaluation_phase' (constant, code cell 01)",
+  "SPLIT_FILTER": "None (every list found: train + the four Evaluation lists)"
+ },
+ "env": {},
+ "smoke_env": {
+  "FLAG_SMOKE": "1",
+  "FLAG_SMOKE_ROWS": "24"
+ },
+ "patches": [
+  {
+   "id": "no_dev_zip",
+   "old": "ZIP_PREFIXES = (\"train_set\", \"dev_set\", \"eval\", \"test\")             # organiser zips unpacked when not extracted",
+   "new": "ZIP_PREFIXES = (\"train_set\", \"eval\", \"test\")                        # FF dev-exclusion: dev_set.zip is never unpacked (original: (\"train_set\", \"dev_set\", \"eval\", \"test\")). organiser zips unpacked when not extracted",
+   "count": 1,
+   "type": "dev-exclusion",
+   "in_release": false,
+   "why": "The repository mounts datasets/ngnnguynchn/flag2027-raw-v4-p as the organisers' files in FF_DATA 00_raw/btc_mavceleb_v4 (train_set.zip, dev_set.zip, meta_file_train_set.csv; configs/data_map.json, no 'exclude'), not as the tree Kaggle had auto-extracted for the original run (log: .../flag2027-raw-v4-p/train_set/train_set/train_set/train_English.txt, no 'unpacking' line). No train list is then found among the extracted inputs, so the verbatim fallback unpack_zips() runs; without this patch it unpacks dev_set.zip too (9 757 members, 989 881 860 bytes zipped) into /kaggle/working/raw. ONLY_UNDER = 'evaluation_phase' kept the dev lists out of the numbers anyway; with the patch the dev archive is never opened. Same text as the patch of stage f47b_screen2 (group 20_features).",
+   "effect": "none on numbers: train_set.zip is unpacked by the same fallback into /kaggle/working/raw (same train list and media as the auto-extracted copy, other path) and the verbatim last cell removes raw/ (shutil.rmtree(WORKDIR / 'raw')), so the stage output holds no organiser media; the run log shows an 'unpacking .../train_set.zip' line the original log does not have"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not used (no ImageBind-audio LoRA in this stage)"
+ },
+ "dev_data": "dev_set.zip of datasets/ngnnguynchn/flag2027-raw-v4-p is mounted (FF_DATA layout: zips, not extracted) but never opened: patch no_dev_zip removes 'dev_set' from ZIP_PREFIXES, so the verbatim fallback unpack_zips() unpacks only train_set.zip (the original run found the train list in Kaggle's auto-extracted tree and unpacked nothing). In addition, ONLY_UNDER = 'evaluation_phase' (code cell 01, set by the kaggle/sat_push.sh sed at push time) skips every organiser list whose path lacks 'evaluation_phase' except train_English.txt, as in the original run. WP-A may also add \"exclude\": [\"dev_set.zip\"] to the raw-v4 entry of configs/data_map.json (defence in depth).",
+ "skip_with": [
+  "04_run_outputs/flag-2027-nb-65xbs-b3sx-eval"
+ ],
+ "verify": [
+  {
+   "file": "feats_clipb3c_x/feats_manifest.json",
+   "bytes": 1225,
+   "saved_sha256": "518d4cb84783367b7a05450968498a1d565dd98e17b1f9e0830b39da66070cee",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-65xbs-b3sx-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "feats_clipb3c_x/bn42_clean.json",
+   "bytes": 157,
+   "saved_sha256": "5dee5d7f9155fe28ad6fe873d95e1f1377f7b74d48ca02d989a2944e9d30fd61",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-65xbs-b3sx-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "feats_clipb3c_x/face_clipB3_no_gender_English.npy",
+   "bytes": 1204352,
+   "saved_sha256": "4a57060637621d6d37f5ff0429b620b2e6c05d7c22c58c662a60dc5843793dfd",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-65xbs-b3sx-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "feats_clipb3c_x/face_clipB3_no_gender_Bangla.npy",
+   "bytes": 2463872,
+   "saved_sha256": "66cf5ccd5fcb4488b480ad4b3879e1c4683b887924ffb1afb6cc6a8d4b89fb00",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-65xbs-b3sx-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "feats_clipb3c_x/face_clipB3_gender_English.npy",
+   "bytes": 1278080,
+   "saved_sha256": "879387bb70c901d91dec77457b4232c303f71daaa8e43916ef7677a1811f14a1",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-65xbs-b3sx-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "feats_clipb3c_x/face_clipB3_gender_Bangla.npy",
+   "bytes": 2199680,
+   "saved_sha256": "72e18d996c64f5bb3b8cfdfa80a37a5692ddde1f2e957d9cc8af5714819d2380",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-65xbs-b3sx-eval); a GPU re-run is not byte-identical"
+  }
+ ],
+ "rerun_expectation": "GPU / library re-runs are not bit-identical: compare the final zip per file (Spearman >= 0.9999, DESIGN 5.2); byte equality only for the saved outputs above",
+ "stage_ipy_sha256": "0a8f1ed64d83bd85ae5de06925478b9088fd8dd9b3dbb45daaa041d1e096dedc",
+ "stage_ipy_cells": 13,
+ "release_e2e_code": {
+  "path": "release/flag2027_e2e/code/e65xbs.ipy",
+  "sha256": "b129385cf497762f5e6ee2b520f0416da844b210ee8b1e2d16032f5c8755a149",
+  "equal_to_stage_ipy": false,
+  "equal_to_code_of_exact_notebook_with_patches": true,
+  "ships_with_repo": false,
+  "note": "provenance only: release/flag2027_e2e/code/<stage>.ipy is a team file that is not part of the published repository (e50cc.ipy embeds the dev score zips); equal_to_code_of_exact_notebook_with_patches uses only the patches without \"in_release\": false"
+ },
+ "todo": [
+  "WP-A data_map: set voxblink: true on notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval (outputs.contains: vb_face_clipB3.npy and facelora_state.pt copied from the adapter dataset); optionally add exclude [dev_set.zip] to the raw-v4 entry (patch no_dev_zip already keeps the dev archive closed)."
+ ],
+ "notes": [
+  "Mount layout: this run saw its datasets at /kaggle/input/<slug> (old Kaggle layout; log lines of flag2027-evalphase-p, external-data-mavceleb and flag2027-raw-v4-p), so every dataset input has mount = <slug> (assumed for the six datasets the log does not print). The code scans /kaggle/input recursively, so the layout should not matter; it is kept as in the run.",
+  "stage.ipy is byte-identical to release/flag2027_e2e/code/e65xbs.ipy (no change).",
+  "Fix round 18/11: dev-exclusion patch no_dev_zip added (see CHANGES.md); stage.ipy is no longer byte-identical to release/flag2027_e2e/code/e65xbs.ipy (previous stage.ipy sha256 b129385cf497762f5e6ee2b520f0416da844b210ee8b1e2d16032f5c8755a149)."
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": false,
+  "why": "every path of this stage is derived from the code text (/kaggle/input replaced by the runner); no base64-embedded module"
+ }
+}

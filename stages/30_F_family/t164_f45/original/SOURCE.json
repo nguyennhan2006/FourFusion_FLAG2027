@@ -1,0 +1,255 @@
+{
+ "stage": "t164_f45",
+ "run": "dngxunqun/flag-2027-nb-164-cleancomp01-f45",
+ "files": [
+  {
+   "repo_path": "original/flag-2027-nb-164-cleancomp01-f45.ipynb",
+   "copied_from": "d:/Sinh viên CNhan/FLAG_2027_FourFusion/release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f45/flag-2027-nb-164-cleancomp01-f45.ipynb",
+   "source_md5": "42e55ef7762a6fb3c978a3c01332ac79",
+   "source_sha256": "a45d9500daf26ecfbaf02c8f0a996638784066dcccd7738fa531d8a09380f40f",
+   "source_bytes": 118233,
+   "repo_sha256": "a45d9500daf26ecfbaf02c8f0a996638784066dcccd7738fa531d8a09380f40f",
+   "repo_bytes": 118233,
+   "byte_identical_to_source": true,
+   "e_package_manifest_sha256": null
+  },
+  {
+   "repo_path": "original/flag-2027-nb-164-cleancomp01-f45.log",
+   "copied_from": "d:/Sinh viên CNhan/FLAG_2027_FourFusion/release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f45/flag-2027-nb-164-cleancomp01-f45.log",
+   "source_md5": "e2593d5b7e756259ea1f2ba6aebfeb0f",
+   "source_sha256": "29f1cdd42f5a34da10dbdffed5dfa11a353c3ba6c93479f552a23b8fbb1b9311",
+   "source_bytes": 12496,
+   "byte_identical_to_source": true,
+   "e_package_manifest_sha256": null
+  },
+  {
+   "repo_path": "original/kernel-metadata.json",
+   "copied_from": "d:/Sinh viên CNhan/FLAG_2027_FourFusion/release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f45/kernel-metadata.json",
+   "source_md5": "30b57c8787f042c0a14ec9ca950ff5f4",
+   "source_sha256": "88c731e32c81c7efee7596959d2fea84ada553872ffede48e0e3972a42f3b1c1",
+   "source_bytes": 772,
+   "byte_identical_to_source": true,
+   "e_package_manifest_sha256": null
+  }
+ ],
+ "kapi_runs": [
+  {
+   "line": 1115,
+   "time": "2026-11-03 16:13",
+   "account": "thanhthaoph",
+   "kernel": "thanhthaoph/flag-2027-nb-164-cleancomp01-smoke",
+   "source": "kaggle/FLAG_164_cleancomp01.ipynb",
+   "notebook_md5_pushed": "70964da119445629546075bbfdaa4b08",
+   "gpu": false,
+   "smoke": {
+    "LID_STRICT": "1",
+    "LAB_FOLDS": "1",
+    "L0_STEPS": "10",
+    "L0_NETS": "1",
+    "SAFE04_THREADS": "4"
+   },
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  },
+  {
+   "line": 1116,
+   "time": "2026-11-03 16:16",
+   "account": "thanhthaoph",
+   "kernel": "thanhthaoph/flag-2027-nb-164-cleancomp01-smoke",
+   "source": "kaggle/FLAG_164_cleancomp01.ipynb",
+   "notebook_md5_pushed": "c2902118ec248f0d6ffbe07ee55f4ddf",
+   "gpu": false,
+   "smoke": {
+    "LID_STRICT": "1",
+    "LAB_FOLDS": "1",
+    "L0_STEPS": "10",
+    "L0_NETS": "1",
+    "SAFE04_THREADS": "4"
+   },
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  },
+  {
+   "line": 1117,
+   "time": "2026-11-03 16:18",
+   "account": "thanhthaoph",
+   "kernel": "thanhthaoph/flag-2027-nb-164-cleancomp01-smoke",
+   "source": "kaggle/FLAG_164_cleancomp01.ipynb",
+   "notebook_md5_pushed": "ef70ebb00efee609c3de1d7d4c96ef3f",
+   "gpu": false,
+   "smoke": {
+    "LID_STRICT": "1",
+    "LAB_FOLDS": "1",
+    "L0_STEPS": "10",
+    "L0_NETS": "1",
+    "SAFE04_THREADS": "4"
+   },
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  },
+  {
+   "line": 1122,
+   "time": "2026-11-03 16:26",
+   "account": "dngxunqun",
+   "kernel": "dngxunqun/flag-2027-nb-164-cleancomp01-f45",
+   "source": "kaggle/FLAG_164_cleancomp01.ipynb",
+   "notebook_md5_pushed": "bc19cb0313284fd00f1bb57d65044706",
+   "gpu": true,
+   "smoke": {},
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  }
+ ],
+ "pushed_vs_executed": "kapi_runs.jsonl records the md5 of the notebook as PUSHED (kapi staging folder); the executed copy here was obtained from Kaggle after the run (package E (E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/) notebooks/ = kernels pull, or release/flag2027_e2e/pull_runs.py), and Kaggle re-serialises the JSON, so the two md5 differ by construction. The Temp staging folders of these pushes are empty (repo/_staging_backup/MANIFEST.json: covered_elsewhere).",
+ "release_e2e_check": {
+  "release_code": "release/flag2027_e2e/code/t164_f45.ipy",
+  "release_sha256": "4db27f19bc5edca747e43dee0746fed0324526f5283d5f584d7f529c49b57013",
+  "rebuilt_from_exact_notebook_with_release_patches_sha256": "4db27f19bc5edca747e43dee0746fed0324526f5283d5f584d7f529c49b57013",
+  "equal": true
+ },
+ "redaction": null,
+ "embedded_code_members": [
+  {
+   "name": "kaggle/build_l0_notebooks.py",
+   "bytes": 121966,
+   "sha256": "1097dd9537b505682e034e78330690f67a7e2fcc2a10cbad887a0f603088b96e",
+   "md5": "e2f63ea92aa5c62e66a034a20a5ab493"
+  },
+  {
+   "name": "Experiment/SAFE-04/lab_streams.py",
+   "bytes": 7338,
+   "sha256": "aaf3880c57fdfddda7be567369212af88a8318d08a4eb1fcfa9182ec2002a727",
+   "md5": "e288a49c7f77f9a22e9cce00aead459b"
+  },
+  {
+   "name": "Experiment/SAFE-04/rel_sweep.py",
+   "bytes": 3939,
+   "sha256": "a7290e7ad56fb54cf1e3c5b53757ae9c2ada3e5283d5526f9d806ad91f16e620",
+   "md5": "7166b20f70f25f342a22bfcadc5883ac"
+  },
+  {
+   "name": "Experiment/SAFE-04/rel_sweep2.py",
+   "bytes": 3411,
+   "sha256": "7214c9083702a0e568b4fbee1d78ca9e1382c1f8154c8982d2ac7d812200cfc4",
+   "md5": "75899e4caf38b38bbf953da6b5b62a04"
+  },
+  {
+   "name": "Experiment/SAFE-04/rel_sweep5.py",
+   "bytes": 1885,
+   "sha256": "43960985823a6c29c4e853a9e513e91da15c9c3af013bf0ade92ad266cb57bab",
+   "md5": "557afcb255ab4f1b4696296633d87a88"
+  },
+  {
+   "name": "Experiment/SAFE-04/rel.py",
+   "bytes": 8279,
+   "sha256": "0ee274361b370112e54d3019b4e3f6b188ba3afff1cf99d098dbbb6a8d0f2bc5",
+   "md5": "402aaf561639e75409f2ead79d78a939"
+  },
+  {
+   "name": "Experiment/VOX2-01/run_bridge.py",
+   "bytes": 8524,
+   "sha256": "9daeeeec609a3e5e0a8d2764796391dc2bf8fb2291fa0ab6169695552e8b35ff",
+   "md5": "e3260d3276cfdca8eb08dbcfd26f19aa"
+  },
+  {
+   "name": "Experiment/T3ENC-01/run.py",
+   "bytes": 12721,
+   "sha256": "3cb048edfd4793173e937022404932705d186ba1e3ceacd7d24e237864099ee1",
+   "md5": "fd780c6f94762c24b9d9cf4db49df181"
+  },
+  {
+   "name": "Experiment/ALLNEG-01/run.py",
+   "bytes": 10388,
+   "sha256": "0776caba9bcdb017ef6d29e6d0276f19d9fd50e7d39d1ae472ce17f67d37cc2e",
+   "md5": "413e0779662fc2be0b5fb75930129e5b"
+  },
+  {
+   "name": "Experiment/BIGB-01/run.py",
+   "bytes": 1971,
+   "sha256": "19a652bb0ec7eb02427f6c2fbfad52dfb82ab65169e5feec7be4e3cd9ae0a067",
+   "md5": "f2a9a4f099496905ea93d9cf44025860"
+  },
+  {
+   "name": "Experiment/SCALE-VB/run.py",
+   "bytes": 12781,
+   "sha256": "620b0a292fcd053ff429925d49958ec0c0cc8ab5f834e667ef960a7b937cdf6e",
+   "md5": "2e2913fb5310c53191ead982de51582e"
+  },
+  {
+   "name": "Experiment/VBSEL-01/run.py",
+   "bytes": 7130,
+   "sha256": "e7e6b7013048b7cbe334610dbe323db3888907a89cf759b6f7ab1e1dfe708d36",
+   "md5": "2e99d3b90dc56675ca4b36ded1a83e96"
+  },
+  {
+   "name": "Experiment/VBSEL-01/vox2_sa_speakers.json",
+   "bytes": 4094,
+   "sha256": "eccc765365323b2ea52a97822b17eb33ffaa4dc46e0aca00f85f2df1911dd278",
+   "md5": "37f4e8670949bc32f086003a593f9036"
+  },
+  {
+   "name": "Experiment/ENBASE-01/run.py",
+   "bytes": 12871,
+   "sha256": "7b186981aaa7a32e0e63dec9ec60fcd516cdd7ea4c4f5f4cf07b3db1bdb4cf61",
+   "md5": "4a40fb17c9585c2f66b177f5b529b777"
+  },
+  {
+   "name": "Experiment/CLEANCOMP-01/run.py",
+   "bytes": 4667,
+   "sha256": "96174358ef7ad4dec1ae881590cf552280fb38dc0fa779a7d9c28904d6ea4824",
+   "md5": "6f8adb4e06e1ea959e33bfa55397f3c1"
+  },
+  {
+   "name": "lab_entry.py",
+   "bytes": 810,
+   "sha256": "30b765f5bfcf468e4942648dad0ad5de940579beda11ac4f27d257da7b11a3ad",
+   "md5": "7f6ef282ce66be62b897b067ed9f8e0e"
+  }
+ ],
+ "env_cell_of_the_run": "print(\"[cell] 01 run parameters (kapi --env): environment variables of this r\", flush=True)\n# run parameters (kapi --env): environment variables of this run\nimport os\nos.environ['LID_STRICT'] = '1'\nos.environ['LAB_FOLDS'] = '4,5'",
+ "kernel_metadata": {
+  "id": "dngxunqun/flag-2027-nb-164-cleancomp01-f45",
+  "id_no": 142481062,
+  "title": "flag-2027-nb-164-cleancomp01-f45",
+  "code_file": "flag-2027-nb-164-cleancomp01-f45.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+   "gpu"
+  ],
+  "dataset_sources": [
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-lab-data-p"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
+  "machine_shape": "NvidiaTeslaT4"
+ }
+}

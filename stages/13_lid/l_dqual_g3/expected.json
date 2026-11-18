@@ -1,0 +1,22 @@
+{
+ "persons_g3": {
+  "VoxCeleb2": {
+   "n_ids": 4852,
+   "n_g3_fail": 454,
+   "sha256_sorted_ids": "155b7c1b9ee9f06d473b6caf5a54fcfbe7cbefc46bce460d48ac452634f1e20c",
+   "sha256_sorted_g3_fail": "a057141dffe63a916f561cb21db72400b416c1d591efdf6bbc50d048a9ed268c",
+   "q05_face": 1.1988701045513153,
+   "q05_voice": 1.0387036859989167
+  },
+  "VoxBlink": {
+   "n_ids": 15175,
+   "n_g3_fail": 1388,
+   "sha256_sorted_ids": "2479893aec228db19925090c43aa31ccdac8fd9f4a26052ae26395c74045a00e",
+   "sha256_sorted_g3_fail": "b029a377be9d6433e286923d4013e3927eb86a2dbf6d597084d1929aeb6fc986",
+   "q05_face": 1.249595296382904,
+   "q05_voice": 1.01653333902359
+  }
+ },
+ "digest_rule": "sha256('\\n'.join(sorted(speaker ids)).encode())",
+ "source": "Experiment/DQUAL-01/persons.parquet (sha256 e4c8deb7bcc866833f9483e3734c8a841aac531e4c629ef647286cda1b82cb95)"
+}

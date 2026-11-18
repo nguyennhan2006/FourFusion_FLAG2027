@@ -1,0 +1,8 @@
+docker/exact/
+**/__pycache__/
+*.zip
+*.npy
+*.npz
+*.parquet
+*.pt
+*.pth

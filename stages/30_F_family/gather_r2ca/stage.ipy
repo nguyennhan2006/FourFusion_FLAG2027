@@ -1,0 +1,19 @@
+print("[cell] gather_r2ca 1/1: the five ct01r2 fold tables of the three t155s runs -> tables/ (dataset flag2027-ct02s-r2ca-tables-p)", flush=True)
+# = the local step `RUNS="<3 runs>" bash kaggle/sat_push.sh 111sr` (gather_tables ct01r2, kaggle/sat_push.sh:52-66: download
+# ct01r2_fold[0-9].parquet of each run, exactly 5 files, zip them as tables/<name>) as a stage; logic of the release stage
+# `gather_r2ca` (release/flag2027_e2e/stages.py:447-455). The files are copied byte for byte.
+import shutil, hashlib
+from pathlib import Path
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+fs = sorted({p.name: p for p in IN.rglob("ct01r2_fold[0-9].parquet")}.values())
+print([str(p) for p in fs], flush=True)
+import os
+if os.environ.get("FF_SMOKE") == "1":      # smoke: the t155s smoke runs make one fold each; t112s* stand-ins fill the rest
+    assert fs, "no fold table"; print("SMOKE: folds missing:", sorted(set(f"ct01r2_fold{k}.parquet" for k in range(1, 6)) - {p.name for p in fs}), flush=True)
+else:
+    assert len(fs) == 5, f"{len(fs)} fold tables (5 needed)"
+(OUT / "ds/tables").mkdir(parents=True, exist_ok=True)
+for p in fs:
+    shutil.copy2(p, OUT / "ds/tables" / p.name)
+    print(p.name, hashlib.sha256(p.read_bytes()).hexdigest(), flush=True)
+# <<<FF-CELL>>>

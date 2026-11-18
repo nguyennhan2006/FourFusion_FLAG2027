@@ -1,0 +1,36 @@
+{
+ "stage": "c37_vox2",
+ "run": "unknown slug (Kaggle 'fork of flag-2027-nb-37', executed 2026-10-06; run before kapi logged pushes)",
+ "exactness": "exact-executed-copy",
+ "files": [
+  {
+   "path": "original/fork-of-flag-2027-nb-37.ipynb",
+   "copied_from": "Experiment/VOX2-01/fork-of-flag-2027-nb-37.ipynb",
+   "bytes": 305298,
+   "md5": "88d704f501af921f02f5bbec3beb4a01",
+   "sha256": "a4a56df1cdcfc8bb1c9a05c0f1600c71b63d92704da5e4c66b143ba17a3c2ed5"
+  }
+ ],
+ "notes": [],
+ "builders_today": [
+  {
+   "path": "kaggle/build_vox2_notebook.py",
+   "bytes": 24801,
+   "md5": "92be93107a1083a7a362a88108f72cc1",
+   "sha256": "55a2c592b5438a7dc2a40a0a2593f69b55f4a66e3d5e3731da16dd0663b02aa4",
+   "mtime_local": "2026-10-06 12:28:06"
+  },
+  {
+   "path": "kaggle/FLAG_37_vox2_feats.ipynb",
+   "bytes": 54958,
+   "md5": "01f88326e65663641b12127ec2eb5ff2",
+   "sha256": "df0740aeb07076ee059f59329b4532aac9c5414a0f3e1313157c9108519fbd18",
+   "mtime_local": "2026-11-12 22:03:40"
+  }
+ ],
+ "builders_git": "all untracked in the source repo (git status '??'); kaggle/build_eval_notebooks.py (notebook writer) is tracked + modified",
+ "evidence": [
+  "internal provenance (not shipped): NOP_BTC_2026-11-20/repo_map/DESIGN.md §4.2, §6 WP-C, §7 G2 G9 G22 G27",
+  "internal provenance (not shipped): repo_map/S1_raw_filter.md A7; S2_features.md A08"
+ ]
+}

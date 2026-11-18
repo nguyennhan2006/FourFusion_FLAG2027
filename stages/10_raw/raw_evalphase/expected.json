@@ -1,0 +1,21 @@
+{
+ "evaluation_phase.zip": [
+  472428761,
+  "c9efa2100dc54188fbd9739970a98c1cd966985d9c6f7d46148e5a3af96fc9f9"
+ ],
+ "eval_set.zip (submitted copy, informative)": [
+  473574461,
+  "a70762a3fb52af6bbf52c14a86c79a4d074ec319b78d6ffedcdf195d71f9381e"
+ ],
+ "members": 4669,
+ "member_manifest": "expected/eval_set_members.sha256",
+ "rows": {
+  "no_gender/English": 392,
+  "no_gender/Bangla": 802,
+  "gender/English": 416,
+  "gender/Bangla": 716
+ },
+ "fixed_lines": {
+  "gender/English": 416
+ }
+}

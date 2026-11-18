@@ -1,0 +1,15 @@
+{
+ "stage": "gather_g1",
+ "exactness": "new",
+ "translates": {
+  "path": "kaggle/sat_push.sh",
+  "sha256_2026_11_18": "30baa4b2974e45014c7041a6b0f80b8e5b067f47fd4e8b43d246dfed5058efad",
+  "lines": "52-66 (gather_tables), 778 (111sg), 779 (111sr)"
+ },
+ "files": [
+  {
+   "repo_path": "original/sat_push.sh.excerpt",
+   "note": "line-numbered excerpt; secret-scanned"
+  }
+ ]
+}

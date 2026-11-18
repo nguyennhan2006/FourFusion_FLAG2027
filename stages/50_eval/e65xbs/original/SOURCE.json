@@ -1,0 +1,78 @@
+{
+ "stage": "e65xbs",
+ "run": "thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+ "exactness": "exact-package",
+ "files": [
+  {
+   "path": "01_flag-2027-nb-65xbs-b3sx-eval.ipynb",
+   "role": "exact executed notebook (team package, Kaggle-pulled copy of the run; code cells identical to the pushed bytes)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/01_flag-2027-nb-65xbs-b3sx-eval.ipynb",
+   "bytes": 189532,
+   "md5": "20f1741420954dd09f7f9fa206770d45",
+   "sha256": "21a34cb11dcc598dbe4636cc23d08496a21c41afa32436759f8f53fc164ae9a3"
+  },
+  {
+   "path": "01_flag-2027-nb-65xbs-b3sx-eval.log",
+   "role": "Kaggle log of the run (team package)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/01_flag-2027-nb-65xbs-b3sx-eval.log",
+   "bytes": 12813,
+   "md5": "cc05b8fde76e5305ff6d44bf462dcf62",
+   "sha256": "e8227b6c7c27eff8dfcbd28f167e8e90f4fa260714f959c4f6b1e421b7873006"
+  },
+  {
+   "path": "kernel-metadata.json",
+   "role": "kernel-metadata.json of the exact push (kapi staging folder)",
+   "copied_from": "NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-65xbs-b3sx-eval_a_sdn52a/kernel-metadata.json (from C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-65xbs-b3sx-eval_a_sdn52a)",
+   "bytes": 765,
+   "md5": "b51f330635a11186102a5e4e30be58b6",
+   "sha256": "91ff3d5591c8b49215520021aee625aa3bc237504a8e9f31543545b1015e263a"
+  }
+ ],
+ "push_witness": {
+  "time_utc+7": "2026-11-11 20:46",
+  "kapi_runs_line": 1466,
+  "staging_notebook": "_staging_backup/kapi_flag-2027-nb-65xbs-b3sx-eval_a_sdn52a/flag-2027-nb-65xbs-b3sx-eval.ipynb",
+  "staging_notebook_md5": "736f0364842831fcaef1e246180a0c8e",
+  "staging_notebook_sha256": "34ec884ae49e9f56e7acfe7b65ef60eee5f35e5f0286429a9793ecbd427f4417",
+  "md5_matches_kapi_runs": true,
+  "is_last_push_of_kernel": true,
+  "code_cells_identical_to_package_copy": true,
+  "original_temp_folder": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-65xbs-b3sx-eval_a_sdn52a"
+ },
+ "package_runs_json_entry": {
+  "file": "notebooks/2_eval/01_flag-2027-nb-65xbs-b3sx-eval.ipynb",
+  "gpu": true,
+  "internet": true,
+  "datasets": [
+   "chnnhnnguyn/external-data-mavceleb",
+   "ngnnguynchn/flag2027-evalphase-p",
+   "ngnnguynchn/flag2027-ext-meta-p",
+   "phanvnhtrng/flag2027-feats-ls-b3s-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-lab-vb-p",
+   "onnhqunhh/flag2027-lora-frames-p",
+   "ngnnguynchn/flag2027-raw-v4-p"
+  ],
+  "kernel_inputs": [],
+  "outputs": "outputs/flag-2027-nb-65xbs-b3sx-eval/",
+  "status": "thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval has status \"KernelWorkerStatus.COMPLETE\""
+ },
+ "release_e2e_code": {
+  "path": "release/flag2027_e2e/code/e65xbs.ipy",
+  "sha256": "b129385cf497762f5e6ee2b520f0416da844b210ee8b1e2d16032f5c8755a149",
+  "equal_to_stage_ipy": false,
+  "equal_to_code_of_exact_notebook_with_patches": true
+ },
+ "redaction": null,
+ "stage_ipy": {
+  "sha256": "0a8f1ed64d83bd85ae5de06925478b9088fd8dd9b3dbb45daaa041d1e096dedc",
+  "code_cells": 13,
+  "built_from": "original/01_flag-2027-nb-65xbs-b3sx-eval.ipynb",
+  "algorithm": "code cells with non-empty source, CRLF -> LF, patches of stage.json applied (each must hit exactly `count` times), each cell rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' (= release/flag2027_e2e/build_notebook.py stage_cells)",
+  "patches": [
+   "no_dev_zip"
+  ]
+ },
+ "exact_notebook_code_sha256": "b129385cf497762f5e6ee2b520f0416da844b210ee8b1e2d16032f5c8755a149"
+}

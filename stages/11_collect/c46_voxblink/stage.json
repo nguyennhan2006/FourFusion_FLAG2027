@@ -1,0 +1,205 @@
+{
+ "id": "c46_voxblink",
+ "group": "11_collect",
+ "title": "VoxBlink-clean identities of FLAG_46 (Bengali / Bangladesh speakers removed before download; 15 175 speakers, 68 041 faces, 68 043 voices) + Track-3 encoders + VoxLingua107",
+ "kind": "collect",
+ "role_in_1354": "score",
+ "modes": {
+  "train": "not run by default: collect stages run only when forced (configs/modes.json collect_kind_runs_only_when_forced) and every collected dataset is read from FF_DATA/01_collected (class 'collected' is in always_saved_classes). Re-collecting: force the whole collect closure in ONE run, with a fresh FF_WORK and FF_USE_SAVED=collected (README.md of 11_collect): FF_FORCE=c37_vox2,c53_vox2b,c46_voxblink,c45_frames_vox2,c_frames_index,c63_frames,c87_frames_bridge,c63v_audio_cache. Forcing this stage alone mixes its new rows with the old frames / audio cache (sampling is not deterministic). c46 does not fit in one 12 h Kaggle session (original: 2 sessions): run it outside Kaggle with VB_TIME_LIMIT_H=48, or in two sessions with VB_RESUME_FROM (README).",
+  "infer": "not run",
+  "assemble": "not run"
+ },
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "accelerator": "T4",
+  "minutes_original": null,
+  "minutes_measured_session2": 306,
+  "minutes_estimated_session1": 630,
+  "internet": true,
+  "secrets": [],
+  "note": "2 sessions. Session 2 = the executed copy in original/ (log 17:05 -> manifest 22:12 UTC = 306 min measured; 473 of 705 shards were already done). Session 1 is not recorded: 630 min is an estimate (it presumably stopped at VB_TIME_LIMIT_H = 10.5 h; its 473 shards at session 2's rate take about 10.4 h). Anonymous HF requests as in the run."
+ },
+ "origin": {
+  "run": "unknown slug (2 sessions, 9-10/10/2026; session 2 attached session 1's output datasetVersion 20511943)",
+  "exactness": "exact-executed-copy",
+  "exactness_note": "Only session 2 is kept. selection.csv, timestamps.csv, shard_listing.csv and 473 of the 705 shard parts were written by session 1, whose code and log are not kept: session 2 copied them from session 1's attached output (datasetVersion 20511943; stage.ipy resume block) and only reused them (SEL_F / TS_F / LIST_F reads). Session-1 code is PRESUMED identical to original/: session 2 logs 'mirror ... 15252 speakers ... excluded 45' and the loaded selection has 15 207 speakers (= 15 252 - 45); the builder output kaggle/FLAG_46_voxblink.ipynb, whose 9 code cells equal session 2, was written 2026-10-09 13:01:58 +07, before the latest possible start of a 10.5 h session 1 only if session 2 followed it directly (not proven). The selection code is therefore not verified-executed.",
+  "source_file": "Experiment/SCALE-VB/flag-2027-nb-46.ipynb",
+  "builder": "kaggle/build_vb_notebook.py + kaggle/vendor_vb/vb_media.py + kaggle/vendor_t3enc/t3enc_cell.py (untracked) -> kaggle/FLAG_46_voxblink.ipynb (its 9 code cells are identical to the executed copy, checked 18/11)"
+ },
+ "inputs": [],
+ "outputs": {
+  "kernel": "notebooks/ff/c46_voxblink",
+  "exports": {}
+ },
+ "env": {
+  "FLAG_LOCAL": "0"
+ },
+ "env_note": "FLAG_LOCAL pinned to \"0\" so a value left in the caller's environment cannot switch the notebook into its local / smoke mode during a real run (smoke_env sets \"1\" under FF_SMOKE=1). FLAG_IN / FLAG_OUT would also bypass the runner's /kaggle paths if set by the caller and cannot be pinned here (a fixed value would be wrong): WP-A drops them from the inherited environment; never export them.",
+ "env_doc": {
+  "VB_TIME_LIMIT_H": "hours after which the shard loop stops (default 10.5 = Kaggle-safe). Outside Kaggle set it in the caller's environment, e.g. 48, to finish in one run (the runner passes the caller's environment; it is deliberately not set in env, which would override the caller).",
+  "VB_RESUME_FROM": "folder that CONTAINS the feats_vb/ of an earlier, time-limited session (resume patch). Unset = original behaviour."
+ },
+ "smoke_env": {
+  "FLAG_LOCAL": "1",
+  "VB_SMOKE": "1"
+ },
+ "patches": [
+  {
+   "id": "hf_revision",
+   "old": "RES = \"https://huggingface.co/datasets/adollahamini1998/ScriptsForVoxBlinkResources/resolve/main/\"\nPROG = \"https://huggingface.co/datasets/adollahamini1998/VoxBlinkProgressVideos/resolve/main/progress/download_progress_clean_8_{}.json\"\nTREE = \"https://huggingface.co/api/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/tree/main\"\nSHARD = \"https://huggingface.co/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/resolve/main/{}\"",
+   "new": "# [FF pin] HF revision parameter added for the reproduction repo (CHANGES.md): FF_HF_REVS = JSON {\"<repo id>\": \"<commit>\"};\n# unset, or a repo not listed -> \"main\" = the original behaviour (the original run read resolve/main, unpinned).\nFF_HF_REV = lambda repo: __import__(\"json\").loads(__import__(\"os\").environ.get(\"FF_HF_REVS\") or \"{}\").get(repo, \"main\")\nclass FF_PartURL(str):   # [FF pin] the VoxBlink mirror is one HF repo per part: each part gets its own revision\n    def format(self, part, *rest):\n        return str.format(self.replace(\"/main\", \"/\" + FF_HF_REV(f\"adollahamini1998/VoxBlink-Video-clean-8-{part}\"), 1), part, *rest)\nRES = \"https://huggingface.co/datasets/adollahamini1998/ScriptsForVoxBlinkResources/resolve/\" + FF_HF_REV(\"adollahamini1998/ScriptsForVoxBlinkResources\") + \"/\"\nPROG = \"https://huggingface.co/datasets/adollahamini1998/VoxBlinkProgressVideos/resolve/\" + FF_HF_REV(\"adollahamini1998/VoxBlinkProgressVideos\") + \"/progress/download_progress_clean_8_{}.json\"\nTREE = FF_PartURL(\"https://huggingface.co/api/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/tree/main\")\nSHARD = FF_PartURL(\"https://huggingface.co/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/resolve/main/{}\")",
+   "count": 1,
+   "why": "HF revision parameter (G27) for the 10 VoxBlink repos (annotations, progress map, 8 media parts); unset = original URLs (FF_PartURL.format returns exactly the original string when no revision is given)",
+   "type": "pin",
+   "effect": "none"
+  },
+  {
+   "id": "resume_from_env",
+   "old": "for prev in (IN.rglob(\"feats_vb\") if IN.exists() and not LOCAL else []):          # resume: earlier output attached",
+   "new": "# [FF path] VB_RESUME_FROM (CHANGES.md): a folder holding the feats_vb/ of an earlier, time-limited session of this stage,\n# searched like an attached input (the runner gives this stage no inputs). Unset = the original line:\n# for prev in (IN.rglob(\"feats_vb\") if IN.exists() and not LOCAL else []):\nfor prev in ([] if LOCAL else [*(IN.rglob(\"feats_vb\") if IN.exists() else []), *(Path(os.environ[\"VB_RESUME_FROM\"]).rglob(\"feats_vb\") if os.environ.get(\"VB_RESUME_FROM\") else [])]):          # resume: earlier output attached",
+   "count": 1,
+   "why": "the original run needed 2 Kaggle sessions (session 2 resumed from session 1's attached output); under the runner the stage has no inputs, so a second session needs another way to reach the first session's feats_vb/. Unset = the original search (attached inputs only)",
+   "type": "path",
+   "effect": "none (resume only; unset = original behaviour)",
+   "cell": "10 / 6"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "01_collected/voxblink_flag46"
+ ],
+ "verify": [
+  {
+   "artifact": "notebooks/ff/c46_voxblink",
+   "file": "feats_vb/face_meta.csv",
+   "sha256": "60ee5ca25cc918656be5422e27d997480c89178415053045238754a67f57ecd5",
+   "mode": "informational"
+  },
+  {
+   "artifact": "notebooks/ff/c46_voxblink",
+   "file": "feats_vb/voice_meta.csv",
+   "sha256": "952c3c7289ecd1af073953721cd27e9c7840dc64edee2690df15d2dd8318dd4b",
+   "mode": "informational"
+  },
+  {
+   "artifact": "notebooks/ff/c46_voxblink",
+   "file": "feats_vb/lid_summary.json",
+   "sha256": "a345b2b0c1854b83cbd4dd9c6e0ad6e2ca61cb99836f0da1edf34f29ebe292c9",
+   "mode": "informational"
+  },
+  {
+   "artifact": "notebooks/ff/c46_voxblink",
+   "file": "feats_vb/selection.csv",
+   "sha256": "93aedb71809d328d8ce4dc1a1f9698f358d66bb79d01d5ea1b9bd056a7db7900",
+   "mode": "informational"
+  },
+  {
+   "artifact": "notebooks/ff/c46_voxblink",
+   "file": "feats_vb/timestamps.csv",
+   "sha256": "119e953cf430251ecea1b33c049eb6379b7cea9f041edbad3dac5792ca56f279",
+   "mode": "informational"
+  },
+  {
+   "artifact": "notebooks/ff/c46_voxblink",
+   "file": "feats_vb/shard_listing.csv",
+   "sha256": "538a68f57651f8d134d2eec225c3ba9d4a7a1b37eb2e970606101adf00046003",
+   "mode": "informational"
+  },
+  {
+   "artifact": "notebooks/ff/c46_voxblink",
+   "file": "feats_vb/feats_manifest.json",
+   "mode": "informational",
+   "expect": {
+    "speakers_faces": 15175,
+    "faces": 68041,
+    "voices": 68043,
+    "excluded_before_download": 45,
+    "shards_done": 705,
+    "lid": {
+     "speakers_flagged": 102,
+     "clips_of_flagged": 427
+    },
+    "shards_needed": 705
+   }
+  }
+ ],
+ "post_checks": [
+  {
+   "file": "ff_completeness.json",
+   "json_path": "complete",
+   "equals": true,
+   "why": "shards_done == shards_needed (written by the inserted last cell); fatal: a time-limited partial run is never accepted"
+  }
+ ],
+ "external_sources": [
+  {
+   "repo": "adollahamini1998/VoxBlink-Video-clean-8-{0..7}",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": false,
+   "what": "unofficial crawl of VoxBlink-clean YouTube shorts (8 repos, one per part); CC BY-NC-SA 4.0, no redistribution",
+   "license": "VoxBlink: CC BY-NC-SA 4.0, no redistribution of the media (unofficial crawl); every derived file private"
+  },
+  {
+   "repo": "adollahamini1998/ScriptsForVoxBlinkResources",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": false,
+   "what": "official VoxBlink annotations: meta/spk2lan, spk2loc, spk2gender, utt2dur, data/utt_clean.txt, timestamp.tar.gz",
+   "license": "VoxBlink annotations: CC BY-NC-SA 4.0 (VoxBlink licence)"
+  },
+  {
+   "repo": "adollahamini1998/VoxBlinkProgressVideos",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": false,
+   "what": "crawl progress files progress/download_progress_clean_8_{0..7}.json (video -> shard map)",
+   "license": "not recorded (crawl progress files of the unofficial mirror; todo, WP-K LICENSES.md); treated as VoxBlink: private"
+  }
+ ],
+ "models": [
+  "FaRL ViT-B/16 ep16 (GitHub release, size-checked); licence: FaRL repository MIT; checkpoint terms not re-checked",
+  "openai/clip-vit-large-patch14@32bd64288804d66eefd0ccbe215aa642df71cc41; licence: openai/CLIP repository MIT; model-card terms not re-checked",
+  "WeSpeaker SimAM-ResNet100 VoxBlink2 + ft (ModelScope zips, size-checked); licence: WeSpeaker code Apache-2.0; checkpoint terms not re-checked",
+  "speechbrain/lang-id-voxlingua107-ecapa@0253049ae131d6a4be1c4f0d8b0ff483a0f8c8e9 (commit from original/__huggingface_repos__.json); licence: licence per model card (Apache-2.0 as recalled; not re-checked offline)"
+ ],
+ "run_policy": "Selection is deterministic given the mirror state (md5 order of videos, longest clean utterances) but the unofficial mirror keeps changing (progress map, orphan shards), so the 13.54 chain ALWAYS uses the collected output. 33 videos failed in session 2; session-1 failures are not recorded (68 439 jobs with a member offset -> 68 041 faces overall). VoxBlink is CC BY-NC-SA 4.0: output private, never redistributed.",
+ "private": true,
+ "todo": [
+  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
+  "Original account / slug unknown (2 sessions before push logging); id notebooks/ff/c46_voxblink used. Session 1's executed notebook and log are not kept: its outputs (selection / timestamps / shard listing CSVs and 473/705 shard parts) were resumed by session 2, so the selection code is presumed, not verified, to be what produced the collected rows (origin.exactness_note); WP-K: repeat this caveat in docs/VERIFICATION.md."
+ ],
+ "notes": [
+  "Output = feats_vb/ (results_flag46.zip layout): face_meta.csv, voice_meta.csv, selection.csv, timestamps.csv, shard_listing.csv, face_{farl16,clipL}.npy, voice_{sam100p,sam100f}.npy, voice_lid_probs.npy, lid_summary.json, lid_labels.json, feats_manifest.json, parts/ (705 npz).",
+  "Downstream: b_lab_vb (WP-D), c_frames_index (selection / timestamps / shard_listing / face_meta), l_lid_strict and l_dqual_g3 (WP-B: voice_lid_probs.npy, arrays).",
+  "skip_with = FF_DATA/01_collected/voxblink_flag46 = Experiment/SCALE-VB/results_flag46.zip extracted KEEPING feats_vb/ (719 members: __huggingface_repos__.json + feats_vb/...): this is the kernel layout, and the same folder is the data_map path of notebooks/ff/c46_voxblink. A zip left unextracted there is not unpacked by the runner.",
+  "Re-collection: the inserted last cell writes ff_completeness.json; post_checks make 'complete' fatal, so a run stopped by VB_TIME_LIMIT_H fails instead of being accepted. Two-session procedure: README.md of 11_collect."
+ ],
+ "stage_ipy": {
+  "sha256": "1f1bd43ddd61ab099e7dc3c6f0e04e9cd412eec1382ebe9a3fed0472a7968099",
+  "cells": 10,
+  "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
+  "original": "original/flag-2027-nb-46.ipynb"
+ },
+ "insert_cells": [
+  {
+   "at": "end",
+   "source": "print(\"[cell] ff: completeness marker for the runner post_check\", flush=True)\n# [FF new cell] (CHANGES.md) The original run needed 2 Kaggle sessions: at VB_TIME_LIMIT_H the shard loop stops, the last original\n# cell still writes a partial feats_vb/ and the notebook exits normally. This cell only reads that manifest and writes\n# ff_completeness.json next to feats_vb/; stage.json post_checks makes complete == true fatal, so a partial output is never\n# accepted as a finished collection (resume: README of 11_collect, VB_RESUME_FROM).\n_ffm = json.loads((OUT / \"feats_manifest.json\").read_text())\n_ffc = {\"complete\": int(_ffm[\"shards_done\"]) == int(_ffm[\"shards_needed\"]), \"shards_done\": int(_ffm[\"shards_done\"]),\n        \"shards_needed\": int(_ffm[\"shards_needed\"]), \"time_limit_h\": TIME_LIMIT_H, \"smoke\": bool(SMOKE)}\n(WORKDIR / \"ff_completeness.json\").write_text(json.dumps(_ffc, indent=1))\nprint(\"ff completeness:\", _ffc, \"\" if _ffc[\"complete\"] else \"| NOT complete: move this output aside and run again with VB_RESUME_FROM\",\n      flush=True)\n",
+   "why": "completeness marker for the fatal post_check (new code; starts with print(\"[cell] ...\"))"
+  }
+ ],
+ "smoke_prerequisite": {
+  "why": "smoke uses the notebook's own local mode (FLAG_LOCAL=1 skips the !pip cell; VB_SMOKE applies only with it), so the packages of the install cell must be present beforehand. No Docker needed.",
+  "install": [
+   "pip install -U \"speechbrain>=1.1.1\" av ftfy regex kaldiio silero-vad",
+   "pip install --no-deps \"git+https://github.com/wenet-e2e/wespeaker.git@9fecd6cb4f47475d01761d87c826298dff4ef18c\" \"git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1\""
+  ]
+ }
+}

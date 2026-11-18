@@ -1,0 +1,187 @@
+{
+ "id": "f63w_aux_voice",
+ "group": "20_features",
+ "title": "FLAG_63w: ResNet293-LM / ECAPA-TDNN-1024-LM of every auxiliary voice (VoxCeleb2 FLAG_37 + FLAG_53, VoxBlink FLAG_46), centre 12 s",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "minutes_original": 516,
+  "internet": true,
+  "secrets": [
+   "HF_TOKEN"
+  ],
+  "note": "pushed 16/10/2026 16:23, done about 17/10 01:00, coverage 100 % (docs/RUNS.md:615); streams VoxCeleb2 tars and VoxBlink shards from Hugging Face"
+ },
+ "origin": {
+  "run": "hthlin/flag-2027-nb-63w-aux-voice",
+  "exactness": "builder-regenerated",
+  "source_file": "kaggle/FLAG_63w_aux_voice_feats.ipynb",
+  "notebook_md5": "af0c585a16bea0b9abc78a0103f4b8d6",
+  "push": {
+   "kapi_runs_line": 361,
+   "time": "2026-10-16 16:23",
+   "kernel": "hthlin/flag-2027-nb-63w-aux-voice",
+   "notebook_md5": "5a9d3bc9c869502c1e11929ef6abddd1",
+   "gpu": true,
+   "datasets": [
+    "ngnnguynchn/flag2027-frames-index-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p"
+   ],
+   "kernels": [],
+   "secrets": [
+    "HF_TOKEN"
+   ]
+  },
+  "builder": "kaggle/build_vfeat_notebook.py (+ cells of kaggle/build_audiocache_notebook.py; not in git)",
+  "original_copy": "original/FLAG_63w_aux_voice_feats.ipynb",
+  "original_sha256": "c41f9b8883e83baf10653e1ce1e6089efbc7eecad45fdaa926126213c2f419b9"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  }
+ ],
+ "inputs_dropped": [],
+ "outputs": {
+  "kernel": "notebooks/hthlin/flag-2027-nb-63w-aux-voice",
+  "exports": {
+   "datasets/hthlin/flag2027-aux-voice-feats-p": {
+    "vb/": "feats_aux_voice/vb/voice_*.npy",
+    "vox/": "feats_aux_voice/vox/voice_*.npy",
+    "vox2b/": "feats_aux_voice/vox2b/voice_*.npy",
+    "vfeat_manifest.json": "feats_aux_voice/vfeat_manifest.json"
+   }
+  },
+  "main_folder": "feats_aux_voice",
+  "note": "export = the 7 files the original uploaded (<src>/voice_{rn293,ecapa1024}.npy + vfeat_manifest.json; the release copy in package E: has exactly these 7)",
+  "private": true,
+  "licence": "VoxBlink-derived: features computed from VoxBlink media (CC BY-NC-SA 4.0, no redistribution) next to VoxCeleb2-derived features; private, shared only with the organisers through FF_DATA, never public and never in the repository"
+ },
+ "env": {},
+ "smoke_env": {
+  "FLAG_SMOKE": "1",
+  "AUDIO_SMOKE_N": "6",
+  "AUDIO_SMOKE_TARS": "1",
+  "AUDIO_WIRE_N": "4"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [
+  "VFEAT_UPLOAD"
+ ],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/aux_voice_feats"
+ ],
+ "verify": [
+  {
+   "file": "feats_aux_voice/vfeat_manifest.json",
+   "key": "arrays",
+   "equals": {
+    "vb/rn293": {
+     "rows": 68043,
+     "finite": 67616,
+     "wanted": 67616
+    },
+    "vb/ecapa1024": {
+     "rows": 68043,
+     "finite": 67616,
+     "wanted": 67616
+    },
+    "vox/rn293": {
+     "rows": 38345,
+     "finite": 38145,
+     "wanted": 38145
+    },
+    "vox/ecapa1024": {
+     "rows": 38345,
+     "finite": 38145,
+     "wanted": 38145
+    },
+    "vox2b/rn293": {
+     "rows": 47529,
+     "finite": 46270,
+     "wanted": 47206
+    },
+    "vox2b/ecapa1024": {
+     "rows": 47529,
+     "finite": 46270,
+     "wanted": 47206
+    }
+   },
+   "why": "finite rows equal to the original's (warning only: the Hugging Face sources may have changed)"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 9,
+  "sha256": "c2018004ec012d87242fe96e4e98d9b85206a85ffc1e882034bfdc96c22c9638",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "FLAG_63w_aux_voice_feats.ipynb",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "t112sf1s / t155s (CAT4 auxiliary rows, CLEANTUNE-01/run.py aux_extra), RFX training (v_rl auxiliary rows)"
+ ],
+ "todo": [
+  "Hugging Face sources read at resolve/main (VoxCeleb2 wds tars, VoxBlink shards): revisions not pinned (G27).",
+  "The exact pushed notebook cannot be md5-verified (secret cell); a `kaggle kernels pull hthlin/flag-2027-nb-63w-aux-voice` would show the body (tools/PULL_MISSING_RUNS.md).",
+  "The pushed notebook almost certainly carried a `kapi --env` cell that kaggle/kapi.py does not log (cmd_push inserts smoke_cell(envs, '# run parameters (kapi --env) ...') but the kapi_runs.jsonl line holds only time, account, kernel, source, notebook_md5, gpu, smoke, secrets, datasets, kernels, ok). Evidence: the code reads VFEAT_UPLOAD only from the environment and the output dataset hthlin/flag2027-aux-voice-feats-p exists (created 16/10 17:55 UTC at the end of the run, made private afterwards: docs/RUNS.md:615, docs/DATASETS.md:72). Other environment knobs the code reads (AUDIO_TIME_LIMIT_H (default 10.5), AUDIO_THREADS, AUDIO_TAR_THREADS, AUDIO_SMOKE_*) may have been set in the same cell; this stage assumes their defaults. Unverified: re-applying the kapi transform with or without such a cell does not give the pushed md5 5a9d3bc9c869 locally. Pull the run (tools/PULL_MISSING_RUNS.md) to read the cell. Compare only the cells other than the secret / env cells.",
+  "Handoff WP-A: add hthlin/flag-2027-nb-63w-aux-voice to tools/PULL_MISSING_RUNS.md for the env cell."
+ ],
+ "verify_notes": [
+  "vfeat_manifest.json: complete = true (coverage >= 0.97 for every source) and the wiring check (SimAM on the re-fetched audio vs the stored arrays, cos >= 0.99) passes; compare arrays with the frozen dataset (row cosine >= 0.999)"
+ ],
+ "post_checks": [
+  {
+   "file": "feats_aux_voice/vfeat_manifest.json",
+   "json_path": "complete",
+   "equals": true,
+   "why": "the original upload gate (stage.ipy: `if UP and not SMOKE and man[\"complete\"] and ok`): coverage >= 0.97 for every source; the upload itself is neutralised, so the gate is enforced here"
+  },
+  {
+   "file": "feats_aux_voice/vfeat_manifest.json",
+   "json_path": "arrays",
+   "equals": {
+    "vb/rn293": {
+     "rows": 68043,
+     "wanted": 67616
+    },
+    "vb/ecapa1024": {
+     "rows": 68043,
+     "wanted": 67616
+    },
+    "vox/rn293": {
+     "rows": 38345,
+     "wanted": 38145
+    },
+    "vox/ecapa1024": {
+     "rows": 38345,
+     "wanted": 38145
+    },
+    "vox2b/rn293": {
+     "rows": 47529,
+     "wanted": 47206
+    },
+    "vox2b/ecapa1024": {
+     "rows": 47529,
+     "wanted": 47206
+    }
+   },
+   "why": "rows / wanted rows per source and encoder of the original vfeat_manifest.json (package E hthlin__flag2027-aux-voice-feats-p.zip, created 2026-10-16 17:55)"
+  }
+ ]
+}

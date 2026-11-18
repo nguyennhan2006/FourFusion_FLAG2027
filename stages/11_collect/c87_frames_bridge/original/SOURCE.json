@@ -1,0 +1,53 @@
+{
+ "stage": "c87_frames_bridge",
+ "run": "onnhqunhh/flag-2027-nb-87-bridge",
+ "exactness": "exact-executed-copy",
+ "files": [
+  {
+   "path": "original/flag-2027-nb-87-bridge.ipynb",
+   "copied_from": "kaggle/FLAG_87_bridge.ipynb",
+   "bytes": 3366,
+   "md5": "a69638cba7e86f757b38a51e93dc109c",
+   "sha256": "edef50ef3c07f8d2a8223f2c16c571b4c6b9575c7d6e1f922d1024b251930e88"
+  }
+ ],
+ "notes": [],
+ "exactness_note": "kaggle/FLAG_87_bridge.ipynb has md5 a69638cba7e86f757b38a51e93dc109c = push log line 246 (kaggle/kapi_runs.jsonl, internal provenance) (the pushed bytes)",
+ "notebook_md5": "a69638cba7e86f757b38a51e93dc109c",
+ "push_records": [
+  {
+   "kapi_runs_line": 246,
+   "record": {
+    "time": "2026-10-15 06:41",
+    "account": "onnhqunhh",
+    "kernel": "onnhqunhh/flag-2027-nb-87-bridge",
+    "source": "kaggle/FLAG_87_bridge.ipynb",
+    "notebook_md5": "a69638cba7e86f757b38a51e93dc109c",
+    "gpu": false,
+    "smoke": {},
+    "secrets": [],
+    "datasets": [],
+    "kernels": [
+     "onnhqunhh/flag-2027-nb-45-facelora-farl",
+     "onnhqunhh/flag-2027-nb-63-frames",
+     "onnhqunhh/flag-2027-nb-65-facelora3-b"
+    ],
+    "ok": true
+   }
+  }
+ ],
+ "builders_today": [
+  {
+   "path": "kaggle/build_bridge_notebook.py",
+   "bytes": 3077,
+   "md5": "945b24100ffbb3890413228a35181369",
+   "sha256": "69821fd3a68ed765c53232eb26ce0bc5a70c9beb1136571518f82275d89ba1f0",
+   "mtime_local": "2026-10-15 06:41:26"
+  }
+ ],
+ "builders_git": "all untracked in the source repo (git status '??'); kaggle/build_eval_notebooks.py (notebook writer) is tracked + modified",
+ "evidence": [
+  "internal provenance (not shipped): NOP_BTC_2026-11-20/repo_map/DESIGN.md §4.2, §6 WP-C, §7 G2 G9 G22 G27",
+  "internal provenance (not shipped): S1 A13; S2 3.2"
+ ]
+}

@@ -1,0 +1,29 @@
+01:22:37 no_gender/English: 392 rows
+01:22:44 gender/English: 416 rows
+01:22:49 onnxruntime providers available ['AzureExecutionProvider', 'CPUExecutionProvider'] | recognition runs on ['CPUExecutionProvider']
+<python-site>\insightface\utils\face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
+  tform.estimate(lmk, dst)
+01:23:01 ArcFace check vs stored train rows: min / mean cos [0.9999995231628418, 0.9999999344348908]
+01:26:50 arcface no_gender/English: detected 100.0 % [259s]
+01:30:52 arcface gender/English: detected 100.0 % [501s]
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files: 100%|██████████| 18/18 [00:00<00:00, 1165.32it/s]
+Loaded iResNet model
+compatible keys in state_dict 917 / 917
+Check
+
+
+<All keys matched successfully>
+Loaded pretrained model from pretrained_model/model.pt
+<python-site>\insightface\utils\face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
+  tform.estimate(lmk, dst)
+01:31:53 AdaFace check: min / mean cos [0.9999995231628418, 0.9999999374151229]
+01:38:59 adaface no_gender/English done [988s]
+01:46:14 adaface gender/English done [1422s]
+01:46:40 ECAPA check: min / mean cos [0.9993875026702881, 0.9998963534832]
+01:47:10   ecapa no_gender/English 11/392  30s  eta 1033s  oom=0
+01:51:28   ecapa no_gender/English 392/392  288s  eta 0s  oom=0
+01:51:28 ecapa no_gender/English done [1737s]
+01:51:57   ecapa gender/English 8/416  28s  eta 1442s  oom=0
+01:56:45   ecapa gender/English 416/416  316s  eta 0s  oom=0
+01:56:45 ecapa gender/English done [2054s]
+01:56:45 XJF extract done [2054s] ['face_adaface_gender_English.npy', 'face_adaface_no_gender_English.npy', 'face_arcface_detok_gender_English.npy', 'face_arcface_detok_no_gender_English.npy', 'face_arcface_gender_English.npy', 'face_arcface_no_gender_English.npy', 'ids_gender_Bangla.txt', 'ids_gender_English.txt', 'ids_no_gender_Bangla.txt', 'ids_no_gender_English.txt', 'verify.json', 'voice_ecapa192_gender_English.npy', 'voice_ecapa192_no_gender_English.npy', 'voice_ecapa6144_gender_English.npy', 'voice_ecapa6144_no_gender_English.npy']

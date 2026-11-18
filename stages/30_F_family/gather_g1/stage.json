@@ -1,0 +1,101 @@
+{
+ "id": "gather_g1",
+ "group": "30_F_family",
+ "title": "Gather the five ct01g1 fold tables of the three t154_g1 runs (wiring for the B0s head)",
+ "kind": "train",
+ "role_in_1354": "wiring",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "translates": "`RUNS=\"<3 runs>\" bash kaggle/sat_push.sh 111sg` (gather_tables ct01g1)",
+  "release_e2e": "release/flag2027_e2e/stages.py:442-456 (gather_r2ca)",
+  "builder": null
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/nguynthanhnhnn/flag-2027-nb-154-ct02-g1-f12"
+  },
+  {
+   "artifact": "notebooks/hdonqu/flag-2027-nb-154-ct02-g1-f34"
+  },
+  {
+   "artifact": "notebooks/thanhtruc02/flag-2027-nb-154-ct02-g1-f5"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/gather_g1",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p": "ds"
+  }
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not_used (no input of this stage is a LoRA C1 artifact; the F1s' family does not use the ImageBind-audio LoRA)"
+ },
+ "skip_with": [
+  "02_intermediate/_wiring/flag2027-ct02s-g1-tables-p"
+ ],
+ "verify": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+   "file": "tables/ct01g1_fold1.parquet",
+   "sha256": "cb97b82bd32e58609f3043ff65ace527bf6ee5dc41ec4d4bf04bba533e811934",
+   "mode": "exact when the three runs are the original outputs; reference after a GPU re-run"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+   "file": "tables/ct01g1_fold2.parquet",
+   "sha256": "964ff8b13c9584f3d0c7176208e904fc93e020a9cfd49c118d42efb696ecc064",
+   "mode": "exact when the three runs are the original outputs; reference after a GPU re-run"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+   "file": "tables/ct01g1_fold3.parquet",
+   "sha256": "8e0b03bceed77fb34c258e6ceb63401b2628d03bba4a1d8fd86ff0ed6d3188f2",
+   "mode": "exact when the three runs are the original outputs; reference after a GPU re-run"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+   "file": "tables/ct01g1_fold4.parquet",
+   "sha256": "03bc38a1aa12971b053c31463b5e0889ce69ae9c6cd79e2070081baab79aa9bb",
+   "mode": "exact when the three runs are the original outputs; reference after a GPU re-run"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+   "file": "tables/ct01g1_fold5.parquet",
+   "sha256": "8cd13b06d9ee1ce9fc3d41ec3f96c5fd4f46650ab0981c5db491b78e6b3a5d18",
+   "mode": "exact when the three runs are the original outputs; reference after a GPU re-run"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+   "dataset_zip_sha256_in_E_package": "8d09a3af0c25e96c71b9cb1f8c3a10b45ce9fd41348909f8ee14e37cd12d5302",
+   "members": 5
+  }
+ ],
+ "dev_usage": "none",
+ "todo": [
+  "WP-A: data_map run_output entries for the three kernels this stage reads, like the 155s ones: notebooks/nguynthanhnhnn/flag-2027-nb-154-ct02-g1-f12, notebooks/hdonqu/flag-2027-nb-154-ct02-g1-f34, notebooks/thanhtruc02/flag-2027-nb-154-ct02-g1-f5 -> 04_run_outputs/<slug> (producers t154_g1_f12 / _f34 / _f5, status 'not downloaded', dev_data / voxblink flags as for the 155s run-output entries)"
+ ],
+ "default_policy": "default for 13.54: the frozen dataset",
+ "stage_ipy": {
+  "file": "stage.ipy",
+  "sha256": "145258bbb5f3867725b333083229b389802238847b9c50a3619f08b835801426",
+  "bytes": 1183,
+  "cells": 1,
+  "cell_separator": "\\n# <<<FF-CELL>>>\\n"
+ },
+ "smoke_note": "under FF_SMOKE=1 the t154_g1 runs produce one fold each (t155s: folds 1 / 3 / 5; t154_g1: fold 1 three times), so the stage accepts fewer than 5 tables and prints the missing ones; t112sf0s / t112sf1s (FL3Z_SMOKE) fill missing folds with their B3 stand-ins"
+}

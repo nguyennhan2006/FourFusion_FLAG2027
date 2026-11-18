@@ -1,0 +1,164 @@
+{
+ "id": "a_factor",
+ "group": "50_eval",
+ "title": "FACTOR_ENFUSE (c5rl): U zip = F1s′ + RFX (1 : 1) and ENFUSE zip (English = F1s′ Bangla fuser on the English trials + RFX)",
+ "kind": "assemble",
+ "role_in_1354": "score",
+ "role": "Stored score = -logit (CodaBench: lower = same person). U: every file = (-logit RFX) + (-logit F1s′), pair by pair, in the pair order of the F1s′ zip, '%.8f' (XTEAM-03/run.py). ENFUSE: Bangla files = bytes of U; English files = -s + (-logit RFX), s = F1s′ Bangla fuser (logistic regression on [Z, C, Z x C]; Z = b3[:, :4], t3[:, 0:2] of components_eval.npz and trCA of ct01r2_final_eval.npz; C = co) applied to the English trials (ENFUSE-U/run.py). posteval_FACTOR_ENFUSE_c5rl.zip gives three of the four files of the 13.54 zip: no_gender Bangla byte for byte, and both English files before the DP blend (stage final_blend in 80_final). The one-step release/factor_enfuse/rebuild_final.py must agree with the chain (asserted).",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "machine_shape": "",
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": [],
+  "needs": "bash, python with numpy, pandas, scipy (check_eval_zip.py); no pip install"
+ },
+ "origin": {
+  "run": null,
+  "exactness": "local-script",
+  "executed": "2026-11-13 12:00 (UTC+7) on the team machine: kaggle/rfx_chain.sh state 3 (log original/rfx_chain_2026-11-13.log)",
+  "scripts": {
+   "tree/Experiment/EVALPATH-U/make_eval_zip.sh": {
+    "copied_from": "Experiment/EVALPATH-U/make_eval_zip.sh",
+    "sha256": "896a28226b3a340b55a5557dad00655ea2bde228086a1916cf227a86a2a60494"
+   },
+   "tree/Experiment/EVALPATH-U/check_eval_zip.py": {
+    "copied_from": "Experiment/EVALPATH-U/check_eval_zip.py",
+    "sha256": "bde629bc8473c60440e7ecdc7c0618680e5a459aa816b4b34aafb37d199dce16"
+   },
+   "tree/Experiment/XTEAM-03/run.py": {
+    "copied_from": "release/fourfusion_flag2027/Experiment/XTEAM-03/run.py",
+    "sha256": "60920e6bc1722fa9e82d79add16fd012d847d155d43acd4133140d24dd040882"
+   },
+   "tree/Experiment/ENFUSE-U/run.py": {
+    "copied_from": "Experiment/ENFUSE-U/run.py",
+    "sha256": "03858efa3fb034c841cbde91a4c79b7dc256530f0580e080d0611c9ad018c2ef"
+   },
+   "tree/Experiment/E2E/e2e_lib.py": {
+    "copied_from": "Experiment/E2E/e2e_lib.py",
+    "sha256": "a609cebb35be09b3d6fa7edbb2ced1e9652bd5fe8c4174ee938388393ac19def"
+   },
+   "tree/release/factor_enfuse/rebuild_final.py": {
+    "copied_from": "release/factor_enfuse/rebuild_final.py",
+    "sha256": "0878da7f24dc91ce345c7a455cb98880258ba8c022fe733b47387fb76753a1b9"
+   }
+  },
+  "one_step_equivalent": "release/factor_enfuse/rebuild_final.py (tree/release/factor_enfuse/rebuild_final.py)",
+  "source_json": "original/SOURCE.json"
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval",
+   "mount": "notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval",
+   "files": {
+    "e2e_out/submission_cleantune01_F1_CA_eval.zip": "f1s_eval.zip",
+    "e2e_out/cleantune01_fuser_bangla_CA.json": "cleantune01_fuser_bangla_CA.json",
+    "e2e_out/ct01r2_final_eval.npz": "ct01r2_final_eval.npz"
+   },
+   "use": "-logit F1s' of every pair (Bangla of U), the F1s' Bangla fuser JSON and trCA (English of ENFUSE)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+   "mount": "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+   "files": {
+    "e2e_eval/components_eval.npz": "components_eval.npz",
+    "e2e_eval/e2e_manifest.json": "e2e_manifest.json"
+   },
+   "use": "the 6 other streams (b3[:, :4], t3[:, :2]), the 7 conditions and pair ids of the English trials"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval",
+   "mount": "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval",
+   "files": {
+    "FLAG_RF_E2E/submission.zip": "rfx_eval.zip"
+   },
+   "use": "-logit RFX of every pair (original LoRA C1 artifact)"
+  }
+ ],
+ "assemble_inputs": {
+  "note": "FF_MODE=assemble (or a missing kernel output): the stage looks for the six files under their flat names in the mounted inputs, then in FF_DATA/05_scores (each FF_DATA root, os.pathsep-separated), then FF_SCORES",
+  "files_sha256": {
+   "cleantune01_fuser_bangla_CA.json": "c4737367e787da6dc9a1e08453a9602e2ea60b830bd7a56e8d6728501e9d06a4",
+   "components_eval.npz": "2cd160ae456447c0c47bf611f2f73480ffc5c9161e767812d42e5f380b1b56c7",
+   "ct01r2_final_eval.npz": "bbad53ed8e32066240f405676e7f3676dd55040573c00d1fad07b81774c3d0fc",
+   "e2e_manifest.json": "b0ba27c2982f917199d957cd42763fecfdd31c292352594a4e141105ce72bd58",
+   "f1s_eval.zip": "1b43b14ff763bd0eac72fea505e4cfd4ff98bc41d87d49baecdfd613525a6962",
+   "rfx_eval.zip": "1fa53218c9501ef38f9b1c33680fac5b7f6a0ddace4fdaffed7cd5334b9aa369"
+  }
+ },
+ "outputs": {
+  "kernel": "notebooks/ff/a_factor",
+  "exports": {},
+  "main_files": {
+   "posteval_FACTOR_U_c5rl.zip": "U zip (top level of the stage's /kaggle/working)",
+   "posteval_FACTOR_ENFUSE_c5rl.zip": "ENFUSE zip (top level): input of final_blend (80_final) and of the BEST4 reference",
+   "FACTOR_ENFUSE_c5rl_rebuilt.zip": "one-step rebuild (cross-check)",
+   "posteval_FACTOR_ENFUSE_c5rl.txt": "ENFUSE-U report",
+   "posteval_manifest.json": "freeze log (sha256 of both zips)",
+   "a_factor_report.json": "inputs (sha256, source), member comparison, Spearman vs reference when available",
+   "rebuild_in/": "the six inputs under their flat names (= the FF_DATA/05_scores set of DESIGN 5.3 for these files)",
+   "tree/": "the repository-layout working copy (scripts, inputs, outputs)"
+  }
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {
+  "XT_W": "unset (1 : 1)",
+  "ENF_W": "unset (1 : 1)",
+  "lora_c1": "original, through rfx_eval.zip of e163i (artifact datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p)"
+ },
+ "skip_with": [
+  "05_scores/posteval_FACTOR_ENFUSE_c5rl.zip",
+  "05_scores/posteval_FACTOR_U_c5rl.zip"
+ ],
+ "verify": [
+  {
+   "file": "posteval_FACTOR_U_c5rl.zip",
+   "members_sha256": {
+    "no_gender/sub_score_v4_English_heard.txt": "1726bf9488cb6507e692a9bce0475dffea3db3e2db4aef660fd2c49ba70827b7",
+    "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+    "gender/sub_score_v4_English_heard.txt": "754eb4e3f8bcc662db8e082f97def050a9021aae1bbc7703d1fa2b9f0f18e9c6",
+    "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"
+   },
+   "applies_to": "exact when the six inputs are the saved ones (asserted under FF_MODE=assemble or FF_STRICT=1); after GPU re-runs: Spearman per file vs the 13/11 zip"
+  },
+  {
+   "file": "posteval_FACTOR_ENFUSE_c5rl.zip",
+   "members_sha256": {
+    "no_gender/sub_score_v4_English_heard.txt": "44e2781f5673e318318c7662a2cc4feb28f347557db8288a18cbe2cbac5af69c",
+    "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+    "gender/sub_score_v4_English_heard.txt": "73e485fd8803a2f897974257f77bb45c6319d9f8466ca6fd067af2f48e6964db",
+    "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"
+   },
+   "zip_sha256_13_11": "9cf5bbe4e3af14184c26eef08104d3ddd94fc5357569c09fc657a93d4549fd93",
+   "applies_to": "as above; the zip sha256 itself is not reproducible (build time in the zip entries)"
+  }
+ ],
+ "rerun_expectation": "with the saved inputs: every member byte-identical (DESIGN 5.3 step 1); with re-run GPU stages: Spearman >= 0.9999 per file (DESIGN 5.2)",
+ "stage_ipy_sha256": "fd37c9043772309bfa698e9af6e444d9fc5788d62987986c198ae5d158117721",
+ "stage_ipy_cells": 5,
+ "tree_sha256": {
+  "tree/Experiment/EVALPATH-U/make_eval_zip.sh": "896a28226b3a340b55a5557dad00655ea2bde228086a1916cf227a86a2a60494",
+  "tree/Experiment/EVALPATH-U/check_eval_zip.py": "bde629bc8473c60440e7ecdc7c0618680e5a459aa816b4b34aafb37d199dce16",
+  "tree/Experiment/XTEAM-03/run.py": "60920e6bc1722fa9e82d79add16fd012d847d155d43acd4133140d24dd040882",
+  "tree/Experiment/ENFUSE-U/run.py": "03858efa3fb034c841cbde91a4c79b7dc256530f0580e080d0611c9ad018c2ef",
+  "tree/Experiment/E2E/e2e_lib.py": "a609cebb35be09b3d6fa7edbb2ced1e9652bd5fe8c4174ee938388393ac19def",
+  "tree/release/factor_enfuse/rebuild_final.py": "0878da7f24dc91ce345c7a455cb98880258ba8c022fe733b47387fb76753a1b9"
+ },
+ "todo": [
+  "WP-A runner: FF_STAGE_DIR must point at this folder (the cell reads tree/ from it); in FF_MODE=assemble mount FF_DATA/05_scores (or assembly/inputs) or set FF_DATA so that the cell finds the six flat-named files.",
+  "WP-I final_blend: read posteval_FACTOR_ENFUSE_c5rl.zip from the top level of artifact notebooks/ff/a_factor (members listed in verify).",
+  "Line endings: tree/Experiment/XTEAM-03/run.py and tree/Experiment/E2E/e2e_lib.py are CRLF in the source repository and kept so (tree_sha256). stages/50_eval/.gitattributes ('* -text', added 18/11) disables end-of-line conversion for this group (the committing machine has core.autocrlf=true); a repository-root .gitattributes is still advisable (WP-A / WP-K)."
+ ],
+ "notes": [
+  "New code (stage.ipy, five cells, each opening with print(\"[cell] ...\")); the scripts it runs are byte copies (tree/).",
+  "Requires bash (Linux, Kaggle, Docker); make_eval_zip.sh uses set -euo pipefail, tee /dev/stderr, sha256sum.",
+  "STRICT mode (FF_MODE=assemble or FF_STRICT=1) asserts that the six inputs and all eight output members equal the 13.54 files.",
+  "18/11/2026 (integration fixer r1, INTEGRATION_r1 M5): score_dirs() also looks in <repo>/assembly/inputs (CHANGES.md); stage.ipy sha256 7717041dada3386e... -> fd37c9043772309b..."
+ ]
+}

@@ -1,0 +1,34 @@
+{
+ "meta_sha256": {
+  "ext_v1_complete_face_meta.csv": "7b385161cfb9bcf998110b4f969c7268aaddb8c5567482d2888cc617f92601ae",
+  "ext_v1_complete_voice_meta.csv": "3fac359f6a5b4fcab53032296c063fdf3adb73ba587a5107507c67982164635e",
+  "ext_v2_complete_face_meta.csv": "9db02bfc517ddf5ea5e52d0c54d937d0887d87038ad969b24172c86a37534c23",
+  "ext_v2_complete_voice_meta.csv": "1e22f7667044afe9bbcfa228d66ab4931f76a5df239ecc905e2bc31fa766378b",
+  "ext_v1_complete_speakers.csv": "46da520173c773a66f9a9910e2d82d31a20b31db7d675a67532f87ea2b1dd4d9"
+ },
+ "array_shapes": {
+  "ext_v1_complete_voice.npy": [
+   19556,
+   192
+  ],
+  "ext_v1_complete_face.npy": [
+   7580,
+   4096
+  ],
+  "ext_v2_complete_voice.npy": [
+   20715,
+   192
+  ],
+  "ext_v2_complete_face.npy": [
+   8953,
+   4096
+  ]
+ },
+ "array_sha256_team_copy (GPU output, reference only)": {
+  "ext_v1_complete_voice.npy": "27b668a183bb17c5329b894401c86ab2c9719b73fbd0b9c956956b5a766f1d34",
+  "ext_v2_complete_voice.npy": "3a83056d9f61bed382a124274414e0bd99baad902479d1237f315a246c220733",
+  "ext_v1_complete_face.npy": "268290a0ad89291005a29abc63f6abf70b3782fecc8bf173201bc6f67c413a76",
+  "ext_v2_complete_face.npy": "2529e6a76cfd72a58f82bd02472efc08bcec9ceaf56ad9d634b8c0d48a9346ec"
+ },
+ "ext_meta_dataset_zip_team_copy": "kaggle/flag2027-ext-meta.zip sha256 4da564db519ef6bf796971bba6bc5059e3a21ded242a2909cb1cd0b2f4a288fa"
+}

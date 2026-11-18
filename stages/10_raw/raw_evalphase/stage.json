@@ -1,0 +1,115 @@
+{
+ "id": "raw_evalphase",
+ "group": "10_raw",
+ "title": "Organisers' Evaluation zip -> eval_set.zip (*_valid -> *_test, 416 list lines fixed) = dataset flag2027-evalphase-p",
+ "kind": "raw",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "team machine, 11/11/2026 (no Kaggle run; uploaded with kaggle/kapi.py, D:/ff_data/evalphase/upload.log)",
+  "exactness": "local-script",
+  "source_file": "Experiment/EVALPATH-U/build_evalphase.py",
+  "notebook_md5": null,
+  "builder": null,
+  "script_md5": "f44295cbb8f9b2069d48810698bc19e8"
+ },
+ "inputs": [
+  {
+   "artifact": "raw/btc_evaluation_original",
+   "note": "FF_DATA/00_raw/btc_evaluation/evaluation_phase.zip (organisers, 11/11/2026)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/raw_evalphase",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-evalphase-p": "flag2027-evalphase-p"
+  },
+  "kernel_layout": {
+   "eval_set.zip": "the zip uploaded to Kaggle (the DP branch reads the zip)",
+   "flag2027-evalphase-p/evaluation_phase/...": "the dataset view Kaggle served (auto-extracted zip)",
+   "raw_evalphase_check.json": "report"
+  }
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "00_raw/btc_evaluation/flag2027-evalphase-p"
+ ],
+ "skip_with_note": "saved copy of the export = the extracted dataset view (evaluation_phase/...); keep eval_set.zip next to it as 00_raw/btc_evaluation/eval_set.zip for the DP stages",
+ "verify": [
+  {
+   "file": "eval_set.zip",
+   "check": "every member sha256 = expected/eval_set_members.sha256 (4 669 members)"
+  },
+  {
+   "file": "eval_set.zip",
+   "check": "zip sha256 a70762a3... only informative (zipfile.writestr stamps the build time)"
+  }
+ ],
+ "todo": [
+  "WP-A: datasets/ngnnguynchn/flag2027-evalphase-p must resolve to the EXTRACTED view (evaluation_phase/... at the root, as Kaggle served it), not to a folder holding evaluation_phase.zip / eval_set.zip: notebooks of the Evaluation path scan their inputs and may unpack any zip whose name starts with 'eval'",
+  "WP-A / WP-I: stages that read eval_set.zip itself (dp_extract_eval, dp_train) should take it from notebooks/ff/raw_evalphase (or FF_DATA/00_raw/btc_evaluation/eval_set.zip), not from the dataset view",
+  "WP-A: register the raw artifact id raw/btc_evaluation_original -> FF_DATA/00_raw/btc_evaluation/ (evaluation_phase.zip)"
+ ],
+ "notes": [
+  "The original command was `python -I Experiment/EVALPATH-U/build_evalphase.py <btc zip> <out zip>` (usage line of the script).",
+  "Member content is deterministic; the zip bytes are not (writestr uses the current time, and the deflate stream may depend on the zlib version). Hence the member-by-member check.",
+  "Kaggle auto-extracted the uploaded eval_set.zip: the package copy E:/.../datasets/ngnnguynchn__flag2027-evalphase-p.zip (sha256 411c9f16...) holds evaluation_phase/... with 4 669 files and no zip."
+ ],
+ "changes_summary": [
+  "none: build_evalphase.py: copied unchanged (paths were already command-line arguments)",
+  "new: cells/00_locate.py .. 03_unpack.py: new cells: locate + sha256 the organisers' zip, run the script, compare every member with the uploaded eval_set.zip, unpack the dataset view"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_locate.py"
+   },
+   {
+    "new": "cells/01_build.py"
+   },
+   {
+    "new": "cells/02_verify.py"
+   },
+   {
+    "new": "cells/03_unpack.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_locate.py",
+    "title": "raw_evalphase: locate and check the organisers' Evaluation zip"
+   },
+   {
+    "new": "cells/01_build.py",
+    "title": "raw_evalphase: build eval_set.zip with build_evalphase.py (original local script, unchange"
+   },
+   {
+    "new": "cells/02_verify.py",
+    "title": "raw_evalphase: member-by-member check against the dataset the system read"
+   },
+   {
+    "new": "cells/03_unpack.py",
+    "title": "raw_evalphase: unpack as the Kaggle dataset view (flag2027-evalphase-p = evaluation_phase/"
+   }
+  ],
+  "n_cells": 4,
+  "stage_ipy_sha256": "aab133c596a680830ced5e7331f8ad4a2cafc605811c6dc2f5172221c713257a"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)"
+}

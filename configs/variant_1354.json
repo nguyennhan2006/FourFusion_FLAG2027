@@ -1,0 +1,316 @@
+{
+ "_doc": "Guard of the 13.54 variant (DESIGN 2.7). runner/ffcore.py reads this file when FF_VARIANT=1354 (default): it refuses to run a stage of the chain that mounts a forbidden artifact or sets a forbidden environment value, sets the guard environment defaults, checks the required file hashes in every input / output artifact, and reports (warning only) stages whose code + env do not show the expected flags. lora_C1.pt: fixed hash for saved copies and modes infer / assemble, lineage check for files retrained in FF_MODE=train (file_checks[0].rule).",
+ "variant": "1354",
+ "submission": {
+  "zip": "xjf_r10_trsig.zip",
+  "codabench_submission": 1054704,
+  "evaluation": {
+   "mean": 13.54,
+   "no_gender_English": 10.2,
+   "no_gender_Bangla": 11.97,
+   "gender_English": 12.98,
+   "gender_Bangla": 18.99
+  },
+  "expected_sha256_key": "xjf_r10_trsig"
+ },
+ "required": {
+  "lora_c1": {
+   "value": "original",
+   "artifact": "datasets/onnhqunhh/flag2027-rfs-lora-p",
+   "aliases": [
+    "datasets/ngnnguynchn/flag2027-backup-rfs-lora-p"
+   ],
+   "file": "lora_C1.pt",
+   "sha256": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c",
+   "why": "13.54 uses the ORIGINAL ImageBind-audio LoRA C1 (cache-key bug: 210 MAV-Celeb clips of 70 persons, 0 VoxCeleb2 clips). The key-fixed LoRA belongs to the 16.18 system (C1FIX-01) and must not enter this chain."
+  },
+  "XJF_SIG": "5.0983,3.8376",
+  "dp_weight_r": 1.0,
+  "XJF_BASE": null,
+  "flags": {
+   "NOREL": "1",
+   "LID_STRICT": "1",
+   "BN42": "1"
+  },
+  "bangla_gender_file_from": "posteval_FVBIND_ENFUSE_fvb.zip (RFX' with the FVBIND B2 voice block; original LoRA C1 in its ib stream)",
+  "english_files": "blend.py: value = FACTOR_ENFUSE English / sigma[protocol] - 1.0 * z_DP, sigma = 5.0983 (no_gender), 3.8376 (gender)",
+  "flags_scope": "per stage, as the original runs set them (stage_env_expectations); CLEANCOMP=1 only in t112sf1s, e50cc, e112f0sx, e112f1sx (the original 112s-f0s notebook does not set it and does not mount cleancomp-e2e-p); DESIGN 4.6 row t112sf0s listing CLEANCOMP is wrong (WP-K to correct)"
+ },
+ "forbidden_artifacts": {
+  "datasets/ngnnguynchn/flag2027-rfs-lorafix1-p": "key-fixed LoRA C1 (16.18 family)",
+  "datasets/ngnnguynchn/flag2027-c1fix-lora-p": "key-fixed LoRA C1 of C1FIX-01 (16.18)",
+  "datasets/ngnnguynchn/flag2027-c1fix-rfx-art-p": "RFX artefact relearned with the fixed LoRA (16.18)",
+  "datasets/ngnnguynchn/flag2027-rfsc4lf-art-p": "CELL4-01 arm lf (fixed LoRA)",
+  "datasets/ngnnguynchn/flag2027-rf092-dev-emb-p": "dev embeddings (dev data must not enter the chain; dropped from t162a's inputs)"
+ },
+ "forbidden_env": {
+  "XJF_BASE": [
+   "lf"
+  ],
+  "RFS_LORA_FIX": [
+   "1"
+  ]
+ },
+ "forbidden_code_patterns": [
+  {
+   "regex": "os\\.environ\\[['\"]RFS_LORA_FIX['\"]\\]\\s*=\\s*['\"]1['\"]",
+   "why": "sets the key-fixed LoRA mode"
+  },
+  {
+   "regex": "os\\.environ\\[['\"]XJF_BASE['\"]\\]\\s*=\\s*['\"]lf['\"]",
+   "why": "selects the lf (fixed LoRA) base zip in blend.py"
+  }
+ ],
+ "warn_code_strings": [
+  "flag2027-rfs-lorafix1-p",
+  "flag2027-c1fix-lora-p",
+  "flag2027-c1fix-rfx-art-p",
+  "flag2027-rfsc4lf-art-p",
+  "flag2027-rf092-dev-emb-p",
+  "lora_C1_fixed"
+ ],
+ "guard_env_defaults": {
+  "RFS_LORA_FIX": "0"
+ },
+ "guard_env_why": "rfs_train.py of the current repository defaults to RFS_LORA_FIX=1 (fixed LoRA). The exact notebooks of the chain embed older rfs_train.py copies that do not read this variable; setting 0 is a no-op for them and protects any stage that would use a newer copy. A stage may not override it with 1 (forbidden_env).",
+ "file_checks": [
+  {
+   "id": "lora_c1",
+   "glob": "**/lora_C1.pt",
+   "sha256": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c",
+   "when": [
+    "inputs",
+    "outputs"
+   ],
+   "why": "every RFX / RFX' artefact and the LoRA dataset must carry the ORIGINAL LoRA C1 (S8 K4)",
+   "rule": "FIXED sha256 for every lora_C1.pt in every mode: every C1 consumer resolves the saved original (resolve: saved_only), so RFX / RFX' made in any session carry the saved bytes. The only stage that can make a different C1 is t163l_orig (FF_MODE=train with FF_FORCE=t163l_orig, GPU, not bit-identical, DESIGN 5.1); its own output is checked by LINEAGE (made_in_session.lineage_roots: dry check ff_lora_drycheck.json = 210 clips / 70 persons / all MAV-Celeb v1, RFS_LORA_FIX never 1; new hash recorded in _DONE.json variant_lineage) and is evidence only, no consumer mounts it. Smoke artifacts are reported only. The forbidden artifacts / environment values stay refused in every mode. (19/11/2026 (integration fixer r2, INTEGRATION_r2 M3))",
+   "made_in_session": {
+    "lineage_roots": {
+     "t163l_orig": {
+      "file": "ff_lora_drycheck.json",
+      "expect": {
+       "ok": true,
+       "got": {
+        "clips": 210,
+        "persons": 70,
+        "clips_by_source": {
+         "mav:v1": 210
+        },
+        "persons_by_source": {
+         "mav:v1": 70
+        }
+       }
+      },
+      "why": "the dry check (WP-F patch of t163l_orig) runs lora_data on the bundle before training: the ORIGINAL selection (cache-key bug) is 210 MAV-Celeb v1 clips of 70 persons"
+     }
+    },
+    "scope": "only the output of the lineage root t163l_orig itself; downstream lora_C1.pt files always equal the fixed sha256 because their C1 input is saved_only (19/11/2026 (integration fixer r2, INTEGRATION_r2 M3))"
+   }
+  }
+ ],
+ "stage_env_expectations": {
+  "_doc": "Flags each stage of the original run had (DESIGN section 4 'flags' column, checked against the stage code 18/11). Looked for in stage.json env/smoke_env AND in the stage code: os.environ['K'] = 'V', os.environ.setdefault('K', 'V'), K=\"V\" keyword (e.g. a subprocess env dict(ENVV, K=\"V\")) or a {\"K\": \"V\"} env dict. Missing = warning, not an error.",
+  "t153b": {
+   "LORA_BUDGET_H": "10.3"
+  },
+  "t153c": {
+   "LORA_BUDGET_H": "10.3"
+  },
+  "t164_f123": {
+   "LID_STRICT": "1"
+  },
+  "t164_f45": {
+   "LID_STRICT": "1"
+  },
+  "t164f": {
+   "LID_STRICT": "1",
+   "CC_MODE": "final"
+  },
+  "t155s_f12": {
+   "LID_STRICT": "1",
+   "CT_R2_ONLY": "CA",
+   "BN42": "1"
+  },
+  "t155s_f34": {
+   "LID_STRICT": "1",
+   "CT_R2_ONLY": "CA",
+   "BN42": "1"
+  },
+  "t155s_f5": {
+   "LID_STRICT": "1",
+   "CT_R2_ONLY": "CA",
+   "BN42": "1"
+  },
+  "t112sf0s": {
+   "LID_STRICT": "1",
+   "BN42": "1"
+  },
+  "t112sf1s": {
+   "LID_STRICT": "1",
+   "CLEANCOMP": "1",
+   "CT_GROUP": "r2",
+   "BN42": "1",
+   "FINAL_ARM": "CA",
+   "CT_FINAL_SEEDS": "10",
+   "CT_F1": "1"
+  },
+  "t163b": {
+   "RFS_MODE": "B"
+  },
+  "t163l_orig": {
+   "RFS_MODE": "L"
+  },
+  "t163p_c5rl": {
+   "RFS_MODE": "P",
+   "RFS_CFG": "{\"add\": [\"f_c5s\", \"v_rl\"]}"
+  },
+  "t184_report": {
+   "LID_STRICT": "1",
+   "T3S": "1",
+   "CT_R2_ONLY": "CA",
+   "T3S_PER_GPU": "1",
+   "NOREL": "1"
+  },
+  "t219_dumpv4": {
+   "FUSENET_MODE": "dumpv4",
+   "LID_STRICT": "1",
+   "T3S": "1",
+   "CT_R2_ONLY": "CA",
+   "T3S_PER_GPU": "1",
+   "NOREL": "1"
+  },
+  "e50cc": {
+   "LID_STRICT": "1",
+   "CLEANCOMP": "1",
+   "XALL_PREFER": "cleancomp",
+   "NOREL": "1"
+  },
+  "e112f0sx": {
+   "E2E_SPLIT": "eval",
+   "LID_STRICT": "1",
+   "CLEANCOMP": "1",
+   "NOREL": "1"
+  },
+  "e112f1sx": {
+   "E2E_SPLIT": "eval",
+   "LID_STRICT": "1",
+   "CLEANCOMP": "1",
+   "NOREL": "1",
+   "CT_GROUP": "r2",
+   "BN42": "1",
+   "FINAL_ARM": "CA",
+   "CT_FINAL_SEEDS": "10",
+   "CT_F1": "1"
+  },
+  "t189_b2": {
+   "FVB_ARMS": "B2,IB0"
+  },
+  "t163p_fvb": {
+   "RFS_MODE": "P",
+   "RFS_CFG": "{\"add\": [\"f_c5s\", \"v_rl\", \"v_fvb\"]}"
+  },
+  "final_blend": {
+   "XJF_SIG": "5.0983,3.8376"
+  }
+ },
+ "stage_variant_field": {
+  "_doc": "stage.json may declare \"variant\": {\"lora_c1\": ...} as free text. Accepted: a value starting with 'original' (e.g. 'original, through rfx_eval.zip of e163i'), or 'not used' / 'not_used' / 'none'. Refused: a value naming a fix variant (refuse_words, whole words for 'fix' / 'lf', substrings for the others) or any other value. `ffrun.py dag` / `plan` run this check statically over every stage.json.",
+  "accept_prefixes": [
+   "original",
+   "not used",
+   "not_used",
+   "none"
+  ],
+  "refuse_words": [
+   "fix",
+   "fixed",
+   "lf",
+   "c1fix",
+   "lorafix",
+   "lorafix1",
+   "16.18",
+   "key-fixed"
+  ],
+  "lora_c1": [
+   "original"
+  ]
+ },
+ "notes": [
+  "Three LoRA C1 variants exist: ORIGINAL (onnhqunhh/flag2027-rfs-lora-p, sha256 b97372e3..., this chain), FIX-1 (ngnnguynchn/flag2027-rfs-lorafix1-p, CELL4-01 'lf'), C1FIX-01 (ngnnguynchn/flag2027-c1fix-lora-p, system 16.18). Only the ORIGINAL is allowed here.",
+  "release/flag2027_e2e/stages.py:234-297, 318-319, 526-527 switch the chain to C1FIX; none of that is used by this repository.",
+  "sigma is not affected by the LoRA: the U table of FLAG_219 only uses the t3 / nf / nv streams (DESIGN N4)."
+ ],
+ "stage_code_expectations": {
+  "_doc": "Code that each stage must still contain (regex, multiline): the variant-defining RFS_CFG blocks of the sigma seed runs, and the dev-exclusion patches of DESIGN G11 (SPLIT_FILTER = [\"train\"], N_CROPS = 0, train-only index). Missing = warning: it means a stage.ipy lost a change that keeps the chain on the 13.54 variant / off the dev data.",
+  "t213_p1": [
+   {
+    "regex": "ARMS = json\\.loads\\('\\{\\\"c0r\\\": \\{\\\"add\\\": \\[\\\"f_c5s\\\", \\\"v_rl\\\"\\]",
+    "why": "c5rl blocks of the sigma seed run (seeds 4-9)"
+   }
+  ],
+  "t213_p2": [
+   {
+    "regex": "ARMS = json\\.loads\\('\\{\\\"c0r\\\": \\{\\\"add\\\": \\[\\\"f_c5s\\\", \\\"v_rl\\\"\\]",
+    "why": "c5rl blocks of the sigma seed run (seeds 4-9)"
+   }
+  ],
+  "t216_p3": [
+   {
+    "regex": "ARMS = json\\.loads\\('\\{\\\"c0t\\\": \\{\\\"add\\\": \\[\\\"f_c5s\\\", \\\"v_rl\\\"\\]",
+    "why": "c5rl blocks of the sigma seed run (seeds 10-12)"
+   }
+  ],
+  "f10_models": [
+   {
+    "regex": "FF dev-exclusion \\(CHANGES\\.md #2\\): index ONLY the organiser train list",
+    "why": "dev-exclusion (G11)"
+   }
+  ],
+  "f04_v2_ref": [
+   {
+    "regex": "^N_CROPS = 0\\b",
+    "why": "dev-exclusion (G11): no crops chosen from the dev Bangla durations"
+   },
+   {
+    "regex": "FF dev-exclusion \\(CHANGES\\.md #2\\): index ONLY the organiser train list",
+    "why": "dev-exclusion (G11)"
+   }
+  ],
+  "f12_eval_feats": [
+   {
+    "regex": "^SPLIT_FILTER = \\[\\\"train\\\"\\]",
+    "why": "dev-exclusion (G11)"
+   }
+  ],
+  "f14_av": [
+   {
+    "regex": "^SPLIT_FILTER = \\[\\\"train\\\"\\]",
+    "why": "dev-exclusion (G11)"
+   }
+  ],
+  "f40_t3enc_mav": [
+   {
+    "regex": "^SPLIT_FILTER = \\[\\\"train\\\"\\]",
+    "why": "dev-exclusion (G11)"
+   }
+  ],
+  "f47b_screen2": [
+   {
+    "regex": "^SPLIT_FILTER = \\[\\\"train\\\"\\]",
+    "why": "dev-exclusion (G11)"
+   }
+  ],
+  "t160a": [
+   {
+    "regex": "^SPLIT_FILTER = \\[\\\"train\\\"\\]",
+    "why": "dev-exclusion (G11)"
+   }
+  ],
+  "t162a": [
+   {
+    "regex": "^SPLIT_FILTER = \\[\\\"train\\\"\\]",
+    "why": "dev-exclusion (G11)"
+   }
+  ]
+ }
+}

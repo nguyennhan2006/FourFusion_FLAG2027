@@ -1,0 +1,181 @@
+{
+ "id": "c63_frames",
+ "group": "11_collect",
+ "title": "Lossless PNG face frames of the 68 041 VoxBlink (FLAG_46) and 36 426 VoxCeleb2 (FLAG_53) face rows, re-cut exactly like the features",
+ "kind": "collect",
+ "role_in_1354": "score",
+ "modes": {
+  "train": "not run by default: collect stages run only when forced (configs/modes.json collect_kind_runs_only_when_forced) and every collected dataset is read from FF_DATA/01_collected (class 'collected' is in always_saved_classes). Re-collecting: force the whole collect closure in ONE run, with a fresh FF_WORK and FF_USE_SAVED=collected (README.md of 11_collect): FF_FORCE=c37_vox2,c53_vox2b,c46_voxblink,c45_frames_vox2,c_frames_index,c63_frames,c87_frames_bridge,c63v_audio_cache. Forcing this stage alone mixes its new rows with the old frames / audio cache (sampling is not deterministic). Its kernel output (frames/*.zip) is kept nowhere except, renamed *.zipdata, inside face_frames_png.",
+  "infer": "not run",
+  "assemble": "not run"
+ },
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "accelerator": "none",
+  "minutes_original": 335,
+  "internet": true,
+  "secrets": [
+   "HF_TOKEN"
+  ],
+  "note": "pushed 12/10 12:40 (+07), manifest 11:15 UTC: ~5.6 h. HF_TOKEN: only for the gated ProgramComputer part; VoxBlink is read anonymously as in the run"
+ },
+ "origin": {
+  "run": "onnhqunhh/flag-2027-nb-63-frames",
+  "exactness": "exact-executed-copy",
+  "exactness_note": "kaggle/FLAG_63_frames.ipynb has md5 dd0c8f9e11cb28f3055dcc64464a99b9 = push log line 73 (kaggle/kapi_runs.jsonl, internal provenance, not shipped) (the pushed bytes)",
+  "source_file": "kaggle/FLAG_63_frames.ipynb",
+  "notebook_md5": "dd0c8f9e11cb28f3055dcc64464a99b9",
+  "builder": "kaggle/build_frames_notebook.py (untracked; mtime = push minute)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-frames-index-p"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/onnhqunhh/flag-2027-nb-63-frames",
+  "exports": {}
+ },
+ "env": {
+  "FLAG_LOCAL": "0",
+  "FLAG_SMOKE": "0"
+ },
+ "env_note": "FLAG_LOCAL / FLAG_SMOKE pinned to \"0\" so a value left in the caller's environment cannot switch the notebook into its local / smoke mode during a real run (smoke_env sets \"1\" under FF_SMOKE=1). FLAG_IN / FLAG_OUT would also bypass the runner's /kaggle paths if set by the caller and cannot be pinned here (a fixed value would be wrong): WP-A drops them from the inherited environment; never export them.",
+ "env_doc": {
+  "FRAMES_TIME_LIMIT_H": "default 11 (the original finished in about 5.6 h); outside Kaggle set it higher in the caller's environment, e.g. 48.",
+  "FRAMES_RESUME_FROM": "folder that CONTAINS the frames/ of an earlier, time-limited run (resume patch). Unset = original behaviour."
+ },
+ "smoke_env": {
+  "FLAG_SMOKE": "1",
+  "FRAMES_SMOKE_N": "30"
+ },
+ "patches": [
+  {
+   "id": "hf_revision_vb",
+   "old": "SHARD = \"https://huggingface.co/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/resolve/main/{}\"",
+   "new": "# [FF pin] HF revision parameter added for the reproduction repo (CHANGES.md): FF_HF_REVS = JSON {\"<repo id>\": \"<commit>\"};\n# unset, or a repo not listed -> \"main\" = the original behaviour (the original run read resolve/main, unpinned).\nFF_HF_REV = lambda repo: __import__(\"json\").loads(__import__(\"os\").environ.get(\"FF_HF_REVS\") or \"{}\").get(repo, \"main\")\nclass FF_PartURL(str):   # [FF pin] the VoxBlink mirror is one HF repo per part: each part gets its own revision\n    def format(self, part, *rest):\n        return str.format(self.replace(\"/main\", \"/\" + FF_HF_REV(f\"adollahamini1998/VoxBlink-Video-clean-8-{part}\"), 1), part, *rest)\nSHARD = FF_PartURL(\"https://huggingface.co/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/resolve/main/{}\")",
+   "count": 1,
+   "why": "HF revision parameter (G27) for the 8 VoxBlink part repos; unset = original URL",
+   "type": "pin",
+   "effect": "none"
+  },
+  {
+   "id": "hf_revision_vox2",
+   "old": "HF = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/main/vox2/\"",
+   "new": "# [FF url] ProgramComputer/voxceleb became gated (auto-approved terms) after the run: token from the environment only, never\n# printed; no HF_TOKEN -> {} = the original anonymous request.\nFF_HF_HDR = {\"Authorization\": \"Bearer \" + __import__(\"os\").environ[\"HF_TOKEN\"]} if __import__(\"os\").environ.get(\"HF_TOKEN\") else {}\nHF = \"https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/\" + FF_HF_REV(\"ProgramComputer/voxceleb\") + \"/vox2/\"",
+   "count": 1,
+   "why": "HF revision parameter (G27) + token header for the gated repo; unset = original string",
+   "type": "pin",
+   "effect": "none"
+  },
+  {
+   "id": "auth_remote_r",
+   "old": "requests.get(HF + n, headers={\"Range\": \"bytes=0-0\"}, allow_redirects=True, timeout=120, stream=True) as r:",
+   "new": "requests.get(HF + n, headers={\"Range\": \"bytes=0-0\", **FF_HF_HDR}, allow_redirects=True, timeout=120, stream=True) as r:",
+   "count": 1,
+   "why": "Remote(): resolve each part with the token (ProgramComputer/voxceleb is gated now); no HF_TOKEN = original request",
+   "type": "url",
+   "effect": "none"
+  },
+  {
+   "id": "auth_remote_q",
+   "old": "requests.get(HF + n, headers={\"Range\": \"bytes=0-0\"}, allow_redirects=True, timeout=120, stream=True) as q:",
+   "new": "requests.get(HF + n, headers={\"Range\": \"bytes=0-0\", **FF_HF_HDR}, allow_redirects=True, timeout=120, stream=True) as q:",
+   "count": 1,
+   "why": "Remote._get(): re-resolve an expired signed URL with the token (same reason)",
+   "type": "url",
+   "effect": "none"
+  },
+  {
+   "id": "resume_from_env",
+   "old": "for prev in ([] if LOCAL else [p for p in IN.rglob(\"frames\") if p.is_dir() and (p / \"vb\").exists()]):",
+   "new": "# [FF path] FRAMES_RESUME_FROM (CHANGES.md): a folder holding the frames/ of an earlier, time-limited run of this stage, searched\n# like the attached output. Unset = the original line:\n# for prev in ([] if LOCAL else [p for p in IN.rglob(\"frames\") if p.is_dir() and (p / \"vb\").exists()]):\nfor prev in ([] if LOCAL else [p for q in [IN] + ([Path(os.environ[\"FRAMES_RESUME_FROM\"])] if os.environ.get(\"FRAMES_RESUME_FROM\") else []) for p in q.rglob(\"frames\") if p.is_dir() and (p / \"vb\").exists()]):",
+   "count": 1,
+   "why": "FRAMES_TIME_LIMIT_H (default 11 h) stops the run with a partial frames/; the original resumed by attaching its own output, which the runner cannot mount (its /kaggle/input view holds only the declared inputs). Unset = the original search",
+   "type": "path",
+   "effect": "none (resume only; unset = original behaviour)",
+   "cell": "2 / 2"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "verify": [
+  {
+   "artifact": "notebooks/onnhqunhh/flag-2027-nb-63-frames",
+   "file": "frames/frames_manifest.json",
+   "mode": "informational",
+   "expect": {
+    "parts": {
+     "vb": {
+      "zips": 690,
+      "faces": 68041
+     },
+     "vox2b": {
+      "zips": 31,
+      "faces": 36426
+     }
+    },
+    "complete": {
+     "vb": true,
+     "vox2b": true
+    }
+   },
+   "published_sha256": "16cd3cea9ee70aa87ed1f2b67610093e473e6cc1302adbfa900eff413fa756bb (copy inside lora-frames-p)"
+  }
+ ],
+ "post_checks": [
+  {
+   "file": "frames/frames_manifest.json",
+   "json_path": "complete",
+   "equals": {
+    "vb": true,
+    "vox2b": true
+   },
+   "why": "the notebook's own completeness flags (>= 98 % of the wanted faces per source); fatal: a time-limited partial run is never accepted"
+  }
+ ],
+ "external_sources": [
+  {
+   "repo": "adollahamini1998/VoxBlink-Video-clean-8-{0..7}",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": false,
+   "what": "unofficial crawl of VoxBlink-clean YouTube shorts (8 repos, one per part); CC BY-NC-SA 4.0, no redistribution",
+   "license": "VoxBlink: CC BY-NC-SA 4.0, no redistribution of the media (unofficial crawl); every derived file private"
+  },
+  {
+   "repo": "ProgramComputer/voxceleb",
+   "revision_at_run": "main (unpinned)",
+   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "type": "hf-dataset",
+   "gated": true,
+   "what": "VoxCeleb2 face tracks: vox2/vox2_mp4_{2..6}.zip (FLAG_37), official split archives vox2/vox2_dev_mp4_parta[a-i], vox2_dev_aac_parta[a-h], vox2_test_{mp4,aac}.zip, vox2/vox2_meta.csv",
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded (todo, WP-K LICENSES.md)"
+  }
+ ],
+ "models": [
+  "none (PNG re-cut only)"
+ ],
+ "run_policy": "Frames are re-cut exactly like FLAG_46 / FLAG_53 (same frame, same 1.3x loose crop) from the collected index; the 13.54 chain uses the collected frames (skip_with). VoxBlink: private.",
+ "private": true,
+ "todo": [
+  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
+  "ProgramComputer/voxceleb is gated (auto-approved terms; 403 with the team token on 18/11, team run log, internal provenance): a re-collection needs HF_TOKEN of an account that accepted the terms. 13.54 itself never needs it (collected data are the raw input).",
+  "Optional: pull the run log of onnhqunhh/flag-2027-nb-63-frames (kaggle kernels output, *.log)."
+ ],
+ "notes": [
+  "Reads only frames-index (vb/selection, timestamps, shard_listing, face_meta of FLAG_46; vox2b/listing_{dev,test}_mp4.parquet + face_meta of FLAG_53).",
+  "No skip_with: the runner serves skip_with as a saved copy of the stage's KERNEL output, and no such copy exists (the FF_DATA/01_collected folders hold the exported datasets, which configs/data_map.json maps by their own ids). The stage is skipped by default because collect stages run only when forced.",
+  "post_checks make the notebook's own 'complete' flags fatal: a run stopped by FRAMES_TIME_LIMIT_H fails instead of being accepted."
+ ],
+ "stage_ipy": {
+  "sha256": "6348a0e49b8b0ca742ad6afe1ac7918fc3de9143f4e806dea71e19f920821ff6",
+  "cells": 6,
+  "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
+  "original": "original/flag-2027-nb-63-frames.ipynb"
+ }
+}

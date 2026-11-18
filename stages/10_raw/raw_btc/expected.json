@@ -1,0 +1,22 @@
+{
+ "train_set.zip": [
+  1428601179,
+  "1803739f059860d5aede064839a17b01c6297f3160ab80cc9d3c929b27ae2ad9"
+ ],
+ "meta_file_train_set.csv": [
+  560,
+  "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030"
+ ],
+ "dev_set.zip (optional)": [
+  989881860,
+  "f29cc4139bc3e40bf9e9cd6533b6822e41296de972589d85ac71953cd1a92983"
+ ],
+ "train_set.zip members": {
+  "train_set/train_set/train_English.txt": "9da76d23473dabc1e8822c99d1f24398bd5222a382b50efdeaa87bb9b9222d5e",
+  "train_set/features/faces/train_English_faces.csv": "3f96079d7d0f192a1e02fcc0bda0245826fbd8918f9e9caccee295dc578e78bc",
+  "train_set/features/voices/train_English_voices.csv": "be650b98adeaff8c5fb1c3978e6b60fd51b4782147af1b917926c685bd962925"
+ },
+ "train_set.zip entries": 13122,
+ "train pairs": 6485,
+ "train speakers": 70
+}

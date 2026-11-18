@@ -1,0 +1,757 @@
+import os, sys, io, re, time, json, types, shutil, zipfile, warnings
+from pathlib import Path
+warnings.filterwarnings("ignore", category=FutureWarning)
+LOCAL = os.environ.get("FLAG_LOCAL") == "1"          # CPU smoke test on a mini copy of the data
+IN = Path(os.environ.get("FLAG_IN", "/kaggle/input"))
+WORKDIR = Path(os.environ.get("FLAG_OUT", "/kaggle/working"))
+CACHE = Path(os.environ.get("FLAG_CACHE", "/tmp/flag_cache"))           # checkpoints stay out of the output
+ECAPA_DIR = Path(os.environ.get("FLAG_ECAPA", str(CACHE / "ecapa_sb")))
+OUT = WORKDIR / "feats_vb"
+for d in (WORKDIR, CACHE, OUT):
+    d.mkdir(parents=True, exist_ok=True)
+os.chdir(WORKDIR)
+
+# ------------------------------------------------------------------ what to run (edit here)
+ENCODERS = ["arcface", "ecapa", "vitage", "w2v2ag", "ibv", "iba"]   # ibv right before iba: one ImageBind load
+EXT_SOURCES = ["v1_complete", "v2_complete"]                        # MAV-Celeb rows for STRESS-01; [] = skip
+EXT_ENCODERS = ["arcface", "ecapa"]                                 # their ImageBind / age exist (FLAG_10)
+SPLIT_FILTER = None            # e.g. ["no_gender/English"]; None = every split found (train + every test list)
+ZIP_PREFIXES = ("train_set", "dev_set", "eval", "test")             # organiser zips unpacked when not extracted
+ONLY_UNDER = None              # e.g. "eval": keep only lists whose path contains this (dev and eval both attached)
+print("LOCAL" if LOCAL else "KAGGLE", "| input", IN, "| output", OUT, "| cache", CACHE)
+# <<<FF-CELL>>>
+# WeSpeaker (commit 9fecd6c, as Track 3) and openai CLIP (commit d50d76d, FaRL's code base): --no-deps, their pins would
+# replace Kaggle's torch; the few runtime deps by hand.
+if not LOCAL:
+    !pip -q install -U "speechbrain>=1.1.1" av ftfy regex kaldiio silero-vad 2>&1 | tail -1
+    !pip -q install --no-deps "git+https://github.com/wenet-e2e/wespeaker.git@9fecd6cb4f47475d01761d87c826298dff4ef18c" "git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1" 2>&1 | tail -2
+else:                                           # local smoke test: wespeaker + its deps in an isolated folder
+    for p_ in reversed([p for p in os.environ.get("FLAG_T3_PATH", "").split(";") if p]):
+        sys.path.insert(0, p_)
+import numpy as np, pandas as pd, torch, torch.nn as nn, torch.nn.functional as F, soundfile as sf, transformers
+DEV = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("torch", torch.__version__, "| transformers", transformers.__version__, "| device", DEV,
+      torch.cuda.get_device_name(0) if torch.cuda.is_available() else "")
+
+
+def log(*a):
+    print(time.strftime("%H:%M:%S"), *a, flush=True)
+# <<<FF-CELL>>>
+# ============================================================================ audio + batching
+TARGET_SR = 16000
+AUDIO_STATS = {"files": 0, "resampled": 0, "multichannel": 0, "short": 0}
+MIN_SEC = 0.1                  # shorter clips are tiled to 0.1 s (w2v2 / AudioCLIP STFT fail on a few ms; v4 clips are >= 2 s)
+BROKEN = {"audio": [], "image": []}   # unreadable sources: scored from a stand-in, listed in the manifest
+
+
+def _src_name(src):
+    """Full path of a file source (base names repeat across splits); the archive member name of a zip stream."""
+    if isinstance(src, (bytes, bytearray)):
+        return f"<{len(src)} bytes>"
+    return str(src) if isinstance(src, (str, Path)) else str(getattr(src, "name", None) or src)
+
+
+def load_audio(src):
+    """Mono float32 at 16 kHz as the organiser loads audio (librosa.load(sr=16000, mono=True): channel mean + soxr_hq).
+    All v4 wavs are 16 kHz mono; MAV-Celeb v1 has 44.1 kHz files. `src` = path or file-like.
+    A file that cannot be read (or is empty / non-finite) -> 1 s of silence, listed in BROKEN["audio"]."""
+    try:
+        w, sr = sf.read(src if hasattr(src, "read") else str(src), dtype="float32", always_2d=True)
+        if w.size == 0 or not np.isfinite(w).all():
+            raise ValueError(f"{w.shape[0]} samples, finite {bool(np.isfinite(w).all())}")
+    except Exception as e:
+        BROKEN["audio"].append(f"{_src_name(src)} | {type(e).__name__}: {e}")
+        log("!! unreadable audio -> 1 s of silence:", BROKEN["audio"][-1])
+        return np.zeros(TARGET_SR, np.float32)
+    AUDIO_STATS["files"] += 1
+    if w.shape[1] > 1:
+        AUDIO_STATS["multichannel"] += 1
+        w = w.mean(1, keepdims=True)
+    w = w[:, 0]
+    if sr != TARGET_SR:
+        import librosa
+        w = librosa.resample(w, orig_sr=sr, target_sr=TARGET_SR).astype(np.float32)
+        AUDIO_STATS["resampled"] += 1
+    if len(w) < int(MIN_SEC * TARGET_SR):
+        AUDIO_STATS["short"] += 1
+        w = np.tile(w, int(np.ceil(MIN_SEC * TARGET_SR / len(w))))[:int(MIN_SEC * TARGET_SR)]
+    return w
+
+
+def centre_crop(w, L):
+    if len(w) <= L:
+        return w
+    s = (len(w) - L) // 2
+    return w[s:s + L]
+
+
+def pack_batches(durs, max_padded_sec=240.0, max_bs=32):
+    """Longest first; a batch costs len(batch) * longest item after padding."""
+    order = np.argsort(-np.asarray(durs), kind="stable")
+    batches, cur = [], []
+    for i in order:
+        longest = durs[cur[0]] if cur else durs[i]
+        if cur and ((len(cur) + 1) * longest > max_padded_sec or len(cur) >= max_bs):
+            batches.append(cur); cur = []
+        cur.append(int(i))
+    if cur:
+        batches.append(cur)
+    return batches
+
+
+def run_batched(items, fn, durs, max_padded_sec=240.0, max_bs=32, cpu_fn=None, label=""):
+    """fn(list of items) -> list of outputs, in item order. A CUDA OOM halves the batch; a single item goes to CPU."""
+    out = [None] * len(items)
+    t0, done_n = time.time(), 0
+
+    def go(idx):
+        try:
+            res = fn([items[i] for i in idx])
+        except torch.cuda.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            if len(idx) == 1:
+                res = (cpu_fn or fn)([items[idx[0]]])
+            else:
+                h = len(idx) // 2
+                go(idx[:h]); go(idx[h:])
+                return
+        for i, r in zip(idx, res):
+            out[i] = r
+
+    batches = pack_batches(durs, max_padded_sec, max_bs)
+    for bi, b in enumerate(batches):
+        go(b)
+        done_n += len(b)
+        if bi % 50 == 0 or done_n == len(items):
+            el = time.time() - t0
+            log(f"  {label} {done_n}/{len(items)}  {el:.0f}s  eta {el / done_n * (len(items) - done_n):.0f}s")
+    return out
+
+
+def cos_rows(a, b):
+    a, b = np.asarray(a, np.float64), np.asarray(b, np.float64)
+    return np.sum(a * b, 1) / (np.linalg.norm(a, axis=1) * np.linalg.norm(b, axis=1) + 1e-12)
+
+
+def amp(flag):
+    return torch.autocast("cuda", dtype=torch.float16, enabled=bool(flag) and DEV.type == "cuda")
+
+
+def read_rgb(src):
+    """PIL RGB image; an image that cannot be read -> a black 224 x 224 image, listed in BROKEN["image"]."""
+    from PIL import Image
+    try:
+        return Image.open(io.BytesIO(src) if isinstance(src, (bytes, bytearray)) else src).convert("RGB")
+    except Exception as e:
+        BROKEN["image"].append(f"{_src_name(src)} | {type(e).__name__}: {e}")
+        log("!! unreadable image -> black image:", BROKEN["image"][-1])
+        return Image.new("RGB", (224, 224))
+# <<<FF-CELL>>>
+# ============================================================================ T3ENC-01 encoders: the encoder family of Track 3's VoxBlink system, frozen
+# Track 3 (a teammate's VoxBlink pipeline, CB Bangla ng ~16 / g ~25) used these four encoders; here they run on OUR rows
+# (MAV-Celeb v4 train, v1/v2, dev lists; and VoxCeleb2 in FLAG_41), so we can test locally whether the encoders and a
+# cross-modal head carry the gain WITHOUT VoxBlink data (docs/PLAN_VOXBLINK_2026-10-07.md, V1). Every sample on its own.
+#   farl16V   FaRL ViT-B/16 LAION-Face 20M **ep16** (github.com/FacePerceiver/FaRL release, 652 MB) on openai CLIP ViT-B/16
+#             (CLIP preprocessing: 224 bicubic, centre crop); 512-d image embedding (our existing `farl` is the ep64 copy)
+#   clipLV    openai/clip-vit-large-patch14 @ 32bd642 (transformers): get_image_features, 768-d
+#   sam100pA  WeSpeaker voxblink2_samresnet100 (VoxBlink2 pretrained), official ModelScope zip (wenet/wespeaker_pretrained_models)
+#   sam100fA  WeSpeaker voxblink2_samresnet100_ft (VoxBlink2 pretrained -> VoxCeleb2 large-margin fine-tune)
+#             both: wespeaker fbank + CMN, int16-scaled waveform (as our wssim34 / wsr221 cells), 256-d
+import zipfile as _zf
+
+FARL16_URL = "https://github.com/FacePerceiver/FaRL/releases/download/pretrained_weights/FaRL-Base-Patch16-LAIONFace20M-ep16.pth"
+FARL16_SIZE = 652165542
+CLIPL_ID, CLIPL_REV = "openai/clip-vit-large-patch14", "32bd64288804d66eefd0ccbe215aa642df71cc41"
+WESPK_TREE = "https://modelscope.cn/api/v1/datasets/wenet/wespeaker_pretrained_models/oss/tree"
+SAM_ZIPS = {"sam100pA": ("voxblink2_samresnet100.zip", 186890339), "sam100fA": ("voxblink2_samresnet100_ft.zip", 186890839)}
+T3_STATS = {}
+
+
+def fetch(url, dest, size=None):
+    dest = Path(dest)
+    if dest.exists() and (size is None or dest.stat().st_size == size):
+        return dest
+    torch.hub.download_url_to_file(url, str(dest) + ".part", progress=False)
+    Path(str(dest) + ".part").replace(dest)
+    assert size is None or dest.stat().st_size == size, f"{dest.name}: {dest.stat().st_size} bytes, expected {size}"
+    return dest
+
+
+class FaRL16Face:
+    kind = "face"
+
+    def __init__(self):
+        import clip
+        m, self.pre = clip.load("ViT-B/16", device="cpu", download_root=str(CACHE / "clip"))
+        sd = torch.load(fetch(FARL16_URL, CACHE / "FaRL-ep16.pth", FARL16_SIZE), map_location="cpu", weights_only=False)["state_dict"]
+        vis = [k for k in m.state_dict() if k.startswith("visual.")]
+        hit = [k for k in vis if k in sd and sd[k].shape == m.state_dict()[k].shape]
+        assert len(hit) == len(vis), f"FaRL ep16 covers {len(hit)}/{len(vis)} visual tensors"
+        m.load_state_dict(sd, strict=False)
+        self.m = m.visual.float().to(DEV).eval()
+
+    def prep(self, im):
+        return self.pre(im)
+
+    @torch.no_grad()
+    def __call__(self, x, use_amp=True):
+        return {"": self.m(x.to(DEV)).float().cpu().numpy()}
+
+
+class CLIPLFace:
+    kind = "face"
+
+    def __init__(self):
+        from transformers import CLIPModel, CLIPImageProcessor
+        self.proc = CLIPImageProcessor.from_pretrained(CLIPL_ID, revision=CLIPL_REV)
+        self.m = CLIPModel.from_pretrained(CLIPL_ID, revision=CLIPL_REV, torch_dtype=torch.float32).to(DEV).eval()
+
+    def prep(self, im):
+        return self.proc(images=im.convert("RGB"), return_tensors="pt").pixel_values[0]
+
+    @torch.no_grad()
+    def __call__(self, x, use_amp=True):
+        f = self.m.get_image_features(pixel_values=x.to(DEV))
+        f = f.pooler_output if hasattr(f, "pooler_output") else f          # transformers 5 may return an output object
+        return {"": f.float().cpu().numpy()}
+
+
+def wespeaker_dir(zip_name, size):
+    """The official zip (ModelScope, as wespeaker's own hub does), unpacked without the __MACOSX entries."""
+    d = CACHE / "wespeaker" / zip_name[:-4]
+    if (d / "avg_model.pt").exists() and (d / "config.yaml").exists():
+        return d
+    d.mkdir(parents=True, exist_ok=True)
+    import requests
+    tree = requests.get(WESPK_TREE, timeout=120).json()["Data"]
+    url = [it["Url"] for it in tree if it.get("Key") == zip_name][0]
+    z = fetch(url, d / zip_name, size)
+    with _zf.ZipFile(z) as zf:
+        for mem in zf.namelist():
+            if not mem.startswith("__MACOSX") and not mem.endswith("/"):
+                (d / Path(mem).name).write_bytes(zf.read(mem))
+    assert (d / "avg_model.pt").exists() and (d / "config.yaml").exists(), f"{zip_name}: unexpected content {zf.namelist()[:6]}"
+    return d
+
+
+class SimAMVoice:
+    kind = "voice"
+
+    def __init__(self, name):
+        for mod, attr in (("wespeaker.frontend.s3prl", "S3prlFrontend"), ("wespeaker.frontend.whisper_encoder", "whisper_encoder"),
+                          ("wespeaker.frontend.w2vbert", "W2VBertFrontend"), ("wespeaker.diar.umap_clusterer", "cluster"),
+                          ("wespeaker.diar.extract_emb", "subsegment")):
+            if mod not in sys.modules:                     # SSL frontends / diarisation helpers: not used by fbank models
+                stub = types.ModuleType(mod); setattr(stub, attr, None); sys.modules[mod] = stub
+        import wespeaker
+        self.m = wespeaker.load_model(str(wespeaker_dir(*SAM_ZIPS[name])))
+        self.m.set_device("cuda:0" if DEV.type == "cuda" else "cpu")
+        T3_STATS[name] = {"params_M": round(sum(p.numel() for p in self.m.model.parameters()) / 1e6, 1)}
+
+    @torch.no_grad()
+    def __call__(self, w, use_amp=True):
+        pcm = torch.from_numpy(np.ascontiguousarray(w, dtype=np.float32) * 32768.0)[None]
+        feats = self.m.compute_features(pcm, sample_rate=16000, cmn=True)
+        out = self.m.model(feats.to(self.m.device))
+        out = out[-1] if isinstance(out, tuple) else out
+        return {"": out[0].reshape(-1).float().cpu().numpy()}
+
+
+NEW = {"farl16V": FaRL16Face, "clipLV": CLIPLFace, "sam100pA": lambda: SimAMVoice("sam100pA"),
+       "sam100fA": lambda: SimAMVoice("sam100fA")}
+
+
+def build(name):
+    return NEW[name]()
+
+
+def release(keep_ib=False):
+    import gc
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+
+ARRAYS_NEW = {"farl16V": ("face", {"": "farl16"}), "clipLV": ("face", {"": "clipL"}),
+              "sam100pA": ("voice", {"": "sam100p"}), "sam100fA": ("voice", {"": "sam100f"})}
+MAIN_NEW = {k: "" for k in NEW}
+RESHAPE = {}
+# <<<FF-CELL>>>
+# ============================================================================ VoxBlink media helpers (FLAG_46): shard index, timestamps, cutting
+# Source: the unofficial Hugging Face crawl adollahamini1998/VoxBlink-Video-clean-8-{0..7} (whole YouTube shorts, h264 <= 720p,
+# 25 fps, AAC 16 kHz) + the official VoxBlink annotations (timestamp.tar.gz: one file per utterance, per-frame face box;
+# meta/spk2lan, spk2loc, spk2gender). VoxBlink: CC BY-NC-SA 4.0, the authors forbid redistribution: research use inside the
+# challenge, outputs kept private, source declared in the system description.
+# Every function here works on one video at a time (no statistic of other samples).
+import tarfile as _tarfile
+
+
+def tar_parse_header(h):
+    """512-byte ustar header -> (name, size, typeflag). Sizes in base-256 (GNU) are handled."""
+    name = h[0:100].rstrip(b"\0").decode("utf8", "replace")
+    prefix = h[345:500].rstrip(b"\0").decode("utf8", "replace")
+    sz = h[124:136]
+    size = int.from_bytes(sz[1:], "big") if sz[0] & 0x80 else int(sz.rstrip(b"\0 ").decode() or "0", 8)
+    return (prefix + "/" + name if prefix else name), size, (chr(h[156]) if h[156] else "0")
+
+
+def tar_list_remote(session, url, max_members=None):
+    """Member list of a remote plain tar by HTTP range reads of the headers only: [(name, data offset, size)].
+    PAX per-file headers ('x') are followed to the real header; their 'path' record overrides the name."""
+    off, out = 0, []
+    while max_members is None or len(out) < max_members:
+        b = session.get(url, headers={"Range": f"bytes={off}-{off + 2047}"}, timeout=120).content
+        if len(b) < 512 or b[:512] == b"\0" * 512:
+            break
+        name, size, typ = tar_parse_header(b[:512])
+        if typ in ("x", "g"):
+            pax = b[512:512 + size] if 512 + size <= len(b) else session.get(
+                url, headers={"Range": f"bytes={off + 512}-{off + 512 + size - 1}"}, timeout=120).content
+            path = None
+            for rec in pax.decode("utf8", "replace").split("\n"):
+                if " path=" in rec:
+                    path = rec.split(" path=", 1)[1]
+            off2 = off + 512 + ((size + 511) // 512) * 512
+            h2 = b[off2 - off:off2 - off + 512] if off2 - off + 512 <= len(b) else session.get(
+                url, headers={"Range": f"bytes={off2}-{off2 + 511}"}, timeout=120).content
+            name2, size2, _ = tar_parse_header(h2)
+            if typ == "x":
+                out.append((path or name2, off2 + 512, size2))
+            off = off2 + 512 + ((size2 + 511) // 512) * 512
+        else:
+            if typ in ("0", "\0"):
+                out.append((name, off + 512, size))
+            off = off + 512 + ((size + 511) // 512) * 512
+    return out
+
+
+def parse_timestamp(text):
+    """Official VoxBlink timestamp file -> (frames int array, boxes (n, 4) x, y, w, h). Header: 'Identity', 'Reference',
+    blank, 'FRAME X Y W H', blank, then one tab-separated line per frame (25 fps)."""
+    fr, bx = [], []
+    for line in text.splitlines():
+        p = line.strip().split("\t")
+        if len(p) == 5 and p[0].isdigit():
+            fr.append(int(p[0])); bx.append([int(float(v)) for v in p[1:]])
+    return np.asarray(fr, int), np.asarray(bx, int).reshape(-1, 4)
+
+
+def loose_crop(rgb, box, scale, out=224):
+    """Square crop of side scale * max(w, h) centred on the face box, padded with black outside the image, resized to out:
+    the loose head-and-shoulders framing of MAV-Celeb / VoxCeleb face tracks (the official VoxBlink crop is tight, 112)."""
+    from PIL import Image
+    x, y, w, h = [float(v) for v in box]
+    cx, cy, side = x + w / 2, y + h / 2, scale * max(w, h)
+    x0, y0 = int(round(cx - side / 2)), int(round(cy - side / 2)); s = int(round(side))
+    H, W = rgb.shape[:2]
+    canvas = np.zeros((s, s, 3), np.uint8)
+    sx0, sy0, sx1, sy1 = max(0, x0), max(0, y0), min(W, x0 + s), min(H, y0 + s)
+    if sx1 > sx0 and sy1 > sy0:
+        canvas[sy0 - y0:sy1 - y0, sx0 - x0:sx1 - x0] = rgb[sy0:sy1, sx0:sx1]
+    inside = (sx1 - sx0) * (sy1 - sy0) / float(s * s)
+    return Image.fromarray(canvas).resize((out, out), Image.BICUBIC), inside
+
+
+def decode_video(mp4, frames_wanted, sr=16000):
+    """One pass over a short: the RGB frames at the wanted indices (decoded in order, no seeking: shorts are <= 60 s) and the
+    whole audio track as mono float32 at sr. -> ({frame index: HxWx3 uint8}, audio)."""
+    import av
+    want, got = sorted(set(int(f) for f in frames_wanted)), {}
+    audio = []
+    with av.open(io.BytesIO(mp4)) as c:
+        vs = c.streams.video[0] if c.streams.video else None
+        if vs is not None:
+            vs.thread_type = "AUTO"
+            last = max(want) if want else -1
+            for k, fr in enumerate(c.decode(vs)):
+                if k in want:
+                    got[k] = fr.to_ndarray(format="rgb24")
+                if k >= last:
+                    break
+    with av.open(io.BytesIO(mp4)) as c:
+        if c.streams.audio:
+            res = av.AudioResampler(format="flt", layout="mono", rate=sr)
+            for fr in c.decode(c.streams.audio[0]):
+                audio += [o.to_ndarray().reshape(-1) for o in res.resample(fr)]
+            audio += [o.to_ndarray().reshape(-1) for o in res.resample(None)]
+    return got, (np.concatenate(audio).astype(np.float32) if audio else np.zeros(0, np.float32))
+# <<<FF-CELL>>>
+# ============================================================================ settings, VoxBlink annotations, speaker / utterance selection
+import hashlib, requests, threading, tarfile
+import concurrent.futures as cf
+V_MAX, U_MAX, MIN_DUR, MIN_DUR2 = 3, 2, 2.0, 1.0     # videos per speaker, utterances per video, preferred / fallback min duration (s)
+CROP_SCALE, FPS, CLIP_SEC = 1.3, 25, 12.0
+TIME_LIMIT_H = float(os.environ.get("VB_TIME_LIMIT_H", "10.5"))
+LIST_THREADS, FETCH_THREADS = 24, 12
+SMOKE = os.environ.get("VB_SMOKE") == "1" and LOCAL
+# [FF pin] HF revision parameter added for the reproduction repo (CHANGES.md): FF_HF_REVS = JSON {"<repo id>": "<commit>"};
+# unset, or a repo not listed -> "main" = the original behaviour (the original run read resolve/main, unpinned).
+FF_HF_REV = lambda repo: __import__("json").loads(__import__("os").environ.get("FF_HF_REVS") or "{}").get(repo, "main")
+class FF_PartURL(str):   # [FF pin] the VoxBlink mirror is one HF repo per part: each part gets its own revision
+    def format(self, part, *rest):
+        return str.format(self.replace("/main", "/" + FF_HF_REV(f"adollahamini1998/VoxBlink-Video-clean-8-{part}"), 1), part, *rest)
+RES = "https://huggingface.co/datasets/adollahamini1998/ScriptsForVoxBlinkResources/resolve/" + FF_HF_REV("adollahamini1998/ScriptsForVoxBlinkResources") + "/"
+PROG = "https://huggingface.co/datasets/adollahamini1998/VoxBlinkProgressVideos/resolve/" + FF_HF_REV("adollahamini1998/VoxBlinkProgressVideos") + "/progress/download_progress_clean_8_{}.json"
+TREE = FF_PartURL("https://huggingface.co/api/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/tree/main")
+SHARD = FF_PartURL("https://huggingface.co/datasets/adollahamini1998/VoxBlink-Video-clean-8-{}/resolve/main/{}")
+T_START = time.time()
+PARTS_DIR = OUT / "parts"; PARTS_DIR.mkdir(parents=True, exist_ok=True)
+# [FF path] VB_RESUME_FROM (CHANGES.md): a folder holding the feats_vb/ of an earlier, time-limited session of this stage,
+# searched like an attached input (the runner gives this stage no inputs). Unset = the original line:
+# for prev in (IN.rglob("feats_vb") if IN.exists() and not LOCAL else []):
+for prev in ([] if LOCAL else [*(IN.rglob("feats_vb") if IN.exists() else []), *(Path(os.environ["VB_RESUME_FROM"]).rglob("feats_vb") if os.environ.get("VB_RESUME_FROM") else [])]):          # resume: earlier output attached
+    for f in list((prev / "parts").glob("*.npz")) + [prev / n for n in ("shard_listing.csv", "timestamps.csv", "selection.csv")]:
+        dst = (PARTS_DIR / f.name) if f.parent.name == "parts" else (OUT / f.name)
+        if f.exists() and not dst.exists():
+            shutil.copy(f, dst)
+
+
+def get_retry(url, tries=5, **kw):
+    for k in range(tries):
+        try:
+            r = requests.get(url, timeout=300, **kw); r.raise_for_status(); return r
+        except Exception as e:
+            log(f"  retry {k + 1}/{tries} {url.rsplit('/', 1)[-1][:60]}: {type(e).__name__}: {e}"); time.sleep(5 * (k + 1))
+    raise RuntimeError(f"cannot fetch {url}")
+
+
+def cached(name, url):
+    f = CACHE / name
+    if not f.exists():
+        f.write_bytes(get_retry(url).content)
+    return f
+
+
+meta = {}
+for k in ("spk2lan", "spk2loc", "spk2gender"):
+    rows = [l.split() for l in cached(k, RES + f"meta/{k}").read_text(encoding="utf-8").splitlines() if l.strip()]
+    meta[k] = {r[0]: " ".join(r[1:2]) if k != "spk2loc" else " ".join(r[1:]) for r in rows}
+dur = {}
+for l in cached("utt2dur", RES + "meta/utt2dur").read_text().splitlines():
+    p = l.split()
+    if len(p) == 2:
+        dur[p[0]] = float(p[1])
+clean = set(cached("utt_clean.txt", RES + "data/utt_clean.txt").read_text().split())
+split_utt = lambda u: (u[:7], u[8:-6], u[-5:])                  # idXXXXX - <youtube id, may contain '-'> - NNNNN
+log(f"annotations: {len(meta['spk2lan'])} speakers with a language, {len(meta['spk2loc'])} with a location, "
+    f"{len(dur)} utterances with a duration, {len(clean)} clean utterances")
+
+# ---- mirror: per part, the uploaded videos and their shard. A shard's name carries its creation time (unix s); each distinct
+# uploaded_at of the progress file belongs to the newest shard created before it (gap 1-77 s on every part, checked 09/10).
+# The mirror keeps changing: part 7 has one shard no upload points to (an orphan, skipped), so counts need not match.
+import bisect
+from datetime import datetime
+vid_shard, SHARDS, ORPHANS = {}, {}, []
+for part in (range(1) if SMOKE else range(8)):
+    prog = json.loads(cached(f"prog_{part}.json", PROG.format(part)).read_text())["completed"]
+    tree = get_retry(TREE.format(part)).json()
+    shards = sorted((int(x["path"].split("_")[-1][:-4]), x["path"], x.get("size", 0)) for x in tree if x["path"].endswith(".tar"))
+    ups = sorted({v["uploaded_at"] for s in prog.values() for v in s["videos"].values() if v.get("status") == "uploaded"})
+    ts = [t for t, _, _ in shards]
+    up2shard, used = {}, set()
+    for u in ups:
+        i = bisect.bisect_right(ts, datetime.fromisoformat(u).timestamp()) - 1
+        assert i >= 0, (part, u, "upload older than every shard")
+        gap = datetime.fromisoformat(u).timestamp() - ts[i]
+        assert gap <= 900, (part, u, shards[i][1], f"gap {gap:.0f} s")          # an upload follows its shard by seconds
+        up2shard[u] = (part, shards[i][1]); used.add(i)
+    assert len(used) == len(ups), (part, "two uploads mapped to one shard", len(used), len(ups))
+    ORPHANS += [(part, shards[i][1]) for i in range(len(shards)) if i not in used]
+    for i, (_, name, size) in enumerate(shards):
+        if i in used:
+            SHARDS[(part, name)] = size
+    for spk, s in prog.items():
+        for vid, v in s["videos"].items():
+            if v.get("status") == "uploaded":
+                vid_shard[(spk, vid)] = up2shard[v["uploaded_at"]]
+spk_all = sorted({s for s, _ in vid_shard})
+bad = {s for s in spk_all if meta["spk2lan"].get(s, "").lower() == "bengali" or "bangladesh" in meta["spk2loc"].get(s, "").lower()}
+log(f"mirror: {len(vid_shard)} uploaded videos of {len(spk_all)} speakers in {len(SHARDS)} shards | excluded before download "
+    f"(spk2lan bengali / spk2loc Bangladesh): {len(bad)} speakers | orphan shards skipped (no upload points to them): {ORPHANS}")
+if SMOKE:                                                        # local smoke test: the speakers of the smallest shard of part 0
+    small = min((k for k in SHARDS if k[0] == 0), key=lambda k: SHARDS[k])
+    keep = sorted({s for (s, v), sh in vid_shard.items() if sh == small})[:3]
+    vid_shard = {k: v for k, v in vid_shard.items() if k[0] in keep and v == small}
+    log(f"smoke test: shard {small[1]} ({SHARDS[small] / 1e6:.0f} MB), speakers {keep}")
+
+# ---- selection (deterministic): per speaker V_MAX videos in md5 order, per video the U_MAX longest clean utterances
+SEL_F = OUT / "selection.csv"
+if SEL_F.exists() and not SMOKE:
+    SEL = pd.read_csv(SEL_F, dtype={"spk": str, "video": str, "utt": str})
+else:
+    by_vid = {}
+    for u in clean:
+        spk, vid, n = split_utt(u)
+        if (spk, vid) in vid_shard and spk not in bad:
+            by_vid.setdefault((spk, vid), []).append((dur.get(u, 0.0), n))
+    rows, vids_of = [], {}
+    for (s, v) in by_vid:
+        vids_of.setdefault(s, []).append(v)
+    for spk in sorted(vids_of):
+        vids = sorted(vids_of[spk], key=lambda v: hashlib.md5(f"{spk}/{v}".encode()).hexdigest())
+        taken = 0
+        for vid in vids:
+            cand = sorted(by_vid[(spk, vid)], reverse=True)
+            pick = [c for c in cand if c[0] >= MIN_DUR][:U_MAX] or [c for c in cand if c[0] >= MIN_DUR2][:1]
+            if not pick:
+                continue
+            part, shard = vid_shard[(spk, vid)]
+            rows += [dict(spk=spk, video=vid, utt=n, dur=d, part=part, shard=shard) for d, n in pick]
+            taken += 1
+            if taken >= V_MAX:
+                break
+    SEL = pd.DataFrame(rows)
+    if not SMOKE:
+        SEL.to_csv(SEL_F, index=False)
+log(f"selection: {len(SEL)} utterances, {SEL.groupby(['spk', 'video']).ngroups} videos, {SEL.spk.nunique()} speakers, "
+    f"{SEL.shard.nunique()} shards | median duration {SEL.dur.median():.1f} s")
+
+# ---- timestamps of the selected utterances (one pass over timestamp.tar.gz: frame range + face box at the middle frame)
+TS_F = OUT / "timestamps.csv"
+if TS_F.exists() and not SMOKE:
+    TS = pd.read_csv(TS_F, dtype={"spk": str, "video": str, "utt": str})
+else:
+    want = {(r.spk, r.video, r.utt) for r in SEL.itertuples()}
+    got, t0 = [], time.time()
+    with get_retry(RES + "timestamp.tar.gz", stream=True) as r:
+        tf = tarfile.open(fileobj=r.raw, mode="r|gz")
+        for m in tf:
+            if not m.isfile():
+                continue
+            p = m.name.split("/")
+            key = (p[-3], p[-2], p[-1][:-4]) if len(p) >= 3 else None
+            if key in want:
+                fr, bx = parse_timestamp(tf.extractfile(m).read().decode("utf8", "replace"))
+                if len(fr):
+                    j = len(fr) // 2
+                    got.append(dict(spk=key[0], video=key[1], utt=key[2], start=int(fr[0]), end=int(fr[-1]), mid=int(fr[j]),
+                                    x=int(bx[j, 0]), y=int(bx[j, 1]), w=int(bx[j, 2]), h=int(bx[j, 3])))
+                if len(got) >= len(want):
+                    break
+    TS = pd.DataFrame(got)
+    if not SMOKE:
+        TS.to_csv(TS_F, index=False)
+    log(f"timestamps: {len(TS)}/{len(want)} selected utterances found [{time.time() - t0:.0f}s]")
+JOB = SEL.merge(TS, on=["spk", "video", "utt"], how="inner")
+log(f"jobs: {len(JOB)} utterances with a timestamp, {JOB.spk.nunique()} speakers")
+# <<<FF-CELL>>>
+# ============================================================================ member offsets of the needed shards (header range reads, cached)
+LIST_F = OUT / "shard_listing.csv"
+LST = pd.read_csv(LIST_F) if LIST_F.exists() else pd.DataFrame(columns=["part", "shard", "member", "off", "size"])
+done_shards = set(zip(LST.part, LST.shard))
+need = sorted(set(zip(JOB.part, JOB.shard)) - done_shards)
+_TL = threading.local()
+
+
+def cdn_url(part, shard):
+    with requests.get(SHARD.format(part, shard), headers={"Range": "bytes=0-0"}, allow_redirects=True, timeout=120, stream=True) as r:
+        return r.url
+
+
+def list_one(ps):
+    part, shard = ps
+    if not hasattr(_TL, "s"):
+        _TL.s = requests.Session()
+    for k in range(4):
+        try:
+            mem = tar_list_remote(_TL.s, cdn_url(part, shard))
+            return [dict(part=part, shard=shard, member=n, off=o, size=z) for n, o, z in mem]
+        except Exception as e:
+            log(f"  listing retry {k + 1} {shard}: {type(e).__name__}: {e}"); time.sleep(5 * (k + 1))
+    return []
+
+
+if need:
+    t0 = time.time(); rows = []
+    with cf.ThreadPoolExecutor(LIST_THREADS) as ex:
+        for i, res in enumerate(ex.map(list_one, need)):
+            rows += res
+            if (i + 1) % 50 == 0 or i + 1 == len(need):
+                log(f"  listed {i + 1}/{len(need)} shards, {len(rows)} members [{time.time() - t0:.0f}s]")
+                if not SMOKE:
+                    pd.concat([LST, pd.DataFrame(rows)], ignore_index=True).to_csv(LIST_F, index=False)
+    LST = pd.concat([LST, pd.DataFrame(rows)], ignore_index=True)
+    if not SMOKE:
+        LST.to_csv(LIST_F, index=False)
+LST["spk"], LST["video"] = LST.member.str.split("/").str[0], LST.member.str.split("/").str[1].str[:-4]
+JOB = JOB.merge(LST[["spk", "video", "off", "size"]], on=["spk", "video"], how="inner")
+log(f"jobs with a member offset: {len(JOB)} utterances, {JOB.groupby(['spk', 'video']).ngroups} videos")
+# <<<FF-CELL>>>
+# ============================================================================ per shard: fetch the selected shorts, cut, crop, encode (resumable)
+from speechbrain.inference.classifiers import EncoderClassifier
+try:
+    from speechbrain.utils.fetching import LocalStrategy
+    _ls = {"local_strategy": LocalStrategy.COPY}
+except ImportError:
+    _ls = {}
+LIDM = EncoderClassifier.from_hparams(source="speechbrain/lang-id-voxlingua107-ecapa", savedir=str(CACHE / "lid_voxlingua107"),
+                                      run_opts={"device": str(DEV)}, **_ls)
+LIDM.eval()
+LABELS = [LIDM.hparams.label_encoder.ind2lab[i] for i in range(len(LIDM.hparams.label_encoder.ind2lab))]
+BN = [i for i, l in enumerate(LABELS) if l.split(":")[0].strip() == "bn"]
+assert len(LABELS) == 107 and len(BN) == 1
+
+
+@torch.no_grad()
+def lid_probs(w):
+    out_prob = LIDM.classify_batch(torch.from_numpy(np.ascontiguousarray(w, dtype=np.float32))[None].to(DEV))[0]
+    return torch.softmax(out_prob.float().reshape(1, -1), 1)[0].cpu().numpy()
+
+
+ENC = None
+ENC_LIST = ["farl16V", "clipLV", "sam100pA", "sam100fA"]
+if LOCAL and os.environ.get("VB_ENCODERS"):                 # local smoke test on a small-RAM PC only: a subset of the encoders
+    ENC_LIST = os.environ["VB_ENCODERS"].split(",")
+L_CLIP = int(CLIP_SEC * TARGET_SR)
+STATS = {"videos": 0, "videos_failed": 0, "faces": 0, "faces_missing_frame": 0, "voices": 0, "voices_short": 0}
+
+
+def fetch_decode(job):
+    """One short: range-fetch the member, decode the wanted middle frames + the audio, cut / crop every selected utterance."""
+    (part, shard, spk, video), g = job
+    if not hasattr(_TL, "s"):
+        _TL.s = requests.Session()
+    try:
+        url = _TL.urls.get((part, shard)) if hasattr(_TL, "urls") else None
+        if url is None:
+            _TL.urls = getattr(_TL, "urls", {}); url = _TL.urls[(part, shard)] = cdn_url(part, shard)
+        off, size = int(g.off.iloc[0]), int(g["size"].iloc[0])
+        b = _TL.s.get(url, headers={"Range": f"bytes={off}-{off + size - 1}"}, timeout=300).content
+        if len(b) != size:
+            _TL.urls.pop((part, shard), None); raise IOError(f"short read {len(b)} / {size}")
+        frames, audio = decode_video(b, g.mid.tolist(), TARGET_SR)
+    except Exception as e:
+        return None, f"{spk}/{video}: {type(e).__name__}: {e}"
+    out = []
+    for r in g.itertuples():
+        face = inside = None
+        if r.mid in frames:
+            face, inside = loose_crop(frames[r.mid], (r.x, r.y, r.w, r.h), CROP_SCALE)
+        a0, a1 = int(r.start / FPS * TARGET_SR), int((r.end + 1) / FPS * TARGET_SR)
+        wav = audio[a0:a1]
+        out.append(dict(spk=spk, video=video, utt=r.utt, face=face, inside=inside,
+                        wav=centre_crop(wav, L_CLIP) if len(wav) >= TARGET_SR // 2 else None, dur=len(wav) / TARGET_SR))
+    return out, None
+
+
+order = JOB.groupby(["part", "shard"]).size().sort_index()
+log(f"shards to process: {len(order)} ({sum(1 for k in order.index if (PARTS_DIR / ('%d_%s.npz' % k)).exists())} already done)")
+for (part, shard), n in order.items():
+    pf = PARTS_DIR / f"{part}_{shard}.npz"
+    if pf.exists():
+        continue
+    if time.time() - T_START > TIME_LIMIT_H * 3600:
+        log(f"time limit {TIME_LIMIT_H} h reached: stopping before {shard} (attach the output and run again)"); break
+    if ENC is None:
+        ENC = {k: build(k) for k in ENC_LIST}
+    t0 = time.time()
+    G = JOB[(JOB.part == part) & (JOB.shard == shard)]
+    jobs = list(G.groupby(["part", "shard", "spk", "video"]))
+    rows, errs = [], []
+    with cf.ThreadPoolExecutor(FETCH_THREADS) as ex:
+        for res, err in ex.map(fetch_decode, jobs):
+            STATS["videos"] += 1
+            if err:
+                errs.append(err); STATS["videos_failed"] += 1; BROKEN["audio"].append(err)
+            else:
+                rows += res
+    F_ = [r for r in rows if r["face"] is not None]; V_ = [r for r in rows if r["wav"] is not None]
+    STATS["faces"] += len(F_); STATS["faces_missing_frame"] += len(rows) - len(F_)
+    STATS["voices"] += len(V_); STATS["voices_short"] += len(rows) - len(V_)
+    R = {}
+    for n_, k in (("farl16", "farl16V"), ("clipL", "clipLV")):
+        if k in ENC:
+            R[n_] = np.concatenate([ENC[k](torch.stack([ENC[k].prep(r["face"]) for r in F_[s:s + 64]]))[""] for s in range(0, len(F_), 64)]) if F_ else np.zeros((0, 1))
+    for n_, k in (("sam100p", "sam100pA"), ("sam100f", "sam100fA")):
+        if k in ENC:
+            R[n_] = np.stack([ENC[k](r["wav"])[""] for r in V_]) if V_ else np.zeros((0, 1))
+    R["lid"] = np.stack([lid_probs(r["wav"]) for r in V_]) if V_ else np.zeros((0, 107))
+    np.savez(pf, f_spk=np.array([r["spk"] for r in F_], str), f_video=np.array([r["video"] for r in F_], str),
+             f_utt=np.array([r["utt"] for r in F_], str), f_inside=np.array([r["inside"] for r in F_], np.float32),
+             v_spk=np.array([r["spk"] for r in V_], str), v_video=np.array([r["video"] for r in V_], str),
+             v_utt=np.array([r["utt"] for r in V_], str), v_dur=np.array([r["dur"] for r in V_], np.float32),
+             **{k: v.astype(np.float16) for k, v in R.items()})
+    log(f"{shard}: {len(jobs)} videos ({len(errs)} failed), {len(F_)} faces, {len(V_)} voices [{time.time() - t0:.0f}s] | "
+        f"total {time.time() - T_START:.0f}s")
+ENC = None
+release()
+# <<<FF-CELL>>>
+# ============================================================================ assemble, LID report (registered rule), crop stats, probe, manifest
+Zs = [np.load(p) for p in sorted(PARTS_DIR.glob("*.npz"))]
+cat = lambda k: np.concatenate([z[k] for z in Zs if len(z[k])]) if any(len(z[k]) for z in Zs) else np.zeros(0)
+FM_ = pd.DataFrame({"spk": cat("f_spk"), "video": cat("f_video"), "utt": cat("f_utt"), "inside": cat("f_inside")})
+VM_ = pd.DataFrame({"spk": cat("v_spk"), "video": cat("v_video"), "utt": cat("v_utt"), "dur": cat("v_dur")})
+for n_ in ("farl16", "clipL"):
+    if len(FM_) and n_ in Zs[0].files:
+        np.save(OUT / f"face_{n_}.npy", cat(n_))
+for n_ in ("sam100p", "sam100f"):
+    if len(VM_) and n_ in Zs[0].files:
+        np.save(OUT / f"voice_{n_}.npy", cat(n_))
+summary = {}
+if len(VM_):
+    P = cat("lid").astype(np.float32); np.save(OUT / "voice_lid_probs.npy", P.astype(np.float16))
+    top, pbn = P.argmax(1), P[:, BN[0]]
+    flag = (top == BN[0]) | (pbn >= 0.2)
+    drop = sorted(set(VM_.spk.values[flag]))
+    summary = {"clips": int(len(VM_)), "clips_top1_bengali": int((top == BN[0]).sum()), "clips_pbn_ge_0.2": int((pbn >= 0.2).sum()),
+               "speakers": int(VM_.spk.nunique()), "speakers_flagged": len(drop), "clips_of_flagged": int(VM_.spk.isin(drop).sum()),
+               "top_languages": pd.Series([LABELS[i].split(":")[0] for i in top]).value_counts().head(15).to_dict()}
+    (OUT / "lid_summary.json").write_text(json.dumps({**summary, "speakers_dropped_ids": drop,
+                                                      "rule": "drop every clip of a speaker with any clip whose top language is Bengali or p(Bengali) >= 0.2"}, indent=1))
+for M_ in (FM_, VM_):
+    M_["lan"] = M_.spk.map(meta["spk2lan"]); M_["loc"] = M_.spk.map(meta["spk2loc"]); M_["gender"] = M_.spk.map(meta["spk2gender"])
+FM_.to_csv(OUT / "face_meta.csv", index=False); VM_.to_csv(OUT / "voice_meta.csv", index=False)
+(OUT / "lid_labels.json").write_text(json.dumps(LABELS, indent=0))
+
+from sklearn.metrics import roc_curve
+def eer(s, y):
+    fpr, tpr, _ = roc_curve(y, s); fnr = 1 - tpr; i = np.nanargmin(np.abs(fnr - fpr)); return round(100 * float(fpr[i] + fnr[i]) / 2, 2)
+
+
+PROBE, rng = {}, np.random.RandomState(0)
+for side, M_, stem in (("face_clipL", FM_, "face_clipL"), ("face_farl16", FM_, "face_farl16"), ("voice_sam100f", VM_, "voice_sam100f")):
+    f = OUT / f"{stem}.npy"
+    if not f.exists() or M_.spk.nunique() < 3:
+        continue
+    X = np.load(f).astype(np.float32); X /= np.linalg.norm(X, axis=1, keepdims=True) + 1e-8
+    by = {s: np.where(M_.spk.values == s)[0] for s in M_.spk.unique()}
+    sp = [s for s, ix in by.items() if len(set(M_.video.values[ix])) > 1]
+    if len(sp) < 3:
+        continue
+    pos, neg = [], []
+    for s in rng.choice(sp, min(3000, 10 * len(sp))):
+        ix = by[s]; a = rng.choice(ix); other = [j for j in ix if M_.video.values[j] != M_.video.values[a]]
+        if other:
+            pos.append((a, rng.choice(other)))
+        o = sp[rng.randint(len(sp))]
+        if o != s:
+            neg.append((a, rng.choice(by[o])))
+    pr = np.array(pos + neg); y = np.r_[np.ones(len(pos)), np.zeros(len(neg))]
+    PROBE[side + " (cross-video)"] = eer(np.sum(X[pr[:, 0]] * X[pr[:, 1]], 1), y)
+man = {"created": time.strftime("%Y-%m-%d %H:%M"), "speakers_faces": int(FM_.spk.nunique()), "speakers_voices": int(VM_.spk.nunique()),
+       "faces": len(FM_), "voices": len(VM_), "excluded_before_download": len(bad), "stats": STATS, "lid": summary,
+       "crop": {"scale": CROP_SCALE, "mean_inside": float(FM_.inside.mean()) if len(FM_) else None,
+                "share_inside_lt_0.6": float((FM_.inside < 0.6).mean()) if len(FM_) else None},
+       "settings": dict(V_MAX=V_MAX, U_MAX=U_MAX, MIN_DUR=MIN_DUR, MIN_DUR2=MIN_DUR2, CLIP_SEC=CLIP_SEC), "probe": PROBE,
+       "shards_done": len(Zs), "shards_needed": int(JOB.groupby(["part", "shard"]).ngroups),
+       "encoders": {"farl16": FARL16_URL, "clipL": f"{CLIPL_ID}@{CLIPL_REV}", "sam100p": SAM_ZIPS["sam100pA"][0],
+                    "sam100f": SAM_ZIPS["sam100fA"][0], "lid": "speechbrain/lang-id-voxlingua107-ecapa"},
+       "source": "adollahamini1998/VoxBlink-Video-clean-8-{0..7} (unofficial crawl) + official VoxBlink annotations; CC BY-NC-SA 4.0, no redistribution",
+       "broken": BROKEN, "versions": {"torch": torch.__version__, "transformers": transformers.__version__}}
+(OUT / "feats_manifest.json").write_text(json.dumps(man, indent=1, default=str))
+print(json.dumps({k: v for k, v in man.items() if k != "broken"}, indent=1, default=str))
+print("NEXT: Save Version -> Output -> New Dataset -> name it flag2027-feats-vb (PRIVATE). If shards_done < shards_needed, "
+      "attach the output and run again: finished shards are skipped.")
+# <<<FF-CELL>>>
+print("[cell] ff: completeness marker for the runner post_check", flush=True)
+# [FF new cell] (CHANGES.md) The original run needed 2 Kaggle sessions: at VB_TIME_LIMIT_H the shard loop stops, the last original
+# cell still writes a partial feats_vb/ and the notebook exits normally. This cell only reads that manifest and writes
+# ff_completeness.json next to feats_vb/; stage.json post_checks makes complete == true fatal, so a partial output is never
+# accepted as a finished collection (resume: README of 11_collect, VB_RESUME_FROM).
+_ffm = json.loads((OUT / "feats_manifest.json").read_text())
+_ffc = {"complete": int(_ffm["shards_done"]) == int(_ffm["shards_needed"]), "shards_done": int(_ffm["shards_done"]),
+        "shards_needed": int(_ffm["shards_needed"]), "time_limit_h": TIME_LIMIT_H, "smoke": bool(SMOKE)}
+(WORKDIR / "ff_completeness.json").write_text(json.dumps(_ffc, indent=1))
+print("ff completeness:", _ffc, "" if _ffc["complete"] else "| NOT complete: move this output aside and run again with VB_RESUME_FROM",
+      flush=True)
+# <<<FF-CELL>>>

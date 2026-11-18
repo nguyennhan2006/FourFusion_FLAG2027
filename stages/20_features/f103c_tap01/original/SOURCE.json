@@ -1,0 +1,18 @@
+{
+ "stage": "f103c_tap01",
+ "files": [
+  {
+   "copy": "original/FLAG_103c_tap01_voice.ipynb",
+   "source": "kaggle/FLAG_103c_tap01_voice.ipynb",
+   "obtained_by": "copy of the builder output written 29/10/2026 22:41 (the push minute of r2)",
+   "bytes": 58942,
+   "md5": "6ccfb3a52e538f7b9473ed76239db024",
+   "sha256": "ff93282a380e185bc4639192ef6f05b8df9a6608424707dde0680ce2184cb902"
+  }
+ ],
+ "run": "dnq1209/flag-2027-nb-103c-tap01-voice-r2",
+ "evidence": [
+  "The staging folder of the r2 push in Temp is empty. Re-applying today's kaggle/kapi.py push transform ([boot] + [cell] prints, JSON re-serialisation, CRLF) to this file gives md5 b5634c47..., not the push md5 e192b1b7...; the kapi.py of 29/10 may have named the [cell] prints differently. Without the [cell] rule the round trip gives back this file exactly (6ccfb3a5...). The code body is therefore most probably the pushed one, not verified.",
+  "The last cell carries the fix of the first run's failure ('29/10: the real run had no SMOKE name'); the first run dnq1209/flag-2027-nb-103c-tap01-voice failed in that cell, after the split / MAV-Celeb arrays."
+ ]
+}

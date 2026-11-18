@@ -1,0 +1,110 @@
+{
+ "id": "f41_t3enc_vox2",
+ "group": "20_features",
+ "title": "FLAG_41: the same four encoders on the FLAG_37 VoxCeleb2 samples (middle frame of each face track, centre 12 s of each voice clip)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "minutes_original": 300,
+  "internet": true,
+  "secrets": [
+   "HF_TOKEN"
+  ],
+  "note": "original 7/10/2026 10:48-15:51 (log); HF_TOKEN optional for the public wds tars, needed for the gated ProgramComputer/voxceleb zips (403 with the team token on 18/11/2026)"
+ },
+ "origin": {
+  "run": "slug unknown; docs/DATASETS.md:112 names nguynlcnhtho/flag-2027-nb-41 as 'output gốc' (CHƯA CHẮC that it is this 7/10 run)",
+  "exactness": "exact-executed-copy",
+  "source_file": "Experiment/T3ENC-01/flag-2027-nb-41.ipynb",
+  "notebook_md5": "3abd94d18d4293f2eb34011dcc28141f",
+  "builder": "kaggle/build_vox2t3_notebook.py + kaggle/vendor_t3enc/t3enc_cell.py (not in git)",
+  "original_copy": "original/flag-2027-nb-41.ipynb",
+  "original_sha256": "a90de79c9efda146b73bd9d9828fbe4f48472530eedc30b785f586450b4029fb"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-vox2-keys"
+  }
+ ],
+ "inputs_dropped": [],
+ "outputs": {
+  "kernel": "notebooks/ff/f41_t3enc_vox2",
+  "exports": {},
+  "main_folder": "feats_vox2t3",
+  "private": true,
+  "licence": "VoxCeleb2-derived features (VoxCeleb2 terms); private, shared only with the organisers through FF_DATA, never in the repository"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [
+  {
+   "old": "    !pip -q install --no-deps \"git+https://github.com/wenet-e2e/wespeaker.git@9fecd6cb4f47475d01761d87c826298dff4ef18c\" \"git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1\" 2>&1 | tail -2",
+   "new": "    # FF environment patch (CHANGES.md): the team's own pip fix of 29/10 - 2/11/2026, copied verbatim from\n    # kaggle/FLAG_47b_voice_screen.ipynb (builder output of 2/11, the code of the Evaluation run 47rs-eval of 11/11).\n    # 2/11: FLAG_50's fix of 29/10 (BEST/v1977/README.md §6; the FLAG_47b re-run smoke lost wespeaker the same way): one pip call\n    # per package; the openai CLIP build fails on Kaggle's current image (setup.py needs pkg_resources) and, in a shared call, took wespeaker down with it (FLAG_103c smoke). CLIP then comes from a git clone (FLAG_103a smoke).\n    !pip -q install --no-deps \"git+https://github.com/wenet-e2e/wespeaker.git@9fecd6cb4f47475d01761d87c826298dff4ef18c\" 2>&1 | tail -2\n    !pip -q install --no-deps \"git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1\" 2>&1 | tail -2\n    try:\n        import clip\n    except ModuleNotFoundError:\n        import subprocess\n        _oc = Path(\"/tmp/openai_clip\")\n        if not (_oc / \"clip\").exists():\n            subprocess.run([\"git\", \"clone\", \"-q\", \"https://github.com/openai/CLIP.git\", str(_oc)], check=True)\n            subprocess.run([\"git\", \"-C\", str(_oc), \"checkout\", \"-q\", \"d50d76daa670286dd6cacf3bcd80b5e4823fc8e1\"], check=True)\n            _f = _oc / \"clip/clip.py\"\n            _f.write_text(_f.read_text().replace(\"from pkg_resources import packaging\", \"import packaging, packaging.version\"))\n        sys.path.insert(0, str(_oc))\n        import clip\n    import importlib.util                       # not `import wespeaker`: its frontends need s3prl (SimAMVoice stubs them first)\n    assert importlib.util.find_spec(\"wespeaker\") is not None, \"wespeaker did not install\"\n    print(\"openai CLIP:\", clip.__file__, \"| wespeaker:\", importlib.util.find_spec(\"wespeaker\").origin, flush=True)",
+   "count": 1,
+   "type": "pin",
+   "why": "on the current Kaggle image the openai CLIP build fails (its setup.py needs pkg_resources) and, in this shared pip call, takes wespeaker down with it (BEST/v1977/README.md §6). Same packages and commits (wespeaker@9fecd6c, CLIP@d50d76d), one pip call each; CLIP from a git clone at d50d76d when the pip build fails",
+   "effect": "none (same code at the same commits)"
+  },
+  {
+   "old": "    with requests.get(ZIP_URL.format(k), headers={\"Range\": \"bytes=0-0\"}, allow_redirects=True, timeout=120, stream=True) as r:",
+   "new": "    with requests.get(ZIP_URL.format(k), headers={\"Range\": \"bytes=0-0\", **({\"Authorization\": f\"Bearer {os.environ['HF_TOKEN']}\"} if os.environ.get(\"HF_TOKEN\") else {})}, allow_redirects=True, timeout=120, stream=True) as r:   # FF access (CHANGES.md #2): token header when HF_TOKEN is set",
+   "count": 1,
+   "type": "url",
+   "why": "ProgramComputer/voxceleb is gated today (403 for a token without accepted terms, 18/11/2026); the original resolved the zip URL without a token. With HF_TOKEN set, the resolve request carries it (requests drops the header on the redirect to the CDN host); same files",
+   "effect": "none (same files; without HF_TOKEN the request is the original one)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/feats_vox2t3"
+ ],
+ "verify": [],
+ "stage_ipy": {
+  "cells": 8,
+  "sha256": "3aca98715c0e79c756e4db6d72d6561fa4e29ea84f4f392cea5fd46b7a500fab",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "flag-2027-nb-41.ipynb",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "b_lab_data: VoxCeleb2 rows of the T3 head v11 and of the CA head's auxiliary source `vox`; FaRL anchor of B2"
+ ],
+ "todo": [
+  "ProgramComputer/voxceleb returns 403 with the team token (18/11/2026): accept the dataset terms on the HF account whose token is given as HF_TOKEN.",
+  "HF dataset revisions not pinned (G27).",
+  "OPEN, owners WP-A / WP-B (not WP-D files): a re-extracted f41 output must not feed l_dqual_g3 / l_lid_strict; a 5 % quantile cut on non-deterministic GPU output can move a speaker across G3 and change lid_strict.json (f4065711...), i.e. which voices the Bengali rule drops. Needed: configs/data_map.json notebooks/ff/f41_t3enc_vox2 \"default_saved\": true with the saved copy 02_intermediate/feats_vox2t3 (= the team's Experiment/T3ENC-01/feats_vox2t3: 4 arrays, face_meta.csv, voice_meta.csv, feats_manifest.json, 5 listing csv), or l_dqual_g3's input with \"resolve\": \"saved_only\"; plus a strict sha256 check in l_lid_strict. A forced re-run of this stage stays a verification step (row cosine >= 0.999; post_checks fail on any lost key). repo_map/build/WP-D.md H4."
+ ],
+ "verify_notes": [
+  "29 251 face rows and 38 345 voice rows in the FLAG_37 key order, coverage 1.0 (manifest); compare with Experiment/T3ENC-01/feats_vox2t3/* (row cosine >= 0.999)"
+ ],
+ "post_checks": [
+  {
+   "file": "feats_vox2t3/feats_manifest.json",
+   "json_path": "faces",
+   "equals": 29251,
+   "why": "FLAG_37 face keys (original manifest 2026-10-07 15:51)"
+  },
+  {
+   "file": "feats_vox2t3/feats_manifest.json",
+   "json_path": "voices",
+   "equals": 38345,
+   "why": "FLAG_37 voice keys"
+  },
+  {
+   "file": "feats_vox2t3/feats_manifest.json",
+   "json_path": "coverage",
+   "equals": {
+    "face_farl16": 1.0,
+    "face_clipL": 1.0,
+    "voice_sam100p": 1.0,
+    "voice_sam100f": 1.0
+   },
+   "why": "every key encoded, as in the original (a lower coverage changes the rows l_dqual_g3 / l_lid_strict see)"
+  }
+ ]
+}

@@ -1,0 +1,136 @@
+print("[cell] setup", flush=True)
+print("[boot] FLAG_152 LID-AUDIT-01 (MMS-LID-4017 on MAV)", flush=True)
+import os, sys, json, time, re, zipfile, io, threading, subprocess
+from pathlib import Path
+import numpy as np, pandas as pd, torch
+OUT = Path("/kaggle/working/mmslid"); OUT.mkdir(parents=True, exist_ok=True)
+WL_MODEL = os.environ.get("WL_MODEL", "openai/whisper-large-v3")
+WL_MAX = int(os.environ.get("WL_MAX", "0"))                       # smoke: clips per source and pass
+SR = 16000
+RISK = json.loads(r"""{}""")
+RISK = {k: set(v) for k, v in RISK.items()}
+T0 = time.time()
+def droots(key):
+    """attached dataset folders whose name contains key (a full rglob of /kaggle/input walks MAV's face frames: 34 min in the smoke)"""
+    I = Path("/kaggle/input")
+    c = [p for p in I.iterdir() if p.is_dir()] + [q for q in I.glob("datasets/*/*") if q.is_dir()]
+    return [p for p in c if key in p.name.lower()]
+def log(*a):
+    print(f"[{time.time() - T0:7.0f}s]", *a, flush=True)
+log("risk speakers", {k: len(v) for k, v in RISK.items()}, "| model", WL_MODEL, "| GPUs", torch.cuda.device_count())
+# <<<FF-CELL>>>
+print("[cell] MAV-Celeb v1 / v2 voices: file listing", flush=True)
+import soundfile as sf
+def version_of(parts, i):
+    for q in parts[:i][::-1]:
+        m = re.search(r"(?:^|[^a-z0-9])v([12])(?:[^0-9]|$)", q.lower())
+        if m:
+            return "v" + m.group(1)
+    return None
+items = []                                                      # (version, id, lang, video, file, opener)
+MROOTS = droots("mavceleb")
+assert MROOTS, "attach chnnhnnguyn/external-data-mavceleb"
+for r in MROOTS:
+    for dp, dn, fn in os.walk(r):
+        dn[:] = [d for d in dn if d != "faces"]                # skip the face frames (the slow part of the tree)
+        for f in fn:
+            if not f.lower().endswith(".wav"):
+                continue
+            parts = Path(dp, f).parts
+            if "voices" in parts:
+                i = parts.index("voices"); v = version_of(parts, i)
+                if v and len(parts) > i + 4:
+                    items.append((v, parts[i + 1], parts[i + 2], parts[i + 3], parts[i + 4], ("f", str(Path(dp, f)))))
+if not items:                                                   # zips not auto-extracted
+    for z in [z for r in MROOTS for z in r.rglob("*.zip")]:
+        if not re.search(r"v[12]_complete", z.name.lower()):
+            continue
+        with zipfile.ZipFile(z) as zz:
+            for nm in zz.namelist():
+                parts = tuple(nm.split("/"))
+                if nm.lower().endswith(".wav") and "voices" in parts:
+                    i = parts.index("voices"); v = version_of(parts, i) or ("v1" if "v1_complete" in z.name.lower() else "v2")
+                    if len(parts) > i + 4:
+                        items.append((v, parts[i + 1], parts[i + 2], parts[i + 3], parts[i + 4], ("z", str(z), nm)))
+items.sort(key=lambda r: r[:5])
+if WL_MAX:
+    items = items[:WL_MAX]
+log("MAV voice files", len(items), pd.Series([r[0] for r in items]).value_counts().to_dict() if items else {})
+assert items, "attach chnnhnnguyn/external-data-mavceleb (MAV-Celeb v1 / v2)"
+_zc = {}
+def read(op):
+    if op[0] == "f":
+        w, sr = sf.read(op[1], dtype="float32", always_2d=True)
+    else:
+        z = _zc.setdefault(op[1], zipfile.ZipFile(op[1]))
+        w, sr = sf.read(io.BytesIO(z.read(op[2])), dtype="float32", always_2d=True)
+    w = w.mean(1)
+    if sr != SR:
+        import torchaudio
+        w = torchaudio.functional.resample(torch.from_numpy(w), sr, SR).numpy()
+    return w
+# <<<FF-CELL>>>
+print("[cell] MMS-LID-4017 on every MAV-Celeb v1 / v2 voice file (30 s windows)", flush=True)
+from concurrent.futures import ThreadPoolExecutor
+from transformers import AutoFeatureExtractor, Wav2Vec2ForSequenceClassification
+MM = os.environ.get("MMS_MODEL", "facebook/mms-lid-4017")
+DEVS = [f"cuda:{i}" for i in range(torch.cuda.device_count())] or ["cpu"]
+DT = torch.float16 if DEVS[0] != "cpu" else torch.float32
+FE = AutoFeatureExtractor.from_pretrained(MM)
+MODS = [Wav2Vec2ForSequenceClassification.from_pretrained(MM, torch_dtype=DT).to(d).eval() for d in DEVS]
+LAB = MODS[0].config.id2label
+MBN, MAS = [[i for i, l in LAB.items() if l == c] for c in ("ben", "asm")]
+assert len(MBN) == 1 and len(MAS) == 1, (MBN, MAS)
+MBN, MAS = MBN[0], MAS[0]
+log("MMS ready:", MM, len(LAB), "labels on", DEVS)
+def mlid(seg, k):
+    x = FE(seg, sampling_rate=SR, return_tensors="pt").input_values.to(DEVS[k], DT)
+    with torch.no_grad():
+        return torch.softmax(MODS[k](x).logits.float(), -1)[0].cpu().numpy()
+def shard(k):
+    out, t = [], time.time()
+    for j in range(k, len(items), len(DEVS)):
+        v, sid, lang, vid, fn, op = items[j]
+        r = dict(src="mav_" + v, spk=sid, lang=lang, video=vid, file=fn)
+        try:
+            w = read(op)
+        except Exception as e:
+            r["err"] = repr(e)[:120]; out.append(r); continue
+        tops, pb, pa, fl = [], 0.0, 0.0, False
+        for s in range(0, max(len(w), 1), 30 * SR):
+            seg = w[s:s + 30 * SR]
+            if len(seg) < SR // 2 and s > 0:
+                continue
+            p = mlid(np.pad(seg, (0, max(0, SR // 2 - len(seg)))), k); top = int(p.argmax())
+            tops.append(LAB[top]); pb = max(pb, float(p[MBN])); pa = max(pa, float(p[MAS]))
+            fl = fl or LAB[top] in ("ben", "asm") or p[MBN] + p[MAS] >= 0.2
+        r.update(dur=len(w) / SR, m_top1s=",".join(tops), m_pbn=pb, m_pas=pa, m_flag=fl)
+        out.append(r)
+        if len(out) % 500 == 0:
+            log(f"GPU {k}: {len(out)} files ({len(out) / (time.time() - t):.1f} files/s)")
+    return out
+with ThreadPoolExecutor(len(DEVS)) as ex:
+    R = [r for part in ex.map(shard, range(len(DEVS))) for r in part]
+Q = pd.DataFrame(R)
+Q.to_parquet(OUT / "mms.parquet")
+fl = Q.m_flag.fillna(False).astype(bool) if "m_flag" in Q else pd.Series(False, index=Q.index)
+log("MMS flagged files:", int(fl.sum()), Q[fl].src.value_counts().to_dict(), "| speakers", Q[fl].groupby("src").spk.nunique().to_dict(),
+    "| read errors", int(Q.err.notna().sum()) if "err" in Q else 0)
+log("top-1 languages:", Q.m_top1s.dropna().str.split(",").explode().value_counts().head(12).to_dict())
+log("ALL CELLS OK")
+# <<<FF-CELL>>>
+print("[cell] l152 compare: this run vs the original FLAG_152 output (new cell, report only)", flush=True)
+# New cell (FourFusion reproduction repo). MMS-LID-4017 runs in fp16 on two GPUs (not bit-reproducible). Its votes are only reported by
+# LID-AUDIT-01 (the 58 dropped MAV files come from Whisper alone), but LID-AUDIT-01/run.py needs mms.parquet with one row per MAV file.
+import json
+import pandas as pd
+_ref = {"rows": 40271, "flagged_files": 2528, "flagged_speakers": {"mav_v1": 62, "mav_v2": 80}, "read_errors": 0,
+        "mms_parquet_sha256_original": "f9a436f81ce0521b7d8ab709ee9e7a48ac9546285a09c7f63853e40f9332f052"}
+_Q = pd.read_parquet(OUT / "mms.parquet")
+_fl = _Q.m_flag.fillna(False).astype(bool) if "m_flag" in _Q else pd.Series(False, index=_Q.index)
+_got = {"rows": int(len(_Q)), "flagged_files": int(_fl.sum()), "flagged_speakers": _Q[_fl].groupby("src").spk.nunique().to_dict(),
+        "read_errors": int(_Q.err.notna().sum()) if "err" in _Q else 0}
+_cmp = {k: {"original": _ref[k], "this_run": v, "same": v == _ref[k]} for k, v in _got.items()}
+(Path("/kaggle/working") / "ff_l152_compare.json").write_text(json.dumps(_cmp, indent=1))
+print(json.dumps(_cmp, indent=1), flush=True)
+# <<<FF-CELL>>>

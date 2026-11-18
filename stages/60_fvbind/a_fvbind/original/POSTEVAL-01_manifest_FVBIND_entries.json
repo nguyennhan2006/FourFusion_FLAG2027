@@ -1,0 +1,13 @@
+{
+ "copied_from": "Experiment/POSTEVAL-01/manifest.json (entries of the two FVBIND zips; notes in Vietnamese: 'REFERENCE, NOT A CANDIDATE: FVBIND-01 gate 2 FAILED (U_fvb - U_c0 -0.39, 1/5; log 445); built at the user's request on 15/11 after seeing the result; files in Experiment/FVBIND-01/zips/; not submitted' - the ENFUSE zip was submitted later as Evaluation 8)",
+ "zips": {
+  "posteval_FVBIND_ENFUSE_fvb.zip": {
+   "sha256": "bb0e0175e9e9448128a529db8ed537cec0eef427d044729f030c4984830b0bbc",
+   "note": "THAM KHẢO, KHÔNG PHẢI ỨNG VIÊN: FVBIND-01 cổng 2 KHÔNG ĐẠT (U_fvb - U_c0 -0.39, 1/5; nhật ký 445); dựng theo yêu cầu người dùng 15/11 sau khi thấy kết quả; file ở Experiment/FVBIND-01/zips/; không nộp"
+  },
+  "posteval_FVBIND_U_fvb.zip": {
+   "sha256": "b61c84edca2921fc8e313994f3f5d66247d5fa378a4f4f76a2789e516036b401",
+   "note": "THAM KHẢO, KHÔNG PHẢI ỨNG VIÊN: FVBIND-01 cổng 2 KHÔNG ĐẠT (U_fvb - U_c0 -0.39, 1/5; nhật ký 445); dựng theo yêu cầu người dùng 15/11 sau khi thấy kết quả; file ở Experiment/FVBIND-01/zips/; không nộp"
+  }
+ }
+}

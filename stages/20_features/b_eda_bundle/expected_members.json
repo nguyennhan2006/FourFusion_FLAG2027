@@ -1,0 +1,154 @@
+{
+ "source": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-eda-bundle-p.zip",
+ "note": "sha256 of every file of ngnnguynchn/flag2027-eda-bundle-p (package E: re-download; members = the original zip's members)",
+ "members": {
+  "eda_bundle/eda_bundle_manifest.json": {
+   "bytes": 2709,
+   "sha256": "1aa5d0c582fa78c6d83887190903a994d188cb52979739cacac36a43576c4d12"
+  },
+  "eda_bundle/ext_v1_complete_face_arcface.npy": {
+   "bytes": 7762048,
+   "sha256": "e80283e1ee273581068214e4eab4d91e3a26f255e3b9295a82398196cd5f625a"
+  },
+  "eda_bundle/ext_v1_complete_face_farl.npy": {
+   "bytes": 7762048,
+   "sha256": "3575fb5b9f8c814a93184e1d00f9be298488898cc34f048441a6fb777d279542"
+  },
+  "eda_bundle/ext_v1_complete_face_ibv.npy": {
+   "bytes": 15523968,
+   "sha256": "319594272c9fa3d1b6dc1f61cc7a233068cb8700f680143269baea86f15162d6"
+  },
+  "eda_bundle/ext_v1_complete_face_meta.csv": {
+   "bytes": 525729,
+   "sha256": "0a0e32023020087619bcd03b6280e86a78460e3a4ce166dcb9c2d9773ac894b8"
+  },
+  "eda_bundle/ext_v1_complete_face_vgg.npy": {
+   "bytes": 62095488,
+   "sha256": "268290a0ad89291005a29abc63f6abf70b3782fecc8bf173201bc6f67c413a76"
+  },
+  "eda_bundle/ext_v1_complete_face_vitageprob.npy": {
+   "bytes": 136568,
+   "sha256": "a0d101e86dd7a1250fa2ac98d08ba4fe685331245c19b17e82f02280d1c8ac04"
+  },
+  "eda_bundle/ext_v1_complete_speakers.csv": {
+   "bytes": 2224,
+   "sha256": "3b311af585dd3e02050c551bcc889cbc47f742f7893e6ac48281d0ca85a8da53"
+  },
+  "eda_bundle/ext_v1_complete_voice_btc.npy": {
+   "bytes": 7509632,
+   "sha256": "22ff063b3d958db8fc30c8b5c73ba5f0d5a39de6030da85278847a9fd1fae6f7"
+  },
+  "eda_bundle/ext_v1_complete_voice_ecapa192.npy": {
+   "bytes": 7509632,
+   "sha256": "e56824753c4fc9e124775c8f99e8dc2e33b8ec038ea047eff1ad804143c89ddc"
+  },
+  "eda_bundle/ext_v1_complete_voice_iba.npy": {
+   "bytes": 40050816,
+   "sha256": "b5c64f4a933c73347ff1ca22beca12bf9e4ba5114a179f818445e82a6c5f2831"
+  },
+  "eda_bundle/ext_v1_complete_voice_meta.csv": {
+   "bytes": 1512647,
+   "sha256": "923f6f0a27d0c7c0e90eefc6f670f6e0284cf0cc9508db2c28558e9e09fd20fb"
+  },
+  "eda_bundle/ext_v1_complete_voice_w2v2agage.npy": {
+   "bytes": 39240,
+   "sha256": "2a41ccdafcfd14cac4dec50fb4977179bd9e12d5c9f1d127deec67fd441d7f0f"
+  },
+  "eda_bundle/ext_v1_complete_voice_w2v2aggen.npy": {
+   "bytes": 117464,
+   "sha256": "72e0b7c0081fa22f69fcfd30404590c1bbd1343913a40bce7dd8d21d38eefe12"
+  },
+  "eda_bundle/ext_v2_complete_face_arcface.npy": {
+   "bytes": 9168000,
+   "sha256": "c1e99f58e41aef4bc49e4266d314ac927881e494c7fcc1d9905ca8a0b7d11812"
+  },
+  "eda_bundle/ext_v2_complete_face_farl.npy": {
+   "bytes": 9168000,
+   "sha256": "70b766de4eb0b99d37f05d468c3872a7fab7410939bf4fdc747c84fb8cb96aa0"
+  },
+  "eda_bundle/ext_v2_complete_face_ibv.npy": {
+   "bytes": 18335872,
+   "sha256": "8eaa87809f74f151c06141a43abe37790111a7b9763d9a22949c0c76d71c769d"
+  },
+  "eda_bundle/ext_v2_complete_face_meta.csv": {
+   "bytes": 637742,
+   "sha256": "b46cfe2782cf82a8924f410dac8a90e70d467448b56168077e6fba93dfd5f257"
+  },
+  "eda_bundle/ext_v2_complete_face_vgg.npy": {
+   "bytes": 73343104,
+   "sha256": "2529e6a76cfd72a58f82bd02472efc08bcec9ceaf56ad9d634b8c0d48a9346ec"
+  },
+  "eda_bundle/ext_v2_complete_face_vitageprob.npy": {
+   "bytes": 161282,
+   "sha256": "e977ea847ec159d5224d809cab7bd6665e276bed83580b8c886eaf36e493f165"
+  },
+  "eda_bundle/ext_v2_complete_voice_btc.npy": {
+   "bytes": 7954688,
+   "sha256": "9c93e1a02fd86a82864fe77b30e7572a87902bc2331a95841270df8c34c10f3a"
+  },
+  "eda_bundle/ext_v2_complete_voice_ecapa192.npy": {
+   "bytes": 7954688,
+   "sha256": "611ec9c5f71eaef6e9cdf020744cc6463207c36cbb9ab167defdebe264187bf6"
+  },
+  "eda_bundle/ext_v2_complete_voice_iba.npy": {
+   "bytes": 42424448,
+   "sha256": "1dd63918f1ea0dd78721ec8daf35afba56b0a987374a44158d8d4ff656557d8b"
+  },
+  "eda_bundle/ext_v2_complete_voice_meta.csv": {
+   "bytes": 1654929,
+   "sha256": "4fdc2312857086a38174350867001d56785359058c49bc2e2ceed70e11a46cfa"
+  },
+  "eda_bundle/ext_v2_complete_voice_w2v2agage.npy": {
+   "bytes": 41558,
+   "sha256": "38e1c6c3b180fcf12cb1269cd4b6811fd61aa6cced784e93405d7560a8338a0d"
+  },
+  "eda_bundle/ext_v2_complete_voice_w2v2aggen.npy": {
+   "bytes": 124418,
+   "sha256": "03e6668c529583b026d6d122191f48c58c5e6fa5fceca09d2cb6f1e22b279597"
+  },
+  "eda_bundle/v4_face_arcface.npy": {
+   "bytes": 13281408,
+   "sha256": "55491b54180e116cbe92e7dd96a314915dab7720b72e9d6915b0afb309e09ba9"
+  },
+  "eda_bundle/v4_face_farl.npy": {
+   "bytes": 13281408,
+   "sha256": "39835d68b032204cc0329b6afe0ac5bbca5531ecbde9e1c5b82f99e60c29f577"
+  },
+  "eda_bundle/v4_face_ibv.npy": {
+   "bytes": 26562688,
+   "sha256": "1d4103653769481d9d62a2aab27a2bfaf1b437b17106d198772e5c2aa6115c88"
+  },
+  "eda_bundle/v4_face_vgg.npy": {
+   "bytes": 106250368,
+   "sha256": "821ba467c2a5c43eed79dde69bf4d10b7420bf22fa9cd1b9669c9d5e48a587d5"
+  },
+  "eda_bundle/v4_face_vitageprob.npy": {
+   "bytes": 233588,
+   "sha256": "59ebcdb7b8d6d8c81fd8a6650ef77e9f5f17a5a8db2cea5a20e622f54f5f5814"
+  },
+  "eda_bundle/v4_gender.csv": {
+   "bytes": 642,
+   "sha256": "b0c4fedd0fd8bbdd16c25f8cdc493841d43fa72fd7e6bfd9cae53c26fc6fcd99"
+  },
+  "eda_bundle/v4_rows.csv": {
+   "bytes": 103773,
+   "sha256": "2ac0ffcdd00eceacc6558860cdf87d36bce7ea6f7db4c22fc191b9db492d116e"
+  },
+  "eda_bundle/v4_voice_btc.npy": {
+   "bytes": 4980608,
+   "sha256": "f3d1b2d1ccb3197977d9db197de4ceda1dc3e0d4842f9f7c773d15a579f2c75b"
+  },
+  "eda_bundle/v4_voice_ecapa192.npy": {
+   "bytes": 4980608,
+   "sha256": "b3bd0a6430412e287f7b5ab1fc660f5d61a7285c251fdfe00eec57c0baf1fe44"
+  },
+  "eda_bundle/v4_voice_iba.npy": {
+   "bytes": 26562688,
+   "sha256": "1a369c2dc6488429b66077d5e5c3b4581127d3c6bb538dc7b2001608a4695f74"
+  },
+  "eda_bundle/v4_voice_w2v2agage.npy": {
+   "bytes": 26068,
+   "sha256": "47ec9924fc042dbc73f4e7033414c39ac7f3f1032246332695d77caa951ad5be"
+  }
+ }
+}

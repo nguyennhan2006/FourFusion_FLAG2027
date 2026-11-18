@@ -1,0 +1,46 @@
+{
+ "copied_from": {
+  "Experiment/LIDSTRICT-01/merge.py": "untracked (CRLF)"
+ },
+ "original_outputs": {
+  "Experiment/LIDSTRICT-01/lid_strict.json": "f4065711e01e6284d70b213fedec2823e7b942ca3c470e8b2b896670c5ed3fad (CRLF; = flag2027-lid-strict-p zip member)",
+  "Experiment/LIDSTRICT-01/removed_speakers.csv": "206a4b59bed7ce1771440124dd319a13704da676a57c3952a3c040d212f06c81"
+ },
+ "inputs_team_machine": {
+  "Experiment/T3ENC-01/feats_vox2lid/voice_lid_probs.npy": "2bd938fc64872bd0352de4a5b400264208c023e48a4b02f6a7715ffb48960f49",
+  "Experiment/SCALE-ID-01/feats_vox2b/voice_lid_probs.npy": "9fe2e6077b0695bcab273b6f23132e43484117825b90ab066258b8721de99fc1",
+  "Experiment/SCALE-VB/feats_vb/voice_lid_probs.npy": "4c78250e305d58ece5dd0d77db2907aebea0d795787c08f4185690aaecc2ca9b",
+  "Experiment/LIDSTRICT-01/out/lid_whisper.json": "9dcd9ca21f24d982fb3f1e047276c96304198c8a26f4d544c9ca21a98e6df357",
+  "Experiment/LID-AUDIT-01/out/mav_w.json": "62919289f7ca53b4359ad20834d8c5079ba33e8490cbe8ae72a206272f20eb4a",
+  "Experiment/DQUAL-01/persons.parquet": "e4c8deb7bcc866833f9483e3734c8a841aac531e4c629ef647286cda1b82cb95"
+ },
+ "stage": "l_lid_strict",
+ "files": [
+  {
+   "path": "original/LIDSTRICT-01_merge.py",
+   "bytes": 4950,
+   "md5": "69f6d8c3377ffe36eeb7af78fd5fe82e",
+   "sha256": "ecdbc3de1ecd7a8f477a2a0bc501a90cebc72670af83019f539c0f4cdade4ce9"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/00_merge.py",
+   "bytes": 6639,
+   "md5": "9bfb7d8b78ab4557cb17756b80adb5ee",
+   "sha256": "85f76dbb9cc7482ff793725fd44d16b0be75037605dfc7ec1d1b120f7920e302"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 556,
+   "md5": "5c6f6d3e87453f739e3901edcfcdbbde",
+   "sha256": "0a9a938b219faaa9cdd2b2031c881a097d4c3166fb884260632b1488041cd9b8"
+  },
+  {
+   "path": "merge.py",
+   "bytes": 6353,
+   "md5": "137d3eb6bfe5e199d951e3681817e3e1",
+   "sha256": "f5dc440df19413fed5225d75ac8039418e6ee7f0cf197c8b9cb0cd6b7fff60f3"
+  }
+ ]
+}

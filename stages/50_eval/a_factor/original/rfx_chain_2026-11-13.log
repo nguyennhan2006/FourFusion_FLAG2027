@@ -1,0 +1,35 @@
+11-13 10:53 rfx chain start (pid 1175): fxc5rl cfg {"add": ["f_c5s", "v_rl"]}; P on ngnnguynchn, Evaluation inference on thanhhuyen11 (+ thanhhuyen11/flag-2027-nb-47rs-screen2-eval,thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval)
+11-13 10:53 smoke P fxc5rl: 1 pushed
+11-13 11:04 P fxc5rl GPU: 1 pushed
+11-13 11:20 infer fxc5rl eval on thanhhuyen11: 1 pushed
+    == F1s zip
+    gender/sub_score_v4_Bangla_unheard.txt: pairs 716/716 finite True sd 1.833
+    gender/sub_score_v4_English_heard.txt: pairs 416/416 finite True sd 1.505
+    no_gender/sub_score_v4_Bangla_unheard.txt: pairs 802/802 finite True sd 2.598
+    no_gender/sub_score_v4_English_heard.txt: pairs 392/392 finite True sd 2.407
+    OK
+    == RFS zip
+    gender/sub_score_v4_Bangla_unheard.txt: pairs 716/716 finite True sd 1.776
+    gender/sub_score_v4_English_heard.txt: pairs 416/416 finite True sd 1.521
+    no_gender/sub_score_v4_Bangla_unheard.txt: pairs 802/802 finite True sd 3.092
+    no_gender/sub_score_v4_English_heard.txt: pairs 392/392 finite True sd 3.135
+    OK
+    no_gender/sub_score_v4_English_heard.txt 392
+    no_gender/sub_score_v4_Bangla_unheard.txt 802
+    gender/sub_score_v4_English_heard.txt 416
+    gender/sub_score_v4_Bangla_unheard.txt 716
+    wrote Experiment\POSTEVAL-01\zips\posteval_FACTOR_U_c5rl.zip
+    == U zip
+    gender/sub_score_v4_Bangla_unheard.txt: pairs 716/716 finite True sd 3.440
+    gender/sub_score_v4_English_heard.txt: pairs 416/416 finite True sd 2.818
+    no_gender/sub_score_v4_Bangla_unheard.txt: pairs 802/802 finite True sd 5.522
+    no_gender/sub_score_v4_English_heard.txt: pairs 392/392 finite True sd 5.377
+    OK
+    23702a4295b7189c
+frozen Experiment\POSTEVAL-01\zips\posteval_FACTOR_U_c5rl.zip 23702a4295b7189c
+    check U: OK
+    enfuse: -> posteval_FACTOR_ENFUSE_c5rl.zip (English: Bangla fuser + rfsfxc5rl_eval.zip; Bangla: posteval_FACTOR_U_c5rl.zip bytes). NOT submitted; scored only if labels are released.
+    enfuse: manifest: posteval_FACTOR_ENFUSE_c5rl.zip 9cf5bbe4e3af1418
+    check ENFUSE: OK
+11-13 12:00 frozen Experiment/POSTEVAL-01/zips/posteval_FACTOR_U_c5rl.zip and Experiment/POSTEVAL-01/zips/posteval_FACTOR_ENFUSE_c5rl.zip (NOT submitted)
+11-13 12:00 rfx chain end: stage 4

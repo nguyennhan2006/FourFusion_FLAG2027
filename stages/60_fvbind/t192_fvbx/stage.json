@@ -1,0 +1,240 @@
+{
+ "id": "t192_fvbx",
+ "group": "60_fvbind",
+ "title": "Block v_fvb = head(ImageBind_B2(voice)) - mu_v for every voice row of the RFS bundle, the v4 train voices and the four Evaluation lists",
+ "kind": "infer",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "accelerator": "NVIDIA Tesla T4 (Kaggle)",
+  "minutes_original": 165,
+  "internet": true,
+  "secrets": [],
+  "notes": "RUNNING from about 04:08, COMPLETE 06:53 on 15/11 (UTC+7); aux rows about 154 000 clips, MAV about 40 000 files"
+ },
+ "origin": {
+  "run": "thanhhuyen11/flag-2027-nb-192-fvbx3",
+  "exactness": "exact-staging",
+  "source_file": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-192-fvbx3_ynf1bout/flag-2027-nb-192-fvbx3.ipynb",
+  "notebook_md5": "ba933cdea97efea2d241f849dca1a27b",
+  "notebook_sha256": "5f184e84a895468565e8b9fa436022592871e84603b8ec65c15bdf1814a4f5b2",
+  "kapi_runs_line": 1603,
+  "pushed": "2026-11-15 03:29 UTC+7",
+  "repo_copy": "original/flag-2027-nb-192-fvbx3.redacted.ipynb (organisers' literal removed; see original/SOURCE.json)",
+  "builder": "kaggle/build_flag192.py (XCELL :24-72, cells() :75-82) -> kaggle/FLAG_192_fvbx.ipynb; push: ACC=thanhhuyen11 SUF=3 bash kaggle/sat_push.sh 192 (sat_push.sh:1062-1073)"
+ },
+ "code": {
+  "stage_ipy": "stage.ipy",
+  "sha256": "7b5091748f772587f88e7e5a10f6b149845bdbece3695b2324b3753f79879943",
+  "bytes": 81894,
+  "cells": 5,
+  "built_from": "original/flag-2027-nb-192-fvbx3.redacted.ipynb",
+  "algorithm": "release/flag2027_e2e/build_notebook.py stage_cells(): every non-empty code cell of the notebook in original/, CRLF -> LF, the patches below applied with exact counts, cells joined by s.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n'"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+   "use": "rows whose voices are embedded (v_src / v_spk / v_vid / v_utt / v_path of ext.npz, v4.npz)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p",
+   "use": "asserted present by the inputs cell; not used by fvb_extract.py"
+  },
+  {
+   "artifact": "datasets/onnhqunhh/flag2027-rfs-lora-p",
+   "use": "ORIGINAL LoRA C1: copied into work/ by the inputs cell (asserted present); not read by fvb_extract.py Mode (a) (FF_MODE=train) must consume the SAVED original C1 (FF_DATA/03_checkpoints/rfs_lora_c1_original): a re-trained C1 (stage t163l_orig, GPU, not deterministic) has other bytes and is refused by the variant guard (configs/variant_1354.json file_checks); configs/data_map.json marks it default_saved and this input has resolve: saved_only (done 18/11, integration fixer r1).",
+   "resolve": "saved_only",
+   "resolve_why": "variant-defining ORIGINAL LoRA C1 (b97372e3...): always the saved copy FF_DATA/03_checkpoints/rfs_lora_c1_original, as in the WP-F consumers (t163p_c5rl, t183_p*, t213_p*, t216_p3); a C1 retrained in the same session (FF_FORCE=t163l_orig) is never mounted here, so RFX and RFX' always share one C1 (18/11/2026 (integration fixer r1, INTEGRATION_r1 M1 / M2))"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+   "use": "asserted present by the inputs cell (mode LAB); not read by fvb_extract.py"
+  },
+  {
+   "artifact": "datasets/duongphihoang/flag2027-audio-cache-p",
+   "use": "aux rows: centre 3 s clip, 3 x 2 s chunks, as in B2 training"
+  },
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb",
+   "use": "MAV rows: whole file; v1 and v2 roots resolved separately (coverage >= 0.99 asserted per version)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "use": "v4 rows: whole file (must be 100 % finite) + wiring check of 32 rows against fvbB2_emb.npz (cos >= 0.999) LAYOUT REQUIRED: the extracted train set as Kaggle served it, i.e. a folder holding train_English.txt next to faces/ and voices/ (original run: datasets/ngnnguynchn/flag2027-raw-v4-p/train_set/train_set/train_set/, 6 levels below the input root; the os.walk of the cell (stage.ipy:111-113) prunes below 7 levels), plus meta_file_train_set.csv; nothing of dev_set is read. The FF_DATA copy 00_raw/btc_mavceleb_v4 holds the organisers' zips; the 'path' patch of 19/11/2026 (integration fixer r2) unpacks train_set.zip inside the stage's input view when no extracted view is mounted; dev_set.zip / dev_set are excluded from the view.",
+   "exclude": [
+    "dev_set.zip",
+    "dev_set"
+   ]
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-evalphase-p",
+   "use": "voices of the four Evaluation lists (matched by suffix inside the list's own protocol folder)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0",
+   "use": "fvb_out/fvbB2_state.pt (LoRA tensors, head 1024 -> 1280, mu_v) + fvbB2_emb.npz (32 v4 rows for the wiring check)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+   "use": "feats_screen2/index_<protocol>_<language>.txt of the four Evaluation lists (path must contain '47rs')"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/thanhhuyen11/flag-2027-nb-192-fvbx3",
+  "exports": {},
+  "files": [
+   "fvbx_out/vox/voice_fvb.npy (float16)",
+   "fvbx_out/vox2b/voice_fvb.npy (0 rows)",
+   "fvbx_out/vb/voice_fvb.npy (float16)",
+   "fvbx_out/ext_v1_complete_voice_fvb.npy",
+   "fvbx_out/ext_v2_complete_voice_fvb.npy (float16)",
+   "fvbx_out/voice_fvb_train.npy (6 485 x 1280 float32)",
+   "fvbx_out/eval/voice_fvb_{gender,no_gender}_{English,Bangla}.npy (one row per pair) + index_*.txt",
+   "rfs/ (code; holds rfs/ref/manifest_final.json, see e163i_fvb CHANGES)",
+   "not collected by the runner (scratch): work/lora_C1.pt, work/v4_extra.npz (copies of the input) and imagebind_huge.pth (4.5 GB download); t163p_fvb finds the LoRA dataset copy first anyway (datasets/ sorts before notebooks/)"
+  ],
+  "used_downstream": "bundle part -> t163p_fvb (rfs_train.load_extra block v_fvb, layout XBLK '_AV'); eval/ part -> e163i_fvb (XTRA v_fvb)"
+ },
+ "env": {},
+ "env_note": "no --env in the original push. Optional FVB_ONLY=eval writes only eval/ (enough for e163i_fvb in mode b); untested end to end (the two Kaggle attempts hung at the inputs cell; DESIGN G23)",
+ "smoke_env": {
+  "FLAG_SMOKE": "1"
+ },
+ "smoke_note": "the smoke branch of the verbatim inputs cell writes a fake work/lora_C1.pt; work/ is declared scratch, so the fake is not collected and the variant file check on outputs is not tripped",
+ "patches": [
+  {
+   "old": "\"pip -q install --no-deps git+https://github.com/facebookresearch/ImageBind\"",
+   "new": "\"pip -q install --no-deps git+https://github.com/facebookresearch/ImageBind@53680b02d7e37b19b124fa37bae4b6c98c38f5be\"",
+   "count": 2,
+   "type": "pin",
+   "why": "ImageBind code was installed from GitHub HEAD without a commit in the original run; pinned to 53680b02d7e37b19b124fa37bae4b6c98c38f5be (= main on 2026-11-05 per release/docker/Dockerfile:22-23, also the RF reproduction freeze). The model weights are fixed by the checkpoint sha256 check. NOT VERIFIED that HEAD on 14-15/11/2026 was this commit; the stage's own wiring checks (cos >= 0.99 / 0.999 against stored embeddings) catch any difference that matters.",
+   "effect_on_numbers": "none expected"
+  },
+  {
+   "old": "import os, sys, json, gzip, base64, subprocess, shutil, time\n",
+   "new": "import os, sys, json, gzip, base64, subprocess, shutil, time\nos.environ[\"RFS_XDIRS\"] = \"/kaggle/input\"   # FF path (CHANGES.md): root that rfs_train.py _xload would scan (unreachable in this stage: fvb_extract.py never calls load_extra); the runner rewrites this literal to the stage's own input view (original run: RFS_XDIRS unset -> the same /kaggle/input)\n",
+   "count": 1,
+   "type": "path",
+   "cell": 0,
+   "line_in_cell": 3,
+   "effect_on_numbers": "none (_xload is not reached by fvb_extract.py; when set, the root is the same datasets the run attached)",
+   "why": "defence in depth, parity with the RFS_XDIRS patch of WP-F (t163p_c5rl ...) and of t189_b2 / t163p_fvb: the decoded rfs_train.py _xload scans RFS_XDIRS or else the literal /kaggle/input, which the runner's text rewrite cannot reach; setting RFS_XDIRS in the stage text points it at the stage's own input view on every machine; run as is on Kaggle it is the original default",
+   "added": "18/11/2026 (integration fixer r1, INTEGRATION_r1 M1 / M2)"
+  },
+  {
+   "old": "def find_all(name):\n    return sorted(p for p in IN.rglob(name)) if IN.exists() else []\n",
+   "new": "def find_all(name):\n    return sorted(p for p in IN.rglob(name)) if IN.exists() else []\nif not SMOKE and not find_all(\"train_English.txt\") and find_all(\"train_set.zip\"):   # FF path (CHANGES.md): FF_DATA keeps the organisers' train_set.zip packed (Kaggle served the dataset extracted); unpack train_set.zip only, next to itself; dev_set.zip is never opened\n    import zipfile as _ff_zf\n    _ff_tz = find_all(\"train_set.zip\")\n    assert len(_ff_tz) == 1, f\"raw-v4: neither train_English.txt nor exactly one train_set.zip under {IN}: {_ff_tz}\"\n    with _ff_zf.ZipFile(_ff_tz[0]) as _ff_z:\n        _ff_z.extractall(_ff_tz[0].parent)\n    print(\"FF: unpacked\", _ff_tz[0], \"->\", _ff_tz[0].parent / \"train_set\", \"(dev_set.zip left packed)\", flush=True)\n",
+   "count": 1,
+   "type": "path",
+   "effect_on_numbers": "none (same files as the extracted Kaggle view: members of the organisers' train_set.zip, sha256 1803739f... checked by raw_btc)",
+   "why": "the original run read ngnnguynchn/flag2027-raw-v4-p as Kaggle served it, extracted (train_set/train_set/train_English.txt next to faces/ and voices/). FF_DATA/00_raw/btc_mavceleb_v4/ keeps the organisers' files as delivered (train_set.zip, dev_set.zip, meta_file_train_set.csv) and the runner does not unzip raw data, so the os.walk for train_English.txt + faces/ found nothing and the cell stopped at 'thieu raw-v4'. When train_English.txt is absent (and not in smoke, where the walk is skipped), the block unpacks train_set.zip ONLY, beside itself inside the stage's own input view (real directories made by the runner; FF_DATA is not written), giving the Kaggle layout (train_set/train_set/, 4 levels below the input root, inside the walk's 7-level limit); dev_set.zip is excluded from the view and never opened. It does nothing when an extracted view is mounted (Kaggle). Same block as WP-F's t163b / t163l_orig patch (INTEGRATION_r2 B1).",
+   "cell": 1,
+   "added": "19/11/2026 (integration fixer r2)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [
+  "RFS_UPLOAD"
+ ],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "original",
+  "lora_c1_dataset": "datasets/onnhqunhh/flag2027-rfs-lora-p",
+  "lora_c1_role_here": "attached and copied (asserted) by the inputs cell; not read by fvb_extract.py; the copy work/lora_C1.pt is not collected (scratch); mode (a) consumes the saved original C1 (see the LoRA input)",
+  "flags_as_run": {
+   "NOREL": "not set in the original run and not read by this code (no train-identity cohort anywhere in RFS / FVBIND)",
+   "LID_STRICT": "not set and not read: clean_ext() applies lid_strict.json (keys vox2 / vb / mav_files = LIDSTRICT-01 v2 list) directly",
+   "BN42": "not set and not read: the audio cache and the bundle carry the BN42 person filter from upstream stages",
+   "CLEANCOMP": "not applicable (group 30 flag)",
+   "RFS_LORA_FIX": "not applicable: the embedded rfs_train.py predates the key fix (no such variable); RFS_MODE=L is never run here"
+  },
+  "forbidden_inputs_present": []
+ },
+ "skip_with": [
+  "04_run_outputs/flag-2027-nb-192-fvbx3"
+ ],
+ "scratch": [
+  "work",
+  "imagebind_huge.pth"
+ ],
+ "verify": [
+  {
+   "file": "fvbx_out/eval/voice_fvb_gender_Bangla.npy",
+   "strict": true,
+   "note": "the Evaluation part of fvb_extract.py is best effort (a failure is only logged): the file must exist, e163i_fvb reads it"
+  },
+  {
+   "file": "fvbx_out/eval/voice_fvb_gender_English.npy",
+   "strict": true,
+   "note": "the Evaluation part of fvb_extract.py is best effort (a failure is only logged): the file must exist, e163i_fvb reads it"
+  },
+  {
+   "file": "fvbx_out/eval/voice_fvb_no_gender_Bangla.npy",
+   "strict": true,
+   "note": "the Evaluation part of fvb_extract.py is best effort (a failure is only logged): the file must exist, e163i_fvb reads it"
+  },
+  {
+   "file": "fvbx_out/eval/voice_fvb_no_gender_English.npy",
+   "strict": true,
+   "note": "the Evaluation part of fvb_extract.py is best effort (a failure is only logged): the file must exist, e163i_fvb reads it"
+  },
+  {
+   "file": "fvbx_out/voice_fvb_train.npy",
+   "note": "bundle part (read by t163p_fvb); missing = warning (FVB_ONLY=eval writes only eval/)"
+  },
+  {
+   "file": "fvbx_out/vox/voice_fvb.npy",
+   "note": "bundle part (read by t163p_fvb); missing = warning (FVB_ONLY=eval writes only eval/)"
+  },
+  {
+   "file": "fvbx_out/vb/voice_fvb.npy",
+   "note": "bundle part (read by t163p_fvb); missing = warning (FVB_ONLY=eval writes only eval/)"
+  },
+  {
+   "file": "fvbx_out/ext_v1_complete_voice_fvb.npy",
+   "note": "bundle part (read by t163p_fvb); missing = warning (FVB_ONLY=eval writes only eval/)"
+  },
+  {
+   "file": "fvbx_out/ext_v2_complete_voice_fvb.npy",
+   "note": "bundle part (read by t163p_fvb); missing = warning (FVB_ONLY=eval writes only eval/)"
+  }
+ ],
+ "log_expectations": [
+  {
+   "log_prefix": "wiring (state -> fvbB2_emb.npz e4, 32 v4 rows): cos mean",
+   "threshold": "min >= 0.999 (asserted by fvb_extract.py:104); docs/RUNS.md records 'wiring cos 1.00000' for the original run (its log is not on the team machine)"
+  },
+  {
+   "log_prefix": "MAV coverage {'v1': 0.9999",
+   "threshold": "each value >= 0.99 (asserted, fvb_extract.py:167); docs/RUNS.md gives the rounded figures v1 0.99995, v2 1.0; the raw log prints the unrounded float"
+  },
+  {
+   "expected_rows": {
+    "gender_Bangla": 716,
+    "gender_English": 416,
+    "no_gender_Bangla": 802,
+    "no_gender_English": 392
+   },
+   "when": "every run (one row per pair of the Evaluation list; docs/RUNS.md: 716 / 416 / 802 / 392)"
+  },
+  {
+   "_doc": "documentation only; the runner does not read this key"
+  }
+ ],
+ "todo": [
+  "Output of thanhhuyen11/flag-2027-nb-192-fvbx3 (fvbx_out/: bundle part about 0.5 GB + eval/) is only on Kaggle: `kaggle kernels output thanhhuyen11/flag-2027-nb-192-fvbx3 -p <dir>`, keep private (VoxBlink-derived rows), record sha256, store as FF_DATA/04_run_outputs/flag-2027-nb-192-fvbx3/; do not delete the notebook (DESIGN G4, S6 K2).",
+  "Kaggle log of the run not on the team machine (pull it with the output).",
+  "ImageBind code commit at run time unknown (pinned to 53680b02d7e37b19b124fa37bae4b6c98c38f5be); docker image digest unknown.",
+  "FVB_ONLY=eval path untested end to end (DESIGN G23).",
+  "DONE 19/11/2026 (integration fixer r2): raw-v4 Kaggle view: see the raw-v4 input (needed for voice_fvb_train.npy and the wiring check); produced by no stage yet (WP-A / WP-B). -> fixed by the 'path' patch that unpacks train_set.zip in the input view (INTEGRATION_r2 B1)."
+ ],
+ "notes": [
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)"
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": false,
+  "why": "the only literal /kaggle/input in the decoded code is rfs_train.py _xload (original/embedded/train/rfs_train.py:89), which only _xpart / load_extra call; fvb_extract.py never calls them (it uses R.core, R.load_bundle, R.U, R._id_eer, FV.load_model, FV.synth_wave), so the literal is unreachable in this stage. The RFS_XDIRS path patch of the setup cell (same as WP-F's) redirects it to the stage's input view anyway. Every other path is in the stage text (payloads scan: 1 literal use)",
+  "added": "18/11/2026 (integration fixer r1, INTEGRATION_r1 M1 / M2)"
+ }
+}

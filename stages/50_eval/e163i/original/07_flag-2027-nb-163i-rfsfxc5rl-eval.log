@@ -1,0 +1,127 @@
+[{"stream_name":"stderr","time":6.766515072,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":6.766562271,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":7.73174632,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.731775964,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.73178122,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.731784741,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.334835509,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.334867066,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.334873906,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.334880949,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":9.498638402,"data":"[boot] FLAG_163i_rfs_infer | python 3.13.16 | start 2026-11-13 04:20:35\n"}
+,{"stream_name":"stdout","time":9.499593491,"data":"[cell] config\n"}
+,{"stream_name":"stdout","time":9.501427164,"data":"Output: /kaggle/working/FLAG_RF_E2E\n"}
+,{"stream_name":"stdout","time":9.559528922,"data":"[cell] setup+core+checkpoints\n"}
+,{"stream_name":"stdout","time":42.925819266,"data":"Device: cuda | Code SHA256: 3cad7b8a83d3817c3178e867cd6e7782bd2c77d48539a7051dbcef78066c8f3a\n"}
+,{"stream_name":"stdout","time":45.579906287,"data":"Tải imagebind_huge\n"}
+,{"stream_name":"stdout","time":98.045818778,"data":"Tải resnet221_lm\n"}
+,{"stream_name":"stdout","time":99.795692693,"data":"Tải vgg_face\n"}
+,{"stream_name":"stdout","time":114.696508006,"data":"Tải voxblink2_samresnet100_ft\n"}
+,{"stream_name":"stdout","time":117.342009834,"data":"Data: /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p | artifacts: /kaggle/input/datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p | reference ZIP: None\n"}
+,{"stream_name":"stdout","time":117.370909361,"data":"[cell] scorer\n"}
+,{"stream_name":"stdout","time":117.5362812,"data":"FACTOR-01 extra blocks: ['f_c5s'] ['v_rl']\n"}
+,{"stream_name":"stdout","time":117.557412479,"data":"[cell] pairs+extract\n"}
+,{"stream_name":"stdout","time":121.501212218,"data":"  no_gender/English: 392 cặp\n"}
+,{"stream_name":"stdout","time":125.150325802,"data":"  no_gender/Bangla: 802 cặp\n"}
+,{"stream_name":"stdout","time":127.133846738,"data":"  gender/English: 416 cặp\n"}
+,{"stream_name":"stdout","time":129.34015424,"data":"  gender/Bangla: 716 cặp\n"}
+,{"stream_name":"stderr","time":163.502126179,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":163.502157877,"data":"\n"}
+,{"stream_name":"stderr","time":163.502163342,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":449.242525744,"data":"[transformers] \u001b[1mCLIPVisionModelWithProjection LOAD REPORT\u001b[0m from: openai/clip-vit-large-patch14\n"}
+,{"stream_name":"stderr","time":449.242584885,"data":"Key                                                          | Status     |  | \n"}
+,{"stream_name":"stderr","time":449.242589708,"data":"-------------------------------------------------------------+------------+--+-\n"}
+,{"stream_name":"stderr","time":449.242593198,"data":"text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242599827,"data":"text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242602929,"data":"text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242605946,"data":"text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242609063,"data":"text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.24261219,"data":"text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242615236,"data":"text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242618295,"data":"text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242621474,"data":"text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242624484,"data":"text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.24262755,"data":"text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242630546,"data":"text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242633528,"data":"text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242636539,"data":"text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242639601,"data":"text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242642607,"data":"text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242645622,"data":"text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242648699,"data":"text_projection.weight                                       | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242651701,"data":"text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242654711,"data":"logit_scale                                                  | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242657709,"data":"text_model.final_layer_norm.bias                             | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242660712,"data":"text_model.final_layer_norm.weight                           | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242664038,"data":"\n"}
+,{"stream_name":"stderr","time":449.242666891,"data":"Notes:\n"}
+,{"stream_name":"stderr","time":449.242670653,"data":"- UNEXPECTED:\tcan be ignored when loading from different task/architecture; not ok if you expect identical arch.\n"}
+,{"stream_name":"stderr","time":449.242683712,"data":"\n"}
+,{"stream_name":"stderr","time":449.242686174,"data":"[transformers] \u001b[1mCLIPVisionModelWithProjection LOAD REPORT\u001b[0m from: openai/clip-vit-large-patch14\n"}
+,{"stream_name":"stderr","time":449.242688842,"data":"Key                                                          | Status     |  | \n"}
+,{"stream_name":"stderr","time":449.24269131,"data":"-------------------------------------------------------------+------------+--+-\n"}
+,{"stream_name":"stderr","time":449.242693739,"data":"text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.24269614,"data":"text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.24269856,"data":"text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242700975,"data":"text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242703371,"data":"text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242705768,"data":"text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.24270816,"data":"text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242710572,"data":"text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242712998,"data":"text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242715396,"data":"text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242717798,"data":"text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242720203,"data":"text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242722609,"data":"text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242725012,"data":"text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242727434,"data":"text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242729925,"data":"text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242732333,"data":"text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242734736,"data":"text_projection.weight                                       | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242737144,"data":"text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242739652,"data":"logit_scale                                                  | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242742086,"data":"text_model.final_layer_norm.bias                             | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242745135,"data":"text_model.final_layer_norm.weight                           | UNEXPECTED |  | \n"}
+,{"stream_name":"stderr","time":449.242747576,"data":"\n"}
+,{"stream_name":"stderr","time":449.242749826,"data":"Notes:\n"}
+,{"stream_name":"stderr","time":449.242752178,"data":"- UNEXPECTED:\tcan be ignored when loading from different task/architecture; not ok if you expect identical arch.\n"}
+,{"stream_name":"stdout","time":452.040153379,"data":"    16/2098\n"}
+,{"stream_name":"stdout","time":511.927595829,"data":"    816/2098\n"}
+,{"stream_name":"stdout","time":569.889047273,"data":"    1616/2098\n"}
+,{"stream_name":"stdout","time":786.138024469,"data":"    1000/2326 voices (822 unique)\n"}
+,{"stream_name":"stdout","time":914.171258013,"data":"    2000/2326 voices (1417 unique)\n"}
+,{"stream_name":"stdout","time":1010.276265693,"data":"    16/1588\n"}
+,{"stream_name":"stdout","time":1031.601668786,"data":"    816/1588\n"}
+,{"stream_name":"stdout","time":1058.141287031,"data":"    16/1588\n"}
+,{"stream_name":"stdout","time":1195.243037981,"data":"    816/1588\n"}
+,{"stream_name":"stdout","time":1342.330557991,"data":"    16/1588\n"}
+,{"stream_name":"stdout","time":1483.844078574,"data":"    816/1588\n"}
+,{"stream_name":"stdout","time":1633.10862853,"data":"    16/2098\n"}
+,{"stream_name":"stdout","time":1647.174749977,"data":"    816/2098\n"}
+,{"stream_name":"stdout","time":1661.963193686,"data":"    1616/2098\n"}
+,{"stream_name":"stdout","time":1676.059807198,"data":"    16/1588\n"}
+,{"stream_name":"stdout","time":1762.447021261,"data":"    816/1588\n"}
+,{"stream_name":"stdout","time":1848.101614046,"data":"[cell] factor extra blocks\n"}
+,{"stream_name":"stdout","time":1848.135228229,"data":"[cell] score+level0+zip\n"}
+,{"stream_name":"stdout","time":1848.44264181,"data":"  no_gender_English: f_c5s (392, 768)\n"}
+,{"stream_name":"stdout","time":1848.831053322,"data":"  no_gender_English: v_rl (392, 448)\n"}
+,{"stream_name":"stdout","time":1849.065295378,"data":"  level 0 no_gender/sub_score_v4_English_heard.txt: max |full - half| 1.82e-06 (tol 9.3e-04, score scale 9.29)\n"}
+,{"stream_name":"stdout","time":1849.287286239,"data":"  no_gender_Bangla: f_c5s (802, 768)\n"}
+,{"stream_name":"stdout","time":1849.548937479,"data":"  no_gender_Bangla: v_rl (802, 448)\n"}
+,{"stream_name":"stdout","time":1849.882600661,"data":"  level 0 no_gender/sub_score_v4_Bangla_unheard.txt: max |full - half| 4.14e-07 (tol 9.9e-04, score scale 9.92)\n"}
+,{"stream_name":"stdout","time":1850.066777752,"data":"  gender_English: f_c5s (416, 768)\n"}
+,{"stream_name":"stdout","time":1850.356697662,"data":"  gender_English: v_rl (416, 448)\n"}
+,{"stream_name":"stdout","time":1850.627200677,"data":"  level 0 gender/sub_score_v4_English_heard.txt: max |full - half| 1.81e-06 (tol 5.5e-04, score scale 5.50)\n"}
+,{"stream_name":"stdout","time":1850.850797368,"data":"  gender_Bangla: f_c5s (716, 768)\n"}
+,{"stream_name":"stdout","time":1851.099960869,"data":"  gender_Bangla: v_rl (716, 448)\n"}
+,{"stream_name":"stdout","time":1851.445474655,"data":"  level 0 gender/sub_score_v4_Bangla_unheard.txt: max |full - half| 0.00e+00 (tol 6.3e-04, score scale 6.29)\n"}
+,{"stream_name":"stdout","time":1851.450192636,"data":"level-0 self-check OK\n"}
+,{"stream_name":"stderr","time":1857.074621209,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":1857.074652613,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":1857.264044104,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":1857.264088059,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":1858.049932081,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":1858.173677059,"data":"[NbConvertApp] Writing 407686 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":1860.677678219,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":1861.386884148,"data":"[NbConvertApp] Writing 794366 bytes to __results__.html\n"}
+]

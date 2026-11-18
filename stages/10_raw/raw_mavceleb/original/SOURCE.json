@@ -1,0 +1,47 @@
+{
+ "zips_team_machine": {
+  "external_data/mavceleb/mavceleb_v1_complete-001.zip": {
+   "bytes": 12245623417,
+   "sha256": "2082a9ee5f7d3634f687d682e98cd223606a5b01debc90c3e7ab566a9f86512b"
+  },
+  "external_data/mavceleb/mavceleb_v2_complete-002.zip": {
+   "bytes": 13477476090,
+   "sha256": "daff513527d7cea698243594a18795cab6d47aea64d64c3c74035154abd6246c"
+  }
+ },
+ "sha256_measured": "18/11/2026 (sha256sum on the team machine, WP-B)",
+ "drive_ids_of_the_organisers": {
+  "v1_complete": "1BrUmehrzY5Vl0p0tawc7TBZGIvTA3jdm",
+  "v2_complete": "1OY2x3G6JnA7g779CADhA3FCCrrrL0gSE"
+ },
+ "drive_ids_from": "kaggle/flag_extract.py EXT_SOURCES (also in the executed FLAG_08 notebook)",
+ "kaggle_layout_evidence": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/chnnhnnguyn__external-data-mavceleb/mavceleb_v1_complete-001/{meta_v1.csv,v1/}; FLAG_08 log: 'v1_complete: using attached /kaggle/input/datasets/chnnhnnguyn/external-data-mavceleb/mavceleb_v1_complete-001/v1'",
+ "stage": "raw_mavceleb",
+ "files": [],
+ "stage_files": [
+  {
+   "path": "cells/00_locate.py",
+   "bytes": 3179,
+   "md5": "28d1f3371c099537a6a310cee454b937",
+   "sha256": "d776ac4ec0a61ca33961029cb304e38932c17f80aee435e7fe7c0fa81f02e24c"
+  },
+  {
+   "path": "cells/01_extract.py",
+   "bytes": 1512,
+   "md5": "666efd642d7dd559d5c7d587a12aab71",
+   "sha256": "daf225657416d41456c7a0e2b33da3d72e3d90dc1337ac51e51c26133198e3ae"
+  },
+  {
+   "path": "cells/02_check.py",
+   "bytes": 1442,
+   "md5": "ed9d5a082543936cc94719b1b95ed97b",
+   "sha256": "ccf1e97d4e6396343814e7205103c07e0489ba508ca0c8f940e28afc57a09ba4"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 582,
+   "md5": "231e748ef85716a12bc398be119c7412",
+   "sha256": "2ccf3526b03b0046f4c5abf765ae08a144fb924b548eab083fed235bd6715d44"
+  }
+ ]
+}

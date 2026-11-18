@@ -1,0 +1,87 @@
+[{"stream_name":"stderr","time":5.8281670309999996,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":5.828207297,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":6.663648718,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.663685778,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.663693446,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.663697902,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.2529533520000005,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.25298142,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.252986345,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.252990741,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":8.329371172,"data":"[cell] 01 run parameters (kapi --env): environment variables of this r\n"}
+,{"stream_name":"stdout","time":8.362029537,"data":"[boot] FLAG_163_rfs | python 3.13.16 | start 2026-11-03 17:37:31\n"}
+,{"stream_name":"stdout","time":8.363217588,"data":"[cell] setup: files + deps\n"}
+,{"stream_name":"stdout","time":18.062348754,"data":"\n"}
+,{"stream_name":"stdout","time":22.903988108,"data":"\n"}
+,{"stream_name":"stdout","time":28.844564916,"data":"mode L smoke False cuda True gpus 2\n"}
+,{"stream_name":"stdout","time":28.862542321,"data":"[cell] inputs: bundle, lid, roots\n"}
+,{"stream_name":"stdout","time":492.230908424,"data":"bundle /kaggle/input/datasets/ngnnguynchn/flag2027-rfs-bundle-p | lid /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":492.244031321,"data":"[cell] lora C1 (ImageBind-audio) + v4 lora/tuoi\n"}
+,{"stream_name":"stdout","time":622.734502518,"data":"== lora ==\n"}
+,{"stream_name":"stdout","time":668.410449827,"data":"pool sach: giong 176935/194188, mat 150251/150251\n"}
+,{"stream_name":"stdout","time":844.907552457,"data":"lora data: 210 clip, 70 nguoi (vox 0, mav 210)\n"}
+,{"stream_name":"stdout","time":846.651748112,"data":"lora: 210 clip co mat, 70 nguoi, B=64, 1200 buoc\n"}
+,{"stream_name":"stdout","time":882.324958288,"data":"  lora step 0/1200 loss 3.4451 skipped 0 [6s]\n"}
+,{"stream_name":"stdout","time":1081.656848758,"data":"  lora step 100/1200 loss 2.1838 skipped 0 [205s]\n"}
+,{"stream_name":"stdout","time":1297.608089774,"data":"  lora step 200/1200 loss 0.9687 skipped 0 [421s]\n"}
+,{"stream_name":"stdout","time":1513.268679019,"data":"  lora step 300/1200 loss 0.5706 skipped 0 [637s]\n"}
+,{"stream_name":"stdout","time":1728.49963302,"data":"  lora step 400/1200 loss 0.3712 skipped 0 [852s]\n"}
+,{"stream_name":"stdout","time":1942.821504384,"data":"  lora step 500/1200 loss 0.2811 skipped 0 [1066s]\n"}
+,{"stream_name":"stdout","time":2157.015521812,"data":"  lora step 600/1200 loss 0.1924 skipped 0 [1280s]\n"}
+,{"stream_name":"stdout","time":2370.281169339,"data":"  lora step 700/1200 loss 0.1483 skipped 0 [1494s]\n"}
+,{"stream_name":"stdout","time":2583.859129555,"data":"  lora step 800/1200 loss 0.1237 skipped 0 [1707s]\n"}
+,{"stream_name":"stdout","time":2796.2679756,"data":"  lora step 900/1200 loss 0.1141 skipped 0 [1920s]\n"}
+,{"stream_name":"stdout","time":3008.461716408,"data":"  lora step 1000/1200 loss 0.0962 skipped 0 [2132s]\n"}
+,{"stream_name":"stdout","time":3220.33760516,"data":"  lora step 1100/1200 loss 0.0872 skipped 0 [2344s]\n"}
+,{"stream_name":"stdout","time":3430.156323918,"data":"  lora step 1199/1200 loss 0.0803 skipped 0 [2553s]\n"}
+,{"stream_name":"stdout","time":3862.442382675,"data":"    16/4029\n"}
+,{"stream_name":"stdout","time":3884.303882339,"data":"    816/4029\n"}
+,{"stream_name":"stdout","time":3905.144005927,"data":"    1616/4029\n"}
+,{"stream_name":"stdout","time":3925.429063533,"data":"    2416/4029\n"}
+,{"stream_name":"stdout","time":3945.174651093,"data":"    3216/4029\n"}
+,{"stream_name":"stdout","time":3964.763142373,"data":"    4016/4029\n"}
+,{"stream_name":"stdout","time":3965.146386546,"data":"lora + v4_extra xong\n"}
+,{"stream_name":"stdout","time":3969.898827149,"data":"[cell] split + oof + proj + fuse + release + selfcheck\n"}
+,{"stream_name":"stdout","time":3969.912508348,"data":"[cell] upload\n"}
+,{"stream_name":"stdout","time":3970.639274168,"data":"Uploading Dataset https://kaggle.com/datasets/onnhqunhh/flag2027-rfs-lora-p ...\n"}
+,{"stream_name":"stdout","time":3970.642013006,"data":"Starting upload for file /kaggle/working/rfs_lora/v4_extra.npz\n"}
+,{"stream_name":"stdout","time":3970.642901101,"data":"Starting upload for file /kaggle/working/rfs_lora/lora_C1.pt\n"}
+,{"stream_name":"stderr","time":3970.881349584,"data":"\rUploading:   0%|          | 0.00/26.6M [00:00\u003c?, ?B/s]\n"}
+,{"stream_name":"stderr","time":3971.001954373,"data":"\rUploading:   0%|          | 0.00/26.6M [00:00\u003c?, ?B/s]\rUploading:   5%|▌         | 1.38M/26.6M [00:00\u003c00:02, 11.7MB/s]\n"}
+,{"stream_name":"stderr","time":3971.073998708,"data":"\rUploading:   5%|▌         | 1.38M/26.6M [00:00\u003c00:02, 11.7MB/s]\n"}
+,{"stream_name":"stderr","time":3971.074017762,"data":"\n"}
+,{"stream_name":"stderr","time":3971.074030676,"data":"\n"}
+,{"stream_name":"stderr","time":3971.075051045,"data":"\rUploading:   0%|          | 0.00/1.78M [00:00\u003c?, ?B/s]\n"}
+,{"stream_name":"stderr","time":3971.075966414,"data":"\rUploading:   0%|          | 0.00/1.78M [00:00\u003c?, ?B/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":3971.101728822,"data":"\u001b[A\rUploading:  40%|████      | 10.7M/26.6M [00:00\u003c00:00, 55.8MB/s]\n"}
+,{"stream_name":"stderr","time":3971.201746913,"data":"\rUploading:  40%|████      | 10.7M/26.6M [00:00\u003c00:00, 55.8MB/s]\rUploading:  66%|██████▌   | 17.4M/26.6M [00:00\u003c00:00, 61.0MB/s]\n"}
+,{"stream_name":"stderr","time":3971.203235378,"data":"\rUploading:  66%|██████▌   | 17.4M/26.6M [00:00\u003c00:00, 61.0MB/s]\n"}
+,{"stream_name":"stderr","time":3971.203255643,"data":"\n"}
+,{"stream_name":"stderr","time":3971.203261036,"data":"\n"}
+,{"stream_name":"stderr","time":3971.20438033,"data":"\rUploading:  63%|██████▎   | 1.13M/1.78M [00:00\u003c00:00, 8.87MB/s]\n"}
+,{"stream_name":"stderr","time":3971.205578035,"data":"\rUploading:  63%|██████▎   | 1.13M/1.78M [00:00\u003c00:00, 8.87MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":3971.342863179,"data":"\u001b[A\rUploading:  89%|████████▉ | 23.7M/26.6M [00:00\u003c00:00, 53.3MB/s]\n"}
+,{"stream_name":"stderr","time":3971.738509276,"data":"\rUploading:  89%|████████▉ | 23.7M/26.6M [00:00\u003c00:00, 53.3MB/s]\rUploading: 100%|██████████| 1.78M/1.78M [00:00\u003c00:00, 2.69MB/s]\n"}
+,{"stream_name":"stdout","time":3971.740128275,"data":"Upload successful: /kaggle/working/rfs_lora/lora_C1.pt (2MB)\n"}
+,{"stream_name":"stderr","time":3971.939006528,"data":"\rUploading: 100%|██████████| 1.78M/1.78M [00:00\u003c00:00, 2.69MB/s]\n"}
+,{"stream_name":"stderr","time":3971.93902317,"data":"\n"}
+,{"stream_name":"stderr","time":3971.939027844,"data":"\n"}
+,{"stream_name":"stderr","time":3972.518982702,"data":"\rUploading: 100%|██████████| 26.6M/26.6M [00:01\u003c00:00, 16.2MB/s]\n"}
+,{"stream_name":"stdout","time":3972.519885857,"data":"Upload successful: /kaggle/working/rfs_lora/v4_extra.npz (25MB)\n"}
+,{"stream_name":"stderr","time":3972.718507644,"data":"\rUploading: 100%|██████████| 26.6M/26.6M [00:01\u003c00:00, 16.2MB/s]\n"}
+,{"stream_name":"stderr","time":3972.718525151,"data":"\n"}
+,{"stream_name":"stderr","time":3972.718529389,"data":"\n"}
+,{"stream_name":"stdout","time":3978.668156227,"data":"Your dataset has been created.\n"}
+,{"stream_name":"stdout","time":3978.668240158,"data":"Files are being processed...\n"}
+,{"stream_name":"stdout","time":3978.668250448,"data":"See at: https://kaggle.com/datasets/onnhqunhh/flag2027-rfs-lora-p\n"}
+,{"stream_name":"stdout","time":3978.669162049,"data":"uploaded -\u003e onnhqunhh/flag2027-rfs-lora-p\n"}
+,{"stream_name":"stdout","time":3978.669855921,"data":"ALL CELLS OK\n"}
+,{"stream_name":"stderr","time":3981.716051601,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3981.716096731,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":3981.86430201,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":3981.86432958,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":3982.587718218,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":3982.668411994,"data":"[NbConvertApp] Writing 60254 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":3985.108313054,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":3985.624336262,"data":"[NbConvertApp] Writing 362899 bytes to __results__.html\n"}
+]

@@ -1,0 +1,45 @@
+{
+ "derived_from": {
+  "Experiment/DQUAL-01/run.py": "untracked; md5 24299c232133228d267fe6a237ea4562",
+  "Experiment/EDA-NEWDATA/run.py": "untracked; md5 9e1e31737981b5c3a56adcd61f24ae70 (CRLF)",
+  "Experiment/T3ENC-01/run.py": "untracked; md5 fd780c6f94762c24b9d9cf4db49df181 (dropped_speakers, lines 47-49)"
+ },
+ "original_output": {
+  "Experiment/DQUAL-01/persons.parquet": "e4c8deb7bcc866833f9483e3734c8a841aac531e4c629ef647286cda1b82cb95 (47 119 identities, 7 sources)"
+ },
+ "stage": "l_dqual_g3",
+ "files": [
+  {
+   "path": "original/DQUAL-01_run.py",
+   "bytes": 6482,
+   "md5": "24299c232133228d267fe6a237ea4562",
+   "sha256": "d63ca0ff54b420be4d3b188f40c8cf5263984f58e0572ce5fbc301263ea25276"
+  },
+  {
+   "path": "original/EDA-NEWDATA_run.py",
+   "bytes": 9916,
+   "md5": "9e1e31737981b5c3a56adcd61f24ae70",
+   "sha256": "d6f3ba244edae576f3582d037a62892187e305cceaa8bb4c723121ba49244fd2"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/00_g3.py",
+   "bytes": 3916,
+   "md5": "18de449d5dd619ce1cefd24eae543dce",
+   "sha256": "bbb2a08adeb431d678fd8cea67e585bcb4e5e36e5e45a8bc2afcdb184e89890a"
+  },
+  {
+   "path": "dqual_g3.py",
+   "bytes": 7360,
+   "md5": "beacb26d375878a33215e378bbc4a3cd",
+   "sha256": "630033622a8320e255ad1fca00f7792ad2aca00d4d4bcb7ad58ec809e4e88d0f"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 851,
+   "md5": "98128bd054a02ebd45199a12a0e0c0cb",
+   "sha256": "f1e11238869dce1c0014e0cb053ca8c05aca9d2ff456eeb88bd1549e95116705"
+  }
+ ]
+}

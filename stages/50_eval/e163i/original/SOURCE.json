@@ -1,0 +1,73 @@
+{
+ "stage": "e163i",
+ "run": "thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval",
+ "exactness": "exact-package",
+ "files": [
+  {
+   "path": "07_flag-2027-nb-163i-rfsfxc5rl-eval.ipynb",
+   "role": "exact executed notebook (team package, Kaggle-pulled copy of the run; code cells identical to the pushed bytes)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/07_flag-2027-nb-163i-rfsfxc5rl-eval.ipynb",
+   "bytes": 92439,
+   "md5": "d3ab421af56cd368933fc9b34c41346c",
+   "sha256": "215de9106b36cbcd04a1e6e1477554899a44ce21d1e0a756065b369bf278bf47"
+  },
+  {
+   "path": "07_flag-2027-nb-163i-rfsfxc5rl-eval.log",
+   "role": "Kaggle log of the run (team package)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/07_flag-2027-nb-163i-rfsfxc5rl-eval.log",
+   "bytes": 15388,
+   "md5": "0c55d2e133911b32a5ac2a2776759bc4",
+   "sha256": "e9f175f9bd63ec6c5ee93ae32dd3e2bd489e48e79fae6cd0b5a55443d241a497"
+  },
+  {
+   "path": "kernel-metadata.json",
+   "role": "kernel-metadata.json of the exact push (kapi staging folder)",
+   "copied_from": "NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-163i-rfsfxc5rl-eval_2_l80_nt/kernel-metadata.json (from C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-163i-rfsfxc5rl-eval_2_l80_nt)",
+   "bytes": 686,
+   "md5": "9915879f64165d596158173efa40a719",
+   "sha256": "763ca690d9b275b536e7b0f1fca6185643b63649c3a89630b853fd4cf6db1180"
+  }
+ ],
+ "push_witness": {
+  "time_utc+7": "2026-11-13 11:20",
+  "kapi_runs_line": 1553,
+  "staging_notebook": "_staging_backup/kapi_flag-2027-nb-163i-rfsfxc5rl-eval_2_l80_nt/flag-2027-nb-163i-rfsfxc5rl-eval.ipynb",
+  "staging_notebook_md5": "cc1ec0fe56e910c92d2ef3146329a58a",
+  "staging_notebook_sha256": "cf1165437e06aad10fe92423d1a2f39daac6c7700c02e2ccb216a517704ceeed",
+  "md5_matches_kapi_runs": true,
+  "is_last_push_of_kernel": true,
+  "code_cells_identical_to_package_copy": true,
+  "original_temp_folder": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-163i-rfsfxc5rl-eval_2_l80_nt"
+ },
+ "package_runs_json_entry": {
+  "file": "notebooks/2_eval/07_flag-2027-nb-163i-rfsfxc5rl-eval.ipynb",
+  "gpu": true,
+  "internet": true,
+  "datasets": [
+   "chnnhnnguyn/external-data-mavceleb",
+   "ngnnguynchn/flag2027-evalphase-p",
+   "ngnnguynchn/flag2027-raw-v4-p",
+   "ngnnguynchn/flag2027-rfsfxc5rl-art-p"
+  ],
+  "kernel_inputs": [
+   "thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+   "thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval"
+  ],
+  "outputs": "outputs/flag-2027-nb-163i-rfsfxc5rl-eval/",
+  "status": "thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval has status \"KernelWorkerStatus.COMPLETE\""
+ },
+ "release_e2e_code": {
+  "path": "release/flag2027_e2e/code/e163i.ipy",
+  "sha256": "0948c0c00f67bdba2a3e86918e10edd10531395d9c4c3d737754bfefdc06be11",
+  "equal_to_stage_ipy": true,
+  "equal_to_code_of_exact_notebook_with_patches": true
+ },
+ "redaction": null,
+ "stage_ipy": {
+  "sha256": "0948c0c00f67bdba2a3e86918e10edd10531395d9c4c3d737754bfefdc06be11",
+  "code_cells": 6,
+  "built_from": "original/07_flag-2027-nb-163i-rfsfxc5rl-eval.ipynb",
+  "algorithm": "code cells with non-empty source, CRLF -> LF, patches of stage.json applied (each must hit exactly `count` times), each cell rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' (= release/flag2027_e2e/build_notebook.py stage_cells)"
+ },
+ "exact_notebook_code_sha256": "0948c0c00f67bdba2a3e86918e10edd10531395d9c4c3d737754bfefdc06be11"
+}

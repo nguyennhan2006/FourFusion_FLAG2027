@@ -1,0 +1,28 @@
+# Packages the notebooks of the 13.54 chain install on top of the Kaggle base image, at the versions of docker/Dockerfile
+# (layers 1-4), for a non-Docker environment built from the same base image digest (docker/README.md):
+#     pip install -r docker/requirements-kaggle-pinned.txt        (GPU; on CPU replace onnxruntime-gpu by onnxruntime==1.31.1)
+# then clone openai CLIP as layer 4 of the Dockerfile does (its setup.py imports pkg_resources):
+#     git clone -q https://github.com/openai/CLIP.git /tmp/openai_clip && git -C /tmp/openai_clip checkout -q d50d76daa670286dd6cacf3bcd80b5e4823fc8e1
+#     sed -i 's/from pkg_resources import packaging/import packaging, packaging.version/' /tmp/openai_clip/clip/clip.py
+# Layer 1 (pip install -U in the notebooks)
+speechbrain==1.1.2
+onnx==1.23.2
+iopath==0.1.10
+ftfy==6.3.1
+omegaconf==2.4.0
+fvcore==0.1.5.post20221221
+einops==0.8.2
+onnxruntime-gpu==1.31.1
+# Layer 2 (pip install without -U; regex / pyyaml stay at the base image's version)
+regex
+pyyaml
+kaldiio==2.18.1
+silero-vad==6.2.3
+av==19.0.2
+papermill==2.7.0
+# Layer 3 (--no-deps in the Dockerfile: install these three with `pip install --no-deps ...`)
+# insightface==2.0
+# git+https://github.com/wenet-e2e/wespeaker.git@9fecd6cb4f47475d01761d87c826298dff4ef18c
+# git+https://github.com/facebookresearch/ImageBind.git@53680b02d7e37b19b124fa37bae4b6c98c38f5be
+# Not pinned by the original notebooks (resolved at run time): ruamel.yaml<0.19 (162a/b/c, 163i), the `mod` list of 162a/b/c,
+# git clone --depth 1 https://github.com/AndreyGuzhov/AudioCLIP.git (50cc). unverified: exact versions installed in each run.

@@ -1,0 +1,331 @@
+{
+ "id": "f10_models",
+ "group": "20_features",
+ "title": "FLAG_10: ImageBind face / voice, ViT-age, audeering age-gender, AdaFace (+ FaRL ep64, SigLIP2, ViT-age CLS: wiring) for v4 train + MAV-Celeb v1 / v2",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "minutes_original": 120,
+  "internet": true,
+  "secrets": [],
+  "note": "original = two runs on 27-28/09/2026 (run 1 about 55 min for vitage / farl / ibv / iba; run 2 resumed and added siglip2 / adaface / w2v2ag); the notebook text estimates about 2 h for one full run on a T4"
+ },
+ "origin": {
+  "run": "slug unknown (web-UI runs 27-28/09/2026, EXPERIMENT_LOG entries 55 / 58 / 59; feats_models manifest 2026-09-28 01:18)",
+  "exactness": "builder-regenerated",
+  "source_file": "git show a89a071:kaggle/FLAG_10_models.ipynb",
+  "notebook_md5": "f5984d0134428a6aaa2e7c75e38437a0",
+  "builder": "kaggle/build_models_notebook.py + flag_lib.py + flag_extract.py + agegender.py + flag_models.py at commit a89a071 (2026-09-29 08:17 +0700)",
+  "original_copy": "original/FLAG_10_models.ipynb",
+  "executed_notebook": "none (not kept by the team)",
+  "original_sha256": "e021c64d9d89598da71028186fc01f09a9d9d9cd93407e95a6a0bec3ac067e96"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "exclude": [
+    "dev_set.zip",
+    "dev_set"
+   ],
+   "exclude_why": "dev-exclusion: this stage reads only train_set.zip / meta_file_train_set.csv; requested per-input mount filter (repo_map/build/WP-D.md H8; runner/ffcore.py build_vin applies only the data_map 'exclude' today)"
+  },
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ext-meta-p"
+  }
+ ],
+ "inputs_dropped": [],
+ "outputs": {
+  "kernel": "notebooks/ff/f10_models",
+  "exports": {},
+  "main_folder": "feats_models",
+  "note": "kernel artifact = the stage's /kaggle/working; arrays in feats_models/ (= 02_intermediate/feats_models when saved)",
+  "private": true,
+  "licence": "features of the organisers' MAV-Celeb v4 train media and of MAV-Celeb v1 / v2 (organisers' data, challenge terms); private, shared only with the organisers through FF_DATA, never in the repository"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [
+  {
+   "old": "import flag_extract as X, flag_models as M\nOUT = WORKDIR / \"feats_models\"; OUT.mkdir(exist_ok=True)\n",
+   "new": "# --- FF reproduction patch (stage f10_models, CHANGES.md #1): edit two helper modules written by the cell above BEFORE they\n# --- are imported. (a) ImageBind: Meta's link is dead since 12/11/2026 -> the same file (sha256 d6f6c22b...2157) on a pinned\n# --- Hugging Face mirror (the dead URL is spelled in two parts so that a text-level URL patch cannot alter this edit).\n# --- (b) Hugging Face revisions pinned (the runs of 27-28/09/2026 resolved \"main\").\ndef _ff_edit(path, edits):\n    t = Path(path).read_text(encoding=\"utf-8\")\n    for _old, _new in edits:\n        assert t.count(_old) == 1, f\"FF patch: {path}: {_old[:70]!r} found {t.count(_old)} times\"\n        t = t.replace(_old, _new)\n    Path(path).write_text(t, encoding=\"utf-8\")\n\n\n_ff_edit(\"flag_models.py\", [\n    ('URL = \"https://dl.fbaipublicfiles' + '.com/imagebind/imagebind_huge.pth\"',\n     'URL = \"https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth\"'),\n    ('ViTImageProcessor.from_pretrained(self.ID)', 'ViTImageProcessor.from_pretrained(self.ID, revision=\"4b5acc345d9692c3ff4f45d250531afd3a3da0ef\")'),\n    ('ViTForImageClassification.from_pretrained(self.ID)',\n     'ViTForImageClassification.from_pretrained(self.ID, revision=\"4b5acc345d9692c3ff4f45d250531afd3a3da0ef\")'),\n    ('path = snapshot_download(self.ID)', 'path = snapshot_download(self.ID, revision=\"54f602a0737bd1ee4a4e7e9fd089a485f397fefd\")'),\n])\n_ff_edit(\"agegender.py\", [\n    ('proc = Wav2Vec2Processor.from_pretrained(name)', 'proc = Wav2Vec2Processor.from_pretrained(name, revision=\"bad2737f529168bc3d3fcd97edfaba9583c7d36d\")'),\n    ('model = AgeGenderModel.from_pretrained(name)', 'model = AgeGenderModel.from_pretrained(name, revision=\"bad2737f529168bc3d3fcd97edfaba9583c7d36d\")'),\n])\nimport flag_extract as X, flag_models as M\nOUT = WORKDIR / \"feats_models\"; OUT.mkdir(exist_ok=True)\n",
+   "count": 1,
+   "type": "url, pin",
+   "why": "rewrite flag_models.py / agegender.py on disk before import: ImageBind URL (dead link, same file) + revisions of ViT-age (4b5acc34), AdaFace (54f602a0), audeering (bad2737f); Hugging Face revision pinned (the original resolved the then-current `main`); the pinned revision is the one in the team's HF cache and in the RF core / RFX manifest (S8 E10, DESIGN §9.2)",
+   "effect": "URL: none (same file); pins: none if the repository did not change since the run (not verified: CHƯA CHẮC)"
+  },
+  {
+   "old": "S = M.v4_index(SCAN, WORKDIR / \"raw\")\n",
+   "new": "# --- FF dev-exclusion (CHANGES.md #2): index ONLY the organiser train list. Original line:\n# ---     S = M.v4_index(SCAN, WORKDIR / \"raw\")\n# --- v4_index needs the four dev lists too and, for zipped data, unpacks dev_set.zip. Same train rows and order as there:\n# --- flag_extract.resolve_split on train_English.txt (what flag_extract.index_splits does for \"train\").\n_ff_tr = [p for p in SCAN[\"files\"].get(\"train_English.txt\", []) if M._has_media(p, 2, 3)]\nif _ff_tr:\n    _ff_root = _ff_tr[0].parent\nelse:\n    import zipfile as _ff_zip\n    _ff_root = WORKDIR / \"raw\"\n    _ff_root.mkdir(parents=True, exist_ok=True)\n    _ff_zips = [p for n, ps in SCAN[\"files\"].items() if n.lower().startswith(\"train_set\") and n.lower().endswith(\".zip\") for p in ps]\n    assert _ff_zips, \"no v4 train media under the inputs: attach the raw dataset (train_set.zip)\"\n    for _zp in _ff_zips:\n        if not (_ff_root / f\".{_zp.stem}.done\").exists():\n            X.log(\"extracting\", _zp.name)\n            with _ff_zip.ZipFile(_zp) as _z:\n                _z.extractall(_ff_root)\n            (_ff_root / f\".{_zp.stem}.done\").touch()\nS = {\"train\": X.resolve_split(_ff_root, \"train_English.txt\", 2, 3)}\nfor _k, _v in S.items():\n    _v[\"dur\"] = np.array([X.sf.info(str(_v[\"root\"] / p)).duration for p in _v[\"wav\"]], dtype=np.float32)\n    X.log(f\"{_k:20s} {len(_v['wav']):5d} rows | dur median {np.median(_v['dur']):.1f}s max {_v['dur'].max():.1f}s\")\n",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "the original indexes and (zipped data) unpacks the 4 dev lists; now only train_English.txt is indexed, same rows / order",
+   "effect": "none on any train / MAV-Celeb array; the dev arrays are no longer written"
+  },
+  {
+   "old": "voice_probe = [X.load_audio(S[\"no_gender/Bangla\"][\"root\"] / p) for p in S[\"no_gender/Bangla\"][\"wav\"][:4]]",
+   "new": "voice_probe = [X.load_audio(S[\"train\"][\"root\"] / p) for p in S[\"train\"][\"wav\"][:4]]   # FF dev-exclusion (CHANGES.md #3): original read S[\"no_gender/Bangla\"] (dev); these 4 clips only feed the fp16 self-check",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "the fp16 self-check of the voice encoders read 4 dev Bangla clips; it now reads 4 train clips",
+   "effect": "none (the check only asserts cos > 0.995 between fp16 and fp32)"
+  },
+  {
+   "old": "    !pip -q install --no-deps \"insightface==2.0\" \"git+https://github.com/facebookresearch/ImageBind\" \"git+https://github.com/openai/CLIP.git\" 2>&1 | tail -2",
+   "new": "    # FF environment patch (CHANGES.md #4): one pip call per package, the team's own fix of 29/10 - 2/11/2026 (BEST/v1977/README.md\n    # §6): openai CLIP's setup.py needs pkg_resources, missing on the current Kaggle image, and a failed build in this shared call also\n    # drops insightface / ImageBind. CLIP then comes from a git clone at d50d76d with that one import line patched (FaRL needs `clip`).\n    !pip -q install --no-deps \"insightface==2.0\" \"git+https://github.com/facebookresearch/ImageBind\" 2>&1 | tail -2\n    !pip -q install --no-deps \"git+https://github.com/openai/CLIP.git\" 2>&1 | tail -2\n    try:\n        import clip\n    except ModuleNotFoundError:\n        import subprocess\n        _oc = Path(\"/tmp/openai_clip\")\n        if not (_oc / \"clip\").exists():\n            subprocess.run([\"git\", \"clone\", \"-q\", \"https://github.com/openai/CLIP.git\", str(_oc)], check=True)\n            subprocess.run([\"git\", \"-C\", str(_oc), \"checkout\", \"-q\", \"d50d76daa670286dd6cacf3bcd80b5e4823fc8e1\"], check=True)\n            _f = _oc / \"clip/clip.py\"\n            _f.write_text(_f.read_text().replace(\"from pkg_resources import packaging\", \"import packaging, packaging.version\"))\n        sys.path.insert(0, str(_oc))\n        import clip",
+   "count": 1,
+   "type": "pin",
+   "why": "the shared pip call fails on the current Kaggle image (openai CLIP build); split into one call per package + CLIP fallback clone (the team's own fix, BEST/v1977/README.md §6)",
+   "effect": "none expected (same packages); the CLIP fallback is pinned at d50d76d, the commit used by the team's other notebooks; the original pip line resolved an unpinned openai/CLIP HEAD on 27-28/09/2026, not verified to be d50d76d"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/feats_models"
+ ],
+ "verify": [
+  {
+   "file": "feats_models/face_adaface_train.npy",
+   "saved_sha256": "c806596c394b1c94912cada2bf5d1f6fb3e158a410a68a594cae5a39e4f9112c"
+  },
+  {
+   "file": "feats_models/ext_v1_complete_face_adaface.npy",
+   "saved_sha256": "d160e51b74941f561e0ddd89165c0df3b4dc51926b75d6b15dd14fd3fd2a1863"
+  },
+  {
+   "file": "feats_models/ext_v2_complete_face_adaface.npy",
+   "saved_sha256": "0844ca81857500168f8ef2cf7eaca4c10621085f56c3b5cfcdb98c4070d8eee1"
+  },
+  {
+   "file": "feats_models/face_ibv_train.npy",
+   "saved_sha256": "1d4103653769481d9d62a2aab27a2bfaf1b437b17106d198772e5c2aa6115c88"
+  },
+  {
+   "file": "feats_models/voice_iba_train.npy",
+   "saved_sha256": "1a369c2dc6488429b66077d5e5c3b4581127d3c6bb538dc7b2001608a4695f74"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 7,
+  "sha256": "b9be6c0e46c7b2400a04c5fd92b06e81946c3176e23df7f9700a95a5723c3f6d",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "FLAG_10_models.ipynb",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "b_eda_bundle: ibv, iba, vitageprob, w2v2agage, w2v2aggen, farl (ep64) for v4 train + MAV-Celeb",
+  "b_lab_data: adaface, farl, siglip2, vitage, w2v2ag (v4 train + MAV-Celeb)",
+  "dp_feats_layout (WP-I): face_adaface_train + ext_v{1,2}_complete_face_adaface"
+ ],
+ "todo": [
+  "Revision pins = revisions of the team's HF cache / RF core in Nov 2026 (S8 E10). Equality with the revisions resolved on 27-28/09/2026 is not verified.",
+  "SigLIP2 (wiring only) and the ImageBind / CLIP code (git HEAD, as the original; Docker pins ImageBind@53680b02, CLIP@d50d76d) are not pinned here; team cache revision of google/siglip2-base-patch16-224 = 75de2d55ec2d0b4efc50b3e9ad70dba96a7b2fa2.",
+  "No smoke switch in the original notebook (its local smoke used FLAG_LOCAL=1 with a mini copy of the data); smoke_env is empty.",
+  "openai/CLIP commit of the original run unknown: the 27-28/09/2026 pip line installed git+https://github.com/openai/CLIP.git unpinned; on today's image that build fails and the fallback clone at d50d76d is used. Equality with the HEAD of 27-28/09 is not verified (CLIP serves FaRL ep64, wiring only; no expected effect on 13.54)."
+ ],
+ "verify_notes": [
+  "reference = the team's kaggle/output/feats_models (sha256 measured 18/11/2026); byte identity is not expected after a GPU re-run: compare row cosine (expect >= 0.999) and identical shapes / row order"
+ ],
+ "post_checks": [
+  {
+   "file": "feats_models/feats_manifest.json",
+   "json_path": "files",
+   "equals": {
+    "ext_v1_complete_face_adaface.npy": [
+     7580,
+     512
+    ],
+    "ext_v1_complete_face_farl.npy": [
+     7580,
+     512
+    ],
+    "ext_v1_complete_face_ibv.npy": [
+     7580,
+     1024
+    ],
+    "ext_v1_complete_face_siglip2.npy": [
+     7580,
+     768
+    ],
+    "ext_v1_complete_face_vitage.npy": [
+     7580,
+     768
+    ],
+    "ext_v1_complete_face_vitageprob.npy": [
+     7580,
+     9
+    ],
+    "ext_v1_complete_voice_iba.npy": [
+     19556,
+     1024
+    ],
+    "ext_v1_complete_voice_w2v2ag.npy": [
+     19556,
+     1024
+    ],
+    "ext_v1_complete_voice_w2v2agage.npy": [
+     19556,
+     1
+    ],
+    "ext_v1_complete_voice_w2v2aggen.npy": [
+     19556,
+     3
+    ],
+    "ext_v2_complete_face_adaface.npy": [
+     8953,
+     512
+    ],
+    "ext_v2_complete_face_farl.npy": [
+     8953,
+     512
+    ],
+    "ext_v2_complete_face_ibv.npy": [
+     8953,
+     1024
+    ],
+    "ext_v2_complete_face_siglip2.npy": [
+     8953,
+     768
+    ],
+    "ext_v2_complete_face_vitage.npy": [
+     8953,
+     768
+    ],
+    "ext_v2_complete_face_vitageprob.npy": [
+     8953,
+     9
+    ],
+    "ext_v2_complete_voice_iba.npy": [
+     20715,
+     1024
+    ],
+    "ext_v2_complete_voice_w2v2ag.npy": [
+     20715,
+     1024
+    ],
+    "ext_v2_complete_voice_w2v2agage.npy": [
+     20715,
+     1
+    ],
+    "ext_v2_complete_voice_w2v2aggen.npy": [
+     20715,
+     3
+    ],
+    "face_adaface_train.npy": [
+     6485,
+     512
+    ],
+    "face_farl_train.npy": [
+     6485,
+     512
+    ],
+    "face_ibv_train.npy": [
+     6485,
+     1024
+    ],
+    "face_siglip2_train.npy": [
+     6485,
+     768
+    ],
+    "face_vitage_train.npy": [
+     6485,
+     768
+    ],
+    "face_vitageprob_train.npy": [
+     6485,
+     9
+    ],
+    "voice_iba_train.npy": [
+     6485,
+     1024
+    ],
+    "voice_w2v2ag_train.npy": [
+     6485,
+     1024
+    ],
+    "voice_w2v2agage_train.npy": [
+     6485,
+     1
+    ],
+    "voice_w2v2aggen_train.npy": [
+     6485,
+     3
+    ]
+   },
+   "why": "every v4-train and MAV-Celeb v1 / v2 array of the original run with its shape (30 arrays; values from kaggle/output/feats_models/feats_manifest.json (created 2026-09-28 01:18), dev entries left out). A failed encoder (recorded in 'failed' and skipped) or a skipped MAV-Celeb source (ExtRows error only logged) leaves an array out, so the stage fails here instead of hours later downstream"
+  },
+  {
+   "file": "feats_models/feats_manifest.json",
+   "json_path": "external",
+   "equals": [
+    "v1_complete",
+    "v2_complete"
+   ],
+   "why": "both MAV-Celeb sources were read (original manifest: ['v1_complete', 'v2_complete'])"
+  }
+ ],
+ "saved_copy_dev_members": {
+  "saved_copy": "02_intermediate/feats_models (= the team's kaggle/output/feats_models)",
+  "count": "40 dev arrays + 4 dev index files",
+  "patterns": [
+   "*_gender_English.npy",
+   "*_gender_Bangla.npy",
+   "index_*gender_*.txt"
+  ],
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "files": [
+   "face_adaface_gender_Bangla.npy",
+   "face_adaface_gender_English.npy",
+   "face_adaface_no_gender_Bangla.npy",
+   "face_adaface_no_gender_English.npy",
+   "face_farl_gender_Bangla.npy",
+   "face_farl_gender_English.npy",
+   "face_farl_no_gender_Bangla.npy",
+   "face_farl_no_gender_English.npy",
+   "face_ibv_gender_Bangla.npy",
+   "face_ibv_gender_English.npy",
+   "face_ibv_no_gender_Bangla.npy",
+   "face_ibv_no_gender_English.npy",
+   "face_siglip2_gender_Bangla.npy",
+   "face_siglip2_gender_English.npy",
+   "face_siglip2_no_gender_Bangla.npy",
+   "face_siglip2_no_gender_English.npy",
+   "face_vitage_gender_Bangla.npy",
+   "face_vitage_gender_English.npy",
+   "face_vitage_no_gender_Bangla.npy",
+   "face_vitage_no_gender_English.npy",
+   "face_vitageprob_gender_Bangla.npy",
+   "face_vitageprob_gender_English.npy",
+   "face_vitageprob_no_gender_Bangla.npy",
+   "face_vitageprob_no_gender_English.npy",
+   "index_gender_Bangla.txt",
+   "index_gender_English.txt",
+   "index_no_gender_Bangla.txt",
+   "index_no_gender_English.txt",
+   "voice_iba_gender_Bangla.npy",
+   "voice_iba_gender_English.npy",
+   "voice_iba_no_gender_Bangla.npy",
+   "voice_iba_no_gender_English.npy",
+   "voice_w2v2ag_gender_Bangla.npy",
+   "voice_w2v2ag_gender_English.npy",
+   "voice_w2v2ag_no_gender_Bangla.npy",
+   "voice_w2v2ag_no_gender_English.npy",
+   "voice_w2v2agage_gender_Bangla.npy",
+   "voice_w2v2agage_gender_English.npy",
+   "voice_w2v2agage_no_gender_Bangla.npy",
+   "voice_w2v2agage_no_gender_English.npy",
+   "voice_w2v2aggen_gender_Bangla.npy",
+   "voice_w2v2aggen_gender_English.npy",
+   "voice_w2v2aggen_no_gender_Bangla.npy",
+   "voice_w2v2aggen_no_gender_English.npy"
+  ],
+  "files_source": "kaggle/output/feats_models"
+ }
+}

@@ -1,0 +1,114 @@
+{
+ "stage": "e50cc",
+ "run": "thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+ "exactness": "exact-package",
+ "files": [
+  {
+   "path": "04_flag-2027-nb-50cc-e2e-eval_redacted.ipynb",
+   "role": "exact executed notebook of the team package with the dev-score payload removed (tool ../../_tools/redact_dev_refs.py; see CHANGES.md)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/04_flag-2027-nb-50cc-e2e-eval.ipynb -> _tools/redact_dev_refs.py e50cc",
+   "bytes": 316170,
+   "md5": "14f94495cbc036dbbe3a3fd890dc85b7",
+   "sha256": "377fcb83c7dd3a1d6ca79c770e102a4a158fb5cbad0fe1a5bf5d83b06d821369"
+  },
+  {
+   "path": "04_flag-2027-nb-50cc-e2e-eval.log",
+   "role": "Kaggle log of the run (team package)",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/04_flag-2027-nb-50cc-e2e-eval.log",
+   "bytes": 292809,
+   "md5": "8d5b28aa0d683094825f06f293c044c4",
+   "sha256": "d8e8d31ed162b3bc143af544f3e3a78b4f8260e71343584f4335acd5848598a5"
+  },
+  {
+   "path": "kernel-metadata.json",
+   "role": "kernel-metadata.json of the exact push (kapi staging folder)",
+   "copied_from": "NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-50cc-e2e-eval_7bpx85hr/kernel-metadata.json (from C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-50cc-e2e-eval_7bpx85hr)",
+   "bytes": 764,
+   "md5": "6f64b217f026b5691a0e220b31a05f56",
+   "sha256": "839323418f6c19d05bc9052e845179094e31eb5be0496c8902f1fc95166374f4"
+  }
+ ],
+ "push_witness": {
+  "time_utc+7": "2026-11-11 20:47",
+  "kapi_runs_line": 1467,
+  "staging_notebook": "_staging_backup/kapi_flag-2027-nb-50cc-e2e-eval_7bpx85hr/flag-2027-nb-50cc-e2e-eval.ipynb",
+  "staging_notebook_md5": "b34646dd394b6d52ede3b0b5279029ac",
+  "staging_notebook_sha256": "aaf8a54947971693e4ddbf83ba0b4f4750f9387fbccf17f17a22e4bd298b9f05",
+  "md5_matches_kapi_runs": true,
+  "is_last_push_of_kernel": true,
+  "code_cells_identical_to_package_copy": true,
+  "original_temp_folder": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-50cc-e2e-eval_7bpx85hr"
+ },
+ "package_runs_json_entry": {
+  "file": "notebooks/2_eval/04_flag-2027-nb-50cc-e2e-eval.ipynb",
+  "gpu": true,
+  "internet": true,
+  "datasets": [
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "ngnnguynchn/flag2027-best-v7-p",
+   "ngnnguynchn/flag2027-cleancomp-e2e-p",
+   "ngnnguynchn/flag2027-cleancomp-final-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-evalphase-p",
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-members-p",
+   "ngnnguynchn/flag2027-raw-v4-p"
+  ],
+  "kernel_inputs": [],
+  "outputs": "outputs/flag-2027-nb-50cc-e2e-eval/",
+  "status": "thanhhuyen11/flag-2027-nb-50cc-e2e-eval has status \"KernelWorkerStatus.COMPLETE\""
+ },
+ "release_e2e_code": {
+  "path": "release/flag2027_e2e/code/e50cc.ipy",
+  "sha256": "9889e2a9a1d989a1c5c40101f2cf65cf926d1a13eda419fd184d13f31b455956",
+  "equal_to_stage_ipy": false,
+  "equal_to_code_of_exact_notebook_with_patches": true
+ },
+ "redaction": {
+  "tool": "stages/50_eval/_tools/redact_dev_refs.py",
+  "exact_notebook": {
+   "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/04_flag-2027-nb-50cc-e2e-eval.ipynb",
+   "bytes": 709604,
+   "md5": "d650b86c544de5fd723ca631561793f3",
+   "sha256": "49022347acefbc24eb43a2370e263d7aa6c081438c18bc0a23d62db5ef7abad1",
+   "kept_privately_at": [
+    "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/04_flag-2027-nb-50cc-e2e-eval.ipynb",
+    "NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-50cc-e2e-eval_7bpx85hr/ (pushed bytes, md5 b34646dd394b6d52ede3b0b5279029ac; NOT git-ignored as of 18/11, outside _PRIVATE_NOT_FOR_PUBLICATION/: must be moved before any commit, see stage.json todo[0])"
+   ],
+   "not_in_repo_because": "it embeds dev-phase score data (user rule: no dev data in the repository)"
+  },
+  "report": {
+   "cell": "print(\"[cell] 32 the submitted zips (dev references)\", flush=True)",
+   "removed_payloads": {
+    "v9": {
+     "written_to": "repo/reference/submission_CA_EN_BN.zip",
+     "md5": "f6d77418f3a44f2273ab5fa921d8059d"
+    },
+    "v11": {
+     "written_to": "repo/reference/submission_v11.zip",
+     "md5": "bc741c4a56c310c7e0b134c35a64a8db"
+    },
+    "v12": {
+     "written_to": "repo/reference/submission_v12.zip",
+     "md5": "a7323cc4a6a26feff0a111745f27694a"
+    }
+   },
+   "stage": "e50cc",
+   "exact_sha256": "49022347acefbc24eb43a2370e263d7aa6c081438c18bc0a23d62db5ef7abad1",
+   "exact_md5": "d650b86c544de5fd723ca631561793f3",
+   "redacted_sha256": "377fcb83c7dd3a1d6ca79c770e102a4a158fb5cbad0fe1a5bf5d83b06d821369",
+   "redacted_md5": "14f94495cbc036dbbe3a3fd890dc85b7"
+  }
+ },
+ "stage_ipy": {
+  "sha256": "4f9f4fb7c876adb869e4a2a4ba5a1379793236cd862eb2bea84233862067e925",
+  "code_cells": 34,
+  "built_from": "original/04_flag-2027-nb-50cc-e2e-eval_redacted.ipynb",
+  "algorithm": "code cells with non-empty source, CRLF -> LF, patches of stage.json applied (each must hit exactly `count` times), each cell rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' (= release/flag2027_e2e/build_notebook.py stage_cells)",
+  "patches": [
+   "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "no_dev_zip"
+  ]
+ },
+ "exact_notebook_code_sha256": "9889e2a9a1d989a1c5c40101f2cf65cf926d1a13eda419fd184d13f31b455956"
+}

@@ -1,0 +1,21 @@
+{
+ "what": "gate-1 result of FVBIND-01 (B2 vs B0 +2.05 EER on the g-mean, 5/5 folds: PASS; B1 +0.62: FAIL); read locally by `python Experiment/FVBIND-01/run.py gate` from the fvb*_fold*.parquet tables",
+ "files": [
+  {
+   "repo_file": "gate1_report.txt",
+   "copied_from": "Experiment/FVBIND-01/gate1_report.txt",
+   "sha256": "8f52f4595940e704f2cf992239e8a8b979c834aea8c6f5e6b8e38e6bc98994c9"
+  },
+  {
+   "repo_file": "gate1.json",
+   "copied_from": "Experiment/FVBIND-01/gate1.json",
+   "sha256": "27a8f2bb808b4363ff26f072ea525123a4164a7e048aca496f3a36dea299ff13"
+  },
+  {
+   "repo_file": "run.py",
+   "copied_from": "Experiment/FVBIND-01/run.py",
+   "sha256": "8d7b853b765317f9c3ef4aa2673022a9dd123c7ad3431e0936d4e343a10c6d8c"
+  }
+ ],
+ "note": "run.py is the reader of gates 1 and 2 (evidence only); it is not part of the 13.54 chain"
+}

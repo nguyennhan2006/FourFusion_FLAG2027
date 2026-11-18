@@ -1,0 +1,106 @@
+{
+ "stage": "dp_extract_eval",
+ "exactness": "local-script",
+ "local_run": {
+  "where": "team machine, Windows 11, CPU only (onnxruntime providers ['AzureExecutionProvider', 'CPUExecutionProvider'], recognition on CPU)",
+  "when": "2026-11-16 01:22:37 - 01:56:45 (+07:00), 2054 s",
+  "python": "3.14.0; torch 2.12.1+cpu, insightface 2.0, onnxruntime 1.31.1, speechbrain 1.1.2 (as queried 18/11, S8 E3)",
+  "command (S7 D7; 2nd argument not logged)": "python Experiment/XJF-01/extract_eval.py D:/ff_data/evalphase/eval_set.zip D:/ff_data/evalphase/x English",
+  "log": "original/extract.log"
+ },
+ "files": [
+  {
+   "path": "original/extract_eval.py",
+   "bytes": 5553,
+   "mtime": "2026-11-16 01:22:12",
+   "md5": "64ab0fede8758f08757f017430d738f8",
+   "sha256": "dad9866ba2574c8aac5adfde706a5c6c4fd8803bf6305ec83276d2fe149a15ea",
+   "git": "untracked (??) in the team repo",
+   "note": "mtime 01:22:12, run started 01:22:37: the version that ran",
+   "copied_from": "Experiment/XJF-01/extract_eval.py"
+  },
+  {
+   "path": "original/flag_extract.py",
+   "bytes": 39977,
+   "mtime": "2026-09-27 23:16:00",
+   "md5": "4b2238dea62e674dfe90ab3d1facc36e",
+   "sha256": "7c227c4cac1d6fee0b90aba8c63ec8a99783e0b7b78d6ab85c51e57ffb3b0e54",
+   "git": "tracked, unchanged since commit a89a071",
+   "note": "mtime 2026-09-27: the version that ran",
+   "copied_from": "kaggle/flag_extract.py"
+  },
+  {
+   "path": "original/flag_models.py",
+   "bytes": 29785,
+   "mtime": "2026-11-12 22:03:36",
+   "md5": "9a6cf0f6850246e5b76a9ba60253e7c2",
+   "sha256": "9172b68e22e3f3796f19b644e6fd48dca5b3ed2476b9e302c25ce2894a892c87",
+   "git": "tracked, MODIFIED in the working tree (M)",
+   "note": "mtime 2026-11-12 22:03 < run 16/11 01:22: the version that ran",
+   "copied_from": "kaggle/flag_models.py"
+  },
+  {
+   "path": "original/extract.log",
+   "bytes": 2385,
+   "mtime": "2026-11-16 01:56:52",
+   "md5": "2d9ad60bdf896fbf14ec8b2e76d32eeb",
+   "sha256": "20c2f94e0c5c2d6301df1e5bc0bde4f3d3122070f9d809c3756e387b6440f737",
+   "note": "console log of the run (English files)",
+   "copied_from": "Experiment/XJF-01/extract.log",
+   "unredacted": {
+    "bytes": 2479,
+    "md5": "2b749fab6ebf2a6dc84b96d8de2c9e56",
+    "sha256": "cd8cc9cfb7a092cd29059fe945842b3bfd25a51361a930a4f6b3f2b4bc872ef3",
+    "kept_at": "team machine only (Experiment/XJF-01/extract.log); not published"
+   },
+   "redaction": {
+    "why": "public repository hygiene: local user profile and drive layout of the team machine",
+    "rule": "byte-level replace, in this order, everything else unchanged",
+    "replacements": [
+     {
+      "new": "<team-repo>\\",
+      "old_description": "absolute path of the team repository folder on the team machine (drive letter and the user's folder name)",
+      "old_utf8_bytes": 41,
+      "old_utf8_sha256": "664ed80ec12af1a37f755263b420067b1798cc39df8cb96346484a06b0ea9368"
+     },
+     {
+      "new": "<python-site>\\",
+      "old_description": "user site-packages folder of Python 3.14 on the team machine (Windows user profile path)",
+      "old_utf8_bytes": 61,
+      "old_utf8_sha256": "db1545a1f6ab5e1e7408e27f2ed5ad337bc1042ff7c079e4aa713ac9fd8ed84f"
+     }
+    ],
+    "counts": {
+     "<team-repo>\\": 0,
+     "<python-site>\\": 2
+    },
+    "verify": "apply the replacements to the unredacted file to get these bytes",
+    "note": "the replaced strings are not written here (they are what is being hidden); their sha256 lets the team verify the redaction from the unredacted file"
+   }
+  },
+  {
+   "path": "original/verify_english.json",
+   "bytes": 226,
+   "mtime": "2026-11-16 20:51:24",
+   "md5": "fab4d552f6ebdb0d0b82d2d15d3fdbfd",
+   "sha256": "9ef21fed389b46d2bee1c292d960f149864d42a9c93ba138f15ad3b75be6d67a",
+   "note": "self-check of the English run (20 train rows re-extracted)",
+   "copied_from": "Experiment/XJF-01/feats_evalphase/verify_english.json"
+  }
+ ],
+ "stage_files": {
+  "extract_eval.py": {
+   "sha256": "5bd0e322d06a9a743171b073505b3e09ac2ee1d302dfd5fdf06aaeb2e213c3bf",
+   "from": "original/extract_eval.py + script_patches EE1-EE7"
+  },
+  "flag_extract.py": {
+   "sha256": "7c227c4cac1d6fee0b90aba8c63ec8a99783e0b7b78d6ab85c51e57ffb3b0e54",
+   "from": "original/flag_extract.py, unchanged"
+  },
+  "flag_models.py": {
+   "sha256": "70279e0fb5db22283c8e3330702cfcc928c661fd6f6225f5f4d6ef8ac0149806",
+   "from": "original/flag_models.py + script_patch FM1"
+  }
+ },
+ "models_used": "insightface buffalo_l (~/.insightface/models/buffalo_l: det_10g.onnx 5838f7fe..., w600k_r50.onnx 4c06341c...), HF minchul/cvlface_adaface_ir101_webface12m @54f602a0 (only snapshot in the cache), speechbrain/spkrec-ecapa-voxceleb @0f99f2d0 (savedir kaggle/output/_ecapa_sb, 5 files = the HF snapshot files, label_encoder.txt saved as label_encoder.ckpt)"
+}

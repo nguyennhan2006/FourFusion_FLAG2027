@@ -1,0 +1,17 @@
+{
+ "stage": "f63w_aux_voice",
+ "files": [
+  {
+   "copy": "original/FLAG_63w_aux_voice_feats.ipynb",
+   "source": "kaggle/FLAG_63w_aux_voice_feats.ipynb",
+   "obtained_by": "copy of the builder output written 16/10/2026 16:02, 21 min before the push; the 17/10 snapshot docs/book_FLAG2027/snap/kaggle/ has the same md5",
+   "bytes": 34975,
+   "md5": "af0c585a16bea0b9abc78a0103f4b8d6",
+   "sha256": "c41f9b8883e83baf10653e1ce1e6089efbc7eecad45fdaa926126213c2f419b9"
+  }
+ ],
+ "run": "hthlin/flag-2027-nb-63w-aux-voice",
+ "evidence": [
+  "The push md5 5a9d3bc9... (kapi_runs.jsonl line 361) cannot be re-derived: kaggle/kapi.py --secret HF_TOKEN inserts a first cell holding the token value and deletes the staged copy. The secret value is not used or reproduced here. The notebook body is this file (not modified after 16:02 on 16/10, same md5 in the 17/10 snapshot)."
+ ]
+}

@@ -1,0 +1,480 @@
+{
+ "stage": "t155s_f12",
+ "run": "nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12",
+ "files": [
+  {
+   "repo_path": "original/flag-2027-nb-155s-ct02ca-f12.redacted.ipynb",
+   "copied_from": "d:/Sinh viên CNhan/FLAG_2027_FourFusion/release/flag2027_e2e/src_nb/flag-2027-nb-155s-ct02ca-f12/flag-2027-nb-155s-ct02ca-f12.ipynb",
+   "source_md5": "ede88e3ca65c00f5d51df903dcab85c2",
+   "source_sha256": "2bb4b7031642d7904e21bc65ebf9c367958f21f828d56dba88be7a5801ffce74",
+   "source_bytes": 381137,
+   "repo_sha256": "69fe740b48fca42bad69d9edf2a63f53d03648a2f3aa7c3e26c4dc6b9834b48c",
+   "repo_bytes": 302689,
+   "byte_identical_to_source": false,
+   "e_package_manifest_sha256": null
+  },
+  {
+   "repo_path": "original/flag-2027-nb-155s-ct02ca-f12.log",
+   "copied_from": "d:/Sinh viên CNhan/FLAG_2027_FourFusion/release/flag2027_e2e/src_nb/flag-2027-nb-155s-ct02ca-f12/flag-2027-nb-155s-ct02ca-f12.log",
+   "source_md5": "38222628142cf69427da472e68ab44d0",
+   "source_sha256": "2f1b250cbdacd262d931ba2fa5e9880caaef3f51e90bc086b7eaf23d4ef94e85",
+   "source_bytes": 23199,
+   "byte_identical_to_source": true,
+   "e_package_manifest_sha256": null
+  },
+  {
+   "repo_path": "original/kernel-metadata.json",
+   "copied_from": "d:/Sinh viên CNhan/FLAG_2027_FourFusion/release/flag2027_e2e/src_nb/flag-2027-nb-155s-ct02ca-f12/kernel-metadata.json",
+   "source_md5": "4dfe6fab89562609711152400e26f098",
+   "source_sha256": "1be69dabd7c6cee8d8dc70eacb8d3b586d851369895f4f146981f82b65c5213d",
+   "source_bytes": 1276,
+   "byte_identical_to_source": true,
+   "e_package_manifest_sha256": null
+  }
+ ],
+ "kapi_runs": [
+  {
+   "line": 1088,
+   "time": "2026-11-03 15:23",
+   "account": "nguyenchonnhan",
+   "kernel": "nguyenchonnhan/flag-2027-nb-155s-ct02ca-smoke",
+   "source": "kaggle/FLAG_111_ct01_r2.ipynb",
+   "notebook_md5_pushed": "2442dd57e7b20e2a23d250e24bda74da",
+   "gpu": false,
+   "smoke": {
+    "FL3Z_SMOKE": "1",
+    "TR_MAX_STEPS": "2",
+    "TR_SEEDS": "1",
+    "LAB_FOLDS": "1",
+    "BN42_STANDIN": "1",
+    "CT_STANDIN": "1",
+    "LID_STRICT": "1",
+    "CT_R2_ONLY": "CA"
+   },
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-e2e-dev-p",
+    "ngnnguynchn/flag2027-cc5-oof-p",
+    "ngnnguynchn/flag2027-dsel02-oof-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-feats-ct-b3c-p",
+    "ngnnguynchn/flag2027-facelora03-tables-p",
+    "ngnnguynchn/flag2027-lab-avfull-p",
+    "nammo0/flag2027-feats-ct-c5c-p",
+    "dnq1209/flag2027-feats-tap01-voice-p",
+    "ngnnguynchn/flag2027-feats-screen2-p",
+    "hthlin/flag2027-aux-voice-feats-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  },
+  {
+   "line": 1095,
+   "time": "2026-11-03 15:30",
+   "account": "nguyenchonnhan",
+   "kernel": "nguyenchonnhan/flag-2027-nb-155s-ct02ca-smoke",
+   "source": "kaggle/FLAG_111_ct01_r2.ipynb",
+   "notebook_md5_pushed": "9f6abe74ec4ad978468d8136fab93328",
+   "gpu": false,
+   "smoke": {
+    "FL3Z_SMOKE": "1",
+    "TR_MAX_STEPS": "2",
+    "TR_SEEDS": "1",
+    "LAB_FOLDS": "1",
+    "BN42_STANDIN": "1",
+    "CT_STANDIN": "1",
+    "LID_STRICT": "1",
+    "CT_R2_ONLY": "CA"
+   },
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-e2e-dev-p",
+    "ngnnguynchn/flag2027-cc5-oof-p",
+    "ngnnguynchn/flag2027-dsel02-oof-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-feats-ct-b3c-p",
+    "ngnnguynchn/flag2027-facelora03-tables-p",
+    "ngnnguynchn/flag2027-lab-avfull-p",
+    "nammo0/flag2027-feats-ct-c5c-p",
+    "dnq1209/flag2027-feats-tap01-voice-p",
+    "ngnnguynchn/flag2027-feats-screen2-p",
+    "hthlin/flag2027-aux-voice-feats-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  },
+  {
+   "line": 1098,
+   "time": "2026-11-03 15:35",
+   "account": "nguyenchonnhan",
+   "kernel": "nguyenchonnhan/flag-2027-nb-155s-ct02ca-smoke",
+   "source": "kaggle/FLAG_111_ct01_r2.ipynb",
+   "notebook_md5_pushed": "b82ea2e62573820c16016fa27df86e86",
+   "gpu": false,
+   "smoke": {
+    "FL3Z_SMOKE": "1",
+    "TR_MAX_STEPS": "2",
+    "TR_SEEDS": "1",
+    "LAB_FOLDS": "1",
+    "BN42_STANDIN": "1",
+    "CT_STANDIN": "1",
+    "LID_STRICT": "1",
+    "CT_R2_ONLY": "CA"
+   },
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-e2e-dev-p",
+    "ngnnguynchn/flag2027-cc5-oof-p",
+    "ngnnguynchn/flag2027-dsel02-oof-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-feats-ct-b3c-p",
+    "ngnnguynchn/flag2027-facelora03-tables-p",
+    "ngnnguynchn/flag2027-lab-avfull-p",
+    "nammo0/flag2027-feats-ct-c5c-p",
+    "dnq1209/flag2027-feats-tap01-voice-p",
+    "ngnnguynchn/flag2027-feats-screen2-p",
+    "hthlin/flag2027-aux-voice-feats-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  },
+  {
+   "line": 1279,
+   "time": "2026-11-03 22:59",
+   "account": "nguyenchonnhan",
+   "kernel": "nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12",
+   "source": "kaggle/FLAG_111_ct01_r2.ipynb",
+   "notebook_md5_pushed": "3b161234f372c5a59617a7fc3009cc65",
+   "gpu": true,
+   "smoke": {},
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-e2e-dev-p",
+    "ngnnguynchn/flag2027-cc5-oof-p",
+    "ngnnguynchn/flag2027-dsel02-oof-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "ngnnguynchn/flag2027-facelora03-tables-p",
+    "ngnnguynchn/flag2027-lab-avfull-p",
+    "quynhnhu82/flag2027-feats-ls-c5s-p",
+    "dnq1209/flag2027-feats-tap01-voice-p",
+    "ngnnguynchn/flag2027-feats-screen2-p",
+    "hthlin/flag2027-aux-voice-feats-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  }
+ ],
+ "pushed_vs_executed": "kapi_runs.jsonl records the md5 of the notebook as PUSHED (kapi staging folder); the executed copy here was obtained from Kaggle after the run (package E (E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/) notebooks/ = kernels pull, or release/flag2027_e2e/pull_runs.py), and Kaggle re-serialises the JSON, so the two md5 differ by construction. The Temp staging folders of these pushes are empty (repo/_staging_backup/MANIFEST.json: covered_elsewhere).",
+ "release_e2e_check": {
+  "release_code": "release/flag2027_e2e/code/t155s_f12.ipy",
+  "release_sha256": "ad29f4331b05429b855ba39499e215da15af67baaaa1fb5df870e32f26818000",
+  "rebuilt_from_exact_notebook_with_release_patches_sha256": "ad29f4331b05429b855ba39499e215da15af67baaaa1fb5df870e32f26818000",
+  "equal": true
+ },
+ "redaction": {
+  "source": "d:\\Sinh viên CNhan\\FLAG_2027_FourFusion\\release\\flag2027_e2e\\src_nb\\flag-2027-nb-155s-ct02ca-f12\\flag-2027-nb-155s-ct02ca-f12.ipynb",
+  "source_md5": "ede88e3ca65c00f5d51df903dcab85c2",
+  "source_sha256": "2bb4b7031642d7904e21bc65ebf9c367958f21f828d56dba88be7a5801ffce74",
+  "output": "d:\\Sinh viên CNhan\\FLAG_2027_FourFusion\\NOP_BTC_2026-11-20\\repo\\stages\\30_F_family\\t155s_f12\\original\\flag-2027-nb-155s-ct02ca-f12.redacted.ipynb",
+  "output_md5": "4fe2fb0e40bf5ad4de645b1fa0b2822f",
+  "output_sha256": "69fe740b48fca42bad69d9edf2a63f53d03648a2f3aa7c3e26c4dc6b9834b48c",
+  "removed": [
+   {
+    "name": "Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip",
+    "size": 91043,
+    "sha256": "b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d",
+    "md5": "ae902d1c7e87783bf88e345b459e39f2"
+   }
+  ],
+  "embedded_zip": {
+   "members_before": 39,
+   "members_after": 38,
+   "sha256_before": "1235a7a3863cf23fbf035321953205265dec81ce12fae4cb8d4d42b2d118e8b3",
+   "sha256_after": "1f400f0b435f785c354946fdf3aaf06ef00dd1e62a8ca762e00a9a35041edfad",
+   "kept_members_byte_identical": true
+  },
+  "method": "raw local-entry copy + rewritten central directory; byte-level replacement of the one CODE_B64 string"
+ },
+ "embedded_code_members": [
+  {
+   "name": "kaggle/build_l0_notebooks.py",
+   "bytes": 121966,
+   "sha256": "1097dd9537b505682e034e78330690f67a7e2fcc2a10cbad887a0f603088b96e",
+   "md5": "e2f63ea92aa5c62e66a034a20a5ab493"
+  },
+  {
+   "name": "Experiment/SAFE-04/lab_streams.py",
+   "bytes": 7338,
+   "sha256": "aaf3880c57fdfddda7be567369212af88a8318d08a4eb1fcfa9182ec2002a727",
+   "md5": "e288a49c7f77f9a22e9cce00aead459b"
+  },
+  {
+   "name": "Experiment/SAFE-04/rel_sweep.py",
+   "bytes": 3939,
+   "sha256": "a7290e7ad56fb54cf1e3c5b53757ae9c2ada3e5283d5526f9d806ad91f16e620",
+   "md5": "7166b20f70f25f342a22bfcadc5883ac"
+  },
+  {
+   "name": "Experiment/SAFE-04/rel_sweep2.py",
+   "bytes": 3411,
+   "sha256": "7214c9083702a0e568b4fbee1d78ca9e1382c1f8154c8982d2ac7d812200cfc4",
+   "md5": "75899e4caf38b38bbf953da6b5b62a04"
+  },
+  {
+   "name": "Experiment/SAFE-04/rel_sweep5.py",
+   "bytes": 1885,
+   "sha256": "43960985823a6c29c4e853a9e513e91da15c9c3af013bf0ade92ad266cb57bab",
+   "md5": "557afcb255ab4f1b4696296633d87a88"
+  },
+  {
+   "name": "Experiment/SAFE-04/rel.py",
+   "bytes": 8279,
+   "sha256": "0ee274361b370112e54d3019b4e3f6b188ba3afff1cf99d098dbbb6a8d0f2bc5",
+   "md5": "402aaf561639e75409f2ead79d78a939"
+  },
+  {
+   "name": "Experiment/VOX2-01/run_bridge.py",
+   "bytes": 8524,
+   "sha256": "9daeeeec609a3e5e0a8d2764796391dc2bf8fb2291fa0ab6169695552e8b35ff",
+   "md5": "e3260d3276cfdca8eb08dbcfd26f19aa"
+  },
+  {
+   "name": "Experiment/T3ENC-01/run.py",
+   "bytes": 12721,
+   "sha256": "3cb048edfd4793173e937022404932705d186ba1e3ceacd7d24e237864099ee1",
+   "md5": "fd780c6f94762c24b9d9cf4db49df181"
+  },
+  {
+   "name": "Experiment/ALLNEG-01/run.py",
+   "bytes": 10388,
+   "sha256": "0776caba9bcdb017ef6d29e6d0276f19d9fd50e7d39d1ae472ce17f67d37cc2e",
+   "md5": "413e0779662fc2be0b5fb75930129e5b"
+  },
+  {
+   "name": "Experiment/BIGB-01/run.py",
+   "bytes": 1971,
+   "sha256": "19a652bb0ec7eb02427f6c2fbfad52dfb82ab65169e5feec7be4e3cd9ae0a067",
+   "md5": "f2a9a4f099496905ea93d9cf44025860"
+  },
+  {
+   "name": "Experiment/SCALE-VB/run.py",
+   "bytes": 12781,
+   "sha256": "620b0a292fcd053ff429925d49958ec0c0cc8ab5f834e667ef960a7b937cdf6e",
+   "md5": "2e2913fb5310c53191ead982de51582e"
+  },
+  {
+   "name": "Experiment/VBSEL-01/run.py",
+   "bytes": 7130,
+   "sha256": "e7e6b7013048b7cbe334610dbe323db3888907a89cf759b6f7ab1e1dfe708d36",
+   "md5": "2e99d3b90dc56675ca4b36ded1a83e96"
+  },
+  {
+   "name": "Experiment/VBSEL-01/vox2_sa_speakers.json",
+   "bytes": 4094,
+   "sha256": "eccc765365323b2ea52a97822b17eb33ffaa4dc46e0aca00f85f2df1911dd278",
+   "md5": "37f4e8670949bc32f086003a593f9036"
+  },
+  {
+   "name": "Experiment/ENBASE-01/run.py",
+   "bytes": 12871,
+   "sha256": "7b186981aaa7a32e0e63dec9ec60fcd516cdd7ea4c4f5f4cf07b3db1bdb4cf61",
+   "md5": "4a40fb17c9585c2f66b177f5b529b777"
+  },
+  {
+   "name": "Experiment/SAFE-04/stream_gate.py",
+   "bytes": 9118,
+   "sha256": "50c0b4e4d9a1c3c7998170506e038f5f2488aa607b80d9cc879c182ead6ffa84",
+   "md5": "079c789b6461024c007a0ffbfbcf7b7d"
+  },
+  {
+   "name": "Experiment/SAFE-04/lab_fuse.py",
+   "bytes": 3143,
+   "sha256": "3bea1e496286e688f5ab44a31ccb165729b38924228421cfb9cdccba973d026f",
+   "md5": "fa8ce8f652bf3ee13597e872fda40b83"
+  },
+  {
+   "name": "Experiment/STACK-02/run.py",
+   "bytes": 13396,
+   "sha256": "58522e65bb902310b8b049690cfb04b47b4b42e777c0021adbcbd0c660e35b29",
+   "md5": "3709cf4c175e60945144ec7c4198dbd0"
+  },
+  {
+   "name": "Experiment/STACK-02/pools.py",
+   "bytes": 2737,
+   "sha256": "ff99990d8fc6ee34ef4b758e3ef0b34e55bf13ac5adf5e81ee60da5f637242ba",
+   "md5": "cd867144bf43f0283003a8f1ba685cc0"
+  },
+  {
+   "name": "Experiment/STACK-02/eligible.json",
+   "bytes": 673,
+   "sha256": "9b4fe3f56fdb1a05fa3a832da3522e34d6bd8e7e9f92bd3cb9390c69c4216897",
+   "md5": "bbab2a531702ab631652d21e25a825d2"
+  },
+  {
+   "name": "Experiment/STACK-02/fold_persons.json",
+   "bytes": 5481,
+   "sha256": "d76f684d719e5c4c47085e2d6763c55650899eef8def7637b506f1a0020ee27e",
+   "md5": "aede157945600732e0f8a8337b8df0b5"
+  },
+  {
+   "name": "Experiment/E2E/e2e_lib.py",
+   "bytes": 14984,
+   "sha256": "e08d6e5f74e4284a7e03e81b6609b6474eb09c727d3fb0440417bfd207df8194",
+   "md5": "ca9ef2027a79745182b99572aa5c5817"
+  },
+  {
+   "name": "Experiment/CLEANTUNE-01/run.py",
+   "bytes": 37116,
+   "sha256": "57c7ab80fce3a21809a2441d693a5e8149b7759a71608ee1ee9592c8d25f8cf4",
+   "md5": "8bc2f93506f8e7b3c01dd96a610901cb"
+  },
+  {
+   "name": "Experiment/VOICELORA-01/run.py",
+   "bytes": 18401,
+   "sha256": "9becf7aa5f61bfb23cc56c9c0cdc4b308cd070f7e652a710d5cfec0355675799",
+   "md5": "6d0dfe2bdf72d2204b32dd1285129207"
+  },
+  {
+   "name": "Experiment/FACELORA-05/run.py",
+   "bytes": 10301,
+   "sha256": "87a45165c635e1dbba086af7ae852236a6316db132dc29e142615c73c67559c3",
+   "md5": "9f7d2d67d2614a72c9bf2239b424541e"
+  },
+  {
+   "name": "Experiment/FACELORA-03/run.py",
+   "bytes": 26266,
+   "sha256": "62952da64b6f036272a01564d31a2c3c1d8a93f11d152ac3259c76326ffb27d2",
+   "md5": "c4d09a9fa645ab5094cc78654bc535ac"
+  },
+  {
+   "name": "Experiment/AUXP-01/run.py",
+   "bytes": 7443,
+   "sha256": "3758024ab5ab29fdaaacc946c4c67378fa1298e0ce43693f6d434e168938a9d0",
+   "md5": "900fe3e223b7edff837c579c817fd13a"
+  },
+  {
+   "name": "Experiment/SCALE-CC-02/run.py",
+   "bytes": 4160,
+   "sha256": "5c5cb32e20d6738d1685ba265ff7f4a448ebcbd9ec46cb7d4ddf14975a6cb82d",
+   "md5": "73869739d0eaa9b842741269545f122e"
+  },
+  {
+   "name": "Experiment/SCALE-CC-01/run.py",
+   "bytes": 13268,
+   "sha256": "3bc1d7c493a739e475fc1dc6c7ed1b9fbeb4221e46ec4f7ff4f9d21e8a7d17ca",
+   "md5": "e7be3e2bfa47c0e0af30e51daaa6400d"
+  },
+  {
+   "name": "Experiment/SCALE-CC-01/vox2b_groups.json",
+   "bytes": 46751,
+   "sha256": "7beb7ce7f67de74bcc753e1d8f2be10560b105d74dbcbf220c493d65d27fc742",
+   "md5": "57092daac915915414588062dff6caff"
+  },
+  {
+   "name": "Experiment/SCALE-CC-01/vox2_gender.json",
+   "bytes": 103941,
+   "sha256": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089",
+   "md5": "950a8ba9c44e60db1e9bb5b8aac8d4b7"
+  },
+  {
+   "name": "Experiment/DSEL-03/run.py",
+   "bytes": 8256,
+   "sha256": "b6e6a0ae82ceb57c209cfe2bed5a1e81c48b41e3ef9bb9393840d72a795b7d74",
+   "md5": "54da2a723624ff1b9ce320e47edc8074"
+  },
+  {
+   "name": "Experiment/DSEL-02/run.py",
+   "bytes": 5394,
+   "sha256": "4a6d1d0004a11ee3b298ed1761fd90d1440dc32e5d14cff4482ce9eb76c99357",
+   "md5": "97acc6c949ecc0f146d6009a5f1929ee"
+  },
+  {
+   "name": "Experiment/T3RECIPE-01/run.py",
+   "bytes": 15240,
+   "sha256": "7fda47e235f624f810d682fcefd6951e4522bbe2d063f8f5128c18ac4b20eca5",
+   "md5": "13cfbd6f8a5cc445b025de740c4bf1fb"
+  },
+  {
+   "name": "Experiment/T3RECIPE-01/t3r.py",
+   "bytes": 29168,
+   "sha256": "c1877872fcecd97cf16688c246abbe81878bae8fd7b38b022723fa483a082de4",
+   "md5": "ba1034827f4d2c62a0afd3a3f6b8fe1f"
+  },
+  {
+   "name": "Experiment/DSEL-01/vox2_groups.json",
+   "bytes": 150156,
+   "sha256": "4f44f5cee3f9a3ae1109962158c07dcb0101a2a3bdd7c99cf27ed787c7a35cc6",
+   "md5": "70bc17d11d4d9c2ec29c8404f5e60e66"
+  },
+  {
+   "name": "Experiment/EN-T3-01/run.py",
+   "bytes": 7454,
+   "sha256": "90d4ba401239d36e136f2fc0119465e82365cf89686a61ca312c866f83038485",
+   "md5": "88ad33959014aff7855643001712af41"
+  },
+  {
+   "name": "Experiment/CLEANTUNE-01/ct_round2.json",
+   "bytes": 4185,
+   "sha256": "d251142dec126de8776e9ebd5e8dc7b916a28f92f3f224a847e73b590197fcf3",
+   "md5": "21fa1fb37978e72c910f24ab6d0c364d"
+  },
+  {
+   "name": "lab_entry.py",
+   "bytes": 802,
+   "sha256": "a021f3e8090006c8b7ac23ef9397332b768e2a6551a9ecdcd74324448ee6ca42",
+   "md5": "969ad42a47449a3a239cd9323a455f5a"
+  }
+ ],
+ "env_cell_of_the_run": "print(\"[cell] 01 run parameters (kapi --env): environment variables of this r\", flush=True)\n# run parameters (kapi --env): environment variables of this run\nimport os\nos.environ['LAB_FOLDS'] = '1,2'\nos.environ['LID_STRICT'] = '1'\nos.environ['CT_R2_ONLY'] = 'CA'",
+ "kernel_metadata": {
+  "id": "nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12",
+  "id_no": 142545103,
+  "title": "flag-2027-nb-155s-ct02ca-f12",
+  "code_file": "flag-2027-nb-155s-ct02ca-f12.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+   "gpu"
+  ],
+  "dataset_sources": [
+   "ngnnguynchn/flag2027-lid-strict-p",
+   "hthlin/flag2027-aux-voice-feats-p",
+   "ngnnguynchn/flag2027-cc5-oof-p",
+   "ngnnguynchn/flag2027-dsel02-oof-p",
+   "ngnnguynchn/flag2027-e2e-dev-p",
+   "ngnnguynchn/flag2027-eda-bundle-p",
+   "ngnnguynchn/flag2027-facelora03-tables-p",
+   "phanvnhtrng/flag2027-feats-ls-b3s-p",
+   "quynhnhu82/flag2027-feats-ls-c5s-p",
+   "ngnnguynchn/flag2027-feats-screen2-p",
+   "dnq1209/flag2027-feats-tap01-voice-p",
+   "ngnnguynchn/flag2027-feats-vox2b-p",
+   "ngnnguynchn/flag2027-lab-avfull-p",
+   "ngnnguynchn/flag2027-lab-data-p",
+   "ngnnguynchn/flag2027-lab-vb-p"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
+  "machine_shape": "NvidiaTeslaT4"
+ },
+ "bengali_leak_fix_evidence": "Bengali-voice leak fix of 3/11/2026 12:15 (EXPERIMENT_LOG entry 346): the embedded Experiment/VOICELORA-01/run.py has md5 6d0dfe2bdf72d2204b32dd1285129207 (= the fixed file), whose line 166 reads `drop = set(json.loads((VB / \"lid_summary.json\").read_text())[\"speakers_dropped_ids\"]) | T.strict_drop(\"vb\")   # 3/11: LIDSTRICT-01, as vb_rows4`; the run was pushed after the fix"
+}

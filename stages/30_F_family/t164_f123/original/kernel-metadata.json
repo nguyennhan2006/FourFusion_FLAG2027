@@ -1,0 +1,25 @@
+{
+  "id": "nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123",
+  "id_no": 142481029,
+  "title": "flag-2027-nb-164-cleancomp01-f123",
+  "code_file": "flag-2027-nb-164-cleancomp01-f123.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "ngnnguynchn/flag2027-lid-strict-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-lab-data-p"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
+  "machine_shape": "NvidiaTeslaT4"
+}

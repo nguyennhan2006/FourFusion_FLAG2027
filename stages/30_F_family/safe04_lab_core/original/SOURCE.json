@@ -1,0 +1,6 @@
+{
+ "stage": "safe04_lab_core",
+ "exactness": "new",
+ "files": [],
+ "note": "new stage (split from safe04_lab, 2026-11-18 fix of WP-E): stage.ipy is the same text as ../safe04_lab/stage.ipy; the lab code is read from ../safe04_lab/code (verbatim copies, CODE_MANIFEST.json)"
+}

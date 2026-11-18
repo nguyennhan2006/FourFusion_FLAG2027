@@ -1,0 +1,56 @@
+{
+ "from_notebook": "t163b/original/14_flag-2027-nb-163-rfs-b.redacted.ipynb",
+ "note": "payloads embedded (gzip + base64, or the CODE_B64 zip) in the exact notebook; files kept byte-exact (CRLF where the original had CRLF)",
+ "files": {
+  "ref/flag_final_core_092.py": {
+   "bytes": 69260,
+   "sha256": "25abe24db6fbe863109dafd5f75f9075164dce75f77ce276695daf8687d338f7",
+   "md5": "e05408ef2c8b4fb233841949ae667ab2",
+   "lines": 1551,
+   "crlf": 1551,
+   "lf_sha256": "3cad7b8a83d3817c3178e867cd6e7782bd2c77d48539a7051dbcef78066c8f3a",
+   "extracted": true,
+   "path": "original/decoded/ref/flag_final_core_092.py"
+  },
+  "ref/manifest_final.json": {
+   "bytes": 3628,
+   "sha256": "7c11399a63514f40b605e7e0afed65e87697e49d118f4189d6a10d5f4fa6f31b",
+   "md5": "6c88634590d4b77d5b6b407e79517500",
+   "lines": 73,
+   "crlf": 73,
+   "lf_sha256": "463ed60b3e47579ede70b013041ce27ea1c72c5a75ae8b74d4e181199cee9177",
+   "extracted": true,
+   "path": "original/decoded/ref/manifest_final.json"
+  },
+  "train/assemble.py": {
+   "bytes": 7027,
+   "sha256": "b46dd180c21e15837ae24ce1e22c7f0ef5a2b78f76d5202067556d2e0f98048e",
+   "md5": "de998011a20bd3ea65cb4e2dcd2caab3",
+   "lines": 100,
+   "crlf": 0,
+   "lf_sha256": "b46dd180c21e15837ae24ce1e22c7f0ef5a2b78f76d5202067556d2e0f98048e",
+   "extracted": true,
+   "path": "original/decoded/train/assemble.py"
+  },
+  "train/gender.csv": {
+   "bytes": 560,
+   "sha256": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030",
+   "md5": "6bd290a9fda623b738ee646ce7308f3c",
+   "lines": 70,
+   "crlf": 0,
+   "lf_sha256": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030",
+   "withheld": true,
+   "why": "organisers' data: identical to meta_file_train_set.csv (sha256 above); not distributed (user rule 6)"
+  },
+  "train/rfs_train.py": {
+   "bytes": 31635,
+   "sha256": "98aa07ae529c0afc8aa36f304595cab805b137b6386cd4d3044984fe77036562",
+   "md5": "9b86e6872791c4131cff242335fc42a7",
+   "lines": 489,
+   "crlf": 489,
+   "lf_sha256": "cf1622b0319872e47c6dd7b65dce80fe309aa7bbc3c31ecb4c9c74b25d8a321a",
+   "extracted": true,
+   "path": "original/decoded/train/rfs_train.py"
+  }
+ }
+}

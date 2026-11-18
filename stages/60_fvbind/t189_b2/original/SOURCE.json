@@ -1,0 +1,122 @@
+{
+ "stage": "t189_b2",
+ "exactness": "exact-staging",
+ "run": "thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0",
+ "rule": "DESIGN 2.3: folder kapi_<slug>_* whose kernel-metadata.json id = account/slug and whose notebook md5 = notebook_md5 of the LAST push of that kernel in kaggle/kapi_runs.jsonl",
+ "kapi_runs": {
+  "file": "kaggle/kapi_runs.jsonl",
+  "line": 1580,
+  "record": {
+   "time": "2026-11-14 15:55",
+   "account": "thanhhuyen11",
+   "kernel": "thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0",
+   "source": "kaggle/FLAG_189_fvbind.ipynb",
+   "notebook_md5": "4a5e41949fc3aff3dffea9341e902b1b",
+   "gpu": true,
+   "smoke": {},
+   "secrets": [],
+   "datasets": [
+    "ngnnguynchn/flag2027-rfs-bundle-p",
+    "ngnnguynchn/flag2027-lid-strict-p",
+    "onnhqunhh/flag2027-rfs-lora-p",
+    "ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "duongphihoang/flag2027-audio-cache-p",
+    "chnnhnnguyn/external-data-mavceleb",
+    "ngnnguynchn/flag2027-raw-v4-p",
+    "quynhnhu82/flag2027-feats-ls-c5s-p",
+    "trngsnam/flag2027-feats-peface01-pe0-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "hthlin/flag2027-aux-voice-feats-p",
+    "ngnnguynchn/flag2027-feats-screen2-p",
+    "nguynchnngn1/flag2027-feats-rfs-a-p",
+    "phanththui/flag2027-feats-rfs-b-p",
+    "phanvnnnnn6789/flag2027-feats-rfs-c-p"
+   ],
+   "kernels": [],
+   "ok": true
+  },
+  "is_last_push_for_kernel": true,
+  "other_lines_same_kernel_same_md5": []
+ },
+ "copied_from": {
+  "windows_temp_staging_folder": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-189-fvbind-b2-ib0_r28ereix/",
+  "byte_exact_private": "FF_DATA/_private_originals/t189_b2/flag-2027-nb-189-fvbind-b2-ib0.ipynb (private data folder shared with the organisers, not in this repository; runner/check_stage.py looks there; byte-exact, including the organisers' literal where the notebook has one)",
+  "byte_exact_public_route": "python stages/60_fvbind/restore_exact.py --csv <meta_file_train_set.csv> --out <dir> (md5 / sha256 checked against 'redactions')",
+  "staging_provenance": "build-time copy NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-189-fvbind-b2-ib0_r28ereix/ (with MANIFEST.json there: md5 vs kapi_runs, kernel-metadata vs kapi_runs, secret scan); the staging folder _staging_backup/ is moved out of the repository before publication and kept privately (todo WP-A / WP-K)",
+  "copied_on": "2026-11-18"
+ },
+ "exact_notebook": {
+  "name": "flag-2027-nb-189-fvbind-b2-ib0.ipynb",
+  "bytes": 77501,
+  "md5": "4a5e41949fc3aff3dffea9341e902b1b",
+  "sha256": "bbb1161d647f6deb2fbbcf5c71555072cd4786a26ec9a280250ebaea285bc839",
+  "kept_where": "byte-exact in the backup folder above (outside the published tree) and in the Windows Temp folder; to be stored with the private data (FF_DATA) before publication"
+ },
+ "files": [
+  {
+   "repo_file": "flag-2027-nb-189-fvbind-b2-ib0.redacted.ipynb",
+   "kind": "notebook (redacted copy)",
+   "bytes": 77273,
+   "md5": "1a3be4b98eb2e0319ce718d7ff02beab",
+   "sha256": "bb9b11a892a50a49cc0e615f0483205589d237b3faf8611a7844fa0eb5c28ab6"
+  },
+  {
+   "repo_file": "kernel-metadata.json",
+   "kind": "kernel metadata of the push (byte-exact copy)",
+   "bytes": 1114,
+   "md5": "7f63752c31c5c8c886a63363fa9a8d6d",
+   "sha256": "3a155ee99e778f912c7ef882bc39efed05688f39e40158371ec6752e37f829f1"
+  },
+  {
+   "repo_file": "flag-2027-nb-189-fvbind-b2-ib0.log",
+   "kind": "Kaggle log of the run (byte-exact copy)",
+   "copied_from": "Experiment/FVBIND-01/out/flag-2027-nb-189-fvbind-b2-ib0/flag-2027-nb-189-fvbind-b2-ib0.log",
+   "bytes": 25378,
+   "md5": "a7dfe730a652a331fe34bd98b1a499b4",
+   "sha256": "5b92da9f1d1dd1315de9d82a5470cf4b7bf35a50218251a3ec6e703955fcbb20"
+  }
+ ],
+ "redactions": [
+  {
+   "repo_file": "flag-2027-nb-189-fvbind-b2-ib0.redacted.ipynb",
+   "exact_name": "flag-2027-nb-189-fvbind-b2-ib0.ipynb",
+   "exact_md5": "4a5e41949fc3aff3dffea9341e902b1b",
+   "exact_sha256": "bbb1161d647f6deb2fbbcf5c71555072cd4786a26ec9a280250ebaea285bc839",
+   "redacted_md5": "1a3be4b98eb2e0319ce718d7ff02beab",
+   "redacted_sha256": "bb9b11a892a50a49cc0e615f0483205589d237b3faf8611a7844fa0eb5c28ab6",
+   "what": "base64 literal of the embedded file train/gender.csv in the setup cell",
+   "content": "organisers' file meta_file_train_set.csv (MAV-Celeb v4 train set metadata: 70 rows 'idNNN,f|m')",
+   "decoded_sha256": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030",
+   "decoded_bytes": 560,
+   "byte_offset_in_exact_file": 5603,
+   "removed_length": 228,
+   "removed_literal_sha256": "5af7e8b8d87b0d1d4aa4f59c495150e2f305b45236466f8f31930678578e372c",
+   "removed_literal_md5": "2a372df1bbdd63bdf10d57cb7188398c",
+   "regenerate": "base64.b64encode(gzip.compress(open('meta_file_train_set.csv', 'rb').read(), compresslevel=9, mtime=0))",
+   "regenerate_checked": true,
+   "restore": "exact = redacted[:offset] + literal + redacted[offset:] (tool: stages/60_fvbind/restore_exact.py)",
+   "effect_on_this_run": "none: train/gender.csv is read only by assemble.py in RFS_MODE=B (bundle assembly, stage t163b of group 40); this notebook runs another mode and never reads it; with the literal removed the file is written empty",
+   "why": "user rule 6: organisers' data is never copied into the repository; the literal is the only organisers' data in this notebook (secret scan clean, no dev data, no VoxBlink data)"
+  }
+ ],
+ "notes": [
+  "same notebook (md5 4a5e4194...) was also pushed under nguyenchonnhan (kapi_runs:1578), queued and deleted; the run of 13.54 is thanhhuyen11 (line 1580)",
+  "kaggle/FLAG_189_fvbind.ipynb and kaggle/build_flag189.py of today embed fvbind.py 59b949e4... (adds arm B2g of CELL4-01): NOT the executed bytes",
+  "kaggle/sat_push.sh (case 189, lines 1050-1061) now attaches ngnnguynchn/flag2027-rfs-lorafix1-p (edited 16/11): the original run attached onnhqunhh/flag2027-rfs-lora-p (kernel-metadata.json); B2 itself never reads lora_C1.pt"
+ ],
+ "embedded": "embedded/EMBEDDED.json",
+ "builder": "kaggle/build_flag189.py (FVBIND cell :23-57, cells() :60-66 = setup / inputs / lora cells of kaggle/build_flag163.py in mode LAB + one FVBIND cell) -> kaggle/FLAG_189_fvbind.ipynb; push: ACC=thanhhuyen11 ARMS=B2,IB0 bash kaggle/sat_push.sh 189 (sat_push.sh:1050-1061)",
+ "embedded_payloads": {
+  "train/fvbind.py": "5774cb2ee6ae2a056d8186ef609bd4c01d0d56f13ad1651b7c38e971f9165ef1",
+  "train/rfs_train.py": "e222166a9ee3eca5927a77a643a96cf60dbcb2ba9c5aacbcab9565312b4c7ffc",
+  "ref/flag_final_core_092.py": "25abe24db6fbe863109dafd5f75f9075164dce75f77ce276695daf8687d338f7",
+  "train/assemble.py": "b46dd180c21e15837ae24ce1e22c7f0ef5a2b78f76d5202067556d2e0f98048e"
+ },
+ "repo_versions_today": {
+  "Experiment/FVBIND-01/fvbind.py": "59b949e4... (adds arm B2g; the B2 path and its random stream unchanged, S6 1.1)",
+  "Experiment/FVBIND-01/fvb_extract.py": "72248d41... (= embedded copy of FLAG_192)",
+  "Experiment/RFS-01/train/rfs_train.py": "2f79b004... (later opt-in keys; RFS_LORA_FIX=1 by default since 16/11)"
+ }
+}

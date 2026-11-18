@@ -1,0 +1,116 @@
+[{"stream_name":"stderr","time":5.498857808,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":5.498895298,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":6.282043854,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.282072204,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.282076594,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.282080146,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":6.840332314,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.840367504,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.840371705,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.84037456,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":7.871208321,"data":"[cell] 01 run parameters (kapi --env): environment variables of this r\n"}
+,{"stream_name":"stdout","time":7.893336756,"data":"[boot] FLAG_164_cleancomp01 | python 3.13.16 | start 2026-11-03 09:26:01\n"}
+,{"stream_name":"stdout","time":7.894224445,"data":"[cell] env\n"}
+,{"stream_name":"stdout","time":13.713405395,"data":"09:26:07 data ['/kaggle/input/datasets/ngnnguynchn/flag2027-lab-data-p/lab'] (main built 2026-10-08 21:02) | eda bundle 2026-09-29 08:06 | experiment CLEANCOMP-01 | folds [1, 2, 3] | GPU Tesla T4 | torch 2.11.0+cu130\n"}
+,{"stream_name":"stdout","time":13.772731555,"data":"[cell] setup\n"}
+,{"stream_name":"stdout","time":13.784683978,"data":"  e2f63ea92aa5c62e66a034a20a5ab493  kaggle/build_l0_notebooks.py\n"}
+,{"stream_name":"stdout","time":13.784702651,"data":"  e288a49c7f77f9a22e9cce00aead459b  Experiment/SAFE-04/lab_streams.py\n"}
+,{"stream_name":"stdout","time":13.784707288,"data":"  7166b20f70f25f342a22bfcadc5883ac  Experiment/SAFE-04/rel_sweep.py\n"}
+,{"stream_name":"stdout","time":13.784711407,"data":"  75899e4caf38b38bbf953da6b5b62a04  Experiment/SAFE-04/rel_sweep2.py\n"}
+,{"stream_name":"stdout","time":13.78471539,"data":"  557afcb255ab4f1b4696296633d87a88  Experiment/SAFE-04/rel_sweep5.py\n"}
+,{"stream_name":"stdout","time":13.784719202,"data":"  402aaf561639e75409f2ead79d78a939  Experiment/SAFE-04/rel.py\n"}
+,{"stream_name":"stdout","time":13.784723008,"data":"  e3260d3276cfdca8eb08dbcfd26f19aa  Experiment/VOX2-01/run_bridge.py\n"}
+,{"stream_name":"stdout","time":13.784726886,"data":"  fd780c6f94762c24b9d9cf4db49df181  Experiment/T3ENC-01/run.py\n"}
+,{"stream_name":"stdout","time":13.78473264,"data":"  413e0779662fc2be0b5fb75930129e5b  Experiment/ALLNEG-01/run.py\n"}
+,{"stream_name":"stdout","time":13.784736436,"data":"  f2a9a4f099496905ea93d9cf44025860  Experiment/BIGB-01/run.py\n"}
+,{"stream_name":"stdout","time":13.784740583,"data":"  2e2913fb5310c53191ead982de51582e  Experiment/SCALE-VB/run.py\n"}
+,{"stream_name":"stdout","time":13.784746259,"data":"  2e99d3b90dc56675ca4b36ded1a83e96  Experiment/VBSEL-01/run.py\n"}
+,{"stream_name":"stdout","time":13.784762755,"data":"  37f4e8670949bc32f086003a593f9036  Experiment/VBSEL-01/vox2_sa_speakers.json\n"}
+,{"stream_name":"stdout","time":13.784767908,"data":"  4a40fb17c9585c2f66b177f5b529b777  Experiment/ENBASE-01/run.py\n"}
+,{"stream_name":"stdout","time":13.784772531,"data":"  6f8adb4e06e1ea959e33bfa55397f3c1  Experiment/CLEANCOMP-01/run.py\n"}
+,{"stream_name":"stdout","time":13.784776713,"data":"  7f6ef282ce66be62b897b067ed9f8e0e  lab_entry.py\n"}
+,{"stream_name":"stdout","time":13.784780827,"data":"09:26:07 lab ready at /kaggle/working/lab: 16 code files, data folders linked: ['kaggle/output/feats_av', 'kaggle/output/feats_eval', 'kaggle/output/feats_models', 'Experiment/T3ENC-01/feats_t3enc', 'Experiment/T3ENC-01/feats_vox2t3', 'Experiment/T3ENC-01/feats_vox2lid', 'Experiment/VOX2-01/feats_vox2']\n"}
+,{"stream_name":"stdout","time":13.802388334,"data":"[cell] resume\n"}
+,{"stream_name":"stdout","time":13.884334181,"data":"[cell] folds\n"}
+,{"stream_name":"stdout","time":16.285902489,"data":"LOCAL | device cuda | steps 1200 | nets 3 | folds [1, 2, 3, 4, 5] | arms ['CTRL']\n"}
+,{"stream_name":"stdout","time":16.289486067,"data":"09:26:10 bundle: /kaggle/input/datasets/ngnnguynchn/flag2027-eda-bundle-p/eda_bundle | 2026-09-29 08:06\n"}
+,{"stream_name":"stdout","time":22.07552108,"data":"09:26:16 LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":22.098083465,"data":"09:26:16 v4 6485 rows / 70 persons / 4029 distinct voices | v1+v2 faces 16533, voices 40271, persons 151\n"}
+,{"stream_name":"stdout","time":24.848797877,"data":"09:26:18 extra arrays: v4 {'aclf': (6485, 1024), 'aclv': (6485, 1024), 'lbf': (6485, 768), 'lbv': (6485, 768), 'ibal': (6485, 1024), 'vgen': (6485, 3)} | ext {'aclf': (16533, 1024), 'aclv': (40271, 1024), 'lbf': (16533, 768), 'lbv': (40271, 768), 'ibal': (16533, 1024), 'vgen': (40271, 3)}\n"}
+,{"stream_name":"stdout","time":28.442696258,"data":"09:26:22 CLEANCOMP-01 fold 1: MAV_DROP 58 files, 58 matched in VMETA\n"}
+,{"stream_name":"stdout","time":269.77911778,"data":"09:30:23 fold 1 XALL trained + scored [241s]\n"}
+,{"stream_name":"stdout","time":273.052981816,"data":"09:30:27 fold 1 relc_fia_eb: 160 ids [3s]\n"}
+,{"stream_name":"stdout","time":276.389418689,"data":"09:30:30 fold 1 relg_fia_eb: 160 anchors, 97 male [1s]\n"}
+,{"stream_name":"stdout","time":276.469075489,"data":"09:30:30 fold 1 rel / relg [248s]\n"}
+,{"stream_name":"stdout","time":348.358277846,"data":"09:31:42 fold 1 P512: 4447 identities, 53287 rows, 1196 steps (P 512 K 2, 3 nets) [72s]\n"}
+,{"stream_name":"stdout","time":348.365189862,"data":"09:31:42 fold 1 done [72s]\n"}
+,{"stream_name":"stdout","time":351.403454733,"data":"09:31:45 fold 1 done [3s]\n"}
+,{"stream_name":"stdout","time":351.44969594,"data":"09:31:45 fold 1 done: 7406 trials, columns ['XALL_deep0', 'XALL_cca', 'XALL_ib', 'XALL_age', 'relc_fia_eb', 'relg_fia_eb', 'anP512_deep', 'anP512_cca', 't3_relg'] [323s]\n"}
+,{"stream_name":"stdout","time":353.780611571,"data":"09:31:47 fold 1 saved: ['cleancomp01_fold1.parquet'] [340s]\n"}
+,{"stream_name":"stdout","time":355.767882484,"data":"LOCAL | device cuda | steps 1200 | nets 3 | folds [1, 2, 3, 4, 5] | arms ['CTRL']\n"}
+,{"stream_name":"stdout","time":355.774941528,"data":"09:31:49 bundle: /kaggle/input/datasets/ngnnguynchn/flag2027-eda-bundle-p/eda_bundle | 2026-09-29 08:06\n"}
+,{"stream_name":"stdout","time":356.786553419,"data":"09:31:50 LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":356.799332428,"data":"09:31:50 v4 6485 rows / 70 persons / 4029 distinct voices | v1+v2 faces 16533, voices 40271, persons 151\n"}
+,{"stream_name":"stdout","time":357.283082348,"data":"09:31:51 extra arrays: v4 {'aclf': (6485, 1024), 'aclv': (6485, 1024), 'lbf': (6485, 768), 'lbv': (6485, 768), 'ibal': (6485, 1024), 'vgen': (6485, 3)} | ext {'aclf': (16533, 1024), 'aclv': (40271, 1024), 'lbf': (16533, 768), 'lbv': (40271, 768), 'ibal': (16533, 1024), 'vgen': (40271, 3)}\n"}
+,{"stream_name":"stdout","time":357.785279099,"data":"09:31:51 CLEANCOMP-01 fold 2: MAV_DROP 58 files, 58 matched in VMETA\n"}
+,{"stream_name":"stdout","time":588.675515672,"data":"09:35:42 fold 2 XALL trained + scored [231s]\n"}
+,{"stream_name":"stdout","time":591.992253779,"data":"09:35:46 fold 2 relc_fia_eb: 161 ids [3s]\n"}
+,{"stream_name":"stdout","time":595.24459682,"data":"09:35:49 fold 2 relg_fia_eb: 161 anchors, 104 male [1s]\n"}
+,{"stream_name":"stdout","time":595.278696248,"data":"09:35:49 fold 2 rel / relg [237s]\n"}
+,{"stream_name":"stdout","time":659.802933232,"data":"09:36:53 fold 2 P512: 4448 identities, 52469 rows, 1224 steps (P 512 K 2, 3 nets) [65s]\n"}
+,{"stream_name":"stdout","time":659.81052206,"data":"09:36:53 fold 2 done [65s]\n"}
+,{"stream_name":"stdout","time":662.869235306,"data":"09:36:56 fold 2 done [3s]\n"}
+,{"stream_name":"stdout","time":662.926401263,"data":"09:36:56 fold 2 done: 7658 trials, columns ['XALL_deep0', 'XALL_cca', 'XALL_ib', 'XALL_age', 'relc_fia_eb', 'relg_fia_eb', 'anP512_deep', 'anP512_cca', 't3_relg'] [305s]\n"}
+,{"stream_name":"stdout","time":663.868241755,"data":"09:36:57 fold 2 saved: ['cleancomp01_fold2.parquet'] [310s]\n"}
+,{"stream_name":"stdout","time":665.857632059,"data":"LOCAL | device cuda | steps 1200 | nets 3 | folds [1, 2, 3, 4, 5] | arms ['CTRL']\n"}
+,{"stream_name":"stdout","time":665.863809098,"data":"09:36:59 bundle: /kaggle/input/datasets/ngnnguynchn/flag2027-eda-bundle-p/eda_bundle | 2026-09-29 08:06\n"}
+,{"stream_name":"stdout","time":666.854645006,"data":"09:37:00 LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":666.867629113,"data":"09:37:00 v4 6485 rows / 70 persons / 4029 distinct voices | v1+v2 faces 16533, voices 40271, persons 151\n"}
+,{"stream_name":"stdout","time":667.337537982,"data":"09:37:01 extra arrays: v4 {'aclf': (6485, 1024), 'aclv': (6485, 1024), 'lbf': (6485, 768), 'lbv': (6485, 768), 'ibal': (6485, 1024), 'vgen': (6485, 3)} | ext {'aclf': (16533, 1024), 'aclv': (40271, 1024), 'lbf': (16533, 768), 'lbv': (40271, 768), 'ibal': (16533, 1024), 'vgen': (40271, 3)}\n"}
+,{"stream_name":"stdout","time":667.837904427,"data":"09:37:01 CLEANCOMP-01 fold 3: MAV_DROP 58 files, 58 matched in VMETA\n"}
+,{"stream_name":"stdout","time":903.743950161,"data":"09:40:57 fold 3 XALL trained + scored [236s]\n"}
+,{"stream_name":"stdout","time":906.99443046,"data":"09:41:01 fold 3 relc_fia_eb: 161 ids [3s]\n"}
+,{"stream_name":"stdout","time":910.259454136,"data":"09:41:04 fold 3 relg_fia_eb: 161 anchors, 103 male [1s]\n"}
+,{"stream_name":"stdout","time":910.288044433,"data":"09:41:04 fold 3 rel / relg [242s]\n"}
+,{"stream_name":"stdout","time":974.148617664,"data":"09:42:08 fold 3 P512: 4448 identities, 53338 rows, 1196 steps (P 512 K 2, 3 nets) [64s]\n"}
+,{"stream_name":"stdout","time":974.152726343,"data":"09:42:08 fold 3 done [64s]\n"}
+,{"stream_name":"stdout","time":977.139838643,"data":"09:42:11 fold 3 done [3s]\n"}
+,{"stream_name":"stdout","time":977.182781724,"data":"09:42:11 fold 3 done: 7598 trials, columns ['XALL_deep0', 'XALL_cca', 'XALL_ib', 'XALL_age', 'relc_fia_eb', 'relg_fia_eb', 'anP512_deep', 'anP512_cca', 't3_relg'] [309s]\n"}
+,{"stream_name":"stdout","time":978.098230812,"data":"09:42:12 fold 3 saved: ['cleancomp01_fold3.parquet'] [314s]\n"}
+,{"stream_name":"stdout","time":978.120114175,"data":"[cell] check\n"}
+,{"stream_name":"stdout","time":978.418535676,"data":"cleancomp01_fold1.parquet: 7406 trials, streams ['XALL_cca', 'anP512_deep', 'anP512_cca'], NaN 0\n"}
+,{"stream_name":"stdout","time":978.418569358,"data":"cleancomp01_fold2.parquet: 7658 trials, streams ['XALL_cca', 'anP512_deep', 'anP512_cca'], NaN 0\n"}
+,{"stream_name":"stdout","time":978.418575303,"data":"cleancomp01_fold3.parquet: 7598 trials, streams ['XALL_cca', 'anP512_deep', 'anP512_cca'], NaN 0\n"}
+,{"stream_name":"stdout","time":978.418580119,"data":"{\n"}
+,{"stream_name":"stdout","time":978.418584405,"data":" \"exp\": \"CLEANCOMP-01\",\n"}
+,{"stream_name":"stdout","time":978.418588989,"data":" \"done\": [\n"}
+,{"stream_name":"stdout","time":978.418593303,"data":"  1,\n"}
+,{"stream_name":"stdout","time":978.418597512,"data":"  2,\n"}
+,{"stream_name":"stdout","time":978.418601673,"data":"  3\n"}
+,{"stream_name":"stdout","time":978.418605754,"data":" ],\n"}
+,{"stream_name":"stdout","time":978.418609735,"data":" \"files\": {\n"}
+,{"stream_name":"stdout","time":978.418619096,"data":"  \"cleancomp01_fold1.parquet\": \"df23f262b7ffa68cbbba9262443ed3a8\",\n"}
+,{"stream_name":"stdout","time":978.41862357,"data":"  \"cleancomp01_fold2.parquet\": \"3b42bf950f3dd945bc3d4b4a6745ddd8\",\n"}
+,{"stream_name":"stdout","time":978.418626711,"data":"  \"cleancomp01_fold3.parquet\": \"8d655c1beb1f1a9c40763a40be45376f\"\n"}
+,{"stream_name":"stdout","time":978.418629813,"data":" },\n"}
+,{"stream_name":"stdout","time":978.418632623,"data":" \"seconds\": {\n"}
+,{"stream_name":"stdout","time":978.418635494,"data":"  \"1\": 340,\n"}
+,{"stream_name":"stdout","time":978.418638379,"data":"  \"2\": 310,\n"}
+,{"stream_name":"stdout","time":978.41864128,"data":"  \"3\": 314\n"}
+,{"stream_name":"stdout","time":978.418644144,"data":" },\n"}
+,{"stream_name":"stdout","time":978.418646893,"data":" \"gpu\": \"Tesla T4\",\n"}
+,{"stream_name":"stdout","time":978.418649913,"data":" \"torch\": \"2.11.0+cu130\",\n"}
+,{"stream_name":"stdout","time":978.418653026,"data":" \"data_built\": \"2026-10-08 21:02\",\n"}
+,{"stream_name":"stdout","time":978.418656003,"data":" \"eda_bundle\": \"2026-09-29 08:06\",\n"}
+,{"stream_name":"stdout","time":978.418658957,"data":" \"finished\": \"2026-11-03 09:42\"\n"}
+,{"stream_name":"stdout","time":978.41866193,"data":"}\n"}
+,{"stream_name":"stdout","time":978.418664851,"data":"NEXT: download /kaggle/working/lab_out (or Save Version -\u003e Output -\u003e New Dataset `flag2027-lab-out`) and hand it back.\n"}
+,{"stream_name":"stderr","time":981.354490928,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":981.354523103,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":981.502663694,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":981.502692128,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":982.288255421,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":982.370830946,"data":"[NbConvertApp] Writing 132984 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":984.853033216,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":985.38099221,"data":"[NbConvertApp] Writing 440059 bytes to __results__.html\n"}
+]

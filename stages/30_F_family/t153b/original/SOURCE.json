@@ -1,0 +1,90 @@
+{
+ "stage": "t153b",
+ "run": "phanvnhtrng/flag-2027-nb-153b-b3s",
+ "files": [
+  {
+   "repo_path": "original/03_flag-2027-nb-153b-b3s.ipynb",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/03_flag-2027-nb-153b-b3s.ipynb",
+   "source_md5": "aea47b3fc6f54ac8eb2e9fdf13a9c88d",
+   "source_sha256": "9065f050be87c158ab2753a537e5dc467883ee9678bb75cd6e1108216e912e43",
+   "source_bytes": 193342,
+   "repo_sha256": "9065f050be87c158ab2753a537e5dc467883ee9678bb75cd6e1108216e912e43",
+   "repo_bytes": 193342,
+   "byte_identical_to_source": true,
+   "e_package_manifest_sha256": "9065f050be87c158ab2753a537e5dc467883ee9678bb75cd6e1108216e912e43"
+  },
+  {
+   "repo_path": "original/03_flag-2027-nb-153b-b3s.log",
+   "copied_from": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/03_flag-2027-nb-153b-b3s.log",
+   "source_md5": "4e57614606df77cd141d1dc89e49f086",
+   "source_sha256": "e4487c30e8e100586994b610fceb2e656fe757add6b93f50518519fbc4b7eaa1",
+   "source_bytes": 68822,
+   "byte_identical_to_source": true,
+   "e_package_manifest_sha256": "e4487c30e8e100586994b610fceb2e656fe757add6b93f50518519fbc4b7eaa1"
+  }
+ ],
+ "kapi_runs": [
+  {
+   "line": 1061,
+   "time": "2026-11-03 10:17",
+   "account": "phanvnhtrng",
+   "kernel": "phanvnhtrng/flag-2027-nb-153b-b3s-smoke",
+   "source": "kaggle/FLAG_153b_b3s.ipynb",
+   "notebook_md5_pushed": "a8c54ad413cf9cf44d18c215c33f7510",
+   "gpu": false,
+   "smoke": {
+    "FLAG_SMOKE": "1",
+    "FLAG_SMOKE_ROWS": "6",
+    "SMOKE_IDS": "4",
+    "LORA_STEPS": "3",
+    "LORA_P": "4",
+    "LORA_K": "2"
+   },
+   "datasets": [
+    "ngnnguynchn/flag2027-raw-v4-p",
+    "chnnhnnguyn/external-data-mavceleb",
+    "ngnnguynchn/flag2027-ext-meta-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "onnhqunhh/flag2027-lora-frames-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  },
+  {
+   "line": 1064,
+   "time": "2026-11-03 10:59",
+   "account": "phanvnhtrng",
+   "kernel": "phanvnhtrng/flag-2027-nb-153b-b3s",
+   "source": "kaggle/FLAG_153b_b3s.ipynb",
+   "notebook_md5_pushed": "768173aca00f08d689157a0aff567085",
+   "gpu": true,
+   "smoke": {},
+   "datasets": [
+    "ngnnguynchn/flag2027-raw-v4-p",
+    "chnnhnnguyn/external-data-mavceleb",
+    "ngnnguynchn/flag2027-ext-meta-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "onnhqunhh/flag2027-lora-frames-p",
+    "ngnnguynchn/flag2027-lid-strict-p"
+   ],
+   "kernels": [],
+   "ok": true
+  }
+ ],
+ "pushed_vs_executed": "kapi_runs.jsonl records the md5 of the notebook as PUSHED (kapi staging folder); the executed copy here was obtained from Kaggle after the run (package E (E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/) notebooks/ = kernels pull, or release/flag2027_e2e/pull_runs.py), and Kaggle re-serialises the JSON, so the two md5 differ by construction. The Temp staging folders of these pushes are empty (repo/_staging_backup/MANIFEST.json: covered_elsewhere).",
+ "release_e2e_check": {
+  "release_code": "release/flag2027_e2e/code/t153b.ipy",
+  "release_sha256": "8ac7ee6bb8ed3541b5967a5275098928c85500dd587758532bb7efc0170137f3",
+  "rebuilt_from_exact_notebook_with_release_patches_sha256": "8ac7ee6bb8ed3541b5967a5275098928c85500dd587758532bb7efc0170137f3",
+  "equal": true
+ },
+ "redaction": null,
+ "embedded_code_members": null,
+ "env_cell_of_the_run": "print(\"[cell] 01 run parameters (kapi --env): environment variables of this r\", flush=True)\n# run parameters (kapi --env): environment variables of this run\nimport os\nos.environ['FL3_UPLOAD'] = 'phanvnhtrng/flag2027-feats-ls-b3s-p'\nos.environ['LORA_BUDGET_H'] = '10.3'",
+ "kernel_metadata": null
+}

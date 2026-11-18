@@ -1,0 +1,37 @@
+{
+  "id": "nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12",
+  "id_no": 142545103,
+  "title": "flag-2027-nb-155s-ct02ca-f12",
+  "code_file": "flag-2027-nb-155s-ct02ca-f12.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "ngnnguynchn/flag2027-lid-strict-p",
+    "hthlin/flag2027-aux-voice-feats-p",
+    "ngnnguynchn/flag2027-cc5-oof-p",
+    "ngnnguynchn/flag2027-dsel02-oof-p",
+    "ngnnguynchn/flag2027-e2e-dev-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-facelora03-tables-p",
+    "phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "quynhnhu82/flag2027-feats-ls-c5s-p",
+    "ngnnguynchn/flag2027-feats-screen2-p",
+    "dnq1209/flag2027-feats-tap01-voice-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-lab-avfull-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-lab-vb-p"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
+  "machine_shape": "NvidiaTeslaT4"
+}

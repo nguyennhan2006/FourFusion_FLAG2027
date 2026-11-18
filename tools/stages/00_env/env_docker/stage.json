@@ -1,0 +1,35 @@
+{
+ "id": "env_docker",
+ "group": "00_env",
+ "title": "Environment specification check: Kaggle base image v173 + pinned pip packages (Docker build optional, printed only)",
+ "kind": "data",
+ "role_in_1354": "optional",
+ "compute": {"device": "cpu", "gpus": 0, "minutes_original": 1, "internet": false, "secrets": []},
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": "release/docker/Dockerfile",
+  "notebook_md5": null,
+  "builder": null,
+  "basis": "DESIGN 4.0 env_docker. The advisor's decision (no more Docker work) turns the stage into an environment check: it records the interpreter / library versions and the full package list (pip_freeze.txt) of whatever machine runs it and compares them with docker/constraints-kaggle-v173.txt (= the pins of the copied Dockerfile). It prints the docker build commands of the reference Dockerfile without running them.",
+  "dockerfile_sha256": "ad84e6fea5f55541c087d85fe5de806049d2f93fe0a3a5a1530842fbbbe66eb9"
+ },
+ "inputs": [],
+ "outputs": {"kernel": "notebooks/ff/env_docker", "exports": {}, "files": ["env_report.json", "pip_freeze.txt"]},
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [],
+ "verify": [
+  {"file": "env_report.json", "key": "ok", "equals": true, "note": "every pinned package that is installed has the pinned version (warning only: a Kaggle image newer than v173 differs)"}
+ ],
+ "post_checks": [],
+ "todo": [
+  "requirements.lock.txt of the built image is not available: the image was never built for this repository (Docker not required); the closest lock is in the local fourfusion:cpu image of 2026-11-07 (tools/PULL_MISSING_RUNS.md section 4)",
+  "docker_image digest of the Evaluation / FVBIND runs of 11-16/11 not yet read (kaggle kernels pull -m, tools/PULL_MISSING_RUNS.md section 3)"
+ ]
+}

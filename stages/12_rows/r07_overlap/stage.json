@@ -1,0 +1,100 @@
+{
+ "id": "r07_overlap",
+ "group": "12_rows",
+ "title": "Evidence: MAV <-> v4 identity overlap list (SET-07), train-only rule; the chain hard-codes the result",
+ "kind": "data",
+ "role_in_1354": "evidence",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 2,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "team machine, 27/09/2026 09:25 (+07); log 49",
+  "exactness": "local-script",
+  "source_file": "Experiment/SET-07/overlap.py",
+  "notebook_md5": null,
+  "builder": null,
+  "script_md5": "529d57a96e4cbf83ca6c9faea2a4b534"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p"
+  },
+  {
+   "artifact": "notebooks/ff/r08_mav_rows"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/r07_overlap",
+  "exports": {},
+  "kernel_layout": {
+   "r07_check.json": "flagged MAV person keys, threshold, margins, comparison with the hard-coded list (MAV keys and scores only, no v4 identity)"
+  }
+ },
+ "env": {},
+ "smoke_env": {
+  "FF_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [],
+ "skip_with_note": "nothing consumes this stage: the chain hard-codes OVERLAP = {'v1_complete:shaukat_tarin', 'v2_complete:id0073'} (kaggle/build_l0_notebooks.py:92,1309; BEST/v7_safe/safe_lib.py:23)",
+ "verify": [
+  {
+   "file": "r07_check.json",
+   "check": "flagged == ['v1_complete:shaukat_tarin', 'v2_complete:id0073']"
+  }
+ ],
+ "todo": [
+  "user / WP-K: the list links identities across MAV-Celeb and the organisers' v4 train set (team decision pending; see docs/COMPLIANCE_NOTES.md). It is applied only in the F1s' family; no match of shaukat|id0073|OVERLAP was found in the RFS family code (Experiment/RFS-01/train, kaggle/build_flag16{0,2,3}.py) or the DP branch code (Experiment/XJF-01/xjf.py; internal name, see docs/NAMING.md): unverified",
+  "WP-K: docs/COMPLIANCE_NOTES.md should record the pending decision and that this stage is force_only (FF_FORCE=r07_overlap) and keeps no linkage table"
+ ],
+ "notes": [
+  "R07_WITH_DEV=1 reruns the original rule (reads dev feature csv files and lists from dev_set.zip); not used for the 13.54 reproduction.",
+  "The original overlap.csv is not copied into the repo and the stage keeps no such table: it pairs each MAV person with its nearest v4 train identity (a linkage table).",
+  "force_only: nothing consumes this stage (the chain hard-codes the two keys); it runs only when named in FF_FORCE, until the team decides on the linkage (docs/COMPLIANCE_NOTES.md).",
+  "Threshold: with --train-only the list depends only on THR. The SET-07 run did not save it; the same rule printed 0.624 in FLAG_08 (log 37); the original output brackets it in [0.6212, 0.6503) (expected.json). Margin ~0.003 to the highest non-flagged person: cell 01 prints THR and both margins and only warns when a difference is within 0.01 of THR."
+ ],
+ "changes_summary": [
+  "path: overlap.py lines 4-10: R / 'kaggle', R / 'kaggle_upload', R / 'kaggle/output/feats_ext_full', R / 'kaggle/output/feats_v2', cwd overlap.csv -> --lib, --data, --feats-ext, --feats-dir (default = --feats-ext), --out",
+  "dev-exclusion: overlap.py, new flag --train-only (default of the stage): skip lines 24-27 (THR_DEV from the 20 nearest dev faces) and the dev term of line 36-37; stub flag_lib.load_dev so FeatureStore reads no dev file",
+  "pin: lib/flag_v2.py, lib/flag_lib.py: copies of git a89a071 kaggle/flag_v2.py and kaggle/flag_lib.py (the run imported the working copy of 27/09)",
+  "new: cells/00_data.py, cells/01_overlap.py: new: unpack the three organiser files from train_set.zip (+ dev csv / lists only with R07_WITH_DEV=1) into a scratch folder outside /kaggle/working, run overlap.py, hide its printed rows that name a v4 identity, write r07_check.json (MAV keys, THR, margins), delete the scratch folder",
+  "new: r07_overlap force_only (runs only with FF_FORCE=r07_overlap) while the linkage decision is pending"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_data.py"
+   },
+   {
+    "new": "cells/01_overlap.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_data.py",
+    "title": "r07: unpack the organiser feature csv files of the train set (no dev file unless R07_WITH_"
+   },
+   {
+    "new": "cells/01_overlap.py",
+    "title": "r07: overlap.py (SET-07, paths as arguments) and comparison with the list hard-coded in th"
+   }
+  ],
+  "n_cells": 2,
+  "stage_ipy_sha256": "e99a79ca770e67f705afd2e24107e2ab558392f8ac189fae70f37f8deb84b75a"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)",
+ "force_only": true,
+ "scratch_outside_working": "organiser csv files (r07_data/) and overlap.csv live in a tempfile.mkdtemp folder outside /kaggle/working and are deleted by cell 01; the runner never collects them"
+}

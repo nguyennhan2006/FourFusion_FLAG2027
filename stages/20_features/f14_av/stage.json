@@ -1,0 +1,371 @@
+{
+ "id": "f14_av",
+ "group": "20_features",
+ "title": "FLAG_14 (wiring): AudioCLIP, ImageBind-align, CLIP B/32, B/16, Wav2CLIP, LanguageBind on v4 train + a MAV-Celeb subset",
+ "kind": "data",
+ "role_in_1354": "wiring",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "minutes_original": 180,
+  "internet": true,
+  "secrets": [],
+  "note": "not recorded; estimate from the executed notebook's progress lines (LanguageBind voices alone about 25 min)"
+ },
+ "origin": {
+  "run": "slug unknown (web-UI run 29/09/2026; executed notebook downloaded by the team). This run skipped MAV-Celeb ('source found: False'); the MAV-Celeb subset arrays in feats_av come from a later run of the same code with MAV-Celeb attached (inferred from the feats_av manifest 2026-09-29 09:05, which lists the external rows)",
+  "exactness": "exact-executed-copy",
+  "source_file": "kaggle/output/flag-2027-nb-14-other-image-audio-models (1).ipynb",
+  "notebook_md5": "a7796b086b7180bead3f8e0528d549f9",
+  "original_copy": "original/flag-2027-nb-14-other-image-audio-models_executed.ipynb",
+  "original_sha256": "42bb20144c1ad96db5326fb9807397a86cf1097392c587ab30cd19b998e4d3c2"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "exclude": [
+    "dev_set.zip",
+    "dev_set"
+   ],
+   "exclude_why": "dev-exclusion: this stage reads only train_set.zip / meta_file_train_set.csv; requested per-input mount filter (repo_map/build/WP-D.md H8; runner/ffcore.py build_vin applies only the data_map 'exclude' today)"
+  },
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ext-meta-p"
+  }
+ ],
+ "inputs_dropped": [],
+ "outputs": {
+  "kernel": "notebooks/ff/f14_av",
+  "exports": {},
+  "main_folder": "feats_av",
+  "private": true,
+  "licence": "features of the organisers' MAV-Celeb v4 train media and of MAV-Celeb v1 / v2 (organisers' data, challenge terms); private, shared only with the organisers through FF_DATA, never in the repository"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [
+  {
+   "old": "SPLIT_FILTER = None                                      # e.g. {\"train\", \"no_gender/English\"}",
+   "new": "SPLIT_FILTER = [\"train\"]                                 # FF dev-exclusion (CHANGES.md #1): organiser train list only (original: None). e.g. {\"train\", \"no_gender/English\"}",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "no dev list is indexed or encoded (DESIGN §2.8)",
+   "effect": "none on train / MAV-Celeb arrays; dev arrays are no longer written"
+  },
+  {
+   "old": "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "new": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+   "count": 1,
+   "type": "url",
+   "why": "Meta's link to imagebind_huge.pth is dead since 12/11/2026; same file (sha256 d6f6c22b...2157) on a pinned Hugging Face mirror, as release/flag2027_e2e/stages.py GLOBAL_PATCHES",
+   "effect": "none (same file)"
+  },
+  {
+   "old": "            if (inv[\"has_faces\"] and inv[\"has_voices\"] and (inv[\"has_list\"] or name_hint)) or (inv[\"has_nested_zip\"] and name_hint):\n                out.append(zp)",
+   "new": "            if lname.startswith(\"dev_set\"):      # FF dev-exclusion (CHANGES.md #3): the organiser dev archive is never unpacked\n                continue\n            if (inv[\"has_faces\"] and inv[\"has_voices\"] and (inv[\"has_list\"] or name_hint)) or (inv[\"has_nested_zip\"] and name_hint):\n                out.append(zp)",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "the archive auto-extraction would unpack dev_set.zip too",
+   "effect": "none"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/feats_av",
+  "02_intermediate/lab_data/lab/kaggle/output/feats_av",
+  "datasets/ngnnguynchn__flag2027-lab-data-p/lab/kaggle/output/feats_av"
+ ],
+ "verify": [
+  {
+   "file": "feats_av/feats_manifest.json",
+   "key": "files",
+   "equals": {
+    "ext_v1_complete_face_aclip.npy": [
+     1400,
+     1024
+    ],
+    "ext_v1_complete_face_clipb16.npy": [
+     1400,
+     512
+    ],
+    "ext_v1_complete_face_clipb32.npy": [
+     1400,
+     512
+    ],
+    "ext_v1_complete_face_ibalign.npy": [
+     1400,
+     1024
+    ],
+    "ext_v1_complete_face_lbind.npy": [
+     1400,
+     768
+    ],
+    "ext_v1_complete_face_rows.npy": [
+     1400
+    ],
+    "ext_v1_complete_voice_aclip.npy": [
+     2229,
+     1024
+    ],
+    "ext_v1_complete_voice_lbind.npy": [
+     2229,
+     768
+    ],
+    "ext_v1_complete_voice_rows.npy": [
+     2229
+    ],
+    "ext_v1_complete_voice_w2c.npy": [
+     2229,
+     512
+    ],
+    "ext_v2_complete_face_aclip.npy": [
+     1680,
+     1024
+    ],
+    "ext_v2_complete_face_clipb16.npy": [
+     1680,
+     512
+    ],
+    "ext_v2_complete_face_clipb32.npy": [
+     1680,
+     512
+    ],
+    "ext_v2_complete_face_ibalign.npy": [
+     1680,
+     1024
+    ],
+    "ext_v2_complete_face_lbind.npy": [
+     1680,
+     768
+    ],
+    "ext_v2_complete_face_rows.npy": [
+     1680
+    ],
+    "ext_v2_complete_voice_aclip.npy": [
+     2626,
+     1024
+    ],
+    "ext_v2_complete_voice_lbind.npy": [
+     2626,
+     768
+    ],
+    "ext_v2_complete_voice_rows.npy": [
+     2626
+    ],
+    "ext_v2_complete_voice_w2c.npy": [
+     2626,
+     512
+    ],
+    "face_aclip_train.npy": [
+     6485,
+     1024
+    ],
+    "face_clipb16_train.npy": [
+     6485,
+     512
+    ],
+    "face_clipb32_train.npy": [
+     6485,
+     512
+    ],
+    "face_ibalign_train.npy": [
+     6485,
+     1024
+    ],
+    "face_lbind_train.npy": [
+     6485,
+     768
+    ],
+    "voice_aclip_train.npy": [
+     6485,
+     1024
+    ],
+    "voice_lbind_train.npy": [
+     6485,
+     768
+    ],
+    "voice_w2c_train.npy": [
+     6485,
+     512
+    ]
+   },
+   "why": "all 28 v4-train / MAV-Celeb arrays of the original run, incl. CLIP B/32, B/16 and Wav2CLIP that no stage reads (warning only)"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 9,
+  "sha256": "584bb5d99db3b20f420bf25b89922c0ea645d2598cf8d29f260015447fb6f295",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "flag-2027-nb-14-other-image-audio-models_executed.ipynb",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "b_lab_data: AudioCLIP / ImageBind-align / LanguageBind train + MAV subset arrays (none of them enters the 13.54 numbers; the lab code imports them with row-count checks)"
+ ],
+ "todo": [
+  "Models unpinned as in the original (AudioCLIP release file, LanguageBind HF repos, Wav2CLIP from PyPI, git clones without commit); wiring only.",
+  "No smoke switch in the original notebook.",
+  "Handoff WP-A: also give configs/data_map.json notebooks/ff/f14_av the same alt_paths (02_intermediate/lab_data/lab/kaggle/output/feats_av, datasets/ngnnguynchn__flag2027-lab-data-p/lab/kaggle/output/feats_av); skip_with already covers the producer path."
+ ],
+ "verify_notes": [
+  "row counts must equal the lab-data bundle's: face/voice *_train 6 485 rows; ext_v1_complete face 1 400 / voice 2 229, ext_v2_complete 1 680 / 2 626 rows (feats_av manifest 2026-09-29 09:05)"
+ ],
+ "post_checks": [
+  {
+   "file": "feats_av/feats_manifest.json",
+   "json_path": "files",
+   "equals": {
+    "ext_v1_complete_face_aclip.npy": [
+     1400,
+     1024
+    ],
+    "ext_v1_complete_face_ibalign.npy": [
+     1400,
+     1024
+    ],
+    "ext_v1_complete_face_lbind.npy": [
+     1400,
+     768
+    ],
+    "ext_v1_complete_face_rows.npy": [
+     1400
+    ],
+    "ext_v1_complete_voice_aclip.npy": [
+     2229,
+     1024
+    ],
+    "ext_v1_complete_voice_lbind.npy": [
+     2229,
+     768
+    ],
+    "ext_v1_complete_voice_rows.npy": [
+     2229
+    ],
+    "ext_v2_complete_face_aclip.npy": [
+     1680,
+     1024
+    ],
+    "ext_v2_complete_face_ibalign.npy": [
+     1680,
+     1024
+    ],
+    "ext_v2_complete_face_lbind.npy": [
+     1680,
+     768
+    ],
+    "ext_v2_complete_face_rows.npy": [
+     1680
+    ],
+    "ext_v2_complete_voice_aclip.npy": [
+     2626,
+     1024
+    ],
+    "ext_v2_complete_voice_lbind.npy": [
+     2626,
+     768
+    ],
+    "ext_v2_complete_voice_rows.npy": [
+     2626
+    ],
+    "face_aclip_train.npy": [
+     6485,
+     1024
+    ],
+    "face_ibalign_train.npy": [
+     6485,
+     1024
+    ],
+    "face_lbind_train.npy": [
+     6485,
+     768
+    ],
+    "voice_aclip_train.npy": [
+     6485,
+     1024
+    ],
+    "voice_lbind_train.npy": [
+     6485,
+     768
+    ]
+   },
+   "why": "the 19 arrays b_lab_data packs (b_lab_data/expected_members.json lab/kaggle/output/feats_av/*: AudioCLIP, ImageBind-align, LanguageBind, MAV-Celeb row selections) with their shapes from kaggle/output/feats_av/feats_manifest.json (created 2026-09-29 09:05). A failed encoder or a skipped MAV-Celeb source leaves one out, so the stage fails here"
+  },
+  {
+   "file": "feats_av/feats_manifest.json",
+   "json_path": "external",
+   "equals": {
+    "v1_complete": [
+     1400,
+     2229
+    ],
+    "v2_complete": [
+     1680,
+     2626
+    ]
+   },
+   "why": "MAV-Celeb v1 / v2 [face rows, voice rows] of the original manifest"
+  },
+  {
+   "file": "feats_av/feats_manifest.json",
+   "json_path": "splits/train",
+   "equals": 6485,
+   "why": "organiser train rows"
+  }
+ ],
+ "saved_copy_dev_members": {
+  "saved_copy": "02_intermediate/feats_av (= kaggle/output/feats_av; the lab-data alternative has none)",
+  "count": "32 dev arrays + 4 dev index files",
+  "patterns": [
+   "*_gender_English.npy",
+   "*_gender_Bangla.npy",
+   "index_*gender_*.txt"
+  ],
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "files": [
+   "face_aclip_gender_Bangla.npy",
+   "face_aclip_gender_English.npy",
+   "face_aclip_no_gender_Bangla.npy",
+   "face_aclip_no_gender_English.npy",
+   "face_clipb16_gender_Bangla.npy",
+   "face_clipb16_gender_English.npy",
+   "face_clipb16_no_gender_Bangla.npy",
+   "face_clipb16_no_gender_English.npy",
+   "face_clipb32_gender_Bangla.npy",
+   "face_clipb32_gender_English.npy",
+   "face_clipb32_no_gender_Bangla.npy",
+   "face_clipb32_no_gender_English.npy",
+   "face_ibalign_gender_Bangla.npy",
+   "face_ibalign_gender_English.npy",
+   "face_ibalign_no_gender_Bangla.npy",
+   "face_ibalign_no_gender_English.npy",
+   "face_lbind_gender_Bangla.npy",
+   "face_lbind_gender_English.npy",
+   "face_lbind_no_gender_Bangla.npy",
+   "face_lbind_no_gender_English.npy",
+   "index_gender_Bangla.txt",
+   "index_gender_English.txt",
+   "index_no_gender_Bangla.txt",
+   "index_no_gender_English.txt",
+   "voice_aclip_gender_Bangla.npy",
+   "voice_aclip_gender_English.npy",
+   "voice_aclip_no_gender_Bangla.npy",
+   "voice_aclip_no_gender_English.npy",
+   "voice_lbind_gender_Bangla.npy",
+   "voice_lbind_gender_English.npy",
+   "voice_lbind_no_gender_Bangla.npy",
+   "voice_lbind_no_gender_English.npy",
+   "voice_w2c_gender_Bangla.npy",
+   "voice_w2c_gender_English.npy",
+   "voice_w2c_no_gender_Bangla.npy",
+   "voice_w2c_no_gender_English.npy"
+  ],
+  "files_source": "kaggle/output/feats_av"
+ },
+ "skip_with_why": "DESIGN §4.5 'skip with: take it from lab_data'. The artifact is wiring (configs/data_map.json class wiring, always taken from a saved copy), and the only consumer, b_lab_data, packs exactly the 19 files the frozen lab-data bundle holds under lab/kaggle/output/feats_av/ (b_lab_data/expected_members.json: aclip / ibalign / lbind arrays + ext_*_rows.npy; its find_dir markers face_aclip_train.npy and ext_v1_complete_face_rows.npy are there). runner/ffcore.py skip_with_view takes the first non-empty folder: a full saved kernel output, else the lab-data copy (FF_DATA layout), else the package-E layout. Without one of them the GPU stage runs with unpinned models (todo)."
+}

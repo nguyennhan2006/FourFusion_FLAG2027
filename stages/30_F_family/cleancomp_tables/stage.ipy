@@ -1,0 +1,40 @@
+print("[cell] cleancomp_tables 1/1: SAFE-04 tables with the CLEANCOMP-01 columns replaced by the FLAG_164 out-of-fold scores", flush=True)
+# = Experiment/CLEANCOMP-01/build_tables.py (the local CPU step of 3/11, run by kaggle/cleancomp_chain.sh) as a stage: the same NEW
+# columns, the same row-alignment checks, the same CLEANCOMP.txt. Two differences (CHANGES.md): (1) it reads the attached e2e-dev
+# dataset FOLDER instead of the local file kaggle/flag2027-e2e-dev.zip (on Kaggle the three inner ref/*.zip are unpacked folders);
+# (2) Experiment/CLEANCOMP-01/build_dev.py is not run (dev lists only: components_dev.npz with the strict heads, CLEANCOMP_dev.txt and
+# its manifest note); the dev wiring files of the e2e-dev input are copied unchanged. The logic below is the one of the release
+# stage `cleancomp_tables` (release/flag2027_e2e/stages.py:386-415); only the output folder (ds/e2edev = the original zip layout) and
+# the printed titles differ.
+import io, shutil
+from pathlib import Path
+import numpy as np, pandas as pd
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+BASE = next(p for p in IN.rglob("e2edev") if p.is_dir() and (p / "e2e_manifest.json").exists())
+SRC = {int(p.stem.split("fold")[-1]): p for p in IN.rglob("cleancomp01_fold*.parquet")}
+assert sorted(SRC) == [1, 2, 3, 4, 5], sorted(SRC)
+NEW = {"streams": ["XALL_deep0", "XALL_cca", "XALL_ib", "XALL_age"], "relonly_multi": ["relc_fia_eb"], "relonly_g": ["relg_fia_eb"],
+       "bigb01f": ["anP512_deep", "anP512_cca"], "t3enc01f": ["t3_relg"]}
+out = OUT / "ds" / "e2edev"; rep = []
+print("base bundle:", BASE, "| fold tables:", {s: str(p) for s, p in sorted(SRC.items())}, flush=True)
+for f in sorted(BASE.rglob("*")):
+    if not f.is_file():
+        continue
+    dst = out / f.relative_to(BASE); dst.parent.mkdir(parents=True, exist_ok=True); data = f.read_bytes()
+    for t, cols in NEW.items():
+        if f.stem.startswith(f"{t}_fold"):
+            s = int(f.stem.split("fold")[-1]); old, new = pd.read_parquet(io.BytesIO(data)), pd.read_parquet(SRC[s])
+            key = [k for k in ("y", "fi", "vi") if k in old.columns]
+            assert len(old) == len(new) and all((old[k].values == new[k].values).all() for k in key), (t, s, "row alignment")
+            if "data" in old.columns:
+                assert (old.data.values == new.data.values).all(), (t, s)
+            d = {c: float(np.corrcoef(old[c].values, new[c].values)[0, 1]) for c in cols}
+            for c in cols:
+                old[c] = new[c].values
+            b = io.BytesIO(); old.to_parquet(b); data = b.getvalue()
+            rep.append(f"fold {s} {t}: corr(old, new) " + ", ".join(f"{c} {v:.4f}" for c, v in d.items()))
+    dst.write_bytes(data)
+print("\n".join(sorted(rep)), flush=True)
+(out / "CLEANCOMP.txt").write_text("CLEANCOMP-01: SAFE-04 tables with S6 / rel / relg / v11 T3 columns relearned under LID_STRICT=1\n" + "\n".join(sorted(rep)) + "\n")
+print("wrote", out, "files", sum(1 for p in out.rglob("*") if p.is_file()), flush=True)
+# <<<FF-CELL>>>

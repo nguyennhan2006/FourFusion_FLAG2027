@@ -1,0 +1,85 @@
+{
+ "id": "raw_mavceleb_check",
+ "group": "10_raw",
+ "title": "Check a saved copy of the extracted MAV-Celeb v1 / v2 dataset (chnnhnnguyn/external-data-mavceleb): counts, layout, meta_v1.csv, no zip",
+ "kind": "raw",
+ "role_in_1354": "evidence",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 15,
+  "minutes_is_estimate": true,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "notebook_md5": null,
+  "builder": null,
+  "notes": "check-only twin of raw_mavceleb/cells/02_check.py for the case where the extracted dataset is taken from FF_DATA (raw class: always saved), so raw_mavceleb itself does not run"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/raw_mavceleb_check",
+  "exports": {},
+  "verifies": [
+   "datasets/chnnhnnguyn/external-data-mavceleb"
+  ],
+  "kernel_layout": {
+   "raw_mavceleb_check.json": "per-release counts, layout, meta_v1.csv sha256, zips found inside, problems"
+  }
+ },
+ "env": {},
+ "smoke_env": {
+  "FF_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [],
+ "verify": [
+  {
+   "file": "raw_mavceleb_check.json",
+   "check": "ok == true (mavceleb_v1_complete-001: 302 492 jpg, 19 556 wav, meta_v1.csv 3b311af5...; mavceleb_v2_complete-002: 371 626 jpg, 20 715 wav; v1/ and v2/ each with faces/ and voices/; no zip inside)"
+  }
+ ],
+ "todo": [
+  "WP-A: configs/data_map.json datasets/chnnhnnguyn/external-data-mavceleb: add verified_by: raw_mavceleb_check and drop (or tag partial) the e_package hint: the team package folder datasets/chnnhnnguyn__external-data-mavceleb/ holds only mavceleb_v1_complete-001/{meta_v1.csv, v1/faces} (no v1/voices, no mavceleb_v2_complete-002); this stage stops a run that mounts it"
+ ],
+ "notes": [
+  "The runner schedules a check stage (outputs.verifies) before the first consumer of the artifact it verifies when the artifact is available from a saved copy (runner/ffcore.py make_plan, as for raw_btc).",
+  "Smoke (FF_SMOKE=1): layout, meta_v1.csv and stray zips only; the full file count (about 714 000 files) is skipped.",
+  "Expected counts and meta_v1.csv sha256 = raw_mavceleb/expected.json (central directories of the two organisers' zips, read 18/11/2026)."
+ ],
+ "changes_summary": [
+  "new: cells/00_check.py (whole stage): new verification cell for a saved copy of the extracted dataset (no original code: organisers' data)"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_check.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_check.py",
+    "title": "raw_mavceleb_check: check a SAVED copy of the extracted MAV-Celeb v1 / v2 dataset (counts, "
+   }
+  ],
+  "n_cells": 1,
+  "stage_ipy_sha256": "9543349679aa33c7dea8be9c4e5e31faad8616ad1760748c642c8546e838b9d5"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)"
+}

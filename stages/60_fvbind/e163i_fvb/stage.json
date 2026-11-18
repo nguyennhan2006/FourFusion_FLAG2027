@@ -1,0 +1,152 @@
+{
+ "id": "e163i_fvb",
+ "group": "60_fvbind",
+ "title": "RFX' on the four Evaluation lists: re-extract the core RFS blocks from the original media (ImageBind + the artifact's LoRA C1, CLIP-L, SimAM, ResNet221, ECAPA, Whisper, age), add f_c5s / v_rl / v_fvb, score each pair -> rfsfxfvb_eval.zip",
+ "kind": "infer",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "accelerator": "NVIDIA Tesla T4 (Kaggle)",
+  "minutes_original": 34,
+  "internet": true,
+  "secrets": [],
+  "notes": "2 017 s (pushed 07:11, COMPLETE about 08:30 on 15/11 UTC+7; log start 00:12:04 UTC); downloads imagebind_huge (HF mirror pinned), resnet221_lm, vgg_face, voxblink2_samresnet100_ft (each sha256-checked) and HF models; Python 3.13.16"
+ },
+ "origin": {
+  "run": "thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval",
+  "exactness": "exact-staging",
+  "source_file": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-163i-rfsfxfvb-eval_qotpi72t/flag-2027-nb-163i-rfsfxfvb-eval.ipynb",
+  "notebook_md5": "354351113d5ed7f4350be800c4b0b79d",
+  "notebook_sha256": "50dc1c92c30ffdd0eb8bf5f4f2fa6964caa623bf34f817fd4028caf5d1cfc7d9",
+  "kapi_runs_line": 1609,
+  "pushed": "2026-11-15 07:11 UTC+7",
+  "repo_copy": "original/flag-2027-nb-163i-rfsfxfvb-eval.ipynb (byte-exact: no organisers' data in this notebook)",
+  "pre_staging_copy": "original/pre_staging/FLAG_163i_rfs_infer.ipynb (Temp/fvb163i, md5 3d595a11b4eae57f96a630fc0443ccca)",
+  "builder": "kaggle/FLAG_163i_rfs_infer.ipynb + kaggle/patch_163i_eval.py --data-root /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p + kaggle/patch_163i_factor.py (versions of 15/11 before 07:11), pushed by hand with kaggle/kapi.py"
+ },
+ "code": {
+  "stage_ipy": "stage.ipy",
+  "sha256": "a771b24a33eabea17aed9f590cdb0c8ee22ed81494bc853d7e7361c815e7ae9c",
+  "bytes": 86161,
+  "cells": 6,
+  "built_from": "original/flag-2027-nb-163i-rfsfxfvb-eval.ipynb",
+  "algorithm": "release/flag2027_e2e/build_notebook.py stage_cells(): every non-empty code cell of the notebook in original/, CRLF -> LF, the patches below applied with exact counts, cells joined by s.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n'"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/thanhhuyen11/flag2027-rfsfxfvb-art-p",
+   "use": "RFX' artifact (pinned as ART): manifest_final.json (add: f_c5s 768; v_rl 448, v_fvb 1280), final_params.npz, projector_Q.pt (3 seeds), lora_C1.pt (ORIGINAL C1, ib stream of the Evaluation voices)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "use": "attached in the original run (NOT VERIFIED whether read once DATA_ROOT is set; DESIGN G25) Only attached; if a re-run turns out to read it, it needs the extracted Kaggle layout (see t192_fvbx raw-v4 input)."
+  },
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb",
+   "use": "attached in the original run (NOT VERIFIED whether read; DESIGN G25)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-evalphase-p",
+   "use": "DATA_ROOT, hard-coded as /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p: the four Evaluation lists + media"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+   "use": "v_rl of the Evaluation lists (feats_screen2/voice_rn293 / voice_ecapa1024_<list>.npy + index)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+   "use": "f_c5s of the Evaluation lists (face_clipC5_<list>.npy + index)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-192-fvbx3",
+   "use": "v_fvb of the Evaluation lists (fvbx_out/eval/voice_fvb_<list>.npy + index copied from 47rs)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval",
+  "exports": {},
+  "files": [
+   "FLAG_RF_E2E/submission.zip (= rfsfxfvb_eval.zip)",
+   "FLAG_RF_E2E/embeddings.npz",
+   "FLAG_RF_E2E/run_report.json",
+   "FLAG_RF_E2E/code/flag_e2e_core.py",
+   "FLAG_RF_E2E/models/"
+  ],
+  "used_downstream": "FLAG_RF_E2E/submission.zip -> a_fvbind"
+ },
+ "env": {},
+ "env_note": "no --env in the original push; DATA_ROOT is hard-coded (mount datasets/ngnnguynchn/flag2027-evalphase-p at its default path). Offline option (no code change): put imagebind_huge.pt, resnet221_lm.pt, vgg_face.pt, voxblink2_samresnet100_ft.pt (same sha256 as in the config cell) into the artifact folder; fetch() then links them instead of downloading.",
+ "smoke_env": {},
+ "smoke_note": "the notebook has no environment-driven smoke mode (SMOKE_PAIRS is a code constant, None)",
+ "patches": [
+  {
+   "old": "ART = None           # None = tự tìm thư mục có manifest_final.json",
+   "new": "ART = Path('/kaggle/input/datasets/thanhhuyen11/flag2027-rfsfxfvb-art-p')   # FF runner: pinned to the artifact the original run resolved (log: 'artifacts: /kaggle/input/datasets/thanhhuyen11/flag2027-rfsfxfvb-art-p'); originally None = first manifest_final.json found by rglob",
+   "count": 1,
+   "type": "wiring",
+   "why": "ART = None picks the first manifest_final.json returned by Path('/kaggle/input').rglob (filesystem order). The FLAG_192 kernel output attached to this run also holds rfs/ref/manifest_final.json (the RF-092 reference manifest written by its setup cell), so the choice depends on directory order; the original run resolved the RFX' artifact (log line 'artifacts: /kaggle/input/datasets/thanhhuyen11/flag2027-rfsfxfvb-art-p', 'FACTOR-01 extra blocks: [f_c5s] [v_rl, v_fvb]'). The wrong choice fails loudly (no final_params.npz) rather than giving other numbers; the pin removes the dependence on directory order.",
+   "effect_on_numbers": "none (selects what the original run selected)"
+  },
+  {
+   "old": "pip('--no-deps', 'git+https://github.com/facebookresearch/ImageBind.git')",
+   "new": "pip('--no-deps', 'git+https://github.com/facebookresearch/ImageBind.git@53680b02d7e37b19b124fa37bae4b6c98c38f5be')",
+   "count": 1,
+   "type": "pin",
+   "why": "ImageBind code was installed from GitHub HEAD without a commit in the original run; pinned to 53680b02d7e37b19b124fa37bae4b6c98c38f5be (= main on 2026-11-05 per release/docker/Dockerfile:22-23, also the RF reproduction freeze). The model weights are fixed by the checkpoint sha256 check. NOT VERIFIED that HEAD on 14-15/11/2026 was this commit; the install runs only when the image has no imagebind package (FF_PIP=pinned images already carry this commit).",
+   "effect_on_numbers": "none expected"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "original",
+  "lora_c1_role_here": "read from the RFX' artifact (ART/lora_C1.pt, pinned dataset thanhhuyen11/flag2027-rfsfxfvb-art-p); drives the ib stream of the Evaluation voices",
+  "flags_as_run": {
+   "NOREL": "not set in the original run and not read by this code (no train-identity cohort anywhere in RFS / FVBIND)",
+   "LID_STRICT": "not set and not read: clean_ext() applies lid_strict.json (keys vox2 / vb / mav_files = LIDSTRICT-01 v2 list) directly",
+   "BN42": "not set and not read: the audio cache and the bundle carry the BN42 person filter from upstream stages",
+   "CLEANCOMP": "not applicable (group 30 flag)",
+   "RFS_LORA_FIX": "not applicable: the embedded rfs_train.py predates the key fix (no such variable); RFS_MODE=L is never run here"
+  },
+  "forbidden_inputs_present": []
+ },
+ "skip_with": [
+  "04_run_outputs/flag-2027-nb-163i-rfsfxfvb-eval",
+  "05_scores/rfsfxfvb_eval.zip"
+ ],
+ "verify": [
+  {
+   "file": "FLAG_RF_E2E/submission.zip",
+   "members_sha256_from": "configs/expected_sha256.json#rfsfxfvb_eval",
+   "note": "zip sha256 of the original 45044189...; informational in modes (a) / (b): a GPU re-run is near-identical only (release/flag2027_e2e test T2: Spearman >= 0.99999, |diff| <= 0.06)"
+  }
+ ],
+ "log_expectations": [
+  {
+   "log_prefix": "FACTOR-01 extra blocks: ['f_c5s'] ['v_rl', 'v_fvb']",
+   "when": "every run"
+  },
+  {
+   "log_prefix": "level-0 self-check OK",
+   "when": "every run"
+  },
+  {
+   "log_prefix": "Code SHA256: 3cad7b8a83d3817c3178e867cd6e7782bd2c77d48539a7051dbcef78066c8f3a",
+   "when": "original run only: the runner rewrites '/kaggle/input' inside the CORE_SOURCE string too (one docstring of locate_roots), so a runner run prints another hash (CHANGES.md); numbers are unaffected"
+  },
+  {
+   "_doc": "documentation only; the runner does not read this key"
+  }
+ ],
+ "todo": [
+  "Docker image digest of the run not recorded (Python 3.13.16); `kaggle kernels pull -m thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval`.",
+  "Only FLAG_RF_E2E/submission.zip and the log are on the team machine (Experiment/FVBIND-01/out/eval163i/); embeddings.npz and run_report.json of the run are not.",
+  "speechbrain>=1.1.1 and the pip installs of the setup cell are unpinned in the notebook (environment pinning: docker/requirements, FF_PIP=pinned)."
+ ],
+ "notes": [
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)",
+  "Same core (3cad7b8a...) and same notebook family as stage e163i of group 50 (FACTOR_ENFUSE); differs by the artifact, the extra kernel FLAG_192 and the v_fvb branch of the XTRA cell."
+ ]
+}

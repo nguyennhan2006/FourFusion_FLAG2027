@@ -1,0 +1,55 @@
+print("[cell] t3s01_trca 1/1: T3S-01 job-table layout (row keys + trCA) from ct02s-r2ca-tables-p, for t219_dumpv4", flush=True)
+# New stage (integration fixer r1, 18/11/2026; INTEGRATION_r1 B3). It gives t219_dumpv4 a producing stage for the only part of the frozen
+# dataset ngnnguynchn/flag2027-t3s01-tables-p that the dumpv4 path reads. The FLAG_167 T3S-01 runs that made that dataset cannot be rebuilt
+# here (their Kaggle staging folders are empty; only the builder kaggle/FLAG_167_t3s01.ipynb survives).
+# What t219 reads: CLEANTUNE-01/run.py merge_t3s() puts the four job tables ct01r2<face>_fold<s> side by side (row keys + every 'tr*' column)
+# -> ct01r2_fold<s>; FUSENET-01/run.py report() (FUSENET_MODE=dumpv4) fuses F1S = S6 + V11_T3 + ["trCA"] and RFX; the trT3S_* branch
+# columns are not read on that path (they feed reportt3s / final_t3s / _with_t3s only). In the frozen dataset only the farl tables carry trCA,
+# and its row keys and trCA equal ct02s-r2ca-tables-p tables/ct01r2_fold<s> exactly (WP-F light check, 18/11, all five folds).
+# Output: ds/tables/ct01r2{b3s,c5s,clip,farl}_fold<s>.parquet; farl = keys + trCA, the other three = keys only (merge_t3s asserts the four
+# faces and the row order of y / fi / vi). The trT3S_* columns are absent on purpose (no stage of this repository can make them).
+import os, hashlib
+from pathlib import Path
+import numpy as np
+import pandas as pd
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+KEY = ["fold", "data", "protocol", "y", "fi", "vi"]
+FACES = ("b3s", "c5s", "clip", "farl")                       # CLEANTUNE-01/run.py T3S_F (merge_t3s asserts this set)
+SMOKE = os.environ.get("FF_SMOKE") == "1"
+src = sorted({p.name: p for p in IN.rglob("ct01r2_fold[1-5].parquet")}.values())
+print("source tables:", [str(p) for p in src], flush=True)
+assert src and (SMOKE or len(src) == 5), f"{len(src)} ct01r2 fold tables of ct02s-r2ca-tables-p (5 needed)"
+dst = OUT / "ds/tables"
+dst.mkdir(parents=True, exist_ok=True)
+made = {}
+for p in src:
+    s = p.stem[-1]
+    T = pd.read_parquet(p)
+    miss = [c for c in KEY + ["trCA"] if c not in T.columns]
+    assert not miss, f"{p.name}: columns {miss} missing"
+    T = T.reset_index(drop=True)
+    for face in FACES:
+        cols = KEY + (["trCA"] if face == "farl" else [])
+        f = dst / f"ct01r2{face}_fold{s}.parquet"
+        T[cols].to_parquet(f)
+        made[f.name] = hashlib.sha256(f.read_bytes()).hexdigest()
+        print(f"  {f.name}: {len(T)} rows, columns {cols}, sha256 {made[f.name][:16]}...", flush=True)
+# Optional check against the frozen dataset (when FF_DATA holds it): row keys and trCA of the farl tables must be identical.
+roots = [Path(x) for x in (os.environ.get("FF_T3S01_FROZEN") or "").split(os.pathsep) if x]
+roots += [Path(x) / "02_intermediate/_wiring/flag2027-t3s01-tables-p" for x in (os.environ.get("FF_DATA") or "").split(os.pathsep) if x]
+fro = next((r for r in roots if r.is_dir() and any(r.rglob("ct01r2farl_fold1.parquet"))), None)
+if fro is None:
+    print("frozen t3s01-tables-p not found under FF_T3S01_FROZEN / FF_DATA: equality check skipped", flush=True)
+else:
+    for p in src:
+        s = p.stem[-1]
+        F = pd.read_parquet(next(fro.rglob(f"ct01r2farl_fold{s}.parquet"))).reset_index(drop=True)
+        G = pd.read_parquet(dst / f"ct01r2farl_fold{s}.parquet")
+        assert len(F) == len(G), f"fold {s}: rows {len(F)} (frozen) != {len(G)}"
+        for c in KEY:
+            assert (F[c].astype(str).values == G[c].astype(str).values).all(), f"fold {s}: key column {c} differs from the frozen table"
+        d = float(np.nanmax(np.abs(F["trCA"].values.astype(float) - G["trCA"].values.astype(float))))
+        assert d == 0.0 and (np.isnan(F["trCA"].values) == np.isnan(G["trCA"].values)).all(), f"fold {s}: trCA max |diff| {d}"
+        print(f"  fold {s}: keys and trCA identical to the frozen {fro.name} (max |diff| 0.0)", flush=True)
+print("t3s01_trca done:", len(made), "tables", flush=True)
+# <<<FF-CELL>>>

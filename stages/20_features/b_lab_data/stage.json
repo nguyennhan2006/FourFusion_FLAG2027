@@ -1,0 +1,127 @@
+{
+ "id": "b_lab_data",
+ "group": "20_features",
+ "title": "Pack the lab-data bundle (T3 encoder arrays of v4 / MAV-Celeb / VoxCeleb2, FLAG_37 keys, FLAG_42 LID summary, selected FLAG_10 / 12 / 14 arrays; 3 ECAPA-6144 placeholders)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 5,
+  "internet": false,
+  "secrets": [],
+  "note": "original: local run on the team's machine 8/10/2026 21:02 (not timed; minutes is an estimate)"
+ },
+ "origin": {
+  "run": "local script (team machine, 8/10/2026 21:02); zip kaggle/flag2027-lab-data.zip sha256 d660d8c279599679acc59421e17ac3c5f11b9aec5b7a41594acd70925de7fc2c uploaded as ngnnguynchn/flag2027-lab-data-p",
+  "exactness": "local-script",
+  "source_file": "kaggle/build_lab_bundle.py (not in git)",
+  "notebook_md5": null,
+  "original_copy": "original/build_lab_bundle.py",
+  "original_sha256": "d4bc3e02396ffa36f5a8cf838210556420df44af391180057c2decc7b79d79f9"
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/ff/f40_t3enc_mav"
+  },
+  {
+   "artifact": "notebooks/ff/f41_t3enc_vox2"
+  },
+  {
+   "artifact": "notebooks/ff/l42_vox2_lid"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-vox2-keys"
+  },
+  {
+   "artifact": "notebooks/ff/f14_av"
+  },
+  {
+   "artifact": "notebooks/ff/f12_eval_feats"
+  },
+  {
+   "artifact": "notebooks/ff/f10_models"
+  }
+ ],
+ "inputs_dropped": [],
+ "outputs": {
+  "kernel": "notebooks/ff/b_lab_data",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-lab-data-p": "lab_data_dataset"
+  },
+  "main_folder": "lab_data_dataset",
+  "note": "lab_data_dataset/lab/* = the dataset content; bundle_report.json = sha256 per file + comparison with the original",
+  "private": true,
+  "licence": "bundle of v4 train / MAV-Celeb v1 / v2 features (organisers' data) and VoxCeleb2-derived features; private, never in the repository"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/lab_data"
+ ],
+ "verify": [
+  {
+   "file": "bundle_report.json",
+   "key": "vs_original/extra",
+   "equals": [],
+   "why": "no member beyond the original's (warning only)"
+  }
+ ],
+ "script_patches": [
+  {
+   "file": "build_lab_bundle.py",
+   "old": "import io, json, sys, time, zipfile\n",
+   "new": "import io, json, sys, time, zipfile\nimport os  # FF path (CHANGES.md): FF_REPO_ROOT\n",
+   "count": 1,
+   "type": "path",
+   "why": "needed by the change below",
+   "effect": "none"
+  },
+  {
+   "file": "build_lab_bundle.py",
+   "old": "R = Path(__file__).resolve().parents[1]\n",
+   "new": "R = Path(os.environ[\"FF_REPO_ROOT\"]) if os.environ.get(\"FF_REPO_ROOT\") else Path(__file__).resolve().parents[1]   # FF path (CHANGES.md): repository root given by the stage\n",
+   "count": 1,
+   "type": "path",
+   "why": "the script resolved every input from the team's repository root; the stage gives a stand-in root built from the input artifacts",
+   "effect": "none"
+  }
+ ],
+ "scripts": [
+  {
+   "file": "build_lab_bundle.py",
+   "original": "original/build_lab_bundle.py",
+   "sha256_after_patches": "b0cf25c784dacc67fa323a45f91119c06fcb8571f3d070b37a3f971972caff50",
+   "line_endings": "LF (original bytes kept in original/)"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 3,
+  "sha256": "3a54f4e094167c67522c5f868f323a942205ce20b32d27322a31267cdb9a5e0a",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "new cells (see CHANGES.md)",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "t153b, t153c, t160a/b/c, t162a/b/c, t164f, t112sf0s, t112sf1s, t183 / t184, t163p_c5rl, e65xbs, e65xcs, e50cc, e112f0sx, e112f1sx, f63w_aux_voice, f103c_tap01 (dataset input per package E: RUNS.json and kapi_runs.jsonl)"
+ ],
+ "todo": [
+  "Input ids notebooks/ff/l42_vox2_lid (WP-B) and datasets/ngnnguynchn/flag2027-vox2-keys (WP-C) follow DESIGN §3.2; the stages producing them must use the same ids."
+ ],
+ "verify_notes": [
+  "with the frozen inputs every file except lab/lab_manifest.json (its 'created' stamp) must be byte-identical to expected_members.json; with re-extracted features compare arrays by row cosine (>= 0.999)"
+ ],
+ "post_checks": [
+  {
+   "file": "bundle_report.json",
+   "json_path": "vs_original/missing",
+   "equals": [],
+   "why": "every member of the original dataset (expected_members.json) is in the new bundle"
+  }
+ ]
+}

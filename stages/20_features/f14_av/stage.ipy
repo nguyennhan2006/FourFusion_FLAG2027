@@ -1,0 +1,999 @@
+import os, sys, io, re, time, json, types, shutil, zipfile, warnings, subprocess, math, hashlib
+from pathlib import Path
+warnings.filterwarnings("ignore", category=FutureWarning)
+
+LOCAL = os.environ.get("FLAG_LOCAL") == "1"
+IN = Path(os.environ.get("FLAG_IN", "/kaggle/input"))
+WORKDIR = Path(os.environ.get("FLAG_OUT", "/kaggle/working"))
+CACHE = Path(os.environ.get("FLAG_CACHE", "/tmp/flag_cache"))
+REPOS = Path(os.environ.get("FLAG_REPOS", "/tmp/repos"))
+OUT = WORKDIR / "feats_av"
+RAW = WORKDIR / "flag_raw_auto"
+
+for d in (WORKDIR, CACHE, OUT, REPOS, RAW):
+    d.mkdir(parents=True, exist_ok=True)
+os.chdir(WORKDIR)
+
+ENCODERS = ["ibalign", "clipb32", "clipb16", "w2c", "aclip", "lbind"]
+EXT_SOURCES = ["v1_complete", "v2_complete"]
+EXT_VOICES_PER_LANG, EXT_FACES = 16, 20                 # per person; seed 0
+SPLIT_FILTER = ["train"]                                 # FF dev-exclusion (CHANGES.md #1): organiser train list only (original: None). e.g. {"train", "no_gender/English"}
+ONLY_UNDER = None                                        # optional substring to disambiguate duplicate dev/eval trees
+AUTO_EXTRACT_FLAG_ZIPS = True
+MAX_ARCHIVE_PASSES = 3
+
+print("LOCAL" if LOCAL else "KAGGLE", "| input", IN, "| output", OUT)
+# <<<FF-CELL>>>
+# ImageBind / insightface as in FLAG_12; Wav2CLIP --no-deps (pure python; librosa is preinstalled); AudioCLIP and
+# LanguageBind are cloned (not pip packages). LanguageBind gets its own transformers 4.57.3 for its child process.
+if not LOCAL:
+    !pip -q install onnxruntime-gpu onnx iopath ftfy omegaconf fvcore einops 2>&1 | tail -2
+    !pip -q install --no-deps "insightface==2.0" "git+https://github.com/facebookresearch/ImageBind" wav2clip 2>&1 | tail -2
+    !pip -q install --target /tmp/tf457 "transformers==4.57.3" "tokenizers>=0.22,<0.23" "huggingface_hub<1.0" "safetensors" 2>&1 | tail -2
+    !git clone -q --depth 1 https://github.com/AndreyGuzhov/AudioCLIP.git /tmp/repos/AudioCLIP
+    !git clone -q --depth 1 https://github.com/PKU-YuanGroup/LanguageBind.git /tmp/repos/LanguageBind
+import numpy as np, pandas as pd, torch, torch.nn as nn, torch.nn.functional as F, soundfile as sf, transformers
+DEV = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("torch", torch.__version__, "| transformers", transformers.__version__, "| device", DEV)
+
+
+def log(*a):
+    print(time.strftime("%H:%M:%S"), *a, flush=True)
+# <<<FF-CELL>>>
+# ============================================================================ robust FLAG/MAV-Celeb data discovery
+def _norm_rel(v):
+    """Normalize a path stored inside an organiser .txt without changing its relative meaning."""
+    s = str(v).strip().strip('"').replace("\\", "/")
+    while s.startswith("./"):
+        s = s[2:]
+    return Path(s.lstrip("/"))
+
+
+def read_ws(txt: Path, nrows=None):
+    """Whitespace-separated FLAG list reader (robust to one or many spaces/tabs)."""
+    return pd.read_csv(txt, sep=r"\s+", header=None, nrows=nrows, engine="python")
+
+
+def scan_inputs(inp: Path, media=("faces", "voices")):
+    """Scan metadata/archives quickly without descending into huge faces/voices trees.
+
+    Returns:
+      files: basename -> [Path, ...] for files outside media trees
+      roots: directories that directly contain both faces/ and voices/
+    """
+    files, roots = {}, []
+    if not inp.exists():
+        return dict(files=files, roots=roots)
+    for dp, dns, fns in os.walk(inp, followlinks=True):
+        dp = Path(dp)
+        # Keep feature folders traversable because metadata/features may live under features/{faces,voices}.
+        in_features = "features" in {p.lower() for p in dp.parts[-2:]}
+        lower_dns = {d.lower(): d for d in dns}
+        if all(m in lower_dns for m in media):
+            roots.append(dp)
+            # Never walk raw media trees. They can contain hundreds of thousands of files.
+            if not in_features:
+                dns[:] = [d for d in dns if d.lower() not in media]
+        # Also prune any raw media folder reached from a non-features parent.
+        if not in_features:
+            dns[:] = sorted(d for d in dns if d.lower() not in media)
+        else:
+            dns[:] = sorted(dns)
+        for f in fns:
+            files.setdefault(f, []).append(dp / f)
+    log(f"scanned {inp}: {sum(map(len, files.values()))} files outside raw media folders, {len(roots)} media roots")
+    return dict(files=files, roots=roots)
+
+
+def merge_scans(*scans):
+    files, roots = {}, []
+    for sc in scans:
+        if not sc:
+            continue
+        for n, ps in sc["files"].items():
+            files.setdefault(n, []).extend(ps)
+        roots.extend(sc["roots"])
+    # stable de-duplication
+    for n in list(files):
+        files[n] = list(dict.fromkeys(files[n]))
+    roots = list(dict.fromkeys(roots))
+    return dict(files=files, roots=roots)
+
+
+def _zip_inventory(zp: Path):
+    """Cheap ZIP inventory used only for deciding whether a Kaggle archive is FLAG raw v4 data."""
+    try:
+        with zipfile.ZipFile(zp) as z:
+            names = [i.filename.replace("\\", "/") for i in z.infolist() if not i.is_dir()]
+    except Exception as e:
+        log(f"zip inspect skipped {zp.name}: {type(e).__name__}: {e}")
+        return None
+    low = [n.lower() for n in names]
+    has_faces = any("/faces/" in f"/{n}" for n in low)
+    has_voices = any("/voices/" in f"/{n}" for n in low)
+    has_list = any(Path(n).name == "train_English.txt" or Path(n).name.endswith("_test.txt") for n in names)
+    has_nested_zip = any(n.endswith(".zip") for n in low)
+    return dict(names=names, has_faces=has_faces, has_voices=has_voices, has_list=has_list, has_nested_zip=has_nested_zip)
+
+
+def _is_external_archive(zp: Path):
+    n = zp.name.lower().replace("-", "_").replace(" ", "_")
+    # v1/v2 are consumed directly from ZIP later; do NOT expand them into /kaggle/working.
+    return any(tok in n for tok in (
+        "v1_complete", "v2_complete", "mav_celeb_v1", "mavceleb_v1",
+        "mav_celeb_v2", "mavceleb_v2"
+    ))
+
+
+def flag_zip_candidates(scan):
+    """Find archives worth extracting, independent of their Kaggle dataset/file names."""
+    out = []
+    for name, ps in scan["files"].items():
+        if not name.lower().endswith(".zip"):
+            continue
+        for zp in ps:
+            if _is_external_archive(zp):
+                continue
+            inv = _zip_inventory(zp)
+            if inv is None:
+                continue
+            lname = zp.name.lower()
+            name_hint = any(t in lname for t in ("train", "dev", "eval", "test", "v4", "flag"))
+            # Main case: raw archive itself has faces+voices and either a split list or an obvious v4/phase name.
+            # Nested bundle case: extract once, then the next pass discovers its inner raw archives.
+            if lname.startswith("dev_set"):      # FF dev-exclusion (CHANGES.md #3): the organiser dev archive is never unpacked
+                continue
+            if (inv["has_faces"] and inv["has_voices"] and (inv["has_list"] or name_hint)) or (inv["has_nested_zip"] and name_hint):
+                out.append(zp)
+    return list(dict.fromkeys(out))
+
+
+def extract_flag_archives(scan, raw_root: Path):
+    """Extract only likely FLAG-v4 organiser archives, each into its own collision-free directory."""
+    if not AUTO_EXTRACT_FLAG_ZIPS:
+        return 0
+    todo = flag_zip_candidates(scan)
+    made = 0
+    for zp in todo:
+        key = hashlib.sha1(str(zp.resolve()).encode()).hexdigest()[:10]
+        dest = raw_root / f"{re.sub(r'[^A-Za-z0-9_.-]+', '_', zp.stem)[:60]}_{key}"
+        marker = dest / ".extract_complete"
+        if marker.exists():
+            continue
+        dest.mkdir(parents=True, exist_ok=True)
+        log("extracting FLAG archive:", zp, "->", dest)
+        try:
+            with zipfile.ZipFile(zp) as z:
+                z.extractall(dest)
+            marker.touch()
+            made += 1
+        except Exception:
+            shutil.rmtree(dest, ignore_errors=True)
+            raise
+    return made
+
+
+def media_cols(txt: Path):
+    """Locate the wav and image columns from actual suffixes; works for train and test list formats."""
+    try:
+        row = read_ws(txt, nrows=1).iloc[0]
+    except Exception:
+        return None
+    wav = [i for i, v in enumerate(row) if str(v).lower().endswith(".wav")]
+    jpg = [i for i, v in enumerate(row) if str(v).lower().endswith((".jpg", ".jpeg", ".png"))]
+    return (wav[0], jpg[0]) if wav and jpg else None
+
+
+def resolve_media_root(txt: Path, cols, scan):
+    """Resolve the base directory against which the paths inside the list are valid.
+
+    Official FLAG releases normally keep media beside the .txt, but Kaggle datasets are often
+    repacked with one extra directory level. We therefore test local parents and discovered media roots.
+    """
+    row = read_ws(txt, nrows=1).iloc[0]
+    wr, jr = _norm_rel(row[cols[0]]), _norm_rel(row[cols[1]])
+
+    cands = [txt.parent]
+    cands += list(txt.parents[1:5])
+    for r in scan["roots"]:
+        cands += [r, r.parent]
+    cands = list(dict.fromkeys(cands))
+    for base in cands:
+        if (base / wr).is_file() and (base / jr).is_file():
+            return base
+    return None
+
+
+def split_name(txt: Path):
+    """Keep compatibility with earlier feature names: train, no_gender/English, gender/Bangla, ..."""
+    if txt.name == "train_English.txt":
+        return "train"
+    lang = re.sub(r"_test$", "", txt.stem)
+    parts = [p.lower().replace(" ", "_") for p in txt.parts]
+    if "no_gender" in parts or "nogender" in parts:
+        return f"no_gender/{lang}"
+    # exact component match avoids treating no_gender as gender
+    if "gender" in parts:
+        return f"gender/{lang}"
+    return f"{txt.parent.name}/{lang}"
+
+
+tag = lambda split: split.replace("/", "_").replace(" ", "_")
+
+
+def validate_split_media(sp, full=True):
+    """Validate referenced paths before any GPU model is loaded."""
+    pairs = list(zip(sp["wav"], sp["jpg"]))
+    if not full and len(pairs) > 128:
+        idx = np.unique(np.linspace(0, len(pairs) - 1, 128).astype(int))
+        pairs = [pairs[i] for i in idx]
+    bad = []
+    for w, j in pairs:
+        wp, jp = sp["root"] / _norm_rel(w), sp["root"] / _norm_rel(j)
+        if not wp.is_file() or not jp.is_file():
+            bad.append((str(w), str(j), str(wp), str(jp)))
+            if len(bad) >= 5:
+                break
+    if bad:
+        raise FileNotFoundError(
+            f"{sp['txt']} resolved to root {sp['root']}, but media rows are missing. "
+            f"Examples: {bad}"
+        )
+
+
+def find_splits(scan):
+    """Discover organiser lists using their contents + actual media existence, not Kaggle folder names."""
+    S = {}
+    candidates = []
+    for name, paths in scan["files"].items():
+        if name == "train_English.txt" or name.endswith("_test.txt"):
+            candidates.extend(paths)
+
+    for p in sorted(dict.fromkeys(candidates), key=lambda q: (len(q.as_posix()), q.as_posix())):
+        if ONLY_UNDER and ONLY_UNDER not in p.as_posix() and p.name != "train_English.txt":
+            continue
+        cols = media_cols(p)
+        if cols is None:
+            continue
+        root = resolve_media_root(p, cols, scan)
+        if root is None:
+            continue
+
+        df = read_ws(p)
+        k = split_name(p)
+        wav, jpg = df[cols[0]].astype(str).tolist(), df[cols[1]].astype(str).tolist()
+        cur = dict(txt=p, root=root, wav=wav, jpg=jpg, cols=cols)
+
+        if k in S:
+            same = len(wav) == len(S[k]["wav"]) and wav == S[k]["wav"] and jpg == S[k]["jpg"]
+            if same:
+                continue
+            # Preserve the old naming for the first tree; fail clearly rather than silently mixing dev/eval.
+            raise RuntimeError(
+                f"Two different organiser lists map to split '{k}':\n"
+                f"  1) {S[k]['txt']}\n  2) {p}\n"
+                "Attach only one phase, or set ONLY_UNDER to a unique folder substring."
+            )
+        validate_split_media(cur, full=True)
+        S[k] = cur
+    return S
+
+
+# 1) Scan mounted Kaggle inputs.
+SCAN0 = scan_inputs(IN)
+
+# 2) If media is archived, extract only likely FLAG-v4 archives. Repeat for nested bundles.
+scans = [SCAN0]
+scan_now = SCAN0
+for _ in range(MAX_ARCHIVE_PASSES):
+    made = extract_flag_archives(scan_now, RAW)
+    if made == 0:
+        break
+    scan_now = scan_inputs(RAW)
+    scans.append(scan_now)
+
+SCAN = merge_scans(*scans, scan_inputs(RAW) if RAW.exists() else None)
+S = find_splits(SCAN)
+
+if SPLIT_FILTER:
+    S = {k: v for k, v in S.items() if k in SPLIT_FILTER}
+
+if not S:
+    zips = sorted(str(p) for n, ps in SCAN["files"].items() if n.lower().endswith(".zip") for p in ps)
+    txts = sorted(str(p) for n, ps in SCAN["files"].items() if n.lower().endswith(".txt") for p in ps)
+    raise FileNotFoundError(
+        "No FLAG organiser list could be paired with its media.\n"
+        f"ZIPs seen ({len(zips)}): {zips[:20]}\n"
+        f"TXT files seen ({len(txts)}): {txts[:20]}\n"
+        "Expected official structure: train_English.txt / *_test.txt plus referenced .wav/.jpg files. "
+        "If two challenge phases are attached at once, set ONLY_UNDER."
+    )
+
+# Train is expected for the progress-phase probe, but extraction can still run on dev/eval-only inputs.
+if "train" not in S:
+    log("WARNING: train split not found. Feature extraction will continue; the train zero-shot probe will be skipped.")
+
+for k, v in S.items():
+    # Paths were fully validated above, so duration reads now also verify WAV integrity.
+    v["dur"] = np.array([sf.info(str(v["root"] / _norm_rel(p))).duration for p in v["wav"]], dtype=np.float32)
+    shutil.copy(v["txt"], OUT / f"index_{tag(k)}.txt")
+    log(f"{k:22s} {len(v['wav']):5d} rows | voice median {np.median(v['dur']):.1f}s, "
+        f"max {v['dur'].max():.1f}s | root={v['root']} | list={v['txt']}")
+
+meta = SCAN["files"].get("meta_file_train_set.csv")
+if meta:
+    shutil.copy(meta[0], OUT / "meta_file_train_set.csv")
+
+
+# ============================================================================ MAV-Celeb v1/v2 rows (optional)
+def media_key(member):
+    """'.../faces/<id>/<lang>/<video>/<file>' -> 'faces/<id>/<lang>/<video>/<file>' (drops version folder)."""
+    p = str(member).replace("\\", "/").split("/")
+    for kind in ("faces", "voices"):
+        if kind in p:
+            return "/".join(p[p.index(kind):])
+    return None
+
+
+def _source_aliases(name):
+    base = name.lower().replace("-", "_")
+    short = base.split("_")[0]                      # v1 / v2
+    return {base, short, f"mav_celeb_{short}", f"mavceleb_{short}"}
+
+
+def ext_source(scan, name):
+    """Attached ZIP for the external source (largest copy), else a matching extracted media root."""
+    aliases = _source_aliases(name)
+    def norm(t):
+        return str(t).lower().replace("-", "_").replace(" ", "_")
+
+    zips = []
+    for n, ps in scan["files"].items():
+        if not n.lower().endswith(".zip"):
+            continue
+        nn = norm(n)
+        if any(a in nn for a in aliases):
+            zips.extend(ps)
+    if zips:
+        return max(zips, key=lambda p: p.stat().st_size)
+
+    for r in scan["roots"]:
+        rr = norm(r.as_posix())
+        if any(f"/{a}/" in rr + "/" or a in Path(rr).name for a in aliases):
+            return r
+    return None
+
+
+class ExtRows:
+    """Exact rows of ext_<name>_{face,voice}_meta.csv, read from attached ZIP/folder in CSV row order."""
+
+    def __init__(self, src, name, meta_dir: Path, max_sec=12.0):
+        fm = pd.read_csv(meta_dir / f"ext_{name}_face_meta.csv").path.astype(str)
+        vm = pd.read_csv(meta_dir / f"ext_{name}_voice_meta.csv").path.astype(str)
+        src = Path(src)
+        if src.is_dir():
+            from concurrent.futures import ThreadPoolExecutor
+            self.face = [src / media_key(p) for p in fm]
+            self.voice = [src / media_key(p) for p in vm]
+            with ThreadPoolExecutor(32) as ex:
+                ok = list(ex.map(lambda q: q is not None and q.exists(), self.face + self.voice))
+            if not all(ok):
+                raise KeyError(f"{ok.count(False)} rows missing, e.g. {(self.face + self.voice)[ok.index(False)]}")
+            self.read = lambda q: q.read_bytes()
+            self.zip = None
+        else:
+            self._zip = zipfile.ZipFile(src)
+            by = {media_key(i.filename): i.filename for i in self._zip.infolist()
+                  if not i.is_dir() and media_key(i.filename)}
+            missing = [p for p in list(fm) + list(vm) if media_key(p) not in by]
+            if missing:
+                raise KeyError(f"{len(missing)} metadata paths absent from {src.name}, e.g. {missing[0]}")
+            self.face = [by[media_key(p)] for p in fm]
+            self.voice = [by[media_key(p)] for p in vm]
+            self.read = self._zip.read
+            self.zip = str(src)
+        self.meta_dir = meta_dir
+        self.L = int(max_sec * 16000)
+        log(f"{name}: {len(self.face)} face rows, {len(self.voice)} voice rows in {src}")
+
+
+EXT = {}
+for name in EXT_SOURCES:
+    metas = sorted(SCAN["files"].get(f"ext_{name}_voice_meta.csv", []), key=lambda p: -p.stat().st_size)
+    src = ext_source(SCAN, name)
+    if metas and src is not None:
+        try:
+            EXT[name] = ExtRows(src, name, metas[0].parent)
+        except Exception as e:
+            log(f"{name}: skipped ({type(e).__name__}: {e})")
+    else:
+        log(f"{name}: skipped (meta csv found: {bool(metas)}, source found: {src is not None})")
+
+
+# ============================================================================ resume
+def seed_from_previous(scan, out: Path):
+    """Copy arrays of an earlier run of THIS notebook; other feature datasets are references only."""
+    copied = []
+    for n, ps in scan["files"].items():
+        if not n.endswith(".npy") or (out / n).exists():
+            continue
+        for p in ps:
+            if re.search(r"feats[-_]av", p.as_posix(), flags=re.I) and out not in p.parents:
+                shutil.copy(p, out / n)
+                copied.append(n)
+                break
+    log(f"resume: {len(copied)} arrays copied from an earlier run")
+    return copied
+
+
+SEEDED = seed_from_previous(SCAN, OUT)
+print({k: len(v["wav"]) for k, v in S.items()}, "| external:", list(EXT))
+
+
+# ---- fixed v1/v2 subset (other feature arrays use these saved row numbers)
+for name, rows in EXT.items():
+    fm = pd.read_csv(rows.meta_dir / f"ext_{name}_face_meta.csv")
+    vm = pd.read_csv(rows.meta_dir / f"ext_{name}_voice_meta.csv")
+    required_f, required_v = {"spk"}, {"spk", "lang"}
+    if not required_f.issubset(fm.columns) or not required_v.issubset(vm.columns):
+        raise ValueError(f"{name} metadata must contain face columns {required_f} and voice columns {required_v}")
+    rng = np.random.RandomState(0)
+    vsel = np.sort(np.concatenate([
+        rng.permutation(g.index.values)[:EXT_VOICES_PER_LANG] for _, g in vm.groupby(["spk", "lang"])
+    ]))
+    fsel = np.sort(np.concatenate([
+        rng.permutation(g.index.values)[:EXT_FACES] for _, g in fm.groupby("spk")
+    ]))
+    rows.fsel, rows.vsel = fsel, vsel
+    np.save(OUT / f"ext_{name}_face_rows.npy", fsel)
+    np.save(OUT / f"ext_{name}_voice_rows.npy", vsel)
+    log(f"{name}: subset {len(fsel)} faces / {len(vsel)} voices of {len(fm)} / {len(vm)}")
+# <<<FF-CELL>>>
+# ============================================================================ audio + batching
+TARGET_SR = 16000
+AUDIO_STATS = {"files": 0, "resampled": 0, "multichannel": 0}
+
+
+def _resample_np(w, sr_in, sr_out):
+    """High-quality polyphase resampling without librosa/numba version coupling."""
+    if sr_in == sr_out:
+        return np.asarray(w, dtype=np.float32)
+    from scipy.signal import resample_poly
+    g = math.gcd(int(sr_in), int(sr_out))
+    return resample_poly(np.asarray(w, dtype=np.float32), sr_out // g, sr_in // g).astype(np.float32)
+
+
+def load_audio(src):
+    """Mono float32 at 16 kHz. `src` may be a path or file-like object."""
+    w, sr = sf.read(src if hasattr(src, "read") else str(src), dtype="float32", always_2d=True)
+    AUDIO_STATS["files"] += 1
+    if w.shape[1] > 1:
+        AUDIO_STATS["multichannel"] += 1
+    w = w.mean(1)
+    if sr != TARGET_SR:
+        w = _resample_np(w, sr, TARGET_SR)
+        AUDIO_STATS["resampled"] += 1
+    return np.ascontiguousarray(w, dtype=np.float32)
+
+
+def centre_crop(w, L):
+    if len(w) <= L:
+        return w
+    s = (len(w) - L) // 2
+    return w[s:s + L]
+
+
+def pack_batches(durs, max_padded_sec=240.0, max_bs=32):
+    """Longest first; a batch costs len(batch) * longest item after padding."""
+    order = np.argsort(-np.asarray(durs), kind="stable")
+    batches, cur = [], []
+    for i in order:
+        longest = durs[cur[0]] if cur else durs[i]
+        if cur and ((len(cur) + 1) * longest > max_padded_sec or len(cur) >= max_bs):
+            batches.append(cur); cur = []
+        cur.append(int(i))
+    if cur:
+        batches.append(cur)
+    return batches
+
+
+def run_batched(items, fn, durs, max_padded_sec=240.0, max_bs=32, cpu_fn=None, label=""):
+    """fn(list of items) -> list of outputs, in item order. A CUDA OOM halves the batch; a single item goes to CPU."""
+    out = [None] * len(items)
+    t0, done_n = time.time(), 0
+
+    def go(idx):
+        try:
+            res = fn([items[i] for i in idx])
+        except torch.cuda.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            if len(idx) == 1:
+                res = (cpu_fn or fn)([items[idx[0]]])
+            else:
+                h = len(idx) // 2
+                go(idx[:h]); go(idx[h:])
+                return
+        for i, r in zip(idx, res):
+            out[i] = r
+
+    batches = pack_batches(durs, max_padded_sec, max_bs)
+    for bi, b in enumerate(batches):
+        go(b)
+        done_n += len(b)
+        if bi % 50 == 0 or done_n == len(items):
+            el = time.time() - t0
+            log(f"  {label} {done_n}/{len(items)}  {el:.0f}s  eta {el / done_n * (len(items) - done_n):.0f}s")
+    return out
+
+
+def cos_rows(a, b):
+    a, b = np.asarray(a, np.float64), np.asarray(b, np.float64)
+    return np.sum(a * b, 1) / (np.linalg.norm(a, axis=1) * np.linalg.norm(b, axis=1) + 1e-12)
+
+
+def amp(flag):
+    return torch.autocast("cuda", dtype=torch.float16, enabled=bool(flag) and DEV.type == "cuda")
+
+
+def read_rgb(src):
+    from PIL import Image
+    return Image.open(io.BytesIO(src) if isinstance(src, (bytes, bytearray)) else src).convert("RGB")
+
+
+def load_audio_sr(src, sr_out):
+    """Mono float32 at `sr_out` from the ORIGINAL file rate."""
+    w, sr = sf.read(src if hasattr(src, "read") else str(src), dtype="float32", always_2d=True)
+    w = w.mean(1)
+    if sr != sr_out:
+        w = _resample_np(w, sr, sr_out)
+    return np.ascontiguousarray(w, dtype=np.float32)
+# <<<FF-CELL>>>
+# ============================================================================ encoders
+# face encoder: .embed_faces(list of sources: path or bytes) -> (N, d); voice encoder: .embed_voice(src, crop_sec) -> (d,)
+IMG_NORM_CLIP = ((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711))
+
+
+def clip_tf(size=224):
+    from torchvision import transforms as T
+    return T.Compose([T.Resize(size, interpolation=T.InterpolationMode.BICUBIC), T.CenterCrop(size), T.ToTensor(),
+                      T.Normalize(*IMG_NORM_CLIP)])
+
+
+def batched_faces(srcs, prep, fwd, bs=32, label=""):
+    out, t0 = [], time.time()
+    for s in range(0, len(srcs), bs):
+        x = torch.stack([prep(p) for p in srcs[s:s + bs]]).to(DEV)
+        with torch.no_grad(), amp(True):
+            out.append(fwd(x).float().cpu().numpy())
+        if (s // bs) % 50 == 0:
+            log(f"  {label} {s + len(x)}/{len(srcs)} {time.time() - t0:.0f}s")
+    return np.concatenate(out).astype(np.float32)
+
+
+def crop_sec(w, sr, sec):
+    L = int(sec * sr)
+    if not sec or len(w) <= L:
+        return w
+    s = (len(w) - L) // 2
+    return w[s:s + L]
+
+
+class IBAligned:
+    """ImageBind-huge vision on the ArcFace 5-point aligned crop (the SCRFD + norm_crop of FLAG_12), resized to 224."""
+    kind = "face"
+
+    def __init__(self):
+        sys.modules.setdefault("imagebind.data", types.ModuleType("imagebind.data"))
+        from imagebind.models import imagebind_model
+        from imagebind.models.imagebind_model import ModalityType
+        from insightface.app import FaceAnalysis
+        f = CACHE / "imagebind_huge.pth"
+        if not f.exists():
+            torch.hub.download_url_to_file("https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth", str(f) + ".part", progress=False)
+            Path(str(f) + ".part").rename(f)
+        m = imagebind_model.imagebind_huge(pretrained=False)
+        m.load_state_dict(torch.load(f, map_location="cpu", mmap=True))
+        self.m, self.MT = m.to(DEV).eval(), ModalityType
+        self.app = FaceAnalysis(name="buffalo_l", allowed_modules=["detection"])
+        self.app.prepare(ctx_id=0 if DEV.type == "cuda" else -1, det_size=(224, 224), det_thresh=0.3)
+        self.tf = clip_tf(224)
+
+    def crop(self, s):
+        import cv2
+        from PIL import Image
+        from insightface.utils import face_align
+        img = cv2.imdecode(np.frombuffer(s, np.uint8), cv2.IMREAD_COLOR) if isinstance(s, (bytes, bytearray)) else cv2.imread(str(s))
+        faces = self.app.det_model.detect(img, max_num=0, metric="default")
+        bb, kp = faces if isinstance(faces, tuple) else (faces, None)
+        if bb is not None and len(bb) and kp is not None:
+            h, w = img.shape[:2]; ctr = np.array([w / 2, h / 2])
+            j = int(np.argmax((bb[:, 2] - bb[:, 0]) * (bb[:, 3] - bb[:, 1]) - 2.0 * np.linalg.norm((bb[:, :2] + bb[:, 2:4]) / 2 - ctr, axis=1) ** 2))
+            a = face_align.norm_crop(img, landmark=kp[j], image_size=112)
+        else:
+            h, w = img.shape[:2]; mg = int(min(h, w) * 0.15); a = cv2.resize(img[mg:h - mg, mg:w - mg], (112, 112))
+        return self.tf(Image.fromarray(a[:, :, ::-1]))
+
+    def embed_faces(self, srcs, label=""):
+        return {"": batched_faces(srcs, self.crop, lambda x: self.m({self.MT.VISION: x})[self.MT.VISION], label=f"ibalign {label}")}
+
+
+class CLIPImage:
+    """openai CLIP image embedding (HF weights), the space Wav2CLIP audio was distilled into."""
+    kind = "face"
+
+    def __init__(self, rid):
+        from transformers import CLIPModel
+        self.m = CLIPModel.from_pretrained(rid).to(DEV).eval(); self.tf = clip_tf(224)
+
+    def embed_faces(self, srcs, label=""):
+        def fwd(x):
+            o = self.m.get_image_features(pixel_values=x)
+            return o.pooler_output if hasattr(o, "pooler_output") else o          # transformers 5 returns an object
+        return {"": batched_faces(srcs, lambda s: self.tf(read_rgb(s)), fwd, label=f"clip {label}")}
+
+
+class Wav2CLIP:
+    kind = "voice"
+
+    def __init__(self):
+        import wav2clip
+        self.m = wav2clip.get_model(device=str(DEV))
+        self.m.eval()
+
+    @torch.no_grad()
+    def embed_voice(self, src, crop):
+        w = crop_sec(load_audio_sr(src, 16000), 16000, crop)
+        return {"": self.m(torch.from_numpy(w[None]).to(DEV)).float().cpu().numpy()[0]}
+
+
+class AudioCLIPEnc:
+    """AudioCLIP-Full-Training: audio 44.1 kHz in the int16 range (as its training datasets), image = CLIP RN50 head."""
+    kind = "both"
+
+    def __init__(self):
+        st = types.ModuleType("ignite_trainer")                       # only its base classes are needed by the model code
+        st.AbstractNet = type("AbstractNet", (torch.nn.Module,), {}); st.AbstractTransform = type("AbstractTransform", (object,), {})
+        sys.modules["ignite_trainer"] = st
+        sys.path.insert(0, str(REPOS / "AudioCLIP"))
+        from model import AudioCLIP
+        f = CACHE / "AudioCLIP-Full-Training.pt"
+        if not f.exists():
+            torch.hub.download_url_to_file("https://github.com/AndreyGuzhov/AudioCLIP/releases/download/v0.1/AudioCLIP-Full-Training.pt", str(f), progress=False)
+        self.m = AudioCLIP(pretrained=str(f)).to(DEV).eval(); self.tf = clip_tf(224)
+
+    def embed_faces(self, srcs, label=""):
+        def fwd(x):
+            ((_, f, _), _), _ = self.m(image=x.float())
+            return f
+        return {"": batched_faces(srcs, lambda s: self.tf(read_rgb(s)), fwd, label=f"aclip {label}")}
+
+    @torch.no_grad()
+    def embed_voice(self, src, crop):
+        w = crop_sec(load_audio_sr(src, 44100), 44100, crop) * 32768.0
+        ((a, _, _), _), _ = self.m(audio=torch.from_numpy(w[None, None]).to(DEV))
+        return {"": a.float().cpu().numpy()[0]}
+
+
+def build(name):
+    if name == "ibalign":
+        return IBAligned()
+    if name in ("clipb32", "clipb16"):
+        return CLIPImage({"clipb32": "openai/clip-vit-base-patch32", "clipb16": "openai/clip-vit-base-patch16"}[name])
+    return {"w2c": Wav2CLIP, "aclip": AudioCLIPEnc}[name]()
+
+
+def release():
+    import gc
+    gc.collect(); torch.cuda.empty_cache()
+# <<<FF-CELL>>>
+# ============================================================================ LanguageBind, in a child process (transformers 4.57.3)
+LB_SCRIPT = r"""
+import sys, io, json, types, zipfile, time
+import numpy as np, torch, torch.nn.functional as F, soundfile as sf
+job = json.load(open(sys.argv[1]))
+import torchaudio
+for n, f in [("set_audio_backend", lambda *a, **k: None), ("get_audio_backend", lambda: "soundfile")]:
+    if not hasattr(torchaudio, n):
+        setattr(torchaudio, n, f)
+import transformers.models.clip.modeling_clip as mc
+if not hasattr(mc, "_expand_mask"):                      # removed after transformers 4.3x; LanguageBind imports it
+    def _expand_mask(mask, dtype, tgt_len=None):
+        b, s = mask.size(); t = tgt_len if tgt_len is not None else s
+        inv = 1.0 - mask[:, None, None, :].expand(b, 1, t, s).to(dtype)
+        return inv.masked_fill(inv.to(torch.bool), torch.finfo(dtype).min)
+    mc._expand_mask = _expand_mask
+def emb_forward(self, pixel_values, interpolate_pos_encoding=False):   # 4.30 behaviour: no square-size check (audio 112 x 1036)
+    b = pixel_values.shape[0]
+    x = self.patch_embedding(pixel_values.to(dtype=self.patch_embedding.weight.dtype)).flatten(2).transpose(1, 2)
+    x = torch.cat([self.class_embedding.expand(b, 1, -1), x], dim=1)
+    return x + self.position_embedding(self.position_ids)
+mc.CLIPVisionEmbeddings.forward = emb_forward
+pkg = types.ModuleType("languagebind"); pkg.__path__ = [job["repo"] + "/languagebind"]; sys.modules["languagebind"] = pkg
+from languagebind.audio.modeling_audio import LanguageBindAudio
+from languagebind.audio.processing_audio import get_audio_transform
+from languagebind.image.modeling_image import LanguageBindImage
+dev = "cuda" if torch.cuda.is_available() else "cpu"
+def load(cls, rid):
+    m = cls.from_pretrained(rid).to(dev).eval()
+    for mod in m.modules():
+        c = getattr(mod, "config", None)
+        if c is not None:
+            try:
+                c._attn_implementation = "eager"
+            except Exception:
+                pass
+        if isinstance(getattr(mod, "position_ids", None), torch.Tensor):
+            mod.position_ids.copy_(torch.arange(mod.position_ids.shape[-1]).expand_as(mod.position_ids))
+    return m
+zips = {}
+def read(item):
+    if item[0] == "path":
+        return open(item[1], "rb").read()
+    if item[1] not in zips:
+        zips[item[1]] = zipfile.ZipFile(item[1])
+    return zips[item[1]].read(item[2])
+g = lambda o: o.pooler_output if hasattr(o, "pooler_output") else o
+for task in job["tasks"]:
+    t0 = time.time()
+    if task["kind"] == "face":
+        from PIL import Image
+        from torchvision import transforms as T
+        m = load(LanguageBindImage, "LanguageBind/LanguageBind_Image")
+        tf = T.Compose([T.Resize(224, interpolation=T.InterpolationMode.BICUBIC), T.CenterCrop(224), T.ToTensor(),
+                        T.Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711))])
+        out = []
+        for s in range(0, len(task["items"]), 32):
+            x = torch.stack([tf(Image.open(io.BytesIO(read(it))).convert("RGB")) for it in task["items"][s:s + 32]]).to(dev)
+            with torch.no_grad():
+                out.append(g(m.get_image_features(pixel_values=x)).float().cpu().numpy())
+    else:
+        m = load(LanguageBindAudio, "LanguageBind/LanguageBind_Audio_FT")
+        tf = get_audio_transform(m.config)
+        out = []
+        for it in task["items"]:
+            w, sr = sf.read(io.BytesIO(read(it)), dtype="float32", always_2d=True)
+            w = w.mean(1)
+            if task["crop"] and len(w) > task["crop"] * sr:
+                L = int(task["crop"] * sr); s0 = (len(w) - L) // 2; w = w[s0:s0 + L]
+            x = tf((torch.from_numpy(np.ascontiguousarray(w))[None], sr))
+            with torch.no_grad():
+                out.append(g(m.get_image_features(pixel_values=x[None].to(dev))).float().cpu().numpy())
+    np.save(task["out"], np.concatenate(out).astype(np.float32 if task["fp32"] else np.float16))
+    print(task["out"], len(task["items"]), f"{time.time() - t0:.0f}s", flush=True)
+    del m; torch.cuda.empty_cache()
+"""
+
+
+def lbind_items(kind, split=None, src=None):
+    if split:
+        sp = S[split]
+        return [["path", str(sp["root"] / _norm_rel(p))] for p in (sp["jpg"] if kind == "face" else sp["wav"])]
+    rows = EXT[src]
+    sel = rows.fsel if kind == "face" else rows.vsel
+    lst = rows.face if kind == "face" else rows.voice
+    return [["zip", rows.zip, lst[i]] if rows.zip else ["path", str(lst[i])] for i in sel]
+
+
+def run_lbind():
+    tasks = []
+    for kind in ("face", "voice"):
+        for k in S:
+            f = OUT / f"{kind}_lbind_{tag(k)}.npy"
+            if not f.exists():
+                tasks.append(dict(kind=kind, items=lbind_items(kind, split=k), out=str(f), crop=0, fp32=True))
+        for s in EXT:
+            f = OUT / f"ext_{s}_{kind}_lbind.npy"
+            if not f.exists():
+                tasks.append(dict(kind=kind, items=lbind_items(kind, src=s), out=str(f), crop=12, fp32=False))
+    if not tasks:
+        log("== lbind: every array already exists -> skipped"); return
+    tasks.sort(key=lambda t: t["kind"])                        # one model load per kind
+    (WORKDIR / "lb_job.json").write_text(json.dumps(dict(repo=str(REPOS / "LanguageBind"), tasks=tasks)))
+    (WORKDIR / "lb_run.py").write_text(LB_SCRIPT)
+    env = dict(os.environ)
+    if not LOCAL:
+        env["PYTHONPATH"] = "/tmp/tf457" + os.pathsep + env.get("PYTHONPATH", "")
+    r = subprocess.run([sys.executable, str(WORKDIR / "lb_run.py"), str(WORKDIR / "lb_job.json")], env=env,
+                       capture_output=True, text=True)
+    print(r.stdout[-3000:]); print(r.stderr[-3000:] if r.returncode else "")
+    if r.returncode:
+        raise RuntimeError(f"LanguageBind child process failed ({r.returncode})")
+# <<<FF-CELL>>>
+# ============================================================================ run: every encoder over the organiser splits, then the v1/v2 subset
+def face_srcs(split=None, src=None):
+    if split:
+        return [S[split]["root"] / _norm_rel(p) for p in S[split]["jpg"]]
+    rows = EXT[src]
+    return [rows.read(rows.face[i]) for i in rows.fsel]
+
+
+def voice_list(split=None, src=None):
+    if split:
+        return [S[split]["root"] / _norm_rel(p) for p in S[split]["wav"]], 0
+    rows = EXT[src]
+    return [io.BytesIO(rows.read(rows.voice[i])) for i in rows.vsel], 12
+
+
+def out_name(enc, kind, split=None, src=None):
+    return OUT / (f"{kind}_{enc}_{tag(split)}.npy" if split else f"ext_{src}_{kind}_{enc}.npy")
+
+
+FAILED = {}
+for name in ENCODERS:
+    t0 = time.time()
+    if name == "lbind":
+        try:
+            run_lbind()
+        except Exception as e:
+            FAILED[name] = f"{type(e).__name__}: {e}"; log("!! lbind FAILED:", FAILED[name])
+        continue
+    kinds = {"ibalign": ["face"], "clipb32": ["face"], "clipb16": ["face"], "w2c": ["voice"], "aclip": ["face", "voice"]}[name]
+    jobs = [(k, sp, None) for k in kinds for sp in S] + [(k, None, s) for k in kinds for s in EXT]
+    jobs = [j for j in jobs if not out_name(name, *j).exists()]
+    if not jobs:
+        log(f"== {name}: every array already exists -> skipped"); continue
+    try:
+        enc = build(name)
+        for kind, split, src in jobs:
+            try:
+                if kind == "face":
+                    X = enc.embed_faces(face_srcs(split, src), label=split or src)[""]
+                else:
+                    lst, crop = voice_list(split, src)
+                    X, tv = [], time.time()
+                    for i, v in enumerate(lst):
+                        X.append(enc.embed_voice(v, crop)[""])
+                        if i % 2000 == 0:
+                            log(f"  {name} {split or src} {i}/{len(lst)} {time.time() - tv:.0f}s")
+                    X = np.stack(X).astype(np.float32)
+                np.save(out_name(name, kind, split, src), X if split else X.astype(np.float16))
+                log(f"saved {out_name(name, kind, split, src).name} {X.shape}")
+            except Exception as e:
+                FAILED[f"{name}:{kind}:{split or src}"] = f"{type(e).__name__}: {e}"; log("!! FAILED", name, kind, split or src, e)
+    except Exception as e:
+        FAILED[name] = f"{type(e).__name__}: {e}"; log(f"!! {name} FAILED -> skipped: {FAILED[name]}")
+    enc = None; release()
+    log(f"== {name} done in {time.time() - t0:.0f}s")
+print("failed:", FAILED or "none")
+# <<<FF-CELL>>>
+# ============================================================================ zero-shot probe (true labels, no training)
+# v4 train: positives = two different rows of the same person (v4 has no video id: may include same-session pairs);
+# v1/v2 subset: positives = face and voice of the same person from DIFFERENT videos (no session shortcut).
+# Score = cosine after removing each side's mean over the probed rows (as the ImageBind term of SET-13).
+from sklearn.metrics import roc_curve
+def eer(s, y):
+    fpr, tpr, _ = roc_curve(y, s); fnr = 1 - tpr; i = np.nanargmin(np.abs(fnr - fpr)); return 100 * (fpr[i] + fnr[i]) / 2
+l2n = lambda X: X / (np.linalg.norm(X, axis=1, keepdims=True) + 1e-8)
+PAIRS = {"ibalign": ("ibalign", "iba"), "clipb32+w2c": ("clipb32", "w2c"), "clipb16+w2c": ("clipb16", "w2c"),
+         "aclip": ("aclip", "aclip"), "lbind": ("lbind", "lbind")}
+_fm = SCAN["files"].get("face_ibv_train.npy", [])
+FM_DIR = _fm[0].parent if _fm else None    # flag2027-feats-models, optional; no expensive rglob through raw media
+
+
+def get(kind, enc, split=None, src=None):
+    f = out_name(enc, kind, split, src)
+    if f.exists():
+        return np.load(f).astype(np.float32)
+    if enc in ("ibv", "iba") and FM_DIR is not None:                      # ImageBind from FLAG_10 (full ext rows)
+        f = FM_DIR / (f"{kind}_{enc}_{tag(split)}.npy" if split else f"ext_{src}_{kind}_{enc}.npy")
+        if not f.exists():
+            return None
+        a = np.load(f).astype(np.float32)
+        return a if split else a[EXT[src].fsel if kind == "face" else EXT[src].vsel]
+    return None
+
+
+rows = []
+rng = np.random.RandomState(0)
+def speaker_from_path(p):
+    parts = str(p).replace("\\", "/").split("/")
+    # Official FLAG v4: voices/English/id001/00036.wav. Prefer explicit id### token.
+    for x in parts:
+        if re.fullmatch(r"id\d+", x, flags=re.I):
+            return x
+    # Fallback: parent directory of the media file.
+    return parts[-2] if len(parts) >= 2 else str(p)
+
+
+def load_gender_map():
+    """Header-agnostic id -> gender map; returns {} if the meta file is absent/unrecognized."""
+    meta = SCAN["files"].get("meta_file_train_set.csv")
+    if not meta:
+        return {}
+    raw = pd.read_csv(meta[0], header=None, dtype=str)
+    out = {}
+    genders = {"m", "male", "man", "f", "female", "woman"}
+    for _, r in raw.iterrows():
+        vals = [str(x).strip() for x in r.tolist() if pd.notna(x)]
+        sid = next((x for x in vals if re.fullmatch(r"id\d+", x, flags=re.I)), None)
+        gen = next((x.lower() for x in vals if x.lower() in genders), None)
+        if sid and gen:
+            out[sid] = gen
+    return out
+
+
+if "train" in S:
+    spk = np.asarray([speaker_from_path(p) for p in S["train"]["wav"]], dtype=str)
+    gmap = load_gender_map()
+    n = len(spk)
+    by = {s: np.where(spk == s)[0] for s in np.unique(spk)}
+    eligible = np.array([i for i in range(n) if len(by[spk[i]]) >= 2], dtype=int)
+    if len(eligible) == 0:
+        log("train probe skipped: no speaker has >=2 rows")
+    else:
+        ii = rng.choice(eligible, size=min(3000, max(1, len(eligible) * 8)), replace=True)
+        pos = []
+        for i in ii:
+            cand = by[spk[i]][by[spk[i]] != i]
+            pos.append((int(i), int(rng.choice(cand))))
+
+        protocols = [(False, "ng")]
+        # Only claim a gender-constrained probe when metadata actually covers enough speaker IDs.
+        covered = np.mean([s in gmap for s in np.unique(spk)]) if len(np.unique(spk)) else 0.0
+        if covered >= 0.95 and len(set(gmap.values())) >= 1:
+            protocols.append((True, "g"))
+        else:
+            log(f"gender-constrained train probe skipped: gender coverage={covered:.1%}")
+
+        for sg, proto in protocols:
+            neg = []
+            attempts = 0
+            target_n = len(pos)
+            while len(neg) < target_n and attempts < target_n * 100:
+                attempts += 1
+                i, j = rng.randint(n, size=2)
+                if spk[i] == spk[j]:
+                    continue
+                if sg and gmap.get(spk[i]) != gmap.get(spk[j]):
+                    continue
+                neg.append((int(i), int(j)))
+            if len(neg) < target_n:
+                log(f"train probe {proto} skipped: could create only {len(neg)}/{target_n} negatives")
+                continue
+
+            pr = np.asarray(pos + neg, dtype=int)
+            y = np.r_[np.ones(len(pos)), np.zeros(len(neg))]
+            for name, (fe, ve) in {**PAIRS, "ImageBind (FLAG_10)": ("ibv", "iba")}.items():
+                Fx, Vx = get("face", fe, split="train"), get("voice", ve, split="train")
+                if Fx is None or Vx is None:
+                    continue
+                if len(Fx) != n or len(Vx) != n:
+                    log(f"probe skip {name}: train feature rows mismatch face={len(Fx)} voice={len(Vx)} expected={n}")
+                    continue
+                Fx, Vx = l2n(Fx - Fx.mean(0)), l2n(Vx - Vx.mean(0))
+                rows.append(dict(data="v4 train", protocol=proto, model=name,
+                                 eer=round(eer(np.sum(Fx[pr[:, 0]] * Vx[pr[:, 1]], 1), y), 2)))
+for s in EXT:
+    rws = EXT[s]
+    fm = pd.read_csv(rws.meta_dir / f"ext_{s}_face_meta.csv").iloc[rws.fsel].reset_index(drop=True)
+    vm = pd.read_csv(rws.meta_dir / f"ext_{s}_voice_meta.csv").iloc[rws.vsel].reset_index(drop=True)
+    pos, neg = [], []
+    for vi, r in vm.iterrows():
+        cand = fm.index[(fm.spk == r.spk) & (fm.video != r.video)]
+        if len(cand):
+            pos.append((rng.choice(cand), vi))
+        other = fm.index[fm.spk != r.spk]
+        neg.append((rng.choice(other), vi))
+    pr = np.array(pos + neg); y = np.r_[np.ones(len(pos)), np.zeros(len(neg))]
+    for name, (fe, ve) in {**PAIRS, "ImageBind (FLAG_10)": ("ibv", "iba")}.items():
+        Fx, Vx = get("face", fe, src=s), get("voice", ve, src=s)
+        if Fx is None or Vx is None:
+            continue
+        Fx, Vx = l2n(Fx - Fx.mean(0)), l2n(Vx - Vx.mean(0))
+        for lang in vm.lang.unique():
+            m = np.r_[(vm.lang.values[[p[1] for p in pos]] == lang), (vm.lang.values[[p[1] for p in neg]] == lang)]
+            rows.append(dict(data=f"{s} (cross-video)", protocol=f"ng {lang}", model=name,
+                             eer=round(eer(np.sum(Fx[pr[m, 0]] * Vx[pr[m, 1]], 1), y[m]), 2)))
+PR = pd.DataFrame(rows); PR.to_csv(OUT / "probe_zeroshot.csv", index=False)
+print(PR.pivot_table(index="model", columns=["data", "protocol"], values="eer").to_string())
+# reading guide: ImageBind zero-shot is ~25-27 (ng) on v1 English / Urdu cross-video (IB-01). Near 50 = no signal.
+# A model worth fusing is one clearly below 45 whose errors are not those of ImageBind (checked locally afterwards).
+# <<<FF-CELL>>>
+man = {"created": time.strftime("%Y-%m-%d %H:%M"), "splits": {k: len(v["wav"]) for k, v in S.items()},
+       "external": {k: [len(r.fsel), len(r.vsel)] for k, r in EXT.items()}, "encoders": ENCODERS, "failed": FAILED,
+       "files": {f.name: list(np.load(f, mmap_mode="r").shape) for f in sorted(OUT.glob("*.npy"))}}
+(OUT / "feats_manifest.json").write_text(json.dumps(man, indent=1))
+shutil.rmtree(WORKDIR / "raw", ignore_errors=True)
+print(f"{len(man['files'])} arrays in {OUT} | failed: {FAILED or 'none'}")
+print("NEXT: Save Version -> Output -> New Dataset -> flag2027-feats-av, then hand feats_av back")
+# <<<FF-CELL>>>

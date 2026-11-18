@@ -1,0 +1,140 @@
+print("[cell] final_blend: inputs (FACTOR_ENFUSE zip, FVBIND_ENFUSE zip, DP scores, sigma.json) and variant guard", flush=True)
+# Runs the team's script blend.py (copied; paths read from the environment: see CHANGES.md), exactly as the submission command
+#     XJF_SIG="5.0983,3.8376" python blend.py 1.0        (XJF_BASE unset)
+# English file = (FACTOR_ENFUSE English value) / SIG[protocol] - 1.0 x z_DP; Bangla files = the bytes of the base zips.
+import hashlib, json, os, shutil, subprocess, sys, tempfile, zipfile
+from pathlib import Path
+import numpy as np
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+assert os.environ.get("FF_STAGE_DIR"), "FF_STAGE_DIR (this stage's folder in the repo) must be set by the runner"
+SD = Path(os.environ["FF_STAGE_DIR"]).resolve()
+REPO = Path(os.environ.get("FF_REPO") or SD.parents[2]).resolve()
+MODE = os.environ.get("FF_MODE", "")
+EXPJ = SD / "expected.json" if (SD / "expected.json").is_file() else REPO / "assembly" / "expected.json"   # same file
+EXP = json.loads(EXPJ.read_text(encoding="utf-8"))
+
+
+def fresh_tmp(stage):
+    """Scratch folder of this stage run, outside the stage output; emptied at every run so that nothing of an earlier run is reused."""
+    base = os.environ.get("DP_TMP") or (str(Path(os.environ["FF_WORK"]) / "tmp") if os.environ.get("FF_WORK") else "") \
+        or ("/kaggle/tmp" if Path("/kaggle/tmp").is_dir() else tempfile.gettempdir())
+    t = Path(base) / "ff_dp" / stage
+    shutil.rmtree(t, ignore_errors=True)
+    t.mkdir(parents=True, exist_ok=True)
+    return t
+
+
+TMP = fresh_tmp("final_blend")
+
+
+def one(root, name, env=None):
+    """The file called `name` below `root`: the shallowest one when the artifact holds several copies (a producing stage's own
+    output sits at its top level); `env` names a variable that may give the path directly."""
+    if env and os.environ.get(env):
+        p = Path(os.environ[env]); assert p.is_file(), f"{env}={p}: not a file"; return p
+    R = Path(root)
+    hits = sorted(q for q in R.rglob(name) if q.is_file())
+    if len(hits) > 1:
+        d = min(len(q.relative_to(R).parts) for q in hits)
+        hits = [q for q in hits if len(q.relative_to(R).parts) == d]
+        print(f"  {name}: several copies under {R}; the shallowest is taken: {[str(q) for q in hits]}", flush=True)
+    assert len(hits) == 1, f"{name}: {len(hits)} files under {R}: {[str(q) for q in hits[:5]]}" + (f" (set {env})" if env else "")
+    return hits[0]
+
+
+def stored_dirs():
+    """Folders of the stored per-pair score files of mode (c) (DESIGN 5.3), in the order used by assembly/assemble_exact.py and by
+    stages a_factor / a_fvbind: <entry>/05_scores for every entry of FF_DATA, then assembly/inputs of this repository."""
+    out = [Path(r) / "05_scores" for r in os.environ.get("FF_DATA", "").split(os.pathsep) if r] + [REPO / "assembly" / "inputs"]
+    return [d for d in out if d.is_dir()]
+
+
+def locate(name, kernel, env, stored_rel=()):
+    """`name` from the output of `kernel` (mounted by the runner); in FF_MODE=assemble, when the runner did not mount it (soft input
+    without a saved copy), the stored file: <05_scores>/<name> (flat layout) or <05_scores>/<rel> for rel in `stored_rel`."""
+    if env and os.environ.get(env):
+        return one(None, name, env), f"${env}"
+    K = IN / kernel
+    if K.is_dir() and any(q.is_file() for q in K.rglob(name)):
+        return one(K, name), f"output of {kernel}"
+    assert MODE == "assemble", f"{name}: not in the output of {kernel} (mounted at {K}); stored copies are read only in FF_MODE=assemble"
+    for d in stored_dirs():
+        for rel in (name,) + tuple(stored_rel):
+            if (d / rel).is_file():
+                return d / rel, f"stored file {d / rel}"
+    raise FileNotFoundError(f"{name}: not in {K}, nor in <FF_DATA entry>/05_scores/{{{', '.join((name,) + tuple(stored_rel))}}}, "
+                            f"nor in {REPO / 'assembly' / 'inputs'} (assembly/inputs/README.md lists the ten stored files)")
+
+
+def members(zp):
+    with zipfile.ZipFile(zp) as z:
+        return {i.filename: hashlib.sha256(z.read(i)).hexdigest() for i in z.infolist()}
+
+
+FAC, how_fac = locate("posteval_FACTOR_ENFUSE_c5rl.zip", "notebooks/ff/a_factor", "DP_FACTOR_ZIP")
+FVB, how_fvb = locate("posteval_FVBIND_ENFUSE_fvb.zip", "notebooks/ff/a_fvbind", "DP_FVBIND_ZIP")
+# DP scores: in modes train / infer the output of stage dp_score (equal bit for bit to the verbatim xjf.py output of dp_train when both
+# used the same DP Evaluation features: dp_score stops otherwise); in mode (c) the stored original xjf_scores.npz.
+SCO, how_sco = locate("xjf_scores.npz", "notebooks/ff/dp_score", "DP_SCORES_NPZ", stored_rel=("dp/xjf_scores.npz",))
+SIGJ, how_sig = locate("sigma.json", "notebooks/ff/dp_sigma", "DP_SIGMA_FILE")
+for n, p, h in [("FACTOR_ENFUSE zip", FAC, how_fac), ("FVBIND_ENFUSE zip", FVB, how_fvb), ("DP scores", SCO, how_sco), ("sigma.json", SIGJ, how_sig)]:
+    print(f"  {n:18s} {p}  <- {h}", flush=True)
+BASE = TMP / "base"                                                  # blend.py expects the two canonical file names in its folders
+BASE.mkdir(parents=True, exist_ok=True)
+shutil.copyfile(FAC, BASE / "posteval_FACTOR_ENFUSE_c5rl.zip")
+shutil.copyfile(FVB, BASE / "posteval_FVBIND_ENFUSE_fvb.zip")
+
+assert not os.environ.get("XJF_BASE"), "variant 13.54: XJF_BASE must be unset (lf = base of another, unsubmitted system)"
+VARIANT = os.environ.get("FF_VARIANT", "1354")
+XS = os.environ.get("XJF_SIG", "")
+R = os.environ.get("DP_R", "1.0")
+sig = json.loads(SIGJ.read_text(encoding="utf-8"))
+print(f"  XJF_SIG (variant) = {XS or '(unset)'} | sigma.json (dp_sigma) = {sig['xjf_sig']} | r = {R}", flush=True)
+if VARIANT == "1354":
+    assert XS == EXP["sigma"]["xjf_sig"], f"variant 13.54 needs XJF_SIG={EXP['sigma']['xjf_sig']} (got {XS!r})"
+    assert float(R) == EXP["r"], f"variant 13.54 needs r = {EXP['r']}"
+    if MODE == "assemble":                                           # same stored table -> the recomputed constants must be the pinned ones
+        assert sig["xjf_sig"] == XS, f"FF_MODE=assemble: dp_sigma recomputed {sig['xjf_sig']} from the stored table, not {XS}"
+if XS and sig["xjf_sig"] != XS:
+    print(f"  NOTE: dp_sigma recomputed {sig['xjf_sig']} (rebuilt table); the zip uses the pinned XJF_SIG {XS}", flush=True)
+fm, vm = members(FAC), members(FVB)
+for n, h in EXP["factor_enfuse"]["members"].items():
+    print(f"  FACTOR_ENFUSE {n:45s} {'== stored' if fm.get(n) == h else 'differs from the stored zip (re-run stages)'}", flush=True)
+g = "gender/sub_score_v4_Bangla_unheard.txt"
+print(f"  FVBIND_ENFUSE {g:45s} {'== stored' if vm.get(g) == EXP['fvbind_enfuse']['members'][g] else 'differs from the stored zip (re-run stages)'}", flush=True)
+# DP arrays read by blend.py (ids_* and z_* of the two English files), compared with the stored original by sha256 of ndarray.tobytes()
+X = np.load(SCO)
+dp_same = {}
+for k, h in EXP["inputs"]["xjf_scores.npz"]["arrays_sha256"].items():
+    if k.startswith(("ids_", "z_")):
+        dp_same[k] = k in X.files and hashlib.sha256(np.ascontiguousarray(X[k]).tobytes()).hexdigest() == h
+print(f"  DP arrays (ids / z) equal to the stored original: {dp_same}", flush=True)
+if MODE == "assemble":
+    assert all(dp_same.values()), f"FF_MODE=assemble needs the stored original DP scores; these arrays differ: {[k for k, v in dp_same.items() if not v]}"
+# <<<FF-CELL>>>
+print("[cell] final_blend: blend.py", flush=True)
+env = dict(os.environ, DP_POSTEVAL_DIR=str(BASE), DP_FVBIND_DIR=str(BASE), DP_SCORES=str(SCO), DP_ZIP_DIR=str(OUT / "zips"),
+           PYTHONDONTWRITEBYTECODE="1", PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8")
+if not XS:
+    env["DP_SIGMA_JSON"] = str(SIGJ)                                 # outside the 13.54 variant only: take the recomputed constants
+cmd = [sys.executable, "-u", str(SD / "blend.py"), R]
+print("$", " ".join(cmd), flush=True)
+print("  (blend.py prints a Spearman / mean / sd line per English file: label-free diagnostics of the original script, used for no value)", flush=True)
+p = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", bufsize=1, errors="replace")
+for line in p.stdout:
+    print(line, end="", flush=True)
+assert p.wait() == 0, f"blend.py failed (exit code {p.returncode})"
+# <<<FF-CELL>>>
+print("[cell] final_blend: members of the zip", flush=True)
+Z = sorted((OUT / "zips").glob("*.zip"))
+assert len(Z) == 1, Z
+zm = members(Z[0])
+rep = {"zip": Z[0].name, "zip_sha256": hashlib.sha256(Z[0].read_bytes()).hexdigest(), "mode": MODE,
+       "inputs": {"factor_enfuse_zip": how_fac, "fvbind_enfuse_zip": how_fvb, "dp_scores": how_sco, "sigma_json": how_sig},
+       "dp_arrays_equal_to_stored_original": dp_same, "members": {}}
+for n, h in EXP["target"]["members"].items():
+    rep["members"][n] = {"sha256": zm.get(n), "submission_sha256": h, "identical": zm.get(n) == h}
+    print(f"  {n:45s} {'== submission' if zm.get(n) == h else 'differs from the submission'}", flush=True)
+rep["all_identical"] = all(v["identical"] for v in rep["members"].values())
+(OUT / "final_blend_members.json").write_text(json.dumps(rep, indent=1) + "\n", encoding="utf-8")
+print("RESULT:", Z[0].name, "members byte-identical to the submission" if rep["all_identical"] else "members differ (see final_verify for Spearman)", flush=True)

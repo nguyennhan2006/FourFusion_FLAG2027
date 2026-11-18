@@ -1,0 +1,70 @@
+{
+ "stage": "c63_frames",
+ "run": "onnhqunhh/flag-2027-nb-63-frames",
+ "exactness": "exact-executed-copy",
+ "files": [
+  {
+   "path": "original/flag-2027-nb-63-frames.ipynb",
+   "copied_from": "kaggle/FLAG_63_frames.ipynb",
+   "bytes": 24790,
+   "md5": "dd0c8f9e11cb28f3055dcc64464a99b9",
+   "sha256": "f2c80d0956d48f2823c64601b9c102e0abcf038b6cceafe6c850e4fc9d413ad4"
+  }
+ ],
+ "notes": [],
+ "exactness_note": "kaggle/FLAG_63_frames.ipynb has md5 dd0c8f9e11cb28f3055dcc64464a99b9 = push log line 73 (kaggle/kapi_runs.jsonl, internal provenance) (the pushed bytes)",
+ "notebook_md5": "dd0c8f9e11cb28f3055dcc64464a99b9",
+ "push_records": [
+  {
+   "kapi_runs_line": 72,
+   "record": {
+    "time": "2026-10-12 12:36",
+    "account": "onnhqunhh",
+    "kernel": "onnhqunhh/flag-2027-nb-63-frames-smoke",
+    "source": "kaggle/FLAG_63_frames.ipynb",
+    "notebook_md5": "75ddf9eb2ff9f4381253bf007cebb328",
+    "gpu": false,
+    "smoke": {
+     "FLAG_SMOKE": "1",
+     "FRAMES_SMOKE_N": "30"
+    },
+    "datasets": [
+     "ngnnguynchn/flag2027-frames-index-p"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  },
+  {
+   "kapi_runs_line": 73,
+   "record": {
+    "time": "2026-10-12 12:40",
+    "account": "onnhqunhh",
+    "kernel": "onnhqunhh/flag-2027-nb-63-frames",
+    "source": "kaggle/FLAG_63_frames.ipynb",
+    "notebook_md5": "dd0c8f9e11cb28f3055dcc64464a99b9",
+    "gpu": false,
+    "smoke": {},
+    "datasets": [
+     "ngnnguynchn/flag2027-frames-index-p"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  }
+ ],
+ "builders_today": [
+  {
+   "path": "kaggle/build_frames_notebook.py",
+   "bytes": 15122,
+   "md5": "ac1b6515504632a12ba9824c2045f0ec",
+   "sha256": "284c5a363c848b9f4e9e41d9034073d92facfc8961f804292caeb871c87da3c3",
+   "mtime_local": "2026-10-12 12:36:20"
+  }
+ ],
+ "builders_git": "all untracked in the source repo (git status '??'); kaggle/build_eval_notebooks.py (notebook writer) is tracked + modified",
+ "evidence": [
+  "internal provenance (not shipped): NOP_BTC_2026-11-20/repo_map/DESIGN.md §4.2, §6 WP-C, §7 G2 G9 G22 G27",
+  "internal provenance (not shipped): S1 A13; S2 3.2"
+ ]
+}

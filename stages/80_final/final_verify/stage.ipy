@@ -1,0 +1,58 @@
+print("[cell] final_verify: inputs (final zip, reference values, optional submitted zip)", flush=True)
+# New code + the team's format checker check_eval_zip.py (unchanged). Byte-identical members are required in mode assemble (stored
+# scores); after re-running GPU stages (modes train / infer) the members differ in the last digits and the criterion is Spearman.
+import json, os, subprocess, sys
+from pathlib import Path
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+assert os.environ.get("FF_STAGE_DIR"), "FF_STAGE_DIR (this stage's folder in the repo) must be set by the runner"
+SD = Path(os.environ["FF_STAGE_DIR"]).resolve()
+EXPJ = SD / "expected.json" if (SD / "expected.json").is_file() else SD.parents[2] / "assembly" / "expected.json"   # same file
+EXP = json.loads(EXPJ.read_text(encoding="utf-8"))
+KF = IN / "notebooks/ff/final_blend"
+if os.environ.get("FF_FINAL_ZIP"):
+    ZIP = Path(os.environ["FF_FINAL_ZIP"])
+else:
+    hits = sorted(q for q in KF.rglob(EXP["target"]["zip"]) if q.is_file())
+    if len(hits) > 1:                                                # several copies: the shallowest one
+        d = min(len(q.relative_to(KF).parts) for q in hits)
+        hits = [q for q in hits if len(q.relative_to(KF).parts) == d]
+    assert len(hits) == 1, f"{EXP['target']['zip']}: {len(hits)} files under {KF} (set FF_FINAL_ZIP)"
+    ZIP = hits[0]
+REF = os.environ.get("FF_REFERENCE_ZIP")
+if not REF:
+    for r in (x for x in os.environ.get("FF_DATA", "").split(os.pathsep) if x):
+        q = Path(r) / "05_scores" / EXP["target"]["zip"]
+        if q.is_file():
+            REF = str(q); break
+mode = os.environ.get("FF_MODE", "")
+flag = os.environ.get("FF_VERIFY_STRICT", "auto")
+STRICT = flag == "1" or (flag == "auto" and mode == "assemble")
+print(f"  zip {ZIP}\n  reference values {EXPJ}\n  submitted zip for Spearman: {REF or 'not available'}\n  mode {mode or '?'} -> byte identity "
+      f"{'required' if STRICT else 'reported only'}", flush=True)
+
+
+def run(cmd):
+    cmd = [str(c) for c in cmd]
+    print("$", " ".join(cmd), flush=True)
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONIOENCODING="utf-8"))
+    print(r.stdout + r.stderr, flush=True)
+    return r
+# <<<FF-CELL>>>
+print("[cell] final_verify: format check (check_eval_zip.py: four files, pair counts, finite values)", flush=True)
+counts = ",".join(f"{n}={c}" for n, c in EXP["target"]["pairs"].items())
+r = run([sys.executable, SD / "check_eval_zip.py", ZIP, "--counts", counts])
+(OUT / "check_eval_zip.txt").write_text(r.stdout + r.stderr, encoding="utf-8")
+assert r.returncode == 0 and r.stdout.strip().splitlines()[-1] == "OK", "check_eval_zip.py: FAIL (malformed submission zip)"
+# <<<FF-CELL>>>
+print("[cell] final_verify: members against the submission (sha256), Spearman against the submitted zip", flush=True)
+cmd = [sys.executable, SD / "verify_zip.py", "--zip", ZIP, "--expected", EXPJ, "--out", OUT / "verify_report.json"]
+if REF:
+    cmd += ["--ref", REF]
+if STRICT:
+    cmd.append("--strict")
+r = run(cmd)
+assert r.returncode == 0, "verify_zip.py: the zip does not meet the criterion of this mode (see the lines above)"
+rep = json.loads((OUT / "verify_report.json").read_text(encoding="utf-8"))
+print("RESULT:", "all four members byte-identical to submission 1054704" if rep["all_members_identical"] else
+      "members differ from the submission (expected after re-running GPU stages); Spearman per file: "
+      + str({n: m.get("vs_ref", {}).get("spearman") for n, m in rep["members"].items()}), flush=True)

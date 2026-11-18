@@ -1,0 +1,322 @@
+{
+ "_doc": "The three run modes of DESIGN section 5. runner/ffcore.py reads, for the selected FF_MODE: which stage kinds may run, which artifact classes may be taken from a saved copy under FF_DATA for each FF_USE_SAVED level, artifacts that must always be rebuilt in that mode, and train stages that are allowed in a mode that otherwise does not train. An artifact with no producing stage is always taken from FF_DATA (or blocked). A forced stage (FF_FORCE) always runs and ignores saved copies of its outputs.",
+ "always_saved_classes": [
+  "raw",
+  "collected",
+  "pretrained",
+  "wiring"
+ ],
+ "always_saved_why": "raw and collected data are the start of the chain (re-running 11_collect is optional and needs HuggingFace access: force it with FF_FORCE=<stage>); wiring datasets have no rebuild that would change a number; pretrained models are public files at pinned revisions. 'wiring' is a requirement-1 exception, not raw data: these frozen datasets are only checked by the verbatim code (presence / row counts); most have no producing stage (configs/data_map.json requirement1_gap, DESIGN G18)",
+ "collect_kind_runs_only_when_forced": true,
+ "modes": {
+  "train": {
+   "title": "(a) rebuild from the raw / collected data, except the frozen requirement-1 exceptions listed in requirement1_gaps",
+   "use_saved_default": "collected",
+   "run_kinds": [
+    "raw",
+    "collect",
+    "data",
+    "train",
+    "infer",
+    "assemble"
+   ],
+   "saved_classes": {
+    "all": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring",
+     "intermediate",
+     "checkpoint",
+     "run_output",
+     "score"
+    ],
+    "collected": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring"
+    ],
+    "none": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring"
+    ]
+   },
+   "respect_default_saved": {
+    "all": true,
+    "collected": true,
+    "none": false
+   },
+   "never_saved": [],
+   "allow_train_stages": [],
+   "target": "final_verify",
+   "estimate": "about 150-170 GPU-hours (T4) + about 10 CPU-hours, summed over the original runs; 4-6 days of wall time with several Kaggle accounts in parallel; one Kaggle session is at most 12 h (split with FF_ONLY)",
+   "expectation": "recipe-level reproduction, not byte-identical (GPU training is not deterministic). NOT entirely from raw data: the requirement1_gaps artifacts (wiring datasets checked only for presence / row counts by the verbatim code, the frozen SAFE-04 tables, embedded data files) are taken frozen from FF_DATA because no stage of this repository rebuilds them (DESIGN G1, G18). Rows / LID lists should match exactly (ext-meta, lid_strict.json f4065711...), frozen features cos >= 0.999 against the saved copies, final per-file Spearman >= 0.99 against the submitted zip (proposed threshold, never measured). The retrained LoRA C1 is guarded by lineage (configs/variant_1354.json file_checks rule)",
+   "default_saved_note": "datasets/ngnnguynchn/flag2027-e2e-dev-p (frozen SAFE-04 tables), datasets/onnhqunhh/flag2027-rfs-lora-p (ORIGINAL LoRA C1) and the stored LID outputs (l42 / l150 / l152 / f41 / lid-strict-p) are used even in this mode (default_saved). Rebuild one with FF_FORCE=<producer> (safe04_lab, t163l_orig, ...). FF_USE_SAVED=none refuses the saved copies and then blocks consumers of force_only producers unless those are forced too",
+   "requirement1_gaps": [
+    "datasets/ff-frozen/flag2027-e2e-dev-p (= frozen datasets/ngnnguynchn/flag2027-e2e-dev-p, default_saved; safe04_lab can rebuild it with FF_FORCE=safe04_lab)",
+    "datasets/ff-frozen/flag2027-e2e-dev-wiring-p (dev-phase wiring members of the frozen SAFE-04 bundle; input of safe04_lab)",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p (wiring: F family / e112f*)",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p (wiring: F family / e112f*)",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p (wiring: F family / e112f* / t219)",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p (wiring: F family / e112f*)",
+    "datasets/ngnnguynchn/flag2027-members-p (wiring: e50cc)",
+    "datasets/ngnnguynchn/flag2027-best-v7-p (wiring: e50cc)",
+    "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p (wiring: t219_dumpv4, t184_report)",
+    "datasets/trngsnam/flag2027-feats-peface01-pe0-p (evidence only since 18/11: t183_p1 / t183_p2, whose arms request f_pel; dropped from t163p_c5rl, t213_p*, t216_p3, t163p_fvb, t189_b2 as never read)",
+    "datasets/ngnnguynchn/flag2027-t3s01-tables-p (evidence only since 18/11: t184_report; t219_dumpv4 reads datasets/ff/flag2027-t3s01-trca-p made by t3s01_trca from ct02s-r2ca-tables-p)",
+    "11 data files embedded in stage code (configs/data_map.json class 'embedded'; 7 without producer: STACK-02/eligible.json, CLEANTUNE-01/ct_round2.json (hand-written configuration), VBSEL-01/vox2_sa_speakers.json, and the four frozen v9 / v11 / v12 fuser JSONs of e50cc, which feed only d['v9'] / d['v11'] / d['v12'])"
+   ],
+   "requirement1_gaps_updated": "18/11/2026 (integration fixer r1, INTEGRATION_r1 B3 / M7 / M8)",
+   "full_rebuild_from_raw": {
+    "env": {
+     "FF_MODE": "train",
+     "FF_USE_SAVED": "none",
+     "FF_FORCE": "raw_mavceleb,safe04_lab,f14_av,gather_g1"
+    },
+    "command": "FF_DATA=<data> FF_WORK=<work> FF_USE_SAVED=none FF_FORCE=raw_mavceleb,safe04_lab,f14_av,gather_g1 python runner/ffrun.py run --mode train --target final_verify   # one Kaggle / machine session per call: add --only <stage,...>",
+    "what_it_does": "FF_USE_SAVED=none ignores default_saved (the stored LID outputs l42 / l150 / l152 / lid-strict and f41 are rebuilt) and every saved intermediate / checkpoint / run output; FF_FORCE adds the producers that the runner would otherwise never run: raw_mavceleb (MAV-Celeb v1 / v2 extracted from the two original zips instead of the extracted copy), safe04_lab (force_only: the SAFE-04 tables instead of the frozen copy), f14_av and gather_g1 (class wiring, always taken saved otherwise)",
+    "optional_force": {
+     "stages": "c37_vox2,c53_vox2b,c46_voxblink,c45_frames_vox2,c63_frames,c87_frames_bridge,c63v_audio_cache,c_frames_index",
+     "why": "re-collect VoxCeleb2 / VoxBlink from their public Hugging Face sources (needs HF_TOKEN with the ProgramComputer/voxceleb terms accepted); sampling depends on the network (failed tars), so the 13.54 rows come from the collected copies (DESIGN G9); with these stages the plan has 79 stages (~157 h by the original runs)"
+    },
+    "always_saved_by_design": {
+     "datasets/onnhqunhh/flag2027-rfs-lora-p": "the ORIGINAL LoRA C1 (lora_C1.pt b97372e3...) defines the 13.54 variant; every consumer has resolve: saved_only. t163l_orig (force_only) can retrain it as a check, but its GPU output has other bytes and is never mounted by the chain",
+     "requirement1_gaps": "the wiring datasets / frozen SAFE-04 members / embedded files listed above have no producing stage and stay frozen (class wiring / embedded)"
+    },
+    "plan_check": "18/11/2026, `ffrun.py plan --mode train --assume-saved` with this env: 71 stages, about 133 h by the original runs, no blocked input; with optional_force: 79 stages, about 157 h. Without FF_FORCE, FF_USE_SAVED=none blocks t155s_f12 (the frozen SAFE-04 tables have a force_only producer)",
+    "not_run": "never run end to end"
+   }
+  },
+  "infer": {
+   "title": "(b) inference from the organisers' Evaluation media + released checkpoints",
+   "use_saved_default": "all",
+   "run_kinds": [
+    "raw",
+    "data",
+    "infer",
+    "assemble"
+   ],
+   "saved_classes": {
+    "all": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring",
+     "intermediate",
+     "checkpoint"
+    ],
+    "collected": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring"
+    ],
+    "none": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring"
+    ]
+   },
+   "respect_default_saved": {
+    "all": true,
+    "collected": true,
+    "none": false
+   },
+   "never_saved": [
+    "datasets/ngnnguynchn/flag2027-evalphase-p"
+   ],
+   "never_saved_why": "mode (b) starts from the organisers' evaluation_phase.zip: eval_set.zip is rebuilt by raw_evalphase (1 min CPU); run outputs of the Evaluation stages are recomputed (run_output is not in saved_classes)",
+   "allow_train_stages": [
+    "dp_train"
+   ],
+   "allow_train_why": "dp_train (DP two towers, about 12 min CPU, deterministic on the team machine: S8 K6) runs when the saved towers (03_checkpoints/dp_towers) do not exist yet (DESIGN G5)",
+   "target": "final_verify",
+   "expected_stages": [
+    "raw_btc",
+    "raw_evalphase",
+    "raw_mavceleb_check",
+    "e65xbs",
+    "e65xcs",
+    "e47rs",
+    "e50cc",
+    "e112f0sx",
+    "e112f1sx",
+    "e163i",
+    "a_factor",
+    "t192_fvbx",
+    "e163i_fvb",
+    "a_fvbind",
+    "dp_extract_eval",
+    "dp_score",
+    "dp_sigma",
+    "final_blend",
+    "final_verify"
+   ],
+   "required_checkpoints": [
+    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
+    "datasets/ngnnguynchn/flag2027-cleancomp-final-p",
+    "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+    "datasets/ngnnguynchn/flag2027-evalu-f1s-p",
+    "datasets/ngnnguynchn/flag2027-evalu-f0s-p",
+    "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p",
+    "datasets/onnhqunhh/flag2027-rfs-lora-p",
+    "notebooks/thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0",
+    "datasets/thanhhuyen11/flag2027-rfsfxfvb-art-p",
+    "notebooks/ff/dp_train",
+    "notebooks/phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4"
+   ],
+   "required_intermediate": [
+    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lab-data-p",
+    "datasets/ngnnguynchn/flag2027-lab-vb-p",
+    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+    "datasets/onnhqunhh/flag2027-lora-frames-p",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p",
+    "datasets/ngnnguynchn/flag2027-best-v7-p",
+    "datasets/ngnnguynchn/flag2027-members-p",
+    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+    "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+    "datasets/hthlin/flag2027-aux-voice-feats-p",
+    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
+    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
+    "datasets/ngnnguynchn/flag2027-lid-strict-p",
+    "datasets/duongphihoang/flag2027-audio-cache-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "raw/btc_evaluation_original",
+    "notebooks/ff/dp_feats_layout"
+   ],
+   "required_why": "the verbatim notebooks compute train-side constants inside the run (S5 gaps 5-8), so non-weight intermediate data are still needed (DESIGN 5.2)",
+   "estimate": "about 12 GPU-hours (16 + 21 + 240 + 221 + 31 + 162 + 34 min; the MAV part of e47rs, about 3.5 h, does not enter the zip) + about 1 CPU-hour",
+   "expectation": "Spearman >= 0.9999 per file against the submitted zip (the T2 test of release/flag2027_e2e reached >= 0.99999, max |diff| <= 0.06), not byte-identical",
+   "expected_stages_note": "DESIGN 5.2 list + raw_btc, the check of the organisers' v4 files that the runner schedules before the first stage reading them (stage.json outputs.verifies, request of WP-B); raw_mavceleb_check (WP-B, 18/11) is scheduled the same way: it verifies datasets/chnnhnnguyn/external-data-mavceleb before the first stage reading it",
+   "required_intermediate_note": "members-p, best-v7-p, cc5-oof-p, dsel02-oof-p, facelora03-tables-p and lab-avfull-p are requirement-1 exceptions (wiring, no producing stage); mode (b) on Kaggle: e50cc, e112f0sx, e112f1sx (literal /kaggle/input) each need their own session with exactly their inputs attached (runner/README.md)"
+  },
+  "assemble": {
+   "title": "(c) byte-exact assembly from the saved per-pair scores",
+   "use_saved_default": "all",
+   "run_kinds": [
+    "assemble"
+   ],
+   "saved_classes": {
+    "all": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring",
+     "intermediate",
+     "checkpoint",
+     "run_output",
+     "score"
+    ],
+    "collected": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring",
+     "score"
+    ],
+    "none": [
+     "raw",
+     "collected",
+     "pretrained",
+     "wiring",
+     "score"
+    ]
+   },
+   "respect_default_saved": {
+    "all": true,
+    "collected": true,
+    "none": true
+   },
+   "never_saved": [
+    "notebooks/ff/a_factor",
+    "notebooks/ff/a_fvbind",
+    "notebooks/ff/dp_sigma",
+    "notebooks/ff/final_blend",
+    "notebooks/ff/final_verify"
+   ],
+   "never_saved_why": "mode (c) recomputes the assembly from the per-pair scores: the saved posteval zips / sigma / final zip are the references, not inputs",
+   "soft_inputs_for_kinds": [
+    "assemble"
+   ],
+   "soft_inputs_why": "an input of an assembly stage whose producer cannot run in this mode (Evaluation / training runs) is mounted when a saved copy exists and otherwise skipped: the assembly stages find the flat score files in FF_DATA/05_scores themselves (stage.ipy of a_factor, a_fvbind, final_blend)",
+   "allow_train_stages": [],
+   "target": "final_verify",
+   "expected_stages": [
+    "a_factor",
+    "a_fvbind",
+    "dp_sigma",
+    "final_blend",
+    "final_verify"
+   ],
+   "inputs_05_scores": {
+    "f1s_eval.zip": {
+     "sha256": "1b43b14ff763bd0eac72fea505e4cfd4ff98bc41d87d49baecdfd613525a6962",
+     "from": "e112f1sx",
+     "run_output_path": "e2e_out/submission_cleantune01_F1_CA_eval.zip"
+    },
+    "rfx_eval.zip": {
+     "sha256": "1fa53218c9501ef38f9b1c33680fac5b7f6a0ddace4fdaffed7cd5334b9aa369",
+     "from": "e163i",
+     "run_output_path": "FLAG_RF_E2E/submission.zip"
+    },
+    "rfsfxfvb_eval.zip": {
+     "sha256": "45044189ae4b228b93aaae7e6eb4015f38516bfaa8c57abf2940db7ea6590862",
+     "from": "e163i_fvb",
+     "run_output_path": "FLAG_RF_E2E/submission.zip"
+    },
+    "components_eval.npz": {
+     "sha256": "2cd160ae456447c0c47bf611f2f73480ffc5c9161e767812d42e5f380b1b56c7",
+     "from": "e50cc",
+     "run_output_path": "e2e_eval/components_eval.npz"
+    },
+    "e2e_manifest.json": {
+     "sha256": "b0ba27c2982f917199d957cd42763fecfdd31c292352594a4e141105ce72bd58",
+     "from": "e50cc",
+     "run_output_path": "e2e_eval/e2e_manifest.json"
+    },
+    "cleantune01_fuser_bangla_CA.json": {
+     "sha256": "c4737367e787da6dc9a1e08453a9602e2ea60b830bd7a56e8d6728501e9d06a4",
+     "from": "e112f1sx",
+     "run_output_path": "e2e_out/cleantune01_fuser_bangla_CA.json"
+    },
+    "ct01r2_final_eval.npz": {
+     "sha256": "bbad53ed8e32066240f405676e7f3676dd55040573c00d1fad07b81774c3d0fc",
+     "from": "e112f1sx",
+     "run_output_path": "e2e_out/ct01r2_final_eval.npz"
+    },
+    "xjf_scores.npz": {
+     "sha256": "686c1188ce2cd5c64ba506e19f7e17de427a693878697115b43d961627172779",
+     "from": "dp_train (English-only copy; the copy with Bangla 6a039faf... gives the same English z)"
+    },
+    "consts.json": {
+     "sha256": "356242de47674dfb0c3a245bf3c504ee9f37417e6928040313b155d6bade6324",
+     "from": "dp_train (reference only)"
+    },
+    "xjfdump_v4.parquet": {
+     "sha256": "9f0a5af468d1f973e1ff33264ff10239cf21f1813a0f370740e8c2d8e02f7a09",
+     "from": "t219_dumpv4"
+    }
+   },
+   "layout_note": "the score files can be given flat (FF_DATA/05_scores/<file>, artifact scores/1354_inputs, as read by assembly/assemble_exact.py) or as per-run folders keeping the run-output relative paths (FF_DATA/05_scores/<run slug>/<run_output_path>, the alt_paths of the Evaluation run outputs in configs/data_map.json)",
+   "estimate": "< 1 CPU-minute",
+   "expectation": "the four members of xjf_r10_trsig.zip byte-identical (configs/expected_sha256.json#xjf_r10_trsig); whole-zip SHA-256 only if the zip is written with the original member time (2026, 11, 16, 11, 8, 8) and DEFLATED"
+  }
+ },
+ "start_classes": [
+  "raw",
+  "collected",
+  "pretrained"
+ ],
+ "start_classes_why": "the data the chain may start from (user requirement 1). Any other consumed artifact must have a producing stage; those that do not, or that the modes take frozen by default (class wiring, default_saved), are listed by `ffrun.py dag` / `plan` as REQUIREMENT-1 GAPS (configs/data_map.json requirement1_gap)"
+}

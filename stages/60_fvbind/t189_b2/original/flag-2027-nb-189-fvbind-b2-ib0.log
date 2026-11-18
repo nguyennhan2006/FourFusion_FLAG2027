@@ -1,0 +1,203 @@
+[{"stream_name":"stderr","time":5.723999562,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":5.724042782,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":6.550964683,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.550991977,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.550996976,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.551000707,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.142979282,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.143034788,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.143040931,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.14304495,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":8.213019805,"data":"[cell] 01 run parameters (kapi --env): environment variables of this r\n"}
+,{"stream_name":"stdout","time":8.252585907,"data":"[boot] FLAG_189_fvbind | python 3.13.16 | start 2026-11-14 08:56:13\n"}
+,{"stream_name":"stdout","time":8.253552279,"data":"[cell] setup: files + deps\n"}
+,{"stream_name":"stdout","time":13.442982078,"data":"mode LAB smoke False cuda True gpus 2\n"}
+,{"stream_name":"stdout","time":13.460773915,"data":"[cell] inputs: bundle, lid, roots\n"}
+,{"stream_name":"stdout","time":921.050850801,"data":"bundle /kaggle/input/datasets/ngnnguynchn/flag2027-rfs-bundle-p | lid /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":921.064829257,"data":"[cell] lora C1 (ImageBind-audio) + v4 lora/tuoi\n"}
+,{"stream_name":"stdout","time":921.065692373,"data":"mode P: lora tu dataset cua luot L\n"}
+,{"stream_name":"stdout","time":921.085540459,"data":"[cell] FVBIND-01: train arms + SAFE-04 streams\n"}
+,{"stream_name":"stdout","time":931.247348382,"data":"\n"}
+,{"stream_name":"stdout","time":936.118057515,"data":"\n"}
+,{"stream_name":"stdout","time":993.242377217,"data":"imagebind sha256 ok\n"}
+,{"stream_name":"stdout","time":1166.096039669,"data":"  vox_face_clipC5.npy [None]: (29251, 768), 1 file(s), finite 1.0000 (/kaggle/input/datasets/quynhnhu82/flag2027-feats-ls-c5s-p)\n"}
+,{"stream_name":"stdout","time":1167.305029027,"data":"  vox2b_face_clipC5.npy [None]: (36426, 768), 1 file(s), finite 1.0000 (/kaggle/input/datasets/quynhnhu82/flag2027-feats-ls-c5s-p)\n"}
+,{"stream_name":"stdout","time":1168.695750422,"data":"  vb_face_clipC5.npy [None]: (68041, 768), 1 file(s), finite 1.0000 (/kaggle/input/datasets/quynhnhu82/flag2027-feats-ls-c5s-p)\n"}
+,{"stream_name":"stdout","time":1169.236300417,"data":"  ext_v1_complete_face_clipC5.npy [None]: (7580, 768), 1 file(s), finite 1.0000 (/kaggle/input/datasets/quynhnhu82/flag2027-feats-ls-c5s-p)\n"}
+,{"stream_name":"stdout","time":1169.638368035,"data":"  ext_v2_complete_face_clipC5.npy [None]: (8953, 768), 1 file(s), finite 1.0000 (/kaggle/input/datasets/quynhnhu82/flag2027-feats-ls-c5s-p)\n"}
+,{"stream_name":"stdout","time":1170.118704075,"data":"  face_clipC5_train.npy [None]: (6485, 768), 1 file(s), finite 1.0000 (/kaggle/input/datasets/quynhnhu82/flag2027-feats-ls-c5s-p)\n"}
+,{"stream_name":"stdout","time":1171.020328467,"data":"  f_c5s vox  : coverage 1.0000, identity EER 4.10 (bundle f_clip 11.75)\n"}
+,{"stream_name":"stdout","time":1172.030772322,"data":"  f_c5s vox2b: coverage 1.0000, identity EER 4.29 (bundle f_clip 11.35)\n"}
+,{"stream_name":"stdout","time":1173.889457906,"data":"  f_c5s vb   : coverage 1.0000, identity EER 3.11 (bundle f_clip 9.56)\n"}
+,{"stream_name":"stdout","time":1174.506339069,"data":"  f_c5s mav  : coverage 1.0000, identity EER 14.42 (bundle f_clip 9.71)\n"}
+,{"stream_name":"stdout","time":1174.665443711,"data":"  f_c5s v4   : coverage 1.0000, identity EER 10.77\n"}
+,{"stream_name":"stdout","time":1176.036917724,"data":"  face_farl16.npy [feats_vox2t3]: (29251, 512), 1 file(s), finite 1.0000 (/kaggle/input/datasets/ngnnguynchn/flag2027-lab-data-p/lab/Experiment/T3ENC-01/feats_vox2t3)\n"}
+,{"stream_name":"stdout","time":1176.626716272,"data":"  face_farl16.npy [feats_vox2b]: (36426, 512), 1 file(s), finite 1.0000 (/kaggle/input/datasets/ngnnguynchn/flag2027-feats-vox2b-p/feats_vox2b)\n"}
+,{"stream_name":"stdout","time":1177.576265127,"data":"  face_farl16.npy [feats_vb]: (68041, 512), 1 file(s), finite 1.0000 (/kaggle/input/datasets/ngnnguynchn/flag2027-lab-vb-p/labvb/Experiment/SCALE-VB/feats_vb)\n"}
+,{"stream_name":"stdout","time":1177.906066273,"data":"  ext_v1_complete_face_farl16.npy [feats_t3enc]: (7580, 512), 1 file(s), finite 1.0000 (/kaggle/input/datasets/ngnnguynchn/flag2027-lab-data-p/lab/Experiment/T3ENC-01/feats_t3enc)\n"}
+,{"stream_name":"stdout","time":1178.099938701,"data":"  ext_v2_complete_face_farl16.npy [feats_t3enc]: (8953, 512), 1 file(s), finite 1.0000 (/kaggle/input/datasets/ngnnguynchn/flag2027-lab-data-p/lab/Experiment/T3ENC-01/feats_t3enc)\n"}
+,{"stream_name":"stdout","time":1178.506818876,"data":"  face_farl16_train.npy [feats_t3enc]: (6485, 512), 1 file(s), finite 1.0000 (/kaggle/input/datasets/ngnnguynchn/flag2027-lab-data-p/lab/Experiment/T3ENC-01/feats_t3enc)\n"}
+,{"stream_name":"stdout","time":1179.23696479,"data":"  f_farl vox  : coverage 1.0000, identity EER 11.54 (bundle f_clip 11.75)\n"}
+,{"stream_name":"stdout","time":1180.080939507,"data":"  f_farl vox2b: coverage 1.0000, identity EER 11.66 (bundle f_clip 11.35)\n"}
+,{"stream_name":"stdout","time":1181.716728367,"data":"  f_farl vb   : coverage 1.0000, identity EER 10.84 (bundle f_clip 9.56)\n"}
+,{"stream_name":"stdout","time":1182.243899055,"data":"  f_farl mav  : coverage 1.0000, identity EER 16.58 (bundle f_clip 9.71)\n"}
+,{"stream_name":"stdout","time":1182.37981269,"data":"  f_farl v4   : coverage 1.0000, identity EER 12.13\n"}
+,{"stream_name":"stdout","time":1184.626249583,"data":"  voice_rfibv.npy [=vox]: (38345, 1024), 2 file(s), finite 0.9948 (/kaggle/input/datasets/phanththui/flag2027-feats-rfs-b-p/vox)\n"}
+,{"stream_name":"stdout","time":1186.78722156,"data":"  voice_rfibv.npy [=vox2b]: (47529, 1024), 2 file(s), finite 0.9735 (/kaggle/input/datasets/phanththui/flag2027-feats-rfs-b-p/vox2b)\n"}
+,{"stream_name":"stdout","time":1189.408119627,"data":"  voice_rfibv.npy [=vb]: (68043, 1024), 2 file(s), finite 0.9937 (/kaggle/input/datasets/phanththui/flag2027-feats-rfs-b-p/vb)\n"}
+,{"stream_name":"stdout","time":1190.842180629,"data":"  ext_v1_complete_voice_rfibv.npy [None]: (19556, 1024), 1 file(s), finite 1.0000 (/kaggle/input/datasets/nguynchnngn1/flag2027-feats-rfs-a-p)\n"}
+,{"stream_name":"stdout","time":1191.562198323,"data":"  ext_v2_complete_voice_rfibv.npy [None]: (20715, 1024), 1 file(s), finite 1.0000 (/kaggle/input/datasets/nguynchnngn1/flag2027-feats-rfs-a-p)\n"}
+,{"stream_name":"stdout","time":1192.304743847,"data":"  voice_rfibv_train.npy [None]: (6485, 1024), 1 file(s), finite 1.0000 (/kaggle/input/datasets/nguynchnngn1/flag2027-feats-rfs-a-p)\n"}
+,{"stream_name":"stdout","time":1193.25106273,"data":"  v_ibv vox  : coverage 0.9948, identity EER 26.56 (bundle v_sam 3.50)\n"}
+,{"stream_name":"stdout","time":1194.332419684,"data":"  v_ibv vox2b: coverage 0.9735, identity EER 29.21 (bundle v_sam 4.16)\n"}
+,{"stream_name":"stdout","time":1195.904111213,"data":"  v_ibv vb   : coverage 0.9937, identity EER 22.12 (bundle v_sam 6.41)\n"}
+,{"stream_name":"stdout","time":1196.971833088,"data":"  v_ibv mav  : coverage 1.0000, identity EER 31.47 (bundle v_sam 5.45)\n"}
+,{"stream_name":"stdout","time":1197.153071823,"data":"  v_ibv v4   : coverage 1.0000, identity EER 16.72\n"}
+,{"stream_name":"stdout","time":1201.934600272,"data":"SAFE-04 tables ['ct01r2_fold1.parquet', 'ct01r2_fold2.parquet', 'ct01r2_fold3.parquet', 'ct01r2_fold4.parquet', 'ct01r2_fold5.parquet']; eval rows: v4 6485, MAV 10418\n"}
+,{"stream_name":"stdout","time":1203.235850602,"data":"pool sach: giong 176935/194188, mat 150251/150251\n"}
+,{"stream_name":"stdout","time":1668.552901977,"data":"train clips: 52750 of 52750 selected rows found in the cache (18925 persons); found / selected by source {'vox': '16161/16161', 'vox2b': '0/0', 'vb': '36589/36589'}\n"}
+,{"stream_name":"stdout","time":1669.099107209,"data":"  fbank 0/52750 [0s]\n"}
+,{"stream_name":"stdout","time":1698.352469163,"data":"  fbank 5000/52750 [30s]\n"}
+,{"stream_name":"stdout","time":1727.445222158,"data":"  fbank 10000/52750 [59s]\n"}
+,{"stream_name":"stdout","time":1756.748498808,"data":"  fbank 15000/52750 [88s]\n"}
+,{"stream_name":"stdout","time":1786.117433202,"data":"  fbank 20000/52750 [117s]\n"}
+,{"stream_name":"stdout","time":1815.021724177,"data":"  fbank 25000/52750 [146s]\n"}
+,{"stream_name":"stdout","time":1843.368729851,"data":"  fbank 30000/52750 [175s]\n"}
+,{"stream_name":"stdout","time":1872.002841993,"data":"  fbank 35000/52750 [203s]\n"}
+,{"stream_name":"stdout","time":1901.053506577,"data":"  fbank 40000/52750 [232s]\n"}
+,{"stream_name":"stdout","time":1930.479725533,"data":"  fbank 45000/52750 [262s]\n"}
+,{"stream_name":"stdout","time":1959.703037279,"data":"  fbank 50000/52750 [291s]\n"}
+,{"stream_name":"stdout","time":1976.040952234,"data":"fbanks (52750, 3, 1, 128, 204) (7.7 GB) [307s]\n"}
+,{"stream_name":"stdout","time":1976.041844646,"data":"== arm B2 {'B': 2048, 'chunks': 1, 'steps': 600, 'warm': 30, 'anchor': 'c5f'}\n"}
+,{"stream_name":"stdout","time":2020.17471467,"data":"  52750 clips with an anchor, 18925 persons, anchor dim 1280\n"}
+,{"stream_name":"stdout","time":2026.242716009,"data":"    16/31\n"}
+,{"stream_name":"stdout","time":2026.602002392,"data":"  wiring (LoRA = 0 vs stored v_ibv, 32 rows): cos mean 1.00000 min 1.00000\n"}
+,{"stream_name":"stdout","time":2051.633873994,"data":"  big step 0/600 loss 7.6972 skipped 0 [25s, last 25.0s]\n"}
+,{"stream_name":"stdout","time":2359.536554234,"data":"  time rule: 30.8 s/step \u003e 30 s -\u003e 584 steps\n"}
+,{"stream_name":"stdout","time":2847.903745463,"data":"  big step 25/584 loss 5.2487 skipped 0 [821s, last 32.7s]\n"}
+,{"stream_name":"stdout","time":3661.603640966,"data":"  big step 50/584 loss 4.8373 skipped 0 [1635s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":4473.614485857,"data":"  big step 75/584 loss 4.6801 skipped 0 [2447s, last 32.6s]\n"}
+,{"stream_name":"stdout","time":5287.666981778,"data":"  big step 100/584 loss 4.6100 skipped 0 [3261s, last 32.5s]\n"}
+,{"stream_name":"stdout","time":6100.33770141,"data":"  big step 125/584 loss 4.4607 skipped 0 [4074s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":6912.727312648,"data":"  big step 150/584 loss 4.4414 skipped 0 [4886s, last 32.6s]\n"}
+,{"stream_name":"stdout","time":7726.37923983,"data":"  big step 175/584 loss 4.3205 skipped 0 [5700s, last 32.5s]\n"}
+,{"stream_name":"stdout","time":8538.713846048,"data":"  big step 200/584 loss 4.2956 skipped 0 [6512s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":9352.129484098,"data":"  big step 225/584 loss 4.2163 skipped 0 [7325s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":10166.890200801,"data":"  big step 250/584 loss 4.1731 skipped 0 [8140s, last 32.8s]\n"}
+,{"stream_name":"stdout","time":10980.666036435,"data":"  big step 275/584 loss 4.2502 skipped 0 [8954s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":11794.303580371,"data":"  big step 300/584 loss 4.1362 skipped 0 [9768s, last 32.7s]\n"}
+,{"stream_name":"stdout","time":12607.547414307,"data":"  big step 325/584 loss 4.1648 skipped 0 [10581s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":13420.432463471,"data":"  big step 350/584 loss 4.1025 skipped 0 [11394s, last 32.5s]\n"}
+,{"stream_name":"stdout","time":14234.293775949,"data":"  big step 375/584 loss 4.0675 skipped 0 [12208s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":15046.354263328,"data":"  big step 400/584 loss 4.0616 skipped 0 [13020s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":15859.714622801,"data":"  big step 425/584 loss 3.9911 skipped 0 [13833s, last 32.5s]\n"}
+,{"stream_name":"stdout","time":16673.335189396,"data":"  big step 450/584 loss 3.9464 skipped 0 [14647s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":17486.995429953,"data":"  big step 475/584 loss 3.9863 skipped 0 [15460s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":18300.156971433,"data":"  big step 500/584 loss 4.0169 skipped 0 [16273s, last 32.6s]\n"}
+,{"stream_name":"stdout","time":19113.213128818,"data":"  big step 525/584 loss 4.0111 skipped 0 [17087s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":19925.752546873,"data":"  big step 550/584 loss 3.9531 skipped 0 [17899s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":20738.604206357,"data":"  big step 575/584 loss 3.9277 skipped 0 [18712s, last 32.5s]\n"}
+,{"stream_name":"stdout","time":20998.204559316,"data":"  big step 583/584 loss 3.9386 skipped 0 [18972s, last 32.4s]\n"}
+,{"stream_name":"stdout","time":21434.916759417,"data":"    16/4029\n"}
+,{"stream_name":"stdout","time":21458.317582518,"data":"    816/4029\n"}
+,{"stream_name":"stdout","time":21480.416812168,"data":"    1616/4029\n"}
+,{"stream_name":"stdout","time":21501.656092718,"data":"    2416/4029\n"}
+,{"stream_name":"stdout","time":21522.306564062,"data":"    3216/4029\n"}
+,{"stream_name":"stdout","time":21543.03879261,"data":"    4016/4029\n"}
+,{"stream_name":"stdout","time":22034.617205849,"data":"    16/5279\n"}
+,{"stream_name":"stdout","time":22069.279497751,"data":"    816/5279\n"}
+,{"stream_name":"stdout","time":22106.211233184,"data":"    1616/5279\n"}
+,{"stream_name":"stdout","time":22142.473479187,"data":"    2416/5279\n"}
+,{"stream_name":"stdout","time":22178.608667033,"data":"    3216/5279\n"}
+,{"stream_name":"stdout","time":22211.212730354,"data":"    4016/5279\n"}
+,{"stream_name":"stdout","time":22249.550219369,"data":"    4816/5279\n"}
+,{"stream_name":"stdout","time":22271.429765959,"data":"  fold 1 en_ext g        : n 1410 finite 0.400 EER 35.64\n"}
+,{"stream_name":"stdout","time":22271.430635927,"data":"  fold 1 en_ext ng       : n 1410 finite 0.400 EER 29.26\n"}
+,{"stream_name":"stdout","time":22271.431777774,"data":"  fold 1 urdu   g        : n 596 finite 1.000 EER 39.93\n"}
+,{"stream_name":"stdout","time":22271.433124521,"data":"  fold 1 urdu   ng       : n 596 finite 1.000 EER 29.36\n"}
+,{"stream_name":"stdout","time":22271.436326953,"data":"  fold 1 v4     g        : n 1304 finite 1.000 EER 38.27\n"}
+,{"stream_name":"stdout","time":22271.436367641,"data":"  fold 1 v4     ng       : n 1304 finite 1.000 EER 28.14\n"}
+,{"stream_name":"stdout","time":22271.612245295,"data":"  fold 2 en_ext g        : n 1430 finite 0.497 EER 40.00\n"}
+,{"stream_name":"stdout","time":22271.613507263,"data":"  fold 2 en_ext ng       : n 1430 finite 0.497 EER 29.58\n"}
+,{"stream_name":"stdout","time":22271.614743576,"data":"  fold 2 urdu   g        : n 720 finite 1.000 EER 41.67\n"}
+,{"stream_name":"stdout","time":22271.615979879,"data":"  fold 2 urdu   ng       : n 720 finite 1.000 EER 27.22\n"}
+,{"stream_name":"stdout","time":22271.617643481,"data":"  fold 2 v4     g        : n 1338 finite 1.000 EER 33.86\n"}
+,{"stream_name":"stdout","time":22271.619246565,"data":"  fold 2 v4     ng       : n 1338 finite 1.000 EER 23.69\n"}
+,{"stream_name":"stdout","time":22271.793196906,"data":"  fold 3 en_ext g        : n 1440 finite 0.500 EER 38.89\n"}
+,{"stream_name":"stdout","time":22271.794389786,"data":"  fold 3 en_ext ng       : n 1440 finite 0.500 EER 25.28\n"}
+,{"stream_name":"stdout","time":22271.795601247,"data":"  fold 3 urdu   g        : n 710 finite 1.000 EER 41.55\n"}
+,{"stream_name":"stdout","time":22271.796905431,"data":"  fold 3 urdu   ng       : n 710 finite 1.000 EER 26.76\n"}
+,{"stream_name":"stdout","time":22271.798588214,"data":"  fold 3 v4     g        : n 1300 finite 1.000 EER 39.08\n"}
+,{"stream_name":"stdout","time":22271.800204555,"data":"  fold 3 v4     ng       : n 1300 finite 1.000 EER 27.69\n"}
+,{"stream_name":"stdout","time":22271.964826203,"data":"  fold 4 en_ext g        : n 1426 finite 0.431 EER 41.21\n"}
+,{"stream_name":"stdout","time":22271.965770874,"data":"  fold 4 en_ext ng       : n 1426 finite 0.431 EER 27.85\n"}
+,{"stream_name":"stdout","time":22271.967458785,"data":"  fold 4 urdu   g        : n 624 finite 1.000 EER 38.62\n"}
+,{"stream_name":"stdout","time":22271.968728709,"data":"  fold 4 urdu   ng       : n 624 finite 1.000 EER 30.93\n"}
+,{"stream_name":"stdout","time":22271.970212919,"data":"  fold 4 v4     g        : n 1230 finite 1.000 EER 38.70\n"}
+,{"stream_name":"stdout","time":22271.97229823,"data":"  fold 4 v4     ng       : n 1230 finite 1.000 EER 29.11\n"}
+,{"stream_name":"stdout","time":22272.139962782,"data":"  fold 5 en_ext g        : n 1368 finite 0.412 EER 38.83\n"}
+,{"stream_name":"stdout","time":22272.140756505,"data":"  fold 5 en_ext ng       : n 1368 finite 0.412 EER 27.48\n"}
+,{"stream_name":"stdout","time":22272.142334831,"data":"  fold 5 urdu   g        : n 576 finite 1.000 EER 38.54\n"}
+,{"stream_name":"stdout","time":22272.143949449,"data":"  fold 5 urdu   ng       : n 576 finite 1.000 EER 26.39\n"}
+,{"stream_name":"stdout","time":22272.145695792,"data":"  fold 5 v4     g        : n 1276 finite 1.000 EER 34.80\n"}
+,{"stream_name":"stdout","time":22272.14736919,"data":"  fold 5 v4     ng       : n 1276 finite 1.000 EER 23.90\n"}
+,{"stream_name":"stdout","time":22272.148546093,"data":"arm B2 done [20296s]\n"}
+,{"stream_name":"stdout","time":22272.198913268,"data":"== arm IB0 {'steps': 0, 'anchor': 'ibf'}\n"}
+,{"stream_name":"stdout","time":22304.75434841,"data":"  52750 clips with an anchor, 18925 persons, anchor dim 1024\n"}
+,{"stream_name":"stdout","time":22424.776261535,"data":"    16/4029\n"}
+,{"stream_name":"stdout","time":22442.708258002,"data":"    816/4029\n"}
+,{"stream_name":"stdout","time":22459.363972935,"data":"    1616/4029\n"}
+,{"stream_name":"stdout","time":22475.753317316,"data":"    2416/4029\n"}
+,{"stream_name":"stdout","time":22491.355070854,"data":"    3216/4029\n"}
+,{"stream_name":"stdout","time":22506.690049412,"data":"    4016/4029\n"}
+,{"stream_name":"stdout","time":22520.923195549,"data":"    16/5279\n"}
+,{"stream_name":"stdout","time":22549.657304001,"data":"    816/5279\n"}
+,{"stream_name":"stdout","time":22580.727528748,"data":"    1616/5279\n"}
+,{"stream_name":"stdout","time":22611.581454257,"data":"    2416/5279\n"}
+,{"stream_name":"stdout","time":22642.542973756,"data":"    3216/5279\n"}
+,{"stream_name":"stdout","time":22670.051928423,"data":"    4016/5279\n"}
+,{"stream_name":"stdout","time":22703.386636941,"data":"    4816/5279\n"}
+,{"stream_name":"stdout","time":22722.01185231,"data":"  fold 1 en_ext g        : n 1410 finite 0.400 EER 38.48\n"}
+,{"stream_name":"stdout","time":22722.013022228,"data":"  fold 1 en_ext ng       : n 1410 finite 0.400 EER 33.51\n"}
+,{"stream_name":"stdout","time":22722.014072869,"data":"  fold 1 urdu   g        : n 596 finite 1.000 EER 39.43\n"}
+,{"stream_name":"stdout","time":22722.015330775,"data":"  fold 1 urdu   ng       : n 596 finite 1.000 EER 31.38\n"}
+,{"stream_name":"stdout","time":22722.016653273,"data":"  fold 1 v4     g        : n 1304 finite 1.000 EER 38.50\n"}
+,{"stream_name":"stdout","time":22722.018288575,"data":"  fold 1 v4     ng       : n 1304 finite 1.000 EER 30.37\n"}
+,{"stream_name":"stdout","time":22722.12135981,"data":"  fold 2 en_ext g        : n 1430 finite 0.497 EER 39.86\n"}
+,{"stream_name":"stdout","time":22722.122199671,"data":"  fold 2 en_ext ng       : n 1430 finite 0.497 EER 29.86\n"}
+,{"stream_name":"stdout","time":22722.123516889,"data":"  fold 2 urdu   g        : n 720 finite 1.000 EER 41.94\n"}
+,{"stream_name":"stdout","time":22722.125139714,"data":"  fold 2 urdu   ng       : n 720 finite 1.000 EER 29.44\n"}
+,{"stream_name":"stdout","time":22722.126896883,"data":"  fold 2 v4     g        : n 1338 finite 1.000 EER 38.71\n"}
+,{"stream_name":"stdout","time":22722.128647314,"data":"  fold 2 v4     ng       : n 1338 finite 1.000 EER 28.85\n"}
+,{"stream_name":"stdout","time":22722.232546979,"data":"  fold 3 en_ext g        : n 1440 finite 0.500 EER 38.33\n"}
+,{"stream_name":"stdout","time":22722.233666574,"data":"  fold 3 en_ext ng       : n 1440 finite 0.500 EER 27.22\n"}
+,{"stream_name":"stdout","time":22722.234937155,"data":"  fold 3 urdu   g        : n 710 finite 1.000 EER 42.68\n"}
+,{"stream_name":"stdout","time":22722.236285303,"data":"  fold 3 urdu   ng       : n 710 finite 1.000 EER 30.99\n"}
+,{"stream_name":"stdout","time":22722.23799402,"data":"  fold 3 v4     g        : n 1300 finite 1.000 EER 39.15\n"}
+,{"stream_name":"stdout","time":22722.240025253,"data":"  fold 3 v4     ng       : n 1300 finite 1.000 EER 30.15\n"}
+,{"stream_name":"stdout","time":22722.333610749,"data":"  fold 4 en_ext g        : n 1426 finite 0.431 EER 40.39\n"}
+,{"stream_name":"stdout","time":22722.334972688,"data":"  fold 4 en_ext ng       : n 1426 finite 0.431 EER 29.48\n"}
+,{"stream_name":"stdout","time":22722.335985472,"data":"  fold 4 urdu   g        : n 624 finite 1.000 EER 41.99\n"}
+,{"stream_name":"stdout","time":22722.337347743,"data":"  fold 4 urdu   ng       : n 624 finite 1.000 EER 33.65\n"}
+,{"stream_name":"stdout","time":22722.339132834,"data":"  fold 4 v4     g        : n 1230 finite 1.000 EER 40.00\n"}
+,{"stream_name":"stdout","time":22722.340617513,"data":"  fold 4 v4     ng       : n 1230 finite 1.000 EER 32.36\n"}
+,{"stream_name":"stdout","time":22722.438259865,"data":"  fold 5 en_ext g        : n 1368 finite 0.412 EER 39.89\n"}
+,{"stream_name":"stdout","time":22722.439517764,"data":"  fold 5 en_ext ng       : n 1368 finite 0.412 EER 28.72\n"}
+,{"stream_name":"stdout","time":22722.440916763,"data":"  fold 5 urdu   g        : n 576 finite 1.000 EER 41.32\n"}
+,{"stream_name":"stdout","time":22722.442254631,"data":"  fold 5 urdu   ng       : n 576 finite 1.000 EER 27.43\n"}
+,{"stream_name":"stdout","time":22722.444269628,"data":"  fold 5 v4     g        : n 1276 finite 1.000 EER 33.86\n"}
+,{"stream_name":"stdout","time":22722.446139175,"data":"  fold 5 v4     ng       : n 1276 finite 1.000 EER 27.12\n"}
+,{"stream_name":"stdout","time":22722.447071503,"data":"arm IB0 done [450s]\n"}
+,{"stream_name":"stdout","time":22722.656426151,"data":"FVBIND done ['B2', 'IB0'] [21573s]: ['fvbB2_emb.npz', 'fvbB2_fold1.parquet', 'fvbB2_fold2.parquet', 'fvbB2_fold3.parquet', 'fvbB2_fold4.parquet', 'fvbB2_fold5.parquet', 'fvbB2_state.pt', 'fvbC1ref_fold1.parquet', 'fvbC1ref_fold2.parquet', 'fvbC1ref_fold3.parquet', 'fvbC1ref_fold4.parquet', 'fvbC1ref_fold5.parquet', 'fvbIB0_emb.npz', 'fvbIB0_fold1.parquet', 'fvbIB0_fold2.parquet', 'fvbIB0_fold3.parquet', 'fvbIB0_fold4.parquet', 'fvbIB0_fold5.parquet', 'fvb_summary_B2_IB0.json']\n"}
+,{"stream_name":"stdout","time":22727.346596453,"data":"FVBIND done [21581s]: ['fvbB2_emb.npz', 'fvbB2_fold1.parquet', 'fvbB2_fold2.parquet', 'fvbB2_fold3.parquet', 'fvbB2_fold4.parquet', 'fvbB2_fold5.parquet', 'fvbB2_state.pt', 'fvbC1ref_fold1.parquet', 'fvbC1ref_fold2.parquet', 'fvbC1ref_fold3.parquet', 'fvbC1ref_fold4.parquet', 'fvbC1ref_fold5.parquet', 'fvbIB0_emb.npz', 'fvbIB0_fold1.parquet', 'fvbIB0_fold2.parquet', 'fvbIB0_fold3.parquet', 'fvbIB0_fold4.parquet', 'fvbIB0_fold5.parquet', 'fvb_summary_B2_IB0.json']\n"}
+,{"stream_name":"stdout","time":22727.374954717,"data":"[cell] upload\n"}
+,{"stream_name":"stdout","time":22727.375990309,"data":"ALL CELLS OK\n"}
+,{"stream_name":"stderr","time":22730.627042555,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":22730.627070402,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":22730.860803339,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":22730.860833951,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":22731.789593792,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":22731.886963333,"data":"[NbConvertApp] Writing 95308 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":22734.402397203,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":22735.131405148,"data":"[NbConvertApp] Writing 409444 bytes to __results__.html\n"}
+]

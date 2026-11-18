@@ -1,0 +1,102 @@
+[{"stream_name":"stderr","time":6.524880899,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":6.524942554,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":7.433198683,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.433225484,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.433230914,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.433241615,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.054558542,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.054585892,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.054591107,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.054595314,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":9.180609326,"data":"[cell] 01 what to run (edit here)\n"}
+,{"stream_name":"stdout","time":9.182807362,"data":"[boot] FLAG_65xb_clipb3c_extract | python 3.13.16 | start 2026-11-11 14:43:56\n"}
+,{"stream_name":"stdout","time":9.184775102,"data":"KAGGLE | input /kaggle/input | output /kaggle/working/feats_clipb3c_x | cache /tmp/flag_cache\n"}
+,{"stream_name":"stdout","time":9.204199869,"data":"[cell] 02 openai CLIP (FaRLs code base, only for the T3 cells imports)\n"}
+,{"stream_name":"stdout","time":19.325778854,"data":"ERROR: Failed to build 'git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1' when getting requirements to build wheel\r\n"}
+,{"stream_name":"stdout","time":36.349033067,"data":"torch 2.11.0+cu130 | transformers 5.20.2 | device cuda Tesla T4\n"}
+,{"stream_name":"stdout","time":36.524610595,"data":"[cell] 03 finding the data\n"}
+,{"stream_name":"stdout","time":39.27511149,"data":"14:44:27 scanned /kaggle/input: 855 files outside media folders, 11 media roots\n"}
+,{"stream_name":"stdout","time":88.75731071,"data":"14:45:16 gender/Bangla            716 rows | voice median 4.9s, max 41.8s | /kaggle/input/flag2027-evalphase-p/evaluation_phase/gender/Bangla_test.txt\n"}
+,{"stream_name":"stdout","time":143.732801805,"data":"14:46:11 no_gender/Bangla         802 rows | voice median 5.0s, max 38.9s | /kaggle/input/flag2027-evalphase-p/evaluation_phase/no_gender/Bangla_test.txt\n"}
+,{"stream_name":"stdout","time":171.910175067,"data":"14:46:39 gender/English           416 rows | voice median 5.3s, max 29.8s | /kaggle/input/flag2027-evalphase-p/evaluation_phase/gender/English_test.txt\n"}
+,{"stream_name":"stdout","time":199.362466925,"data":"14:47:07 no_gender/English        392 rows | voice median 5.1s, max 20.1s | /kaggle/input/flag2027-evalphase-p/evaluation_phase/no_gender/English_test.txt\n"}
+,{"stream_name":"stdout","time":661.823900524,"data":"14:54:49 train                   6485 rows | voice median 5.2s, max 60.0s | /kaggle/input/flag2027-raw-v4-p/train_set/train_set/train_set/train_English.txt\n"}
+,{"stream_name":"stdout","time":699.577284747,"data":"14:55:27 v1_complete: 7580 face rows, 19556 voice rows in /kaggle/input/external-data-mavceleb/mavceleb_v1_complete-001/v1\n"}
+,{"stream_name":"stdout","time":738.514258675,"data":"14:56:06 v2_complete: 8953 face rows, 20715 voice rows in /kaggle/input/external-data-mavceleb/mavceleb_v2_complete-002/v2\n"}
+,{"stream_name":"stdout","time":738.51550311,"data":"14:56:06 resume: 0 arrays copied from an earlier run\n"}
+,{"stream_name":"stdout","time":738.516520696,"data":"{'gender/Bangla': 716, 'no_gender/Bangla': 802, 'gender/English': 416, 'no_gender/English': 392, 'train': 6485} | external: ['v1_complete', 'v2_complete']\n"}
+,{"stream_name":"stdout","time":738.561048676,"data":"[cell] 04 audio + batching\n"}
+,{"stream_name":"stdout","time":738.606011968,"data":"[cell] 05 T3ENC-01 encoders: the encoder family of Track 3s VoxBlink s\n"}
+,{"stream_name":"stdout","time":738.716034251,"data":"[cell] 06 FACELORA-03: data of the three sources (registered filters)\n"}
+,{"stream_name":"stdout","time":743.44305294,"data":"14:56:11 VoxBlink noise threshold 0.1969: 2146 voice clips dropped (LID + noise)\n"}
+,{"stream_name":"stdout","time":828.095109639,"data":"14:57:35 frames indexed: 29251 FLAG_37, 36426 FLAG_53, 68041 VoxBlink\n"}
+,{"stream_name":"stdout","time":829.217072356,"data":"14:57:36 identities: VoxCeleb2 5770 (+ 300 held out), VoxBlink 14970 | faces 132753, voices 151066 | genders known 21040/21040\n"}
+,{"stream_name":"stdout","time":829.262749898,"data":"[cell] 07 CLIP-L + LoRA (FACELORA-02s), fast exact preprocessing, wiri\n"}
+,{"stream_name":"stderr","time":839.861226399,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":839.8612592,"data":"\n"}
+,{"stream_name":"stderr","time":839.861265793,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":854.730336483,"data":"14:58:02 fast preprocessing vs CLIPImageProcessor on 48 frames: max |diff| 2.38e-07\n"}
+,{"stream_name":"stdout","time":855.349166613,"data":"14:58:03 CLIP-L LoRA: 0.98 M trainable (+ vproj 0.39 M)\n"}
+,{"stream_name":"stdout","time":855.498133031,"data":"14:58:03 resume: facelora_state.pt\n"}
+,{"stream_name":"stdout","time":855.569349769,"data":"14:58:03 resume: train_log.json\n"}
+,{"stream_name":"stdout","time":855.634398308,"data":"[cell] 08 training (registered: 16 VoxCeleb2 + 16 VoxBlink ids per ste\n"}
+,{"stream_name":"stdout","time":855.664190309,"data":"14:58:03 adapter loaded (training done earlier): B3\n"}
+,{"stream_name":"stdout","time":855.696709629,"data":"[cell] 09 the adapted encoder in the FLAG_12 encoder interface (MAV-Ce\n"}
+,{"stream_name":"stdout","time":855.73127509,"data":"[cell] 10 CLEANTUNE-01 Evaluation path (2/11): every file of the SAVED\n"}
+,{"stream_name":"stdout","time":855.777202421,"data":"14:58:03 saved file copied in: bn42_clean.json\n"}
+,{"stream_name":"stdout","time":855.979445429,"data":"14:58:03 saved file copied in: ext_v1_complete_face_clipB3.npy\n"}
+,{"stream_name":"stdout","time":856.273430772,"data":"14:58:04 saved file copied in: ext_v2_complete_face_clipB3.npy\n"}
+,{"stream_name":"stdout","time":856.549116655,"data":"14:58:04 saved file copied in: face_clipB3_train.npy\n"}
+,{"stream_name":"stdout","time":857.157231466,"data":"14:58:04 saved file copied in: vb_face_clipB3.npy\n"}
+,{"stream_name":"stdout","time":857.673544123,"data":"14:58:05 saved file copied in: vox2b_face_clipB3.npy\n"}
+,{"stream_name":"stdout","time":858.296786142,"data":"14:58:06 saved file copied in: vox_face_clipB3.npy\n"}
+,{"stream_name":"stdout","time":858.3532927,"data":"[cell] 11 running\n"}
+,{"stream_name":"stdout","time":863.141895427,"data":"14:58:10 clipB3V self-check: {'batch': 0.9999999999941966, 'fp16': 0.9999052332005718}\n"}
+,{"stream_name":"stdout","time":866.231562659,"data":"14:58:13   clipB3V gender/Bangla 64/716  3s\n"}
+,{"stream_name":"stdout","time":897.677005773,"data":"14:58:45 saved face_clipB3_gender_Bangla.npy (716, 768)\n"}
+,{"stream_name":"stdout","time":900.670156546,"data":"14:58:48   clipB3V no_gender/Bangla 64/802  3s\n"}
+,{"stream_name":"stdout","time":935.803431946,"data":"14:59:23 saved face_clipB3_no_gender_Bangla.npy (802, 768)\n"}
+,{"stream_name":"stdout","time":938.816626235,"data":"14:59:26   clipB3V gender/English 64/416  3s\n"}
+,{"stream_name":"stdout","time":955.356977925,"data":"14:59:43 saved face_clipB3_gender_English.npy (416, 768)\n"}
+,{"stream_name":"stdout","time":958.556051619,"data":"14:59:46   clipB3V no_gender/English 64/392  3s\n"}
+,{"stream_name":"stdout","time":974.208339423,"data":"15:00:01 saved face_clipB3_no_gender_English.npy (392, 768)\n"}
+,{"stream_name":"stdout","time":974.209368166,"data":"15:00:01 == clipB3V done in 116s\n"}
+,{"stream_name":"stdout","time":974.210702555,"data":"failed: none\n"}
+,{"stream_name":"stdout","time":974.246823635,"data":"[cell] 12 B3-EVAL: re-extracted arrays vs the saved ones (no VoxCeleb2\n"}
+,{"stream_name":"stdout","time":974.50078373,"data":"15:00:02 B3-EVAL re-extracted vs saved: {\n"}
+,{"stream_name":"stdout","time":974.500818533,"data":" \"face_clipB3_gender_Bangla.npy\": \"Evaluation list: no saved reference\",\n"}
+,{"stream_name":"stdout","time":974.500826624,"data":" \"face_clipB3_gender_English.npy\": \"Evaluation list: no saved reference\",\n"}
+,{"stream_name":"stdout","time":974.500832293,"data":" \"face_clipB3_no_gender_Bangla.npy\": \"Evaluation list: no saved reference\",\n"}
+,{"stream_name":"stdout","time":974.500838461,"data":" \"face_clipB3_no_gender_English.npy\": \"Evaluation list: no saved reference\",\n"}
+,{"stream_name":"stdout","time":974.500843824,"data":" \"face_clipB3_train.npy\": {\n"}
+,{"stream_name":"stdout","time":974.500848989,"data":"  \"rows\": 6485,\n"}
+,{"stream_name":"stdout","time":974.500854605,"data":"  \"finite\": 6485,\n"}
+,{"stream_name":"stdout","time":974.500859842,"data":"  \"mean_cos\": 1.0,\n"}
+,{"stream_name":"stdout","time":974.500864476,"data":"  \"min_cos\": 1.0\n"}
+,{"stream_name":"stdout","time":974.500869263,"data":" },\n"}
+,{"stream_name":"stdout","time":974.500873897,"data":" \"ext_v1_complete_face_clipB3.npy\": {\n"}
+,{"stream_name":"stdout","time":974.500878723,"data":"  \"rows\": 7580,\n"}
+,{"stream_name":"stdout","time":974.500883538,"data":"  \"finite\": 7580,\n"}
+,{"stream_name":"stdout","time":974.500888449,"data":"  \"mean_cos\": 1.0,\n"}
+,{"stream_name":"stdout","time":974.500893183,"data":"  \"min_cos\": 1.0\n"}
+,{"stream_name":"stdout","time":974.500898032,"data":" },\n"}
+,{"stream_name":"stdout","time":974.50090357,"data":" \"ext_v2_complete_face_clipB3.npy\": {\n"}
+,{"stream_name":"stdout","time":974.500908688,"data":"  \"rows\": 8953,\n"}
+,{"stream_name":"stdout","time":974.500914461,"data":"  \"finite\": 8953,\n"}
+,{"stream_name":"stdout","time":974.500919784,"data":"  \"mean_cos\": 1.0,\n"}
+,{"stream_name":"stdout","time":974.500924838,"data":"  \"min_cos\": 1.0\n"}
+,{"stream_name":"stdout","time":974.500929694,"data":" }\n"}
+,{"stream_name":"stdout","time":974.500934713,"data":"}\n"}
+,{"stream_name":"stdout","time":974.501731933,"data":"15:00:02 OK: attach this output (feats_clipb3_x/) to FLAG_82b; on Evaluation set E2E_SPLIT=eval there\n"}
+,{"stream_name":"stdout","time":974.542143052,"data":"[cell] 13 man = created: time.strftime(Y-m-d H:M), splits: k: len(vwav\n"}
+,{"stream_name":"stdout","time":974.548221023,"data":"10 arrays, 0.26 GB in /kaggle/working/feats_clipb3c_x | failed: none\n"}
+,{"stream_name":"stdout","time":974.548241841,"data":"NEXT: Save Version (Save \u0026 Run All) -\u003e Output -\u003e New Dataset -\u003e name it flag2027-feats-clipb3c-test-p (re-run with this output attached until every encoder is done)\n"}
+,{"stream_name":"stderr","time":980.308303464,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":980.308348468,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":980.471482403,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":980.471505717,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":981.278548734,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":981.390369305,"data":"[NbConvertApp] Writing 323684 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":984.169792493,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":985.156757534,"data":"[NbConvertApp] Writing 922143 bytes to __results__.html\n"}
+]

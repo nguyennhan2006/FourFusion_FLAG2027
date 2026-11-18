@@ -1,0 +1,57 @@
+print("[cell] frames index: locate the FLAG_46 / FLAG_53 outputs", flush=True)
+# New stage (DESIGN §4.2 c_frames_index): the script that packed ngnnguynchn/flag2027-frames-index-p on 12/10/2026 is not kept; the
+# dataset is 7 files copied unchanged from the outputs of FLAG_46 (feats_vb/) and FLAG_53 (feats_vox2b/), byte-identical (checked 18/11).
+import hashlib, json, os, shutil, time
+from pathlib import Path
+IN, WORK = Path("/kaggle/input"), Path("/kaggle/working")
+OUT = WORK / "frames_index"                                   # = the dataset (exports: frames_index)
+shutil.rmtree(OUT, ignore_errors=True)
+LAYOUT = {                                                    # published path -> (file name, parent folder in the producing output)
+    "vb/selection.csv": ("selection.csv", "feats_vb"),        # FLAG_46 = c46_voxblink
+    "vb/timestamps.csv": ("timestamps.csv", "feats_vb"),
+    "vb/shard_listing.csv": ("shard_listing.csv", "feats_vb"),
+    "vb/face_meta.csv": ("face_meta.csv", "feats_vb"),
+    "vox2b/listing_dev_mp4.parquet": ("listing_dev_mp4.parquet", "feats_vox2b"),     # FLAG_53 = c53_vox2b (kernel output)
+    "vox2b/listing_test_mp4.parquet": ("listing_test_mp4.parquet", "feats_vox2b"),
+    "vox2b/face_meta.csv": ("face_meta.csv", "feats_vox2b"),
+}
+EXPECTED = {
+    "vb/selection.csv": "93aedb71809d328d8ce4dc1a1f9698f358d66bb79d01d5ea1b9bd056a7db7900",
+    "vb/timestamps.csv": "119e953cf430251ecea1b33c049eb6379b7cea9f041edbad3dac5792ca56f279",
+    "vb/shard_listing.csv": "538a68f57651f8d134d2eec225c3ba9d4a7a1b37eb2e970606101adf00046003",
+    "vb/face_meta.csv": "60ee5ca25cc918656be5422e27d997480c89178415053045238754a67f57ecd5",
+    "vox2b/listing_dev_mp4.parquet": "49ac66949802fb5bbdf4512719e87e13b424973ca569ba54e4f80235e28822bd",
+    "vox2b/listing_test_mp4.parquet": "6b560e7733249460b01c11b87876674c26f2510f7ef30fdf07a5b8044d29fb2e",
+    "vox2b/face_meta.csv": "2a06d5204f5c6719862c53dcab07f0ac495268eef2efdfb2a8faedbf465593ac"
+}   # sha256 of the members of kaggle/flag2027-frames-index-p.zip
+
+
+def find(name, parent):
+    hits = sorted({p for p in IN.rglob(name) if p.parent.name == parent})
+    assert hits, f"{name} under a folder named {parent} not found: attach the outputs of c46_voxblink and c53_vox2b"
+    digests = {hashlib.sha256(p.read_bytes()).hexdigest() for p in hits}
+    assert len(digests) == 1, f"{name}: {len(digests)} different copies under folders named {parent}: attach one source"
+    return hits[0]
+
+
+SRC = {k: find(*v) for k, v in LAYOUT.items()}
+for k, p in SRC.items():
+    print(f"  {k:32s} <- {p}", flush=True)
+# <<<FF-CELL>>>
+print("[cell] frames index: copy, sha256 check, report", flush=True)
+rep = {}
+for k, p in SRC.items():
+    dst = OUT / k
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(p, dst)
+    h = hashlib.sha256(dst.read_bytes()).hexdigest()
+    rep[k] = {"bytes": dst.stat().st_size, "sha256": h, "same_as_published": h == EXPECTED[k]}
+same = all(v["same_as_published"] for v in rep.values())
+(WORK / "frames_index_check.json").write_text(json.dumps({"created": time.strftime("%Y-%m-%d %H:%M"), "all_same_as_published": same,
+                                                          "files": rep}, indent=1))
+print(json.dumps(rep, indent=1), flush=True)
+print("frames index:", "byte-identical to the published dataset" if same else "DIFFERS from the published dataset (expected after a "
+      "re-collection of FLAG_46 / FLAG_53, or a parquet written by another pyarrow)", flush=True)
+if os.environ.get("FRAMES_INDEX_STRICT") == "1":
+    assert same, "FRAMES_INDEX_STRICT=1: the frames index differs from the published one"
+# <<<FF-CELL>>>

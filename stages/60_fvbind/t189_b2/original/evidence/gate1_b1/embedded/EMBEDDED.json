@@ -1,0 +1,55 @@
+{
+ "stage": "t189_b2/evidence/gate1_b1",
+ "what": "code payloads embedded (gzip + base64) in the exact notebook; decoded copies for reading and diffing only (the stage runs the notebook code, stage.ipy, which still carries the payloads)",
+ "files": [
+  {
+   "cell_index": 2,
+   "written_by_the_notebook_to": "/kaggle/working/rfs/train/assemble.py",
+   "bytes": 7027,
+   "sha256": "b46dd180c21e15837ae24ce1e22c7f0ef5a2b78f76d5202067556d2e0f98048e",
+   "base64_chars": 3628,
+   "repo_copy": "embedded/train/assemble.py"
+  },
+  {
+   "cell_index": 2,
+   "written_by_the_notebook_to": "/kaggle/working/rfs/train/gender.csv",
+   "bytes": 560,
+   "sha256": "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030",
+   "base64_chars": 228,
+   "repo_copy": null,
+   "note": "organisers' meta_file_train_set.csv: NOT copied (organisers' data; removed from the repo copy of the notebook, see SOURCE.json redactions)"
+  },
+  {
+   "cell_index": 2,
+   "written_by_the_notebook_to": "/kaggle/working/rfs/train/rfs_train.py",
+   "bytes": 58843,
+   "sha256": "e222166a9ee3eca5927a77a643a96cf60dbcb2ba9c5aacbcab9565312b4c7ffc",
+   "base64_chars": 26616,
+   "repo_copy": "embedded/train/rfs_train.py"
+  },
+  {
+   "cell_index": 2,
+   "written_by_the_notebook_to": "/kaggle/working/rfs/ref/flag_final_core_092.py",
+   "bytes": 69260,
+   "sha256": "25abe24db6fbe863109dafd5f75f9075164dce75f77ce276695daf8687d338f7",
+   "base64_chars": 22388,
+   "repo_copy": "embedded/ref/flag_final_core_092.py"
+  },
+  {
+   "cell_index": 2,
+   "written_by_the_notebook_to": "/kaggle/working/rfs/ref/manifest_final.json",
+   "bytes": 3628,
+   "sha256": "7c11399a63514f40b605e7e0afed65e87697e49d118f4189d6a10d5f4fa6f31b",
+   "base64_chars": 2548,
+   "repo_copy": "embedded/ref/manifest_final.json"
+  },
+  {
+   "cell_index": 5,
+   "written_by_the_notebook_to": "/kaggle/working/rfs/train/fvbind.py",
+   "bytes": 18287,
+   "sha256": "5774cb2ee6ae2a056d8186ef609bd4c01d0d56f13ad1651b7c38e971f9165ef1",
+   "base64_chars": 9212,
+   "repo_copy": "embedded/train/fvbind.py"
+  }
+ ]
+}

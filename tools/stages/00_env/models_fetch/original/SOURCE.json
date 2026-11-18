@@ -1,0 +1,16 @@
+{
+ "stage": "models_fetch",
+ "exactness": "new",
+ "note": "No original run. original/ff.py is the reference implementation that tools/fetch_models.py extends (cmd_fetch_models, lines 286-306). ff.py also contains team-only Kaggle helpers (fetch / kaggle-output / pull-exact through kaggle/kapi.py); it holds no credential (secret scan clean) and is not executed by this stage.",
+ "files": [
+  {
+   "name": "ff.py",
+   "copied_from": "release/docker/ff.py (team repository d:/Sinh viên CNhan/FLAG_2027_FourFusion, untracked in git: '??')",
+   "bytes": 19247,
+   "md5": "8b0c0c943b5a4d5b32a311add1c4ad33",
+   "sha256": "c706b0b729b3b77961515d6e888fe9a8a567ea64dd220a821ad81bc64a06d8d2",
+   "copied": "2026-11-18, cp -p (byte copy), sha256 re-checked at the destination"
+  }
+ ],
+ "measured_model_hashes": "tools/fetch_models.py MODELS (sha256 fields): E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/MANIFEST.sha256 (pretrained/), D:/ff_models/ (WeSpeaker / SimAM zips, ViT-B-16.pt), team machine caches ~/.cache/huggingface/hub (AdaFace 54f602a0, ecapa-tdnn-vox2 c605f571, voxlingua107 0253049a) and ~/.insightface/models/buffalo_l (w600k_r50.onnx, det_10g.onnx), all hashed on 2026-11-18"
+}

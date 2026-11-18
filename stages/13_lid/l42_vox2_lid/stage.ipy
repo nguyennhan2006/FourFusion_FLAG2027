@@ -1,0 +1,329 @@
+import os, sys, io, re, time, json, types, shutil, zipfile, warnings
+from pathlib import Path
+warnings.filterwarnings("ignore", category=FutureWarning)
+LOCAL = os.environ.get("FLAG_LOCAL") == "1"          # CPU smoke test on a mini copy of the data
+IN = Path(os.environ.get("FLAG_IN", "/kaggle/input"))
+WORKDIR = Path(os.environ.get("FLAG_OUT", "/kaggle/working"))
+CACHE = Path(os.environ.get("FLAG_CACHE", "/tmp/flag_cache"))           # checkpoints stay out of the output
+ECAPA_DIR = Path(os.environ.get("FLAG_ECAPA", str(CACHE / "ecapa_sb")))
+OUT = WORKDIR / "feats_vox2lid"
+for d in (WORKDIR, CACHE, OUT):
+    d.mkdir(parents=True, exist_ok=True)
+os.chdir(WORKDIR)
+
+# ------------------------------------------------------------------ what to run (edit here)
+ENCODERS = ["arcface", "ecapa", "vitage", "w2v2ag", "ibv", "iba"]   # ibv right before iba: one ImageBind load
+EXT_SOURCES = ["v1_complete", "v2_complete"]                        # MAV-Celeb rows for STRESS-01; [] = skip
+EXT_ENCODERS = ["arcface", "ecapa"]                                 # their ImageBind / age exist (FLAG_10)
+SPLIT_FILTER = None            # e.g. ["no_gender/English"]; None = every split found (train + every test list)
+ZIP_PREFIXES = ("train_set", "dev_set", "eval", "test")             # organiser zips unpacked when not extracted
+ONLY_UNDER = None              # e.g. "eval": keep only lists whose path contains this (dev and eval both attached)
+print("LOCAL" if LOCAL else "KAGGLE", "| input", IN, "| output", OUT, "| cache", CACHE)
+# <<<FF-CELL>>>
+# speechbrain -U: Kaggle's preinstalled one breaks on recent torchaudio; av = PyAV decodes the AAC (.m4a) clips.
+if not LOCAL:
+    !pip -q install -U "speechbrain>=1.1.1" av 2>&1 | tail -2
+import numpy as np, pandas as pd, torch, torch.nn as nn, torch.nn.functional as F, soundfile as sf, transformers
+DEV = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("torch", torch.__version__, "| transformers", transformers.__version__, "| device", DEV,
+      torch.cuda.get_device_name(0) if torch.cuda.is_available() else "")
+
+
+def log(*a):
+    print(time.strftime("%H:%M:%S"), *a, flush=True)
+# <<<FF-CELL>>>
+# ============================================================================ audio + batching
+TARGET_SR = 16000
+AUDIO_STATS = {"files": 0, "resampled": 0, "multichannel": 0, "short": 0}
+MIN_SEC = 0.1                  # shorter clips are tiled to 0.1 s (w2v2 / AudioCLIP STFT fail on a few ms; v4 clips are >= 2 s)
+BROKEN = {"audio": [], "image": []}   # unreadable sources: scored from a stand-in, listed in the manifest
+
+
+def _src_name(src):
+    """Full path of a file source (base names repeat across splits); the archive member name of a zip stream."""
+    if isinstance(src, (bytes, bytearray)):
+        return f"<{len(src)} bytes>"
+    return str(src) if isinstance(src, (str, Path)) else str(getattr(src, "name", None) or src)
+
+
+def load_audio(src):
+    """Mono float32 at 16 kHz as the organiser loads audio (librosa.load(sr=16000, mono=True): channel mean + soxr_hq).
+    All v4 wavs are 16 kHz mono; MAV-Celeb v1 has 44.1 kHz files. `src` = path or file-like.
+    A file that cannot be read (or is empty / non-finite) -> 1 s of silence, listed in BROKEN["audio"]."""
+    try:
+        w, sr = sf.read(src if hasattr(src, "read") else str(src), dtype="float32", always_2d=True)
+        if w.size == 0 or not np.isfinite(w).all():
+            raise ValueError(f"{w.shape[0]} samples, finite {bool(np.isfinite(w).all())}")
+    except Exception as e:
+        BROKEN["audio"].append(f"{_src_name(src)} | {type(e).__name__}: {e}")
+        log("!! unreadable audio -> 1 s of silence:", BROKEN["audio"][-1])
+        return np.zeros(TARGET_SR, np.float32)
+    AUDIO_STATS["files"] += 1
+    if w.shape[1] > 1:
+        AUDIO_STATS["multichannel"] += 1
+        w = w.mean(1, keepdims=True)
+    w = w[:, 0]
+    if sr != TARGET_SR:
+        import librosa
+        w = librosa.resample(w, orig_sr=sr, target_sr=TARGET_SR).astype(np.float32)
+        AUDIO_STATS["resampled"] += 1
+    if len(w) < int(MIN_SEC * TARGET_SR):
+        AUDIO_STATS["short"] += 1
+        w = np.tile(w, int(np.ceil(MIN_SEC * TARGET_SR / len(w))))[:int(MIN_SEC * TARGET_SR)]
+    return w
+
+
+def centre_crop(w, L):
+    if len(w) <= L:
+        return w
+    s = (len(w) - L) // 2
+    return w[s:s + L]
+
+
+def pack_batches(durs, max_padded_sec=240.0, max_bs=32):
+    """Longest first; a batch costs len(batch) * longest item after padding."""
+    order = np.argsort(-np.asarray(durs), kind="stable")
+    batches, cur = [], []
+    for i in order:
+        longest = durs[cur[0]] if cur else durs[i]
+        if cur and ((len(cur) + 1) * longest > max_padded_sec or len(cur) >= max_bs):
+            batches.append(cur); cur = []
+        cur.append(int(i))
+    if cur:
+        batches.append(cur)
+    return batches
+
+
+def run_batched(items, fn, durs, max_padded_sec=240.0, max_bs=32, cpu_fn=None, label=""):
+    """fn(list of items) -> list of outputs, in item order. A CUDA OOM halves the batch; a single item goes to CPU."""
+    out = [None] * len(items)
+    t0, done_n = time.time(), 0
+
+    def go(idx):
+        try:
+            res = fn([items[i] for i in idx])
+        except torch.cuda.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            if len(idx) == 1:
+                res = (cpu_fn or fn)([items[idx[0]]])
+            else:
+                h = len(idx) // 2
+                go(idx[:h]); go(idx[h:])
+                return
+        for i, r in zip(idx, res):
+            out[i] = r
+
+    batches = pack_batches(durs, max_padded_sec, max_bs)
+    for bi, b in enumerate(batches):
+        go(b)
+        done_n += len(b)
+        if bi % 50 == 0 or done_n == len(items):
+            el = time.time() - t0
+            log(f"  {label} {done_n}/{len(items)}  {el:.0f}s  eta {el / done_n * (len(items) - done_n):.0f}s")
+    return out
+
+
+def cos_rows(a, b):
+    a, b = np.asarray(a, np.float64), np.asarray(b, np.float64)
+    return np.sum(a * b, 1) / (np.linalg.norm(a, axis=1) * np.linalg.norm(b, axis=1) + 1e-12)
+
+
+def amp(flag):
+    return torch.autocast("cuda", dtype=torch.float16, enabled=bool(flag) and DEV.type == "cuda")
+
+
+def read_rgb(src):
+    """PIL RGB image; an image that cannot be read -> a black 224 x 224 image, listed in BROKEN["image"]."""
+    from PIL import Image
+    try:
+        return Image.open(io.BytesIO(src) if isinstance(src, (bytes, bytearray)) else src).convert("RGB")
+    except Exception as e:
+        BROKEN["image"].append(f"{_src_name(src)} | {type(e).__name__}: {e}")
+        log("!! unreadable image -> black image:", BROKEN["image"][-1])
+        return Image.new("RGB", (224, 224))
+# <<<FF-CELL>>>
+# ============================================================================ the FLAG_37 key lists, zip listings, helpers
+import tarfile, requests, struct, zlib, threading
+import concurrent.futures as cf
+from huggingface_hub import HfFileSystem
+
+MAX_TARS = 779
+CLIP_SEC = 12.0                                          # centre crop, as FLAG_37
+THREADS = 16
+SEED = 0                                                 # FLAG_37's tar order: RandomState(0).permutation(779)
+SMOKE_IDS = int(os.environ.get("VOX_SMOKE_IDS", "0")) if LOCAL else 0
+ZIPS = [2, 3, 4, 5, 6]
+ZIP_PATH = "datasets/ProgramComputer/voxceleb/vox2/vox2_mp4_{}.zip"
+ZIP_URL = "https://huggingface.co/datasets/ProgramComputer/voxceleb/resolve/main/vox2/vox2_mp4_{}.zip"
+VOICE_URL = "https://huggingface.co/datasets/gaunernst/voxceleb2-dev-wds/resolve/main/voxceleb2-dev-{:04d}.tar"
+FS = HfFileSystem()
+FACE_PARTS, VOICE_PARTS = OUT / "parts_face", OUT / "parts_lid"
+for d in (FACE_PARTS, VOICE_PARTS):
+    d.mkdir(parents=True, exist_ok=True)
+for prev in (IN.rglob("feats_vox2lid") if IN.exists() and not LOCAL else []):     # resume: earlier output attached
+    for sub in ("parts_lid",):
+        for f in (prev / sub).glob("*.npz"):
+            if not (OUT / sub / f.name).exists():
+                shutil.copy(f, OUT / sub / f.name)
+    for f in prev.glob("vox2_mp4_*_listing.csv"):
+        if not (OUT / f.name).exists():
+            shutil.copy(f, OUT / f.name)
+def get_retry(url, tries=4, **kw):
+    for k in range(tries):
+        try:
+            r = requests.get(url, timeout=300, **kw); r.raise_for_status(); return r
+        except Exception as e:
+            log(f"  retry {k + 1}/{tries} {url.rsplit('/', 1)[-1]}: {type(e).__name__}: {e}"); time.sleep(10 * (k + 1))
+    raise RuntimeError(f"cannot fetch {url}")
+
+
+def zip_listing(k):
+    """Central directory of vox2_mp4_<k>.zip (= FLAG_37): one row per face track (dev/mp4/<spk>/<video>/<utt>.mp4)."""
+    f = OUT / f"vox2_mp4_{k}_listing.csv"
+    if f.exists():
+        return pd.read_csv(f, dtype={"video": str, "utt": str})
+    with FS.open(ZIP_PATH.format(k), "rb", block_size=2 ** 19) as fh:
+        rows = [(i.filename, i.header_offset, i.compress_size, i.compress_type)
+                for i in zipfile.ZipFile(fh).infolist() if i.filename.endswith(".mp4")]
+    L_ = pd.DataFrame(rows, columns=["name", "off", "csize", "ctype"])
+    sp = L_.name.str.split("/")
+    L_["spk"], L_["video"], L_["utt"], L_["zip"] = sp.str[-3], sp.str[-2], sp.str[-1].str[:-4], k
+    L_.to_csv(f, index=False)
+    return L_
+
+
+fk = [p for p in IN.rglob("face_meta.csv") if "feats_vox2lid" not in str(p)] if IN.exists() else []
+vk = [p for p in IN.rglob("voice_meta.csv") if "feats_vox2lid" not in str(p)] if IN.exists() else []
+assert fk and vk, "attach flag2027-vox2-keys (or the FLAG_37 output flag2027-feats-vox2): its face_meta.csv / voice_meta.csv fix the samples"
+FK = pd.read_csv(fk[0], dtype={"spk": str, "video": str, "utt": str})
+VK = pd.read_csv(vk[0], dtype={"spk": str, "video": str, "utt": str})
+if SMOKE_IDS:                                            # local smoke test: speakers whose kept clips sit in the first tar
+    keyset, keep = set(zip(VK.spk, VK.video, VK.utt)), []
+    with get_retry(VOICE_URL.format(int(np.random.RandomState(SEED).permutation(779)[0])), stream=True) as r:
+        r.raw.decode_content = True
+        for m in tarfile.open(fileobj=r.raw, mode="r|"):
+            k_ = tuple(m.name[:-4].split("/")[-3:]) if m.name.endswith(".m4a") else None
+            if k_ in keyset and k_[0] not in keep:
+                keep.append(k_[0])
+            if len(keep) >= SMOKE_IDS:
+                break
+    FK, VK = FK[FK.spk.isin(keep)].reset_index(drop=True), VK[VK.spk.isin(keep)].reset_index(drop=True)
+    MAX_TARS = 1
+log(f"keys: {len(FK)} faces / {FK.spk.nunique()} ids, {len(VK)} voices / {VK.spk.nunique()} ids (from {fk[0].parent})")
+# <<<FF-CELL>>>
+# ============================================================================ language ID of the same clips (12 s centre crop), streamed
+from speechbrain.inference.classifiers import EncoderClassifier
+try:                                                   # copy, not symlink, the fetched files (Windows smoke test; same on Kaggle)
+    from speechbrain.utils.fetching import LocalStrategy
+    _ls = {"local_strategy": LocalStrategy.COPY}
+except ImportError:
+    _ls = {}
+LIDM = EncoderClassifier.from_hparams(source="speechbrain/lang-id-voxlingua107-ecapa", savedir=str(CACHE / "lid_voxlingua107"),
+                                      run_opts={"device": str(DEV)}, **_ls)
+LIDM.eval()
+LABELS = [LIDM.hparams.label_encoder.ind2lab[i] for i in range(len(LIDM.hparams.label_encoder.ind2lab))]
+BN = [i for i, l in enumerate(LABELS) if l.split(":")[0].strip() == "bn"]
+assert len(LABELS) == 107 and len(BN) == 1, (len(LABELS), BN)
+log(f"LID: {len(LABELS)} languages, Bengali = {LABELS[BN[0]]!r} (index {BN[0]})")
+
+
+def decode_m4a(b):
+    import av
+    out = []
+    with av.open(io.BytesIO(b)) as c:
+        res = av.AudioResampler(format="flt", layout="mono", rate=TARGET_SR)
+        for fr in c.decode(c.streams.audio[0]):
+            out += [o.to_ndarray().reshape(-1) for o in res.resample(fr)]
+        out += [o.to_ndarray().reshape(-1) for o in res.resample(None)]
+    return np.concatenate(out).astype(np.float32) if out else np.zeros(TARGET_SR // 10, np.float32)
+
+
+@torch.no_grad()
+def lid_probs(w):
+    out_prob = LIDM.classify_batch(torch.from_numpy(np.ascontiguousarray(w, dtype=np.float32))[None].to(DEV))[0]
+    return torch.softmax(out_prob.float().reshape(1, -1), 1)[0].cpu().numpy()       # classifier ends in log-softmax: softmax = probabilities
+
+
+row_of = {(s, v, u): i for i, (s, v, u) in enumerate(zip(VK.spk, VK.video, VK.utt))}
+done = set()
+for p in sorted(VOICE_PARTS.glob("tar*.npz")):            # resume
+    done |= set(np.load(p)["row"].tolist())
+order = list(np.random.RandomState(SEED).permutation(779))
+L = int(CLIP_SEC * TARGET_SR)
+for t in order[:MAX_TARS]:
+    if len(done) >= len(row_of):
+        log("every voice key found"); break
+    part = VOICE_PARTS / f"tar{t:04d}.npz"
+    if part.exists():
+        continue
+    t0 = time.time(); probs, rows = [], []
+    try:
+        with get_retry(VOICE_URL.format(t), stream=True) as r:
+            r.raw.decode_content = True
+            tf = tarfile.open(fileobj=r.raw, mode="r|")
+            for m in tf:
+                if not m.name.endswith(".m4a"):
+                    continue
+                i = row_of.get(tuple(m.name[:-4].split("/")[-3:]))
+                if i is None or i in done:
+                    continue
+                try:
+                    w = decode_m4a(tf.extractfile(m).read())
+                except Exception as e:
+                    BROKEN["audio"].append(f"{m.name} | {type(e).__name__}: {e}"); continue
+                probs.append(lid_probs(centre_crop(w, L))); rows.append(i)
+    except Exception as e:
+        log(f"!! tar {t}: {type(e).__name__}: {e} -> skipped"); continue
+    np.savez(part, row=np.array(rows, int), p=np.array(probs, np.float16).reshape(len(rows), len(LABELS)))
+    done |= set(rows)
+    log(f"tar {t:04d}: {len(rows)} clips [{time.time() - t0:.0f}s] | keys found {len(done)}/{len(row_of)}")
+# <<<FF-CELL>>>
+# ============================================================================ assemble in key-list order, apply the REGISTERED rule (report), manifest
+P = np.full((len(VK), len(LABELS)), np.nan, np.float32)
+for p in sorted(VOICE_PARTS.glob("tar*.npz")):
+    Z = np.load(p)
+    if len(Z["row"]):
+        P[Z["row"]] = Z["p"].astype(np.float32)
+ok = np.isfinite(P[:, 0])
+np.save(OUT / "voice_lid_probs.npy", P.astype(np.float16))
+VK.to_csv(OUT / "voice_meta.csv", index=False)
+(OUT / "lid_labels.json").write_text(json.dumps(LABELS, indent=0))
+top = np.where(ok, np.nanargmax(np.nan_to_num(P, nan=-1), 1), -1)
+pbn = np.where(ok, P[:, BN[0]], np.nan)
+flag = ok & ((top == BN[0]) | (pbn >= 0.2))
+spk_drop = sorted(set(VK.spk.values[flag]))
+dist = pd.Series([LABELS[i].split(":")[0] for i in top[ok]]).value_counts()
+summary = {"clips": int(len(VK)), "clips_scored": int(ok.sum()), "clips_top1_bengali": int((top == BN[0]).sum()),
+           "clips_pbn_ge_0.2": int(np.nansum(pbn >= 0.2)), "clips_flagged": int(flag.sum()),
+           "speakers": int(VK.spk.nunique()), "speakers_dropped": len(spk_drop),
+           "clips_dropped": int(VK.spk.isin(spk_drop).sum()), "top_languages": dist.head(15).to_dict()}
+(OUT / "lid_summary.json").write_text(json.dumps({**summary, "speakers_dropped_ids": spk_drop}, indent=1))
+print(json.dumps(summary, indent=1))
+print(f"check: probabilities sum to 1 (max deviation {float(np.nanmax(np.abs(np.nansum(P, 1)[ok] - 1))) if ok.any() else float('nan'):.2e})")
+man = {"created": time.strftime("%Y-%m-%d %H:%M"), "model": "speechbrain/lang-id-voxlingua107-ecapa", "summary": summary,
+       "rule": "drop every clip of a speaker with any clip whose top language is Bengali or p(Bengali) >= 0.2 (registered 08/10)",
+       "samples": "the FLAG_37 key list, 12 s centre crop (the audio the T3 head trains on)", "broken": BROKEN,
+       "versions": {"torch": torch.__version__}}
+(OUT / "feats_manifest.json").write_text(json.dumps(man, indent=1, default=str))
+print("NEXT: Save Version -> Output -> New Dataset -> name it flag2027-vox2-lid (private).")
+# <<<FF-CELL>>>
+print("[cell] l42 compare: this run vs the original FLAG_42 output (new cell, report only)", flush=True)
+# New cell (FourFusion reproduction repo). VoxLingua107 on GPU and the order in which tar files stream are not bit-reproducible, and a
+# tar that fails after the retries is skipped (its clips stay NaN). The 13.54 chain therefore uses the STORED output of the original
+# run (FF_DATA/02_intermediate/feats_vox2lid = Experiment/T3ENC-01/feats_vox2lid); this cell only reports how close a rerun is.
+import hashlib, json
+_ref = {"clips": 38345, "clips_scored": 38345, "clips_flagged": 54, "speakers": 4877, "speakers_dropped": 25,
+        "speakers_dropped_sha256": "35d31f681975b96950d6af4ad04e56c4281732dc504b74f2be693e205127822d",
+        "lid_summary_sha256": "4d05cb34fc0fa66951750bb8f37d1f01b18f32a3e26847c7f42caad8e3341085",
+        "voice_lid_probs_sha256": "2bd938fc64872bd0352de4a5b400264208c023e48a4b02f6a7715ffb48960f49",
+        "voice_meta_sha256": "3db779d3e58e1bdda05ea460335b808c5e17b66d67aab32dc6adeb4fb84cdfa4"}
+_s = json.loads((OUT / "lid_summary.json").read_text())
+_got = {k: _s.get(k) for k in ("clips", "clips_scored", "clips_flagged", "speakers", "speakers_dropped")}
+_got["speakers_dropped_sha256"] = hashlib.sha256("\n".join(sorted(_s["speakers_dropped_ids"])).encode()).hexdigest()
+for _n, _k in (("lid_summary.json", "lid_summary_sha256"), ("voice_lid_probs.npy", "voice_lid_probs_sha256"), ("voice_meta.csv", "voice_meta_sha256")):
+    _got[_k] = hashlib.sha256((OUT / _n).read_bytes()).hexdigest()
+_cmp = {k: {"original": v, "this_run": _got.get(k), "same": _got.get(k) == v} for k, v in _ref.items()}
+(WORKDIR / "ff_l42_compare.json").write_text(json.dumps(_cmp, indent=1))
+for k, v in _cmp.items():
+    print(f"  {k:26s} {'same' if v['same'] else 'DIFFERENT'}  original {v['original']}  this run {v['this_run']}", flush=True)
+# <<<FF-CELL>>>

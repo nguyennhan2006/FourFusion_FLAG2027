@@ -1,0 +1,30 @@
+{
+ "id": "thanhhuyen11/flag-2027-nb-112f0sx-eval",
+ "title": "flag-2027-nb-112f0sx-eval",
+ "code_file": "flag-2027-nb-112f0sx-eval.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_internet": false,
+ "machine_shape": "",
+ "dataset_sources": [
+  "ngnnguynchn/flag2027-lab-data-p",
+  "ngnnguynchn/flag2027-lab-vb-p",
+  "ngnnguynchn/flag2027-eda-bundle-p",
+  "ngnnguynchn/flag2027-cc5-oof-p",
+  "ngnnguynchn/flag2027-dsel02-oof-p",
+  "ngnnguynchn/flag2027-feats-vox2b-p",
+  "ngnnguynchn/flag2027-facelora03-tables-p",
+  "ngnnguynchn/flag2027-ct02s-g1-tables-p",
+  "ngnnguynchn/flag2027-lab-avfull-p",
+  "ngnnguynchn/flag2027-lid-strict-p",
+  "ngnnguynchn/flag2027-evalu-f0s-p"
+ ],
+ "kernel_sources": [
+  "thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+  "thanhhuyen11/flag-2027-nb-50cc-e2e-eval"
+ ],
+ "competition_sources": [],
+ "model_sources": []
+}

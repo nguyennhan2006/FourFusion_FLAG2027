@@ -1,0 +1,29 @@
+{
+ "lid_strict.json": "f4065711e01e6284d70b213fedec2823e7b942ca3c470e8b2b896670c5ed3fad",
+ "created": "2026-11-03 14:31",
+ "counts": {
+  "vox2": 608,
+  "vb": 1637,
+  "mav_v1": 0,
+  "mav_v2": 0
+ },
+ "mav_files": 58,
+ "by_category": {
+  "bn_vl": {
+   "vox2": 150,
+   "vb": 262
+  },
+  "bn_wl": {
+   "vox2": 29,
+   "vb": 43
+  },
+  "harm_g3": {
+   "vox2": 454,
+   "vb": 1388
+  }
+ },
+ "sha256_sorted": {
+  "vox2": "70e3648942edda0382e3519d088911ab4ec2543014c127feb758443d66f03009",
+  "vb": "567bb92ebd14c379a168fc1cb0ab96f5b4b632f9cffe5aae455932fb361d49f2"
+ }
+}

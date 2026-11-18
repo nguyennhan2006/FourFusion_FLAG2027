@@ -1,0 +1,68 @@
+print("[cell] l_groups: language groups (DSEL-01, SCALE-CC-01) and genders of the VoxCeleb2 speakers", flush=True)
+# New cell (FourFusion reproduction repo). Runs the two original local scripts (copied into this folder; only their paths are
+# parameters, see CHANGES.md) on the FLAG_42 output (VoxLingua107 probabilities of the FLAG_37 clips), the FLAG_53 output
+# (flag2027-feats-vox2b-p) and VoxCeleb2's official vox2_meta.csv, then compares the three JSON files with the ones the system used.
+import hashlib, json, os, subprocess, sys
+from pathlib import Path
+
+STAGE_DIR = Path(os.environ.get("FF_STAGE_DIR", "."))
+L42 = Path("/kaggle/input/notebooks/nguynlcnhtho/flag-2027-nb-42")
+VB2 = Path("/kaggle/input/datasets/ngnnguynchn/flag2027-feats-vox2b-p")
+META = Path("/kaggle/input/raw/voxceleb2_vox2_meta")
+OUT = Path("/kaggle/working/groups")
+OUT.mkdir(parents=True, exist_ok=True)
+
+
+def guard_action():
+    """stage.json guard_policy.on_mismatch[FF_MODE] ('warn' | 'fail'); FF_SMOKE=1 or FF_ALLOW_MISMATCH=1 -> 'warn'.
+    In FF_MODE=train FLAG_42 may have been rerun (VoxLingua107 on GPU is not bit-identical)."""
+    if os.environ.get("FF_SMOKE") == "1" or os.environ.get("FF_ALLOW_MISMATCH") == "1":
+        return "warn", "FF_SMOKE=1 or FF_ALLOW_MISMATCH=1"
+    mode = os.environ.get("FF_MODE", "")
+    try:
+        pol = json.loads((STAGE_DIR / "stage.json").read_text(encoding="utf-8"))["guard_policy"]["on_mismatch"]
+    except Exception:
+        pol = {"train": "warn"}
+    return pol.get(mode, "fail"), f"stage.json guard_policy.on_mismatch[{mode or 'FF_MODE unset'}]"
+
+
+def one(root, name, why):
+    hits = sorted(p for p in root.rglob(name) if p.is_file())
+    assert hits, f"{name} not found under {root} ({why})"
+    return hits[0]
+
+
+env = dict(os.environ,
+           FF_VOX2LID=str(one(L42, "voice_lid_probs.npy", "FLAG_42 output feats_vox2lid").parent),
+           FF_FLAG53_DIR=str(one(VB2, "voice_lid_probs.npy", "FLAG_53 output feats_vox2b").parent),
+           FF_FLAG42_LABELS=str(one(L42, "lid_labels.json", "FLAG_42 output feats_vox2lid")),
+           FF_VOX2_META=str(one(META, "vox2_meta.csv", "VoxCeleb2 official vox2_meta.csv")),
+           FF_DSEL01_SCRIPT=str(STAGE_DIR / "dsel01_make_groups.py"), FF_OUT=str(OUT))
+for script in ("dsel01_make_groups.py", "scalecc01_make_groups.py"):
+    cmd = [sys.executable, "-u", str(STAGE_DIR / script)]
+    print("run:", " ".join(cmd), flush=True)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1, env=env)
+    for line in p.stdout:
+        print(line, end="", flush=True)
+    assert p.wait() == 0, f"{script} failed"
+
+# The originals were written on Windows (Path.write_text: CRLF line ends); compare the content with the line ends normalised.
+EXPECTED = {"vox2_groups.json": "4f44f5cee3f9a3ae1109962158c07dcb0101a2a3bdd7c99cf27ed787c7a35cc6",
+            "vox2b_groups.json": "7beb7ce7f67de74bcc753e1d8f2be10560b105d74dbcbf220c493d65d27fc742",
+            "vox2_gender.json": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089"}
+rep = {}
+for n, d in EXPECTED.items():
+    b = (OUT / n).read_bytes()
+    crlf = b if b"\r\n" in b else b.replace(b"\n", b"\r\n")
+    rep[n] = {"sha256": hashlib.sha256(b).hexdigest(), "sha256_crlf": hashlib.sha256(crlf).hexdigest(),
+              "same_as_original": hashlib.sha256(crlf).hexdigest() == d}
+bad = [n for n, r in rep.items() if not r["same_as_original"]]
+action, why = ("pass", "all equal") if not bad else guard_action()
+rep["guard"] = {"action": action, "why": why, "FF_MODE": os.environ.get("FF_MODE", "")}
+(OUT / "l_groups_check.json").write_text(json.dumps(rep, indent=1))
+print(json.dumps(rep, indent=1), flush=True)
+if action == "warn":
+    print(f"!! WARNING: {bad} differ from the files the system used ({why})", flush=True)
+assert action != "fail", (
+    f"{bad} differ from the files the system used (FLAG_42 rerun, or a pandas version ordering tied language counts differently); "
+    "use the stored FLAG_42 output or set FF_ALLOW_MISMATCH=1 to keep them (" + why + ")")

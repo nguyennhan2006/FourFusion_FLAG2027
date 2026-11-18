@@ -1,0 +1,169 @@
+[{"stream_name":"stderr","time":9.340908943,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":9.340961155,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":10.692641786,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.692674268,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.69267819,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.692681222000001,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":11.406793809,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.406822732,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.406828473000001,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.406832325,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":12.761581291,"data":"[cell] 01 run parameters (kapi --env): environment variables of this r\n"}
+,{"stream_name":"stdout","time":12.792475516,"data":"[cell] 02 import os, sys, json, time, shutil, subprocess, hashlib, bas\n"}
+,{"stream_name":"stdout","time":12.794448994,"data":"[boot] FLAG_111_ct01_r2 | python 3.13.16 | start 2026-11-03 16:00:39\n"}
+,{"stream_name":"stdout","time":26.509667562,"data":"16:00:53 [ 0.0h] experiment CLEANTUNE-01 (ct01r2) | folds [3, 4] | split dev (/kaggle/input/datasets/ngnnguynchn/flag2027-e2e-dev-p/e2edev, built 2026-10-10 21:00) | lab data built 2026-10-08 21:02 | eda 2026-09-29 08:06 | GPUs ['Tesla T4', 'Tesla T4'] | CPUs 4 | torch 2.11.0+cu130 | budget 10.5 h\n"}
+,{"stream_name":"stdout","time":26.660382349,"data":"[cell] 03 embedded code (= the local files, md5 below) - /kaggle/worki\n"}
+,{"stream_name":"stdout","time":27.023466876,"data":"  e2f63ea92aa5c62e66a034a20a5ab493  kaggle/build_l0_notebooks.py\n"}
+,{"stream_name":"stdout","time":27.023490513,"data":"  e288a49c7f77f9a22e9cce00aead459b  Experiment/SAFE-04/lab_streams.py\n"}
+,{"stream_name":"stdout","time":27.02349507,"data":"  7166b20f70f25f342a22bfcadc5883ac  Experiment/SAFE-04/rel_sweep.py\n"}
+,{"stream_name":"stdout","time":27.023498315,"data":"  75899e4caf38b38bbf953da6b5b62a04  Experiment/SAFE-04/rel_sweep2.py\n"}
+,{"stream_name":"stdout","time":27.023501532,"data":"  557afcb255ab4f1b4696296633d87a88  Experiment/SAFE-04/rel_sweep5.py\n"}
+,{"stream_name":"stdout","time":27.023504784,"data":"  402aaf561639e75409f2ead79d78a939  Experiment/SAFE-04/rel.py\n"}
+,{"stream_name":"stdout","time":27.023508153,"data":"  e3260d3276cfdca8eb08dbcfd26f19aa  Experiment/VOX2-01/run_bridge.py\n"}
+,{"stream_name":"stdout","time":27.023511678,"data":"  fd780c6f94762c24b9d9cf4db49df181  Experiment/T3ENC-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023514858,"data":"  413e0779662fc2be0b5fb75930129e5b  Experiment/ALLNEG-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023518124,"data":"  f2a9a4f099496905ea93d9cf44025860  Experiment/BIGB-01/run.py\n"}
+,{"stream_name":"stdout","time":27.02352121,"data":"  2e2913fb5310c53191ead982de51582e  Experiment/SCALE-VB/run.py\n"}
+,{"stream_name":"stdout","time":27.023534827,"data":"  2e99d3b90dc56675ca4b36ded1a83e96  Experiment/VBSEL-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023538043,"data":"  37f4e8670949bc32f086003a593f9036  Experiment/VBSEL-01/vox2_sa_speakers.json\n"}
+,{"stream_name":"stdout","time":27.023541414,"data":"  4a40fb17c9585c2f66b177f5b529b777  Experiment/ENBASE-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023544643,"data":"  079c789b6461024c007a0ffbfbcf7b7d  Experiment/SAFE-04/stream_gate.py\n"}
+,{"stream_name":"stdout","time":27.023547875,"data":"  fa8ce8f652bf3ee13597e872fda40b83  Experiment/SAFE-04/lab_fuse.py\n"}
+,{"stream_name":"stdout","time":27.023551033,"data":"  3709cf4c175e60945144ec7c4198dbd0  Experiment/STACK-02/run.py\n"}
+,{"stream_name":"stdout","time":27.023554142,"data":"  cd867144bf43f0283003a8f1ba685cc0  Experiment/STACK-02/pools.py\n"}
+,{"stream_name":"stdout","time":27.023557228,"data":"  bbab2a531702ab631652d21e25a825d2  Experiment/STACK-02/eligible.json\n"}
+,{"stream_name":"stdout","time":27.023577724,"data":"  aede157945600732e0f8a8337b8df0b5  Experiment/STACK-02/fold_persons.json\n"}
+,{"stream_name":"stdout","time":27.023582306,"data":"  ca9ef2027a79745182b99572aa5c5817  Experiment/E2E/e2e_lib.py\n"}
+,{"stream_name":"stdout","time":27.023589122,"data":"  8bc2f93506f8e7b3c01dd96a610901cb  Experiment/CLEANTUNE-01/run.py\n"}
+,{"stream_name":"stdout","time":27.02359255,"data":"  6d0dfe2bdf72d2204b32dd1285129207  Experiment/VOICELORA-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023595625,"data":"  9f7d2d67d2614a72c9bf2239b424541e  Experiment/FACELORA-05/run.py\n"}
+,{"stream_name":"stdout","time":27.023598973,"data":"  c4d09a9fa645ab5094cc78654bc535ac  Experiment/FACELORA-03/run.py\n"}
+,{"stream_name":"stdout","time":27.02360254,"data":"  900fe3e223b7edff837c579c817fd13a  Experiment/AUXP-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023605719,"data":"  73869739d0eaa9b842741269545f122e  Experiment/SCALE-CC-02/run.py\n"}
+,{"stream_name":"stdout","time":27.023609161,"data":"  e7be3e2bfa47c0e0af30e51daaa6400d  Experiment/SCALE-CC-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023612929,"data":"  57092daac915915414588062dff6caff  Experiment/SCALE-CC-01/vox2b_groups.json\n"}
+,{"stream_name":"stdout","time":27.023616,"data":"  950a8ba9c44e60db1e9bb5b8aac8d4b7  Experiment/SCALE-CC-01/vox2_gender.json\n"}
+,{"stream_name":"stdout","time":27.023621395,"data":"  54da2a723624ff1b9ce320e47edc8074  Experiment/DSEL-03/run.py\n"}
+,{"stream_name":"stdout","time":27.023625417,"data":"  97acc6c949ecc0f146d6009a5f1929ee  Experiment/DSEL-02/run.py\n"}
+,{"stream_name":"stdout","time":27.023629005,"data":"  13cfbd6f8a5cc445b025de740c4bf1fb  Experiment/T3RECIPE-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023632988,"data":"  ba1034827f4d2c62a0afd3a3f6b8fe1f  Experiment/T3RECIPE-01/t3r.py\n"}
+,{"stream_name":"stdout","time":27.023636117,"data":"  70bc17d11d4d9c2ec29c8404f5e60e66  Experiment/DSEL-01/vox2_groups.json\n"}
+,{"stream_name":"stdout","time":27.023639774,"data":"  88ad33959014aff7855643001712af41  Experiment/EN-T3-01/run.py\n"}
+,{"stream_name":"stdout","time":27.023642999,"data":"  ae902d1c7e87783bf88e345b459e39f2  Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip\n"}
+,{"stream_name":"stdout","time":27.023646364,"data":"  21fa1fb37978e72c910f24ab6d0c364d  Experiment/CLEANTUNE-01/ct_round2.json\n"}
+,{"stream_name":"stdout","time":27.02364997,"data":"  969ad42a47449a3a239cd9323a455f5a  lab_entry.py\n"}
+,{"stream_name":"stdout","time":27.023654168,"data":"16:00:53 [ 0.0h] lab ready at /kaggle/working/lab: 39 code files; data: ['kaggle/output/feats_av', 'kaggle/output/feats_eval', 'kaggle/output/feats_models', 'Experiment/T3ENC-01/feats_t3enc', 'Experiment/T3ENC-01/feats_vox2t3', 'Experiment/T3ENC-01/feats_vox2lid', 'Experiment/VOX2-01/feats_vox2', 'Experiment/SCALE-VB/feats_vb', 'Experiment/CAFUSE-EN/feats_av_full']; 32 SAFE-04 reference tables\n"}
+,{"stream_name":"stdout","time":27.053670649,"data":"[cell] 04 resume: a previous versions e2e_out/ (same experiment) - fin\n"}
+,{"stream_name":"stdout","time":27.500297882,"data":"[cell] 05 fold tables of the OTHER runs of this notebook (attached out\n"}
+,{"stream_name":"stdout","time":29.009005693,"data":"16:00:55 [ 0.0h] folds done []; FACELORA-03 B3 reference tables 5\n"}
+,{"stream_name":"stdout","time":29.046378789,"data":"[cell] 06 JOBS: every SAFE-04 fold + the final head (started second, s\n"}
+,{"stream_name":"stdout","time":29.047906727,"data":"16:00:55 [ 0.0h] job fold3 started on GPU 0\n"}
+,{"stream_name":"stdout","time":29.050160666,"data":"16:00:55 [ 0.0h] job fold4 started on GPU 1\n"}
+,{"stream_name":"stdout","time":31.103765821,"data":"[fold3] LOCAL | device cuda | steps 1200 | nets 3 | folds [1, 2, 3, 4, 5] | arms ['CTRL']\n"}
+,{"stream_name":"stdout","time":31.107501135,"data":"[fold3] 16:00:57 bundle: /kaggle/input/datasets/ngnnguynchn/flag2027-eda-bundle-p/eda_bundle | 2026-09-29 08:06\n"}
+,{"stream_name":"stdout","time":31.112801752,"data":"[fold4] LOCAL | device cuda | steps 1200 | nets 3 | folds [1, 2, 3, 4, 5] | arms ['CTRL']\n"}
+,{"stream_name":"stdout","time":31.116434268,"data":"[fold4] 16:00:57 bundle: /kaggle/input/datasets/ngnnguynchn/flag2027-eda-bundle-p/eda_bundle | 2026-09-29 08:06\n"}
+,{"stream_name":"stdout","time":35.058843357,"data":"[fold3] 16:01:01 LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":35.059872536,"data":"[fold4] 16:01:01 LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":35.092105365,"data":"[fold4] 16:01:01 v4 6485 rows / 70 persons / 4029 distinct voices | v1+v2 faces 16533, voices 40271, persons 151\n"}
+,{"stream_name":"stdout","time":35.093425276,"data":"[fold3] 16:01:01 v4 6485 rows / 70 persons / 4029 distinct voices | v1+v2 faces 16533, voices 40271, persons 151\n"}
+,{"stream_name":"stdout","time":36.572111165,"data":"[fold3] 16:01:03 extra arrays: v4 {'aclf': (6485, 1024), 'aclv': (6485, 1024), 'lbf': (6485, 768), 'lbv': (6485, 768), 'ibal': (6485, 1024), 'vgen': (6485, 3)} | ext {'aclf': (16533, 1024), 'aclv': (40271, 1024), 'lbf': (16533, 768), 'lbv': (40271, 768), 'ibal': (16533, 1024), 'vgen': (40271, 3)}\n"}
+,{"stream_name":"stdout","time":36.573524172,"data":"[fold4] 16:01:03 extra arrays: v4 {'aclf': (6485, 1024), 'aclv': (6485, 1024), 'lbf': (6485, 768), 'lbv': (6485, 768), 'ibal': (6485, 1024), 'vgen': (6485, 3)} | ext {'aclf': (16533, 1024), 'aclv': (40271, 1024), 'lbf': (16533, 768), 'lbv': (40271, 768), 'ibal': (16533, 1024), 'vgen': (40271, 3)}\n"}
+,{"stream_name":"stdout","time":38.796607304,"data":"[fold3] CLEANTUNE-01 ct01r2: BN42=1, framework g3, arms ['CA', 'CAb'], spec {'CA': ('C5CAT4', ('T', 'AIp'))}\n"}
+,{"stream_name":"stdout","time":38.797846841,"data":"[fold4] CLEANTUNE-01 ct01r2: BN42=1, framework g3, arms ['CA', 'CAb'], spec {'CA': ('C5CAT4', ('T', 'AIp'))}\n"}
+,{"stream_name":"stdout","time":42.51407635,"data":"[fold4] FACELORA-05 v4: 6485 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.7975, 'clipC5': 0.7375}\n"}
+,{"stream_name":"stdout","time":42.515343168,"data":"[fold3] FACELORA-05 v4: 6485 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.7975, 'clipC5': 0.7375}\n"}
+,{"stream_name":"stdout","time":43.008625549,"data":"[fold4] CLEANTUNE-01 vb/voice_samS4.npy: /kaggle/input/datasets/dnq1209/flag2027-feats-tap01-voice-p\n"}
+,{"stream_name":"stdout","time":43.009859391,"data":"[fold3] CLEANTUNE-01 vb/voice_samS4.npy: /kaggle/input/datasets/dnq1209/flag2027-feats-tap01-voice-p\n"}
+,{"stream_name":"stdout","time":43.390937906,"data":"[fold4] CLEANTUNE-01 voice_rn293_train.npy: /kaggle/input/datasets/ngnnguynchn/flag2027-feats-screen2-p\n"}
+,{"stream_name":"stdout","time":43.391917688,"data":"[fold3] CLEANTUNE-01 voice_rn293_train.npy: /kaggle/input/datasets/ngnnguynchn/flag2027-feats-screen2-p\n"}
+,{"stream_name":"stdout","time":447.602084817,"data":"[fold4] CLEANTUNE-01 PCA samS4: 30000 auxiliary rows, 10240 -\u003e 512, variance kept 0.859\n"}
+,{"stream_name":"stdout","time":447.82603136,"data":"[fold3] CLEANTUNE-01 PCA samS4: 30000 auxiliary rows, 10240 -\u003e 512, variance kept 0.859\n"}
+,{"stream_name":"stdout","time":463.155085034,"data":"[fold3] FACELORA-05 ext: 16533 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.8825, 'clipC5': 0.8475}\n"}
+,{"stream_name":"stdout","time":463.19208559,"data":"[fold4] FACELORA-05 ext: 16533 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.8825, 'clipC5': 0.8475}\n"}
+,{"stream_name":"stdout","time":532.783544406,"data":"[fold3] FACELORA-05 vox: 29251 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.985, 'clipC5': 0.9575}\n"}
+,{"stream_name":"stdout","time":532.78905537,"data":"[fold4] FACELORA-05 vox: 29251 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.985, 'clipC5': 0.9575}\n"}
+,{"stream_name":"stdout","time":534.10275073,"data":"[fold3] CLEANTUNE-01 vb/voice_rn293.npy: /kaggle/input/datasets/hthlin/flag2027-aux-voice-feats-p\n"}
+,{"stream_name":"stdout","time":534.103790865,"data":"[fold4] CLEANTUNE-01 vb/voice_rn293.npy: /kaggle/input/datasets/hthlin/flag2027-aux-voice-feats-p\n"}
+,{"stream_name":"stdout","time":542.851482747,"data":"[fold3] CLEANTUNE-01 vox: 38345 voice rows, with every extra block 0.9948\n"}
+,{"stream_name":"stdout","time":542.853486519,"data":"[fold4] CLEANTUNE-01 vox: 38345 voice rows, with every extra block 0.9948\n"}
+,{"stream_name":"stdout","time":543.292533191,"data":"[fold3] FACELORA-03 FLAG_37: 0 faces without every embedding left out; 33727 rows\n"}
+,{"stream_name":"stdout","time":543.295189599,"data":"[fold4] FACELORA-03 FLAG_37: 0 faces without every embedding left out; 33727 rows\n"}
+,{"stream_name":"stdout","time":543.506495773,"data":"[fold3] VOICELORA-01 FLAG_37: 0 rows without sam100fL left out\n"}
+,{"stream_name":"stdout","time":543.508693902,"data":"[fold4] VOICELORA-01 FLAG_37: 0 rows without sam100fL left out\n"}
+,{"stream_name":"stdout","time":552.319060657,"data":"[fold3] FACELORA-05 vox2b: 36426 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.975, 'clipC5': 0.95}\n"}
+,{"stream_name":"stdout","time":552.36961347,"data":"[fold4] FACELORA-05 vox2b: 36426 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.975, 'clipC5': 0.95}\n"}
+,{"stream_name":"stdout","time":564.588060322,"data":"[fold4] CLEANTUNE-01 vox2b: 47529 voice rows, with every extra block 0.9735\n"}
+,{"stream_name":"stdout","time":564.590647563,"data":"[fold3] CLEANTUNE-01 vox2b: 47529 voice rows, with every extra block 0.9735\n"}
+,{"stream_name":"stdout","time":565.223739483,"data":"[fold4] 16:09:51 VOICELORA-01 FLAG_53 rows ('new', 'more'): 41959 rows, 5387 speakers\n"}
+,{"stream_name":"stdout","time":565.231673236,"data":"[fold3] 16:09:51 VOICELORA-01 FLAG_53 rows ('new', 'more'): 41959 rows, 5387 speakers\n"}
+,{"stream_name":"stdout","time":581.956238001,"data":"[fold4] FACELORA-05 vb: 68041 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.985, 'clipC5': 0.9775}\n"}
+,{"stream_name":"stdout","time":582.120046176,"data":"[fold3] FACELORA-05 vb: 68041 rows, finite clipB3 1.0000 clipC5 1.0000 (rows that differ 0), alignment {'clipB3': 0.985, 'clipC5': 0.9775}\n"}
+,{"stream_name":"stdout","time":599.287796155,"data":"[fold3] CLEANTUNE-01 vb: 68043 voice rows, with every extra block 0.9937\n"}
+,{"stream_name":"stdout","time":599.289787829,"data":"[fold4] CLEANTUNE-01 vb: 68043 voice rows, with every extra block 0.9937\n"}
+,{"stream_name":"stdout","time":601.049580343,"data":"[fold4] 16:10:27 VOICELORA-01 VoxBlink rows: 59826 rows, 13471 speakers (427 voices without sam100fL)\n"}
+,{"stream_name":"stdout","time":601.114020752,"data":"[fold3] 16:10:27 VOICELORA-01 VoxBlink rows: 59826 rows, 13471 speakers (427 voices without sam100fL)\n"}
+,{"stream_name":"stdout","time":602.026335281,"data":"[fold4] 16:10:28 FACELORA-03 D4: main 417 ids / 23715 rows | aux vox 5131 ids / 72121 rows, vb 13471 ids / 59826 rows\n"}
+,{"stream_name":"stdout","time":602.036812171,"data":"[fold4] 16:10:28 fold 4: main 417 identities / 23715 rows (233 male); aux [('vox', 5131, 72121), ('vb', 13471, 59826)] | device cuda\n"}
+,{"stream_name":"stdout","time":602.085383138,"data":"[fold3] 16:10:28 FACELORA-03 D4: main 417 ids / 23176 rows | aux vox 5131 ids / 72121 rows, vb 13471 ids / 59826 rows\n"}
+,{"stream_name":"stdout","time":602.094736426,"data":"[fold3] 16:10:28 fold 3: main 417 identities / 23176 rows (234 male); aux [('vox', 5131, 72121), ('vb', 13471, 59826)] | device cuda\n"}
+,{"stream_name":"stdout","time":1281.674136243,"data":"[fold3] 16:21:48   CA pair CA seed 0: 14480 steps [679s]\n"}
+,{"stream_name":"stdout","time":1299.120911176,"data":"[fold4] 16:22:05   CA pair CA seed 0: 14800 steps [697s]\n"}
+,{"stream_name":"stdout","time":1956.731676057,"data":"[fold3] 16:33:03   CA pair CA seed 1: 14480 steps [675s]\n"}
+,{"stream_name":"stdout","time":1987.607476856,"data":"[fold4] 16:33:34   CA pair CA seed 1: 14800 steps [688s]\n"}
+,{"stream_name":"stdout","time":2633.129318673,"data":"[fold3] 16:44:19   CA pair CA seed 2: 14480 steps [676s]\n"}
+,{"stream_name":"stdout","time":2635.078597574,"data":"[fold3] 16:44:21 fold 3 CA: 3 models [2596s]\n"}
+,{"stream_name":"stdout","time":2676.863307208,"data":"[fold4] 16:45:03   CA pair CA seed 2: 14800 steps [689s]\n"}
+,{"stream_name":"stdout","time":2678.587372942,"data":"[fold4] 16:45:05 fold 4 CA: 3 models [2640s]\n"}
+,{"stream_name":"stdout","time":3310.406445591,"data":"[fold3] 16:55:36   CAb pair CAb seed 0: 14480 steps [675s]\n"}
+,{"stream_name":"stdout","time":3367.371261609,"data":"[fold4] 16:56:33   CAb pair CAb seed 0: 14800 steps [689s]\n"}
+,{"stream_name":"stdout","time":3986.97083966,"data":"[fold3] 17:06:53   CAb pair CAb seed 1: 14480 steps [677s]\n"}
+,{"stream_name":"stdout","time":4057.665930073,"data":"[fold4] 17:08:04   CAb pair CAb seed 1: 14800 steps [690s]\n"}
+,{"stream_name":"stdout","time":4660.093058064,"data":"[fold3] 17:18:06   CAb pair CAb seed 2: 14480 steps [673s]\n"}
+,{"stream_name":"stdout","time":4661.891484068,"data":"[fold3] 17:18:08 fold 3 CAb: 3 models [4623s]\n"}
+,{"stream_name":"stdout","time":4661.892835928,"data":"[fold3] 17:18:08 fold 3 done [4623s]\n"}
+,{"stream_name":"stdout","time":4669.428388258,"data":"17:18:16 [ 1.3h] job fold3 done [4640s]\n"}
+,{"stream_name":"stdout","time":4743.437589748,"data":"[fold4] 17:19:30   CAb pair CAb seed 2: 14800 steps [686s]\n"}
+,{"stream_name":"stdout","time":4745.139223549,"data":"[fold4] 17:19:31 fold 4 CAb: 3 models [4706s]\n"}
+,{"stream_name":"stdout","time":4745.140527098,"data":"[fold4] 17:19:31 fold 4 done [4706s]\n"}
+,{"stream_name":"stdout","time":4747.436776169,"data":"17:19:34 [ 1.3h] job fold4 done [4718s]\n"}
+,{"stream_name":"stdout","time":4749.438580345,"data":"17:19:36 [ 1.3h] all jobs done: {'fold3': 4640, 'fold4': 4718}\n"}
+,{"stream_name":"stdout","time":4749.462863964,"data":"[cell] 07 smoke only: group tables not trained here = noisy copies of \n"}
+,{"stream_name":"stdout","time":4749.497128297,"data":"[cell] 08 registered rule (SEL vs B3c) needs the 5 folds\n"}
+,{"stream_name":"stdout","time":4749.498401107,"data":"merge / report not run: folds [1, 2, 5] missing (attach the other runs' outputs and run with LAB_FOLDS=)\n"}
+,{"stream_name":"stdout","time":4749.518288027,"data":"[cell] 09 import shutil\n"}
+,{"stream_name":"stdout","time":4749.551973046,"data":"[cell] 10 prog.update(gpu=GPU, torch=torch.__version__, lab_data=MANcr\n"}
+,{"stream_name":"stdout","time":4749.55386442,"data":"{\n"}
+,{"stream_name":"stdout","time":4749.553888082,"data":" \"exp\": \"CLEANTUNE-01\",\n"}
+,{"stream_name":"stdout","time":4749.553893974,"data":" \"split\": \"dev\",\n"}
+,{"stream_name":"stdout","time":4749.553898438,"data":" \"done\": [\n"}
+,{"stream_name":"stdout","time":4749.553902636,"data":"  \"fold3\",\n"}
+,{"stream_name":"stdout","time":4749.55390695,"data":"  \"fold4\"\n"}
+,{"stream_name":"stdout","time":4749.55391107,"data":" ],\n"}
+,{"stream_name":"stdout","time":4749.553914734,"data":" \"seconds\": {\n"}
+,{"stream_name":"stdout","time":4749.553918152,"data":"  \"fold3\": 4640,\n"}
+,{"stream_name":"stdout","time":4749.553921634,"data":"  \"fold4\": 4718\n"}
+,{"stream_name":"stdout","time":4749.553925138,"data":" },\n"}
+,{"stream_name":"stdout","time":4749.553928515,"data":" \"files\": {\n"}
+,{"stream_name":"stdout","time":4749.553932087,"data":"  \"ct01r2_fold3.parquet\": \"f38d4e7bae1e71b479d8d267f85f0e06\",\n"}
+,{"stream_name":"stdout","time":4749.553935802,"data":"  \"ct01r2_fold4.parquet\": \"d305e37054d83b2b815c056cba49ad97\"\n"}
+,{"stream_name":"stdout","time":4749.553939478,"data":" },\n"}
+,{"stream_name":"stdout","time":4749.553942787,"data":" \"gpu\": [\n"}
+,{"stream_name":"stdout","time":4749.553946751,"data":"  \"Tesla T4\",\n"}
+,{"stream_name":"stdout","time":4749.553950799,"data":"  \"Tesla T4\"\n"}
+,{"stream_name":"stdout","time":4749.5539546,"data":" ],\n"}
+,{"stream_name":"stdout","time":4749.553958359,"data":" \"torch\": \"2.11.0+cu130\",\n"}
+,{"stream_name":"stdout","time":4749.553961655,"data":" \"lab_data\": \"2026-10-08 21:02\",\n"}
+,{"stream_name":"stdout","time":4749.553965119,"data":" \"e2e\": \"2026-10-10 21:00\",\n"}
+,{"stream_name":"stdout","time":4749.553968558,"data":" \"finished\": \"2026-11-03 17:19\"\n"}
+,{"stream_name":"stdout","time":4749.553971882,"data":"}\n"}
+,{"stream_name":"stdout","time":4749.553975202,"data":"NEXT: download /kaggle/working/e2e_out (report, fold parquets, final models, fuser, zip). Submit submission.zip to CodaBench ONLY if the DECISION line says PASSES, and read it with the rule registered in the experiment README.\n"}
+,{"stream_name":"stderr","time":4753.317552042,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":4753.317610906,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":4753.567961227,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":4753.567986009,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":4754.441812912,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":4754.534105095,"data":"[NbConvertApp] Writing 405618 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":4756.999750447,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":4757.621948789,"data":"[NbConvertApp] Writing 752866 bytes to __results__.html\n"}
+]

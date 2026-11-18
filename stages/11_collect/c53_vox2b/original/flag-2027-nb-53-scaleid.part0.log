@@ -1,0 +1,268 @@
+[{"stream_name":"stderr","time":5.387596781,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":5.387642965,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":6.197893447,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.197917217,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.197921852,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.197925495,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":6.757514655,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.757564264,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.757571106,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.757574885,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":13.428604969,"data":"18:30:51 [ 0.0h] experiment SCALE-ID-01 (scaleid01) | folds [1, 2, 3, 4, 5] | split dev (/kaggle/input/datasets/hieuhau/flag2027-e2e-dev/e2edev, built 2026-10-10 21:00) | lab data built 2026-10-08 21:02 | eda 2026-09-29 08:06 | GPUs ['Tesla T4', 'Tesla T4'] | CPUs 4 | torch 2.11.0+cu128 | budget 10.5 h\n"}
+,{"stream_name":"stdout","time":23.851387604,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 782.1/782.1 kB 38.5 MB/s eta 0:00:00\r\n"}
+,{"stream_name":"stdout","time":48.917013259,"data":"torch 2.11.0+cu128 | transformers 5.16.1 | device cuda Tesla T4\n"}
+,{"stream_name":"stdout","time":68.060914801,"data":"18:31:45 dev_mp4: central directory 1092009 members [13s]\n"}
+,{"stream_name":"stdout","time":86.980628203,"data":"18:32:04 dev_aac: central directory 1092009 members [14s]\n"}
+,{"stream_name":"stdout","time":90.117877651,"data":"18:32:07 test_mp4: central directory 36237 members [2s]\n"}
+,{"stream_name":"stdout","time":93.34722564,"data":"18:32:11 test_aac: central directory 36237 members [3s]\n"}
+,{"stream_name":"stdout","time":96.686088096,"data":"18:32:14 identities: new 1235 (VoxCeleb2 dev outside FLAG_37's 4877 + test), more samples for 4877\n"}
+,{"stream_name":"stdout","time":188.411308863,"data":"18:33:46 faces: 36444 tracks ({'more': 29034, 'new': 7410}); voice candidates: 68733 ({'more': 53960, 'new': 14773})\n"}
+,{"stream_name":"stderr","time":370.68727396,"data":"/usr/local/lib/python3.13/dist-packages/clip/clip.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools\u003c81.\n"}
+,{"stream_name":"stderr","time":370.687306432,"data":"  from pkg_resources import packaging\n"}
+,{"stream_name":"stderr","time":370.68731008,"data":"\n"}
+,{"stream_name":"stderr","time":370.687313068,"data":"/usr/local/lib/python3.13/dist-packages/clip/clip.py:6: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools\u003c81.\n"}
+,{"stream_name":"stderr","time":370.687339361,"data":"  from pkg_resources import packaging\n"}
+,{"stream_name":"stderr","time":376.526697841,"data":"\r  0%|                                               | 0.00/335M [00:00\u003c?, ?iB/s]\n"}
+,{"stream_name":"stderr","time":376.627615291,"data":"\r  0%|                                               | 0.00/335M [00:00\u003c?, ?iB/s]\r  2%|▉                                     | 8.16M/335M [00:00\u003c00:04, 85.4MiB/s]\n"}
+,{"stream_name":"stderr","time":376.739165338,"data":"\r  2%|▉                                     | 8.16M/335M [00:00\u003c00:04, 85.4MiB/s]\r  5%|█▊                                    | 16.3M/335M [00:00\u003c00:04, 80.0MiB/s]\n"}
+,{"stream_name":"stderr","time":376.839166374,"data":"\r  5%|█▊                                    | 16.3M/335M [00:00\u003c00:04, 80.0MiB/s]\r  7%|██▊                                   | 24.2M/335M [00:00\u003c00:03, 81.4MiB/s]\n"}
+,{"stream_name":"stderr","time":376.94025036,"data":"\r  7%|██▊                                   | 24.2M/335M [00:00\u003c00:03, 81.4MiB/s]\r 10%|███▋                                  | 32.0M/335M [00:00\u003c00:03, 81.0MiB/s]\n"}
+,{"stream_name":"stderr","time":377.040987771,"data":"\r 10%|███▋                                  | 32.0M/335M [00:00\u003c00:03, 81.0MiB/s]\r 12%|████▌                                 | 40.2M/335M [00:00\u003c00:03, 82.4MiB/s]\n"}
+,{"stream_name":"stderr","time":377.142999382,"data":"\r 12%|████▌                                 | 40.2M/335M [00:00\u003c00:03, 82.4MiB/s]\r 15%|█████▌                                | 48.6M/335M [00:00\u003c00:03, 83.9MiB/s]\n"}
+,{"stream_name":"stderr","time":377.253967587,"data":"\r 15%|█████▌                                | 48.6M/335M [00:00\u003c00:03, 83.9MiB/s]\r 17%|██████▍                               | 56.6M/335M [00:00\u003c00:03, 81.0MiB/s]\n"}
+,{"stream_name":"stderr","time":377.355432321,"data":"\r 17%|██████▍                               | 56.6M/335M [00:00\u003c00:03, 81.0MiB/s]\r 19%|███████▎                              | 64.8M/335M [00:00\u003c00:03, 82.2MiB/s]\n"}
+,{"stream_name":"stderr","time":377.456158948,"data":"\r 19%|███████▎                              | 64.8M/335M [00:00\u003c00:03, 82.2MiB/s]\r 22%|████████▎                             | 73.1M/335M [00:00\u003c00:03, 83.5MiB/s]\n"}
+,{"stream_name":"stderr","time":377.557205504,"data":"\r 22%|████████▎                             | 73.1M/335M [00:00\u003c00:03, 83.5MiB/s]\r 25%|█████████▍                            | 83.2M/335M [00:01\u003c00:02, 90.4MiB/s]\n"}
+,{"stream_name":"stderr","time":377.670621788,"data":"\r 25%|█████████▍                            | 83.2M/335M [00:01\u003c00:02, 90.4MiB/s]\r 27%|██████████▍                           | 91.9M/335M [00:01\u003c00:02, 86.9MiB/s]\n"}
+,{"stream_name":"stderr","time":377.775628208,"data":"\r 27%|██████████▍                           | 91.9M/335M [00:01\u003c00:02, 86.9MiB/s]\r 30%|███████████▋                           | 100M/335M [00:01\u003c00:02, 85.5MiB/s]\n"}
+,{"stream_name":"stderr","time":377.878832571,"data":"\r 30%|███████████▋                           | 100M/335M [00:01\u003c00:02, 85.5MiB/s]\r 33%|████████████▊                          | 110M/335M [00:01\u003c00:02, 88.5MiB/s]\n"}
+,{"stream_name":"stderr","time":377.978685515,"data":"\r 33%|████████████▊                          | 110M/335M [00:01\u003c00:02, 88.5MiB/s]\r 36%|█████████████▉                         | 120M/335M [00:01\u003c00:02, 94.6MiB/s]\n"}
+,{"stream_name":"stderr","time":378.096720879,"data":"\r 36%|█████████████▉                         | 120M/335M [00:01\u003c00:02, 94.6MiB/s]\r 39%|███████████████                        | 129M/335M [00:01\u003c00:02, 90.0MiB/s]\n"}
+,{"stream_name":"stderr","time":378.203564043,"data":"\r 39%|███████████████                        | 129M/335M [00:01\u003c00:02, 90.0MiB/s]\r 41%|████████████████                       | 138M/335M [00:01\u003c00:02, 88.5MiB/s]\n"}
+,{"stream_name":"stderr","time":378.314316097,"data":"\r 41%|████████████████                       | 138M/335M [00:01\u003c00:02, 88.5MiB/s]\r 44%|█████████████████                      | 146M/335M [00:01\u003c00:02, 86.1MiB/s]\n"}
+,{"stream_name":"stderr","time":378.439144644,"data":"\r 44%|█████████████████                      | 146M/335M [00:01\u003c00:02, 86.1MiB/s]\r 46%|██████████████████                     | 154M/335M [00:01\u003c00:02, 80.5MiB/s]\n"}
+,{"stream_name":"stderr","time":378.539301513,"data":"\r 46%|██████████████████                     | 154M/335M [00:01\u003c00:02, 80.5MiB/s]\r 48%|██████████████████▉                    | 162M/335M [00:02\u003c00:02, 80.7MiB/s]\n"}
+,{"stream_name":"stderr","time":378.639176655,"data":"\r 48%|██████████████████▉                    | 162M/335M [00:02\u003c00:02, 80.7MiB/s]\r 51%|███████████████████▉                   | 172M/335M [00:02\u003c00:02, 85.3MiB/s]\n"}
+,{"stream_name":"stderr","time":378.740176308,"data":"\r 51%|███████████████████▉                   | 172M/335M [00:02\u003c00:02, 85.3MiB/s]\r 54%|█████████████████████                  | 181M/335M [00:02\u003c00:01, 88.4MiB/s]\n"}
+,{"stream_name":"stderr","time":378.845938792,"data":"\r 54%|█████████████████████                  | 181M/335M [00:02\u003c00:01, 88.4MiB/s]\r 57%|██████████████████████                 | 189M/335M [00:02\u003c00:01, 87.0MiB/s]\n"}
+,{"stream_name":"stderr","time":378.958490312,"data":"\r 57%|██████████████████████                 | 189M/335M [00:02\u003c00:01, 87.0MiB/s]\r 59%|███████████████████████                | 198M/335M [00:02\u003c00:01, 84.1MiB/s]\n"}
+,{"stream_name":"stderr","time":379.060568375,"data":"\r 59%|███████████████████████                | 198M/335M [00:02\u003c00:01, 84.1MiB/s]\r 61%|███████████████████████▉               | 206M/335M [00:02\u003c00:01, 83.7MiB/s]\n"}
+,{"stream_name":"stderr","time":379.161152408,"data":"\r 61%|███████████████████████▉               | 206M/335M [00:02\u003c00:01, 83.7MiB/s]\r 64%|████████████████████████▉              | 214M/335M [00:02\u003c00:01, 86.3MiB/s]\n"}
+,{"stream_name":"stderr","time":379.261447524,"data":"\r 64%|████████████████████████▉              | 214M/335M [00:02\u003c00:01, 86.3MiB/s]\r 67%|█████████████████████████▉             | 223M/335M [00:02\u003c00:01, 86.6MiB/s]\n"}
+,{"stream_name":"stderr","time":379.369753633,"data":"\r 67%|█████████████████████████▉             | 223M/335M [00:02\u003c00:01, 86.6MiB/s]\r 69%|███████████████████████████            | 232M/335M [00:02\u003c00:01, 87.3MiB/s]\n"}
+,{"stream_name":"stderr","time":379.471447793,"data":"\r 69%|███████████████████████████            | 232M/335M [00:02\u003c00:01, 87.3MiB/s]\r 72%|████████████████████████████           | 241M/335M [00:02\u003c00:01, 87.4MiB/s]\n"}
+,{"stream_name":"stderr","time":379.574549206,"data":"\r 72%|████████████████████████████           | 241M/335M [00:02\u003c00:01, 87.4MiB/s]\r 74%|█████████████████████████████          | 249M/335M [00:03\u003c00:01, 87.1MiB/s]\n"}
+,{"stream_name":"stderr","time":379.676119565,"data":"\r 74%|█████████████████████████████          | 249M/335M [00:03\u003c00:01, 87.1MiB/s]\r 77%|██████████████████████████████         | 258M/335M [00:03\u003c00:00, 87.6MiB/s]\n"}
+,{"stream_name":"stderr","time":379.776270299,"data":"\r 77%|██████████████████████████████         | 258M/335M [00:03\u003c00:00, 87.6MiB/s]\r 80%|███████████████████████████████        | 266M/335M [00:03\u003c00:00, 88.5MiB/s]\n"}
+,{"stream_name":"stderr","time":379.893715664,"data":"\r 80%|███████████████████████████████        | 266M/335M [00:03\u003c00:00, 88.5MiB/s]\r 82%|████████████████████████████████       | 275M/335M [00:03\u003c00:00, 84.2MiB/s]\n"}
+,{"stream_name":"stderr","time":380.031078171,"data":"\r 82%|████████████████████████████████       | 275M/335M [00:03\u003c00:00, 84.2MiB/s]\r 85%|████████████████████████████████▉      | 283M/335M [00:03\u003c00:00, 76.2MiB/s]\n"}
+,{"stream_name":"stderr","time":380.159343174,"data":"\r 85%|████████████████████████████████▉      | 283M/335M [00:03\u003c00:00, 76.2MiB/s]\r 87%|█████████████████████████████████▊     | 290M/335M [00:03\u003c00:00, 71.1MiB/s]\n"}
+,{"stream_name":"stderr","time":380.25933011,"data":"\r 87%|█████████████████████████████████▊     | 290M/335M [00:03\u003c00:00, 71.1MiB/s]\r 89%|██████████████████████████████████▋    | 298M/335M [00:03\u003c00:00, 73.9MiB/s]\n"}
+,{"stream_name":"stderr","time":380.359555154,"data":"\r 89%|██████████████████████████████████▋    | 298M/335M [00:03\u003c00:00, 73.9MiB/s]\r 92%|███████████████████████████████████▋   | 307M/335M [00:03\u003c00:00, 78.5MiB/s]\n"}
+,{"stream_name":"stderr","time":380.462279222,"data":"\r 92%|███████████████████████████████████▋   | 307M/335M [00:03\u003c00:00, 78.5MiB/s]\r 94%|████████████████████████████████████▋  | 315M/335M [00:03\u003c00:00, 80.4MiB/s]\n"}
+,{"stream_name":"stderr","time":380.569716267,"data":"\r 94%|████████████████████████████████████▋  | 315M/335M [00:03\u003c00:00, 80.4MiB/s]\r 96%|█████████████████████████████████████▌ | 323M/335M [00:04\u003c00:00, 79.0MiB/s]\n"}
+,{"stream_name":"stderr","time":380.670893499,"data":"\r 96%|█████████████████████████████████████▌ | 323M/335M [00:04\u003c00:00, 79.0MiB/s]\r 99%|██████████████████████████████████████▌| 331M/335M [00:04\u003c00:00, 81.5MiB/s]\n"}
+,{"stream_name":"stderr","time":380.696906437,"data":"\r 99%|██████████████████████████████████████▌| 331M/335M [00:04\u003c00:00, 81.5MiB/s]\r100%|███████████████████████████████████████| 335M/335M [00:04\u003c00:00, 84.1MiB/s]\n"}
+,{"stream_name":"stderr","time":380.77092813,"data":"\r100%|███████████████████████████████████████| 335M/335M [00:04\u003c00:00, 84.1MiB/s]\n"}
+,{"stream_name":"stderr","time":380.770960011,"data":"\n"}
+,{"stream_name":"stderr","time":380.770989225,"data":"\n"}
+,{"stream_name":"stderr","time":425.236747567,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":425.23677492,"data":"\n"}
+,{"stream_name":"stderr","time":425.236791884,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":511.025664762,"data":"18:39:08   faces chunk 0: 1200/1200 [323s]\n"}
+,{"stream_name":"stdout","time":768.307408636,"data":"18:43:25   faces chunk 1: 1200/1200 [257s]\n"}
+,{"stream_name":"stdout","time":1021.034709182,"data":"18:47:38   faces chunk 2: 1200/1200 [253s]\n"}
+,{"stream_name":"stdout","time":1276.449309902,"data":"18:51:54   faces chunk 3: 1200/1200 [255s]\n"}
+,{"stream_name":"stdout","time":1527.836690435,"data":"18:56:05   faces chunk 4: 1200/1200 [251s]\n"}
+,{"stream_name":"stdout","time":1771.99893678,"data":"19:00:09   faces chunk 5: 1200/1200 [244s]\n"}
+,{"stream_name":"stdout","time":2056.368424375,"data":"19:04:54   faces chunk 6: 1200/1200 [284s]\n"}
+,{"stream_name":"stdout","time":2352.941598935,"data":"19:09:50   faces chunk 7: 1199/1200 [297s]\n"}
+,{"stream_name":"stdout","time":2646.347291644,"data":"19:14:44   faces chunk 8: 1200/1200 [293s]\n"}
+,{"stream_name":"stdout","time":2944.360642217,"data":"19:19:42   faces chunk 9: 1200/1200 [298s]\n"}
+,{"stream_name":"stdout","time":3241.064250186,"data":"19:24:38   faces chunk 10: 1200/1200 [297s]\n"}
+,{"stream_name":"stdout","time":3540.135451899,"data":"19:29:37   faces chunk 11: 1200/1200 [299s]\n"}
+,{"stream_name":"stdout","time":3834.400927916,"data":"19:34:32   faces chunk 12: 1200/1200 [294s]\n"}
+,{"stream_name":"stdout","time":4119.142286447,"data":"19:39:16   faces chunk 13: 1199/1200 [285s]\n"}
+,{"stream_name":"stdout","time":4408.230064819,"data":"19:44:05   faces chunk 14: 1200/1200 [289s]\n"}
+,{"stream_name":"stdout","time":4696.851308823,"data":"19:48:54   faces chunk 15: 1200/1200 [289s]\n"}
+,{"stream_name":"stdout","time":4987.435748818,"data":"19:53:45   faces chunk 16: 1199/1200 [291s]\n"}
+,{"stream_name":"stdout","time":5282.940590718,"data":"19:58:40   faces chunk 17: 1200/1200 [295s]\n"}
+,{"stream_name":"stdout","time":5573.449310961,"data":"20:03:31   faces chunk 18: 1198/1200 [291s]\n"}
+,{"stream_name":"stdout","time":5871.380586101,"data":"20:08:29   faces chunk 19: 1200/1200 [298s]\n"}
+,{"stream_name":"stdout","time":6140.427547219,"data":"20:12:58   faces chunk 20: 1199/1200 [269s]\n"}
+,{"stream_name":"stdout","time":6424.326422193,"data":"20:17:42   faces chunk 21: 1198/1200 [284s]\n"}
+,{"stream_name":"stdout","time":6713.452207906,"data":"20:22:31   faces chunk 22: 1199/1200 [289s]\n"}
+,{"stream_name":"stdout","time":6987.150759468,"data":"20:27:04   faces chunk 23: 1200/1200 [274s]\n"}
+,{"stream_name":"stdout","time":7270.630697403,"data":"20:31:48   faces chunk 24: 1200/1200 [283s]\n"}
+,{"stream_name":"stdout","time":7556.629588302,"data":"20:36:34   faces chunk 25: 1198/1200 [286s]\n"}
+,{"stream_name":"stdout","time":7835.472631129,"data":"20:41:13   faces chunk 26: 1199/1200 [279s]\n"}
+,{"stream_name":"stdout","time":8133.910297518,"data":"20:46:11   faces chunk 27: 1199/1200 [298s]\n"}
+,{"stream_name":"stdout","time":8412.932590981,"data":"20:50:50   faces chunk 28: 1196/1200 [279s]\n"}
+,{"stream_name":"stdout","time":8683.92977089,"data":"20:55:21   faces chunk 29: 1199/1200 [271s]\n"}
+,{"stream_name":"stdout","time":8789.942398095,"data":"20:57:07   faces chunk 30: 444/444 [106s]\n"}
+,{"stream_name":"stdout","time":9003.315236401,"data":"{'data_type': 'shard', 'dataloader_args': {'batch_size': 128, 'drop_last': True, 'num_workers': 16, 'pin_memory': False, 'prefetch_factor': 8}, 'dataset_args': {'aug_prob': 0.6, 'fbank_args': {'dither': 1.0, 'frame_length': 25, 'frame_shift': 10, 'num_mel_bins': 80}, 'filter': True, 'filter_args': {'max_num_frames': 800, 'min_num_frames': 100}, 'num_frms': 200, 'resample_rate': 16000, 'sample_num_per_epoch': 0, 'shuffle': True, 'shuffle_args': {'shuffle_size': 2500}, 'spec_aug': False, 'spec_aug_args': {'max_f': 8, 'max_t': 10, 'num_f_mask': 1, 'num_t_mask': 1, 'prob': 0.6}, 'speed_perturb': True}, 'enable_amp': False, 'exp_dir': 'exp/samresnet100/', 'gpus': [0, 1], 'log_batch_interval': 100, 'loss': 'CrossEntropyLoss', 'loss_args': {}, 'margin_scheduler': 'MarginScheduler', 'margin_update': {'epoch_iter': 4265, 'final_margin': 0.2, 'fix_start_epoch': 40, 'increase_start_epoch': 20, 'increase_type': 'exp', 'initial_margin': 0.0, 'update_margin': True}, 'model': 'SimAM_ResNet100_ASP', 'model_args': {'embed_dim': 256}, 'model_init': None, 'noise_data': 'data/musan/lmdb', 'num_avg': 1, 'num_epochs': 150, 'optimizer': 'SGD', 'optimizer_args': {'lr': 0.1, 'momentum': 0.9, 'nesterov': True, 'weight_decay': 0.0001}}\n"}
+,{"stream_name":"stdout","time":9011.422052702,"data":"{'data_type': 'shard', 'dataloader_args': {'batch_size': 128, 'drop_last': True, 'num_workers': 16, 'pin_memory': False, 'prefetch_factor': 8}, 'dataset_args': {'aug_prob': 0.6, 'fbank_args': {'dither': 1.0, 'frame_length': 25, 'frame_shift': 10, 'num_mel_bins': 80}, 'filter': True, 'filter_args': {'max_num_frames': 800, 'min_num_frames': 100}, 'num_frms': 200, 'resample_rate': 16000, 'sample_num_per_epoch': 0, 'shuffle': True, 'shuffle_args': {'shuffle_size': 2500}, 'spec_aug': False, 'spec_aug_args': {'max_f': 8, 'max_t': 10, 'num_f_mask': 1, 'num_t_mask': 1, 'prob': 0.6}, 'speed_perturb': True}, 'enable_amp': False, 'exp_dir': 'exp/samresnet100/', 'gpus': [0, 1], 'log_batch_interval': 100, 'loss': 'CrossEntropyLoss', 'loss_args': {}, 'margin_scheduler': 'MarginScheduler', 'margin_update': {'epoch_iter': 4265, 'final_margin': 0.2, 'fix_start_epoch': 40, 'increase_start_epoch': 20, 'increase_type': 'exp', 'initial_margin': 0.0, 'update_margin': True}, 'model': 'SimAM_ResNet100_ASP', 'model_args': {'embed_dim': 256}, 'model_init': None, 'noise_data': 'data/musan/lmdb', 'num_avg': 1, 'num_epochs': 150, 'optimizer': 'SGD', 'optimizer_args': {'lr': 0.1, 'momentum': 0.9, 'nesterov': True, 'weight_decay': 0.0001}, 'projection_args': {'do_lm': False, 'easy_margin': False, 'embed_dim': 256, 'num_class': 17982, 'project_type': 'arc_margin', 'scale': 32.0}, 'reverb_data': 'data/rirs/lmdb', 'save_epoch_interval': 5, 'scheduler': 'ExponentialDecrease', 'scheduler_args': {'epoch_iter': 4265, 'final_lr': 5e-05, 'initial_lr': 0.1, 'num_epochs': 150, 'scale_ratio': 4.0, 'warm_from_zero': True, 'warm_up_epoch': 6}, 'seed': 42, 'train_data': 'data/vox2_dev/shard.list', 'train_label': 'data/vox2_dev/utt2spk'}\n"}
+,{"stream_name":"stderr","time":9016.409555942,"data":"Could not parse CUDA device string 'cuda': not enough values to unpack (expected 2, got 1). Falling back to device 0.\n"}
+,{"stream_name":"stderr","time":9016.40959035,"data":"\n"}
+,{"stream_name":"stderr","time":9016.409595417,"data":"Could not parse CUDA device string 'cuda': not enough values to unpack (expected 2, got 1). Falling back to device 0.\n"}
+,{"stream_name":"stderr","time":9273.943866988,"data":"CategoricalEncoder.expect_len was never called: assuming category count of 107 to be correct! Sanity check your encoder using `.expect_len`. Ensure that downstream code also uses the correct size. If you are sure this does not apply to you, use `.ignore_len`.\n"}
+,{"stream_name":"stderr","time":9273.943915673,"data":"\n"}
+,{"stream_name":"stderr","time":9273.943922386,"data":"CategoricalEncoder.expect_len was never called: assuming category count of 107 to be correct! Sanity check your encoder using `.expect_len`. Ensure that downstream code also uses the correct size. If you are sure this does not apply to you, use `.ignore_len`.\n"}
+,{"stream_name":"stdout","time":9326.065220654,"data":"21:06:03   voices chunk 0: 940 clips of 120 speakers [536s]\n"}
+,{"stream_name":"stdout","time":9747.746511189,"data":"21:13:05   voices chunk 1: 925 clips of 120 speakers [422s]\n"}
+,{"stream_name":"stdout","time":10160.416128625,"data":"21:19:58   voices chunk 2: 916 clips of 120 speakers [413s]\n"}
+,{"stream_name":"stdout","time":10579.067248164,"data":"21:26:56   voices chunk 3: 927 clips of 120 speakers [419s]\n"}
+,{"stream_name":"stdout","time":10998.002686304,"data":"21:33:55   voices chunk 4: 937 clips of 120 speakers [419s]\n"}
+,{"stream_name":"stdout","time":11433.888952098,"data":"21:41:11   voices chunk 5: 940 clips of 120 speakers [436s]\n"}
+,{"stream_name":"stdout","time":11871.160601983,"data":"21:48:28   voices chunk 6: 955 clips of 120 speakers [437s]\n"}
+,{"stream_name":"stdout","time":12290.122578478,"data":"21:55:27   voices chunk 7: 922 clips of 120 speakers [419s]\n"}
+,{"stream_name":"stdout","time":12681.776362869,"data":"22:01:59   voices chunk 8: 915 clips of 120 speakers [392s]\n"}
+,{"stream_name":"stdout","time":13114.369512439,"data":"22:09:12   voices chunk 9: 947 clips of 120 speakers [433s]\n"}
+,{"stream_name":"stdout","time":13526.322409767,"data":"22:16:04   voices chunk 10: 943 clips of 120 speakers [412s]\n"}
+,{"stream_name":"stdout","time":13930.880309851,"data":"22:22:48   voices chunk 11: 942 clips of 120 speakers [405s]\n"}
+,{"stream_name":"stdout","time":14316.858921513,"data":"22:29:14   voices chunk 12: 915 clips of 120 speakers [386s]\n"}
+,{"stream_name":"stdout","time":14723.346389644,"data":"22:36:01   voices chunk 13: 934 clips of 120 speakers [406s]\n"}
+,{"stream_name":"stdout","time":15125.167999307,"data":"22:42:42   voices chunk 14: 923 clips of 120 speakers [402s]\n"}
+,{"stream_name":"stdout","time":15512.093958075,"data":"22:49:09   voices chunk 15: 913 clips of 120 speakers [387s]\n"}
+,{"stream_name":"stdout","time":15898.00463099,"data":"22:55:35   voices chunk 16: 937 clips of 120 speakers [386s]\n"}
+,{"stream_name":"stdout","time":16289.348129955,"data":"23:02:07   voices chunk 17: 930 clips of 120 speakers [391s]\n"}
+,{"stream_name":"stdout","time":16713.367954151,"data":"23:09:11   voices chunk 18: 951 clips of 120 speakers [424s]\n"}
+,{"stream_name":"stdout","time":17097.449121306,"data":"23:15:35   voices chunk 19: 935 clips of 120 speakers [384s]\n"}
+,{"stream_name":"stdout","time":17493.009012963,"data":"23:22:10   voices chunk 20: 923 clips of 120 speakers [396s]\n"}
+,{"stream_name":"stdout","time":17901.46125173,"data":"23:28:59   voices chunk 21: 945 clips of 120 speakers [408s]\n"}
+,{"stream_name":"stdout","time":18295.950657232,"data":"23:35:33   voices chunk 22: 934 clips of 120 speakers [394s]\n"}
+,{"stream_name":"stdout","time":18691.427002011,"data":"23:42:09   voices chunk 23: 941 clips of 120 speakers [395s]\n"}
+,{"stream_name":"stdout","time":19085.85615347,"data":"23:48:43   voices chunk 24: 943 clips of 120 speakers [394s]\n"}
+,{"stream_name":"stdout","time":19485.279693832,"data":"23:55:22   voices chunk 25: 943 clips of 120 speakers [399s]\n"}
+,{"stream_name":"stdout","time":19872.811351365,"data":"00:01:50   voices chunk 26: 932 clips of 120 speakers [388s]\n"}
+,{"stream_name":"stdout","time":20264.049810692,"data":"00:08:21   voices chunk 27: 942 clips of 120 speakers [391s]\n"}
+,{"stream_name":"stdout","time":20666.640732335,"data":"00:15:04   voices chunk 28: 943 clips of 120 speakers [403s]\n"}
+,{"stream_name":"stdout","time":21051.894404222,"data":"00:21:29   voices chunk 29: 910 clips of 120 speakers [385s]\n"}
+,{"stream_name":"stdout","time":21437.779562432,"data":"00:27:55   voices chunk 30: 931 clips of 120 speakers [386s]\n"}
+,{"stream_name":"stdout","time":21834.814329897,"data":"00:34:32   voices chunk 31: 936 clips of 120 speakers [397s]\n"}
+,{"stream_name":"stdout","time":22210.273342889,"data":"00:40:47   voices chunk 32: 930 clips of 120 speakers [375s]\n"}
+,{"stream_name":"stdout","time":22597.760262429,"data":"00:47:15   voices chunk 33: 944 clips of 120 speakers [387s]\n"}
+,{"stream_name":"stdout","time":22982.880275456,"data":"00:53:40   voices chunk 34: 938 clips of 120 speakers [385s]\n"}
+,{"stream_name":"stdout","time":23360.162480956,"data":"00:59:57   voices chunk 35: 907 clips of 120 speakers [377s]\n"}
+,{"stream_name":"stdout","time":23725.613868717,"data":"01:06:03   voices chunk 36: 901 clips of 120 speakers [365s]\n"}
+,{"stream_name":"stdout","time":24101.417670027,"data":"01:12:19   voices chunk 37: 914 clips of 120 speakers [376s]\n"}
+,{"stream_name":"stdout","time":24498.274114991,"data":"01:18:55   voices chunk 38: 934 clips of 120 speakers [397s]\n"}
+,{"stream_name":"stdout","time":24880.196575503,"data":"01:25:17   voices chunk 39: 943 clips of 120 speakers [382s]\n"}
+,{"stream_name":"stdout","time":25273.227136457,"data":"01:31:50   voices chunk 40: 946 clips of 120 speakers [393s]\n"}
+,{"stream_name":"stdout","time":25666.836903055,"data":"01:38:24   voices chunk 41: 941 clips of 120 speakers [394s]\n"}
+,{"stream_name":"stdout","time":26039.095469369,"data":"01:44:36   voices chunk 42: 940 clips of 120 speakers [372s]\n"}
+,{"stream_name":"stdout","time":26425.316076715,"data":"01:51:02   voices chunk 43: 943 clips of 120 speakers [386s]\n"}
+,{"stream_name":"stdout","time":26802.136832644,"data":"01:57:19   voices chunk 44: 929 clips of 120 speakers [377s]\n"}
+,{"stream_name":"stdout","time":27184.058251518,"data":"02:03:41   voices chunk 45: 937 clips of 120 speakers [382s]\n"}
+,{"stream_name":"stdout","time":27570.736437676,"data":"02:10:08   voices chunk 46: 934 clips of 120 speakers [387s]\n"}
+,{"stream_name":"stdout","time":27953.625581082,"data":"02:16:31   voices chunk 47: 944 clips of 120 speakers [383s]\n"}
+,{"stream_name":"stdout","time":28339.741505986,"data":"02:22:57   voices chunk 48: 932 clips of 120 speakers [386s]\n"}
+,{"stream_name":"stdout","time":28726.191834373,"data":"02:29:23   voices chunk 49: 937 clips of 120 speakers [386s]\n"}
+,{"stream_name":"stdout","time":29062.80151838,"data":"02:35:00   voices chunk 50: 865 clips of 112 speakers [337s]\n"}
+,{"stream_name":"stdout","time":29064.033030985,"data":"{\n"}
+,{"stream_name":"stdout","time":29064.033062378,"data":" \"created\": \"2026-10-12 02:35\",\n"}
+,{"stream_name":"stdout","time":29064.033067821,"data":" \"new_identities\": 1235,\n"}
+,{"stream_name":"stdout","time":29064.033071855,"data":" \"more_identities\": 4877,\n"}
+,{"stream_name":"stdout","time":29064.033075644,"data":" \"faces\": 36426,\n"}
+,{"stream_name":"stdout","time":29064.033084937,"data":" \"voices\": 47529,\n"}
+,{"stream_name":"stdout","time":29064.033087722,"data":" \"face_speakers\": 6112,\n"}
+,{"stream_name":"stdout","time":29064.03309026,"data":" \"voice_speakers\": 6112,\n"}
+,{"stream_name":"stdout","time":29064.03309296,"data":" \"lid\": {\n"}
+,{"stream_name":"stdout","time":29064.033095625,"data":"  \"clips\": 47529,\n"}
+,{"stream_name":"stdout","time":29064.033098238,"data":"  \"clips_flagged\": 62,\n"}
+,{"stream_name":"stdout","time":29064.033100766,"data":"  \"speakers\": 6112,\n"}
+,{"stream_name":"stdout","time":29064.033103268,"data":"  \"speakers_dropped\": 42,\n"}
+,{"stream_name":"stdout","time":29064.033105862,"data":"  \"clips_dropped\": 323,\n"}
+,{"stream_name":"stdout","time":29064.033108451,"data":"  \"top_languages\": {\n"}
+,{"stream_name":"stdout","time":29064.033110935,"data":"   \"en\": 21547,\n"}
+,{"stream_name":"stdout","time":29064.033113617,"data":"   \"cy\": 5319,\n"}
+,{"stream_name":"stdout","time":29064.033116085,"data":"   \"de\": 3619,\n"}
+,{"stream_name":"stdout","time":29064.033118565,"data":"   \"fr\": 2814,\n"}
+,{"stream_name":"stdout","time":29064.033121115,"data":"   \"it\": 1313,\n"}
+,{"stream_name":"stdout","time":29064.033123597,"data":"   \"hi\": 1285,\n"}
+,{"stream_name":"stdout","time":29064.033126091,"data":"   \"es\": 1058,\n"}
+,{"stream_name":"stdout","time":29064.033128553,"data":"   \"nl\": 941,\n"}
+,{"stream_name":"stdout","time":29064.033131025,"data":"   \"ca\": 474,\n"}
+,{"stream_name":"stdout","time":29064.033133483,"data":"   \"gl\": 438,\n"}
+,{"stream_name":"stdout","time":29064.033135937,"data":"   \"pt\": 420,\n"}
+,{"stream_name":"stdout","time":29064.033138394,"data":"   \"tl\": 361,\n"}
+,{"stream_name":"stdout","time":29064.033140843,"data":"   \"te\": 344,\n"}
+,{"stream_name":"stdout","time":29064.033143306,"data":"   \"sv\": 339,\n"}
+,{"stream_name":"stdout","time":29064.03314577,"data":"   \"pl\": 298\n"}
+,{"stream_name":"stdout","time":29064.033148242,"data":"  }\n"}
+,{"stream_name":"stdout","time":29064.033150777,"data":" },\n"}
+,{"stream_name":"stdout","time":29064.033153176,"data":" \"sources\": {\n"}
+,{"stream_name":"stdout","time":29064.033155692,"data":"  \"dev_mp4\": [\n"}
+,{"stream_name":"stdout","time":29064.033158206,"data":"   \"vox2_dev_mp4_partaa\",\n"}
+,{"stream_name":"stdout","time":29064.033160757,"data":"   \"vox2_dev_mp4_partab\",\n"}
+,{"stream_name":"stdout","time":29064.033163272,"data":"   \"vox2_dev_mp4_partac\",\n"}
+,{"stream_name":"stdout","time":29064.033165762,"data":"   \"vox2_dev_mp4_partad\",\n"}
+,{"stream_name":"stdout","time":29064.033168242,"data":"   \"vox2_dev_mp4_partae\",\n"}
+,{"stream_name":"stdout","time":29064.033170736,"data":"   \"vox2_dev_mp4_partaf\",\n"}
+,{"stream_name":"stdout","time":29064.033173224,"data":"   \"vox2_dev_mp4_partag\",\n"}
+,{"stream_name":"stdout","time":29064.033175713,"data":"   \"vox2_dev_mp4_partah\",\n"}
+,{"stream_name":"stdout","time":29064.0331782,"data":"   \"vox2_dev_mp4_partai\"\n"}
+,{"stream_name":"stdout","time":29064.0331807,"data":"  ],\n"}
+,{"stream_name":"stdout","time":29064.033183174,"data":"  \"dev_aac\": [\n"}
+,{"stream_name":"stdout","time":29064.033196786,"data":"   \"vox2_dev_aac_partaa\",\n"}
+,{"stream_name":"stdout","time":29064.033199785,"data":"   \"vox2_dev_aac_partab\",\n"}
+,{"stream_name":"stdout","time":29064.033202432,"data":"   \"vox2_dev_aac_partac\",\n"}
+,{"stream_name":"stdout","time":29064.03320494,"data":"   \"vox2_dev_aac_partad\",\n"}
+,{"stream_name":"stdout","time":29064.033207523,"data":"   \"vox2_dev_aac_partae\",\n"}
+,{"stream_name":"stdout","time":29064.033210017,"data":"   \"vox2_dev_aac_partaf\",\n"}
+,{"stream_name":"stdout","time":29064.033212528,"data":"   \"vox2_dev_aac_partag\",\n"}
+,{"stream_name":"stdout","time":29064.033215048,"data":"   \"vox2_dev_aac_partah\"\n"}
+,{"stream_name":"stdout","time":29064.033217652,"data":"  ],\n"}
+,{"stream_name":"stdout","time":29064.033220083,"data":"  \"test_mp4\": [\n"}
+,{"stream_name":"stdout","time":29064.033222594,"data":"   \"vox2_test_mp4.zip\"\n"}
+,{"stream_name":"stdout","time":29064.033225134,"data":"  ],\n"}
+,{"stream_name":"stdout","time":29064.033227622,"data":"  \"test_aac\": [\n"}
+,{"stream_name":"stdout","time":29064.033230122,"data":"   \"vox2_test_aac.zip\"\n"}
+,{"stream_name":"stdout","time":29064.033232625,"data":"  ]\n"}
+,{"stream_name":"stdout","time":29064.033235064,"data":" },\n"}
+,{"stream_name":"stdout","time":29064.033237569,"data":" \"sizes\": {\n"}
+,{"stream_name":"stdout","time":29064.033240246,"data":"  \"dev_mp4\": [\n"}
+,{"stream_name":"stdout","time":29064.03324272,"data":"   32212254720,\n"}
+,{"stream_name":"stdout","time":29064.033245271,"data":"   32212254720,\n"}
+,{"stream_name":"stdout","time":29064.033247759,"data":"   32212254720,\n"}
+,{"stream_name":"stdout","time":29064.033250213,"data":"   32212254720,\n"}
+,{"stream_name":"stdout","time":29064.033252644,"data":"   32212254720,\n"}
+,{"stream_name":"stdout","time":29064.033255078,"data":"   32212254720,\n"}
+,{"stream_name":"stdout","time":29064.033257511,"data":"   32212254720,\n"}
+,{"stream_name":"stdout","time":29064.033259937,"data":"   32212254720,\n"}
+,{"stream_name":"stdout","time":29064.033262361,"data":"   9257192977\n"}
+,{"stream_name":"stdout","time":29064.033264827,"data":"  ],\n"}
+,{"stream_name":"stdout","time":29064.033267236,"data":"  \"dev_aac\": [\n"}
+,{"stream_name":"stdout","time":29064.033269706,"data":"   10737418240,\n"}
+,{"stream_name":"stdout","time":29064.033272151,"data":"   10737418240,\n"}
+,{"stream_name":"stdout","time":29064.03327458,"data":"   10737418240,\n"}
+,{"stream_name":"stdout","time":29064.033277028,"data":"   10737418240,\n"}
+,{"stream_name":"stdout","time":29064.033279456,"data":"   10737418240,\n"}
+,{"stream_name":"stdout","time":29064.033281902,"data":"   10737418240,\n"}
+,{"stream_name":"stdout","time":29064.03330242,"data":"   10737418240,\n"}
+,{"stream_name":"stdout","time":29064.033306337,"data":"   2315355528\n"}
+,{"stream_name":"stdout","time":29064.033310254,"data":"  ],\n"}
+,{"stream_name":"stdout","time":29064.033314174,"data":"  \"test_mp4\": [\n"}
+,{"stream_name":"stdout","time":29064.033316841,"data":"   8906971319\n"}
+,{"stream_name":"stdout","time":29064.033344457,"data":"  ],\n"}
+,{"stream_name":"stdout","time":29064.033348996,"data":"  \"test_aac\": [\n"}
+,{"stream_name":"stdout","time":29064.03335368,"data":"   2594018146\n"}
+,{"stream_name":"stdout","time":29064.033357875,"data":"  ]\n"}
+,{"stream_name":"stdout","time":29064.033361824,"data":" },\n"}
+,{"stream_name":"stdout","time":29064.033366191,"data":" \"broken\": {\n"}
+,{"stream_name":"stdout","time":29064.033370456,"data":"  \"audio\": 0,\n"}
+,{"stream_name":"stdout","time":29064.033374427,"data":"  \"image\": 18\n"}
+,{"stream_name":"stdout","time":29064.033387751,"data":" },\n"}
+,{"stream_name":"stdout","time":29064.033390551,"data":" \"by_kind\": {\n"}
+,{"stream_name":"stdout","time":29064.033393025,"data":"  \"faces\": {\n"}
+,{"stream_name":"stdout","time":29064.033395512,"data":"   \"more\": 29016,\n"}
+,{"stream_name":"stdout","time":29064.033398125,"data":"   \"new\": 7410\n"}
+,{"stream_name":"stdout","time":29064.033400685,"data":"  },\n"}
+,{"stream_name":"stdout","time":29064.033403102,"data":"  \"voices\": {\n"}
+,{"stream_name":"stdout","time":29064.033405594,"data":"   \"more\": 37649,\n"}
+,{"stream_name":"stdout","time":29064.033408125,"data":"   \"new\": 9880\n"}
+,{"stream_name":"stdout","time":29064.033410645,"data":"  }\n"}
+,{"stream_name":"stdout","time":29064.033413046,"data":" },\n"}
+,{"stream_name":"stdout","time":29064.033415511,"data":" \"rule\": \"new = VoxCeleb2 dev outside FLAG_37's list + test (NF 6 / NV 8, \u003c= 2 per video); more = 6 faces + 8 voices more for FLAG_37's speakers (unused videos first; \u003c= 2 clips per video counting FLAG_37's); LID rule of FLAG_42 over these clips\"\n"}
+,{"stream_name":"stdout","time":29064.033420432,"data":"}\n"}
+]

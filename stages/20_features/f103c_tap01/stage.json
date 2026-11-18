@@ -1,0 +1,300 @@
+{
+ "id": "f103c_tap01",
+ "group": "20_features",
+ "title": "FLAG_103c: SimAM-ResNet100 tap before the bottleneck (samS4) for v4 train, MAV-Celeb and every auxiliary voice (row mask of the CA head)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "minutes_original": 390,
+  "internet": true,
+  "secrets": [],
+  "note": "r2 pushed 29/10/2026 22:41, done before 30/10 08:30; 152 031 auxiliary clips (vox 38 145, vox2b 46 270, vb 67 616)"
+ },
+ "origin": {
+  "run": "dnq1209/flag-2027-nb-103c-tap01-voice-r2",
+  "exactness": "builder-regenerated",
+  "source_file": "kaggle/FLAG_103c_tap01_voice.ipynb",
+  "notebook_md5": "6ccfb3a52e538f7b9473ed76239db024",
+  "push": {
+   "kapi_runs_line": 711,
+   "time": "2026-10-29 22:41",
+   "kernel": "dnq1209/flag-2027-nb-103c-tap01-voice-r2",
+   "notebook_md5": "e192b1b76ee448bc253137e788bc9a88",
+   "gpu": true,
+   "datasets": [
+    "ngnnguynchn/flag2027-raw-v4-p",
+    "chnnhnnguyn/external-data-mavceleb",
+    "ngnnguynchn/flag2027-ext-meta-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "duongphihoang/flag2027-audio-cache-p"
+   ],
+   "kernels": [
+    "dnq1209/flag-2027-nb-103c-tap01-voice"
+   ],
+   "secrets": []
+  },
+  "first_run": {
+   "kapi_runs_line": 691,
+   "time": "2026-10-29 18:09",
+   "kernel": "dnq1209/flag-2027-nb-103c-tap01-voice",
+   "notebook_md5": "436c24d646af2966dc3f42e6e1f30bce",
+   "gpu": true,
+   "datasets": [
+    "ngnnguynchn/flag2027-raw-v4-p",
+    "chnnhnnguyn/external-data-mavceleb",
+    "ngnnguynchn/flag2027-ext-meta-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "duongphihoang/flag2027-audio-cache-p"
+   ],
+   "kernels": [],
+   "secrets": []
+  },
+  "builder": "kaggle/build_tap_voice_notebook.py (not in git)",
+  "original_copy": "original/FLAG_103c_tap01_voice.ipynb",
+  "original_sha256": "ff93282a380e185bc4639192ef6f05b8df9a6608424707dde0680ce2184cb902"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "exclude": [
+    "dev_set.zip",
+    "dev_set"
+   ],
+   "exclude_why": "dev-exclusion: this stage reads only train_set.zip / meta_file_train_set.csv; requested per-input mount filter (repo_map/build/WP-D.md H8; runner/ffcore.py build_vin applies only the data_map 'exclude' today)"
+  },
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ext-meta-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p"
+  },
+  {
+   "artifact": "datasets/duongphihoang/flag2027-audio-cache-p"
+  }
+ ],
+ "inputs_dropped": [
+  {
+   "artifact": "notebooks/dnq1209/flag-2027-nb-103c-tap01-voice",
+   "why": "resume input of r2 (output of the failed first run); without it the same r2 code computes every array itself"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/dnq1209/flag-2027-nb-103c-tap01-voice-r2",
+  "exports": {
+   "datasets/dnq1209/flag2027-feats-tap01-voice-p": "feats_tap01_voice"
+  },
+  "main_folder": "feats_tap01_voice",
+  "private": true,
+  "licence": "VoxBlink-derived: features computed from VoxBlink media (CC BY-NC-SA 4.0, no redistribution) next to VoxCeleb2, v4 train and MAV-Celeb v1 / v2 features; private, shared only with the organisers through FF_DATA, never public and never in the repository"
+ },
+ "env": {
+  "FLAG_SPLITS": "train"
+ },
+ "smoke_env": {
+  "FLAG_SMOKE": "1",
+  "FLAG_SMOKE_ROWS": "6",
+  "TAP_AUX_MAX": "128"
+ },
+ "patches": [
+  {
+   "old": "SPLIT_FILTER = None            # e.g. [\"no_gender/English\"]; None = every split found (train + every test list)",
+   "new": "SPLIT_FILTER = [\"train\"]      # FF dev-exclusion: organiser train list only (original: None). e.g. [\"no_gender/English\"]; None = every split found (train + every test list)",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "no dev list is indexed or encoded (DESIGN §2.8; as TRAIN_ONLY of release/flag2027_e2e/stages.py:151)",
+   "effect": "none on the train / MAV-Celeb / auxiliary arrays (each split is encoded on its own); the dev arrays and dev index files are no longer written"
+  },
+  {
+   "old": "ZIP_PREFIXES = (\"train_set\", \"dev_set\", \"eval\", \"test\")             # organiser zips unpacked when not extracted",
+   "new": "ZIP_PREFIXES = (\"train_set\", \"eval\", \"test\")                        # FF dev-exclusion: dev_set.zip is never unpacked (original: (\"train_set\", \"dev_set\", \"eval\", \"test\")). organiser zips unpacked when not extracted",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "with zipped raw data the original unpacked dev_set.zip too (then SPLIT_FILTER dropped it); now the dev archive is never read",
+   "effect": "none"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [
+  "TAP_UPLOAD"
+ ],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/feats_tap01_voice"
+ ],
+ "verify": [
+  {
+   "file": "feats_tap01_voice/vox/voice_sam100p3s.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_tap01_voice/vox/voice_samS3.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_tap01_voice/vox/voice_samS4.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_tap01_voice/vox2b/voice_sam100p3s.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_tap01_voice/vox2b/voice_samS3.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_tap01_voice/vox2b/voice_samS4.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_tap01_voice/vb/voice_sam100p3s.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_tap01_voice/vb/voice_samS3.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_tap01_voice/vb/voice_samS4.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 10,
+  "sha256": "0b02be12f5ded69fff1e02b05393bc70649e46bb7aaae5afad3bdddbe03f4e4c",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "FLAG_103c_tap01_voice.ipynb",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "t112sf1s / t155s / e112f1sx: samS4 (row mask only; v_cat4 skips the samS4 columns, test lists get zeros)"
+ ],
+ "todo": [
+  "Pull dnq1209/flag-2027-nb-103c-tap01-voice-r2 (tools/PULL_MISSING_RUNS.md) and compare its code with original/ (md5 e192b1b7... is the pushed file).",
+  "The pushed notebook almost certainly carried a `kapi --env` cell that kaggle/kapi.py does not log (cmd_push inserts smoke_cell(envs, '# run parameters (kapi --env) ...') but the kapi_runs.jsonl line holds only time, account, kernel, source, notebook_md5, gpu, smoke, secrets, datasets, kernels, ok). Evidence: the code reads TAP_UPLOAD (stage.ipy line 891) only from the environment and the output dataset dnq1209/flag2027-feats-tap01-voice-p exists (the dataset of the package-E copy; whether it was created by the upload branch or by hand is not recorded). Other environment knobs the code reads (TAP_AUX_MAX and the other os.environ.get knobs of the notebook) may have been set in the same cell; this stage assumes their defaults. Unverified: re-applying the kapi transform with or without such a cell does not give the pushed md5 e192b1b76ee4 locally. Pull the run (tools/PULL_MISSING_RUNS.md) to read the cell.",
+  "Handoff WP-A: list dnq1209/flag-2027-nb-103c-tap01-voice-r2 in tools/PULL_MISSING_RUNS.md for the env cell (the todo above already asks for its pull)."
+ ],
+ "verify_notes": [
+  "the finite-row mask of <vox|vox2b|vb>/voice_samS4.npy must equal the frozen dataset's (it decides the CA head's auxiliary rows, CLEANTUNE-01/run.py aux_extra); arrays row cosine >= 0.999"
+ ],
+ "post_checks": [
+  {
+   "file": "feats_tap01_voice/feats_manifest.json",
+   "json_path": "files",
+   "equals": {
+    "ext_v1_complete_voice_sam100p3s.npy": [
+     19556,
+     256
+    ],
+    "ext_v1_complete_voice_samS3.npy": [
+     19556,
+     10240
+    ],
+    "ext_v1_complete_voice_samS4.npy": [
+     19556,
+     10240
+    ],
+    "ext_v2_complete_voice_sam100p3s.npy": [
+     20715,
+     256
+    ],
+    "ext_v2_complete_voice_samS3.npy": [
+     20715,
+     10240
+    ],
+    "ext_v2_complete_voice_samS4.npy": [
+     20715,
+     10240
+    ],
+    "voice_sam100p3s_train.npy": [
+     6485,
+     256
+    ],
+    "voice_samS3_train.npy": [
+     6485,
+     10240
+    ],
+    "voice_samS4_train.npy": [
+     6485,
+     10240
+    ]
+   },
+   "why": "every v4-train and MAV-Celeb v1 / v2 array of the original run with its shape (9 arrays; values from package E dnq1209__flag2027-feats-tap01-voice-p.zip :: feats_manifest.json (created 2026-10-29 17:43), dev entries left out). A failed encoder (recorded in 'failed' and skipped) or a skipped MAV-Celeb source (ExtRows error only logged) leaves an array out, so the stage fails here instead of hours later downstream"
+  },
+  {
+   "file": "feats_tap01_voice/feats_manifest.json",
+   "json_path": "external",
+   "equals": {
+    "v1_complete": [
+     7580,
+     19556
+    ],
+    "v2_complete": [
+     8953,
+     20715
+    ]
+   },
+   "why": "MAV-Celeb v1 / v2 [face rows, voice rows] of the original manifest"
+  },
+  {
+   "file": "feats_tap01_voice/feats_manifest.json",
+   "json_path": "splits/train",
+   "equals": 6485,
+   "why": "organiser train rows"
+  }
+ ],
+ "saved_copy_dev_members": {
+  "saved_copy": "02_intermediate/feats_tap01_voice (= package E: dnq1209__flag2027-feats-tap01-voice-p.zip, 37 members)",
+  "count": "12 dev arrays + 4 dev index files",
+  "patterns": [
+   "*_gender_English.npy",
+   "*_gender_Bangla.npy",
+   "index_*gender_*.txt"
+  ],
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "files": [
+   "index_gender_Bangla.txt",
+   "index_gender_English.txt",
+   "index_no_gender_Bangla.txt",
+   "index_no_gender_English.txt",
+   "voice_sam100p3s_gender_Bangla.npy",
+   "voice_sam100p3s_gender_English.npy",
+   "voice_sam100p3s_no_gender_Bangla.npy",
+   "voice_sam100p3s_no_gender_English.npy",
+   "voice_samS3_gender_Bangla.npy",
+   "voice_samS3_gender_English.npy",
+   "voice_samS3_no_gender_Bangla.npy",
+   "voice_samS3_no_gender_English.npy",
+   "voice_samS4_gender_Bangla.npy",
+   "voice_samS4_gender_English.npy",
+   "voice_samS4_no_gender_Bangla.npy",
+   "voice_samS4_no_gender_English.npy"
+  ],
+  "files_source": "package E dnq1209__flag2027-feats-tap01-voice-p.zip"
+ }
+}

@@ -1,0 +1,35 @@
+print("[cell] models_fetch: download and SHA-256 check (tools/fetch_models.py)", flush=True)
+import json, os, subprocess, sys
+from pathlib import Path
+REPO = Path(os.environ.get("FF_REPO", "."))
+DEST = Path("/kaggle/working") / "06_pretrained"
+DEST.mkdir(parents=True, exist_ok=True)
+cmd = [sys.executable, "-u", str(REPO / "tools" / "fetch_models.py"), "--dest", str(DEST), "--group", os.environ.get("FF_FETCH_GROUP", "default")]
+if os.environ.get("FF_FETCH_ONLY"):
+    cmd += ["--only", os.environ["FF_FETCH_ONLY"]]
+dry = os.environ.get("FF_FETCH_DRY") == "1"
+if dry:
+    cmd.append("--dry")
+print("[ff] run:", " ".join(cmd), flush=True)
+p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+lines = []
+for line in p.stdout:
+    print(line, end="", flush=True)
+    lines.append(line)
+rc = p.wait()
+if dry:
+    (DEST / "PLAN.txt").write_text("".join(lines), encoding="utf-8")
+    (DEST / "SOURCES.json").write_text(json.dumps({"_dry_run": "FF_FETCH_DRY=1: nothing downloaded; see PLAN.txt"}, indent=1), encoding="utf-8")
+assert rc == 0, f"tools/fetch_models.py exited with {rc}"
+# <<<FF-CELL>>>
+print("[cell] models_fetch: summary of SOURCES.json", flush=True)
+S = json.loads((DEST / "SOURCES.json").read_text(encoding="utf-8"))
+bad = []
+for k, v in S.items():
+    if k.startswith("_"):
+        continue
+    print(f"  {k:28s} verified={v.get('verified')} files={len(v.get('files', {}))} revision={v.get('resolved_revision') or v.get('revision')}", flush=True)
+    if v.get("verified") is False:
+        bad.append(k)
+assert not bad, f"SHA-256 mismatch for {bad}"
+print("copy (or point FF_MODELS to)", DEST, "-> <FF_DATA>/06_pretrained", flush=True)

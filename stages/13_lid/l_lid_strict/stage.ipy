@@ -1,0 +1,95 @@
+print("[cell] l_lid_strict: merge the Bengali-speech filter layers -> lid_strict.json (version 2)", flush=True)
+# New cell (FourFusion reproduction repo). Runs merge.py (= Experiment/LIDSTRICT-01/merge.py, paths as environment variables) on:
+#   bn_vl    stored VoxLingua107 probabilities of FLAG_42 (VoxCeleb2 / FLAG_37 clips), FLAG_53 (flag2027-feats-vox2b-p), FLAG_46 (VoxBlink)
+#   bn_wl    FLAG_150 lid_whisper.json (Whisper-large-v3 on the 3 s audio cache)
+#   mav_files LID-AUDIT-01 mav_w.json (58 MAV voice files, Whisper vote; no MAV speaker dropped)
+#   harm_g3  DQUAL-01 G3 of VoxCeleb2 / VoxBlink (stage l_dqual_g3)
+# The original file was written on 3/11/2026 14:31 on Windows (Path.write_text -> CRLF line ends) and uploaded unchanged as
+# ngnnguynchn/flag2027-lid-strict-p. FF_CREATED fixes the "created" field to that time and the cell rewrites the line ends as CRLF,
+# so the exported file is byte-identical (sha256 f4065711...) whenever the inputs are the stored ones. JSON content is unchanged.
+import hashlib, json, os, shutil, subprocess, sys
+from pathlib import Path
+
+STAGE_DIR = Path(os.environ.get("FF_STAGE_DIR", "."))
+L42 = Path("/kaggle/input/notebooks/nguynlcnhtho/flag-2027-nb-42")
+VB2 = Path("/kaggle/input/datasets/ngnnguynchn/flag2027-feats-vox2b-p")
+C46 = Path("/kaggle/input/notebooks/ff/c46_voxblink")
+L150 = Path("/kaggle/input/notebooks/duongphihoang/flag-2027-nb-150-lidwhisper")
+AUD = Path("/kaggle/input/notebooks/ff/l_lid_audit")
+G3 = Path("/kaggle/input/notebooks/ff/l_dqual_g3")
+OUT = Path("/kaggle/working/lid_strict")
+LID_STRICT_SHA256 = "f4065711e01e6284d70b213fedec2823e7b942ca3c470e8b2b896670c5ed3fad"
+
+
+def guard_action():
+    """What a sha256 mismatch does (stage.json guard_policy, read here so the policy is data, not prose):
+    FF_SMOKE=1 or FF_ALLOW_MISMATCH=1 -> 'warn'; else guard_policy.on_mismatch[FF_MODE] (train: 'warn', infer / assemble /
+    unset: 'fail'). In FF_MODE=train the GPU inputs (FLAG_42 / 150 / 152 / 41) may have been rebuilt and are not bit-identical."""
+    if os.environ.get("FF_SMOKE") == "1" or os.environ.get("FF_ALLOW_MISMATCH") == "1":
+        return "warn", "FF_SMOKE=1 or FF_ALLOW_MISMATCH=1"
+    mode = os.environ.get("FF_MODE", "")
+    try:
+        pol = json.loads((STAGE_DIR / "stage.json").read_text(encoding="utf-8"))["guard_policy"]["on_mismatch"]
+    except Exception:
+        pol = {"train": "warn"}
+    return pol.get(mode, "fail"), f"stage.json guard_policy.on_mismatch[{mode or 'FF_MODE unset'}]"
+
+
+def folder_with(root, names, why):
+    for p in sorted(root.rglob(names[0])):
+        if all((p.parent / n).is_file() for n in names):
+            return p.parent
+    raise FileNotFoundError(f"no folder with {names} under {root} ({why})")
+
+
+LIDF = ["voice_lid_probs.npy", "voice_meta.csv", "lid_summary.json"]
+OUT.mkdir(parents=True, exist_ok=True)
+for stale in ("lid_strict.json", "removed_speakers.csv"):          # merge.py merges an existing removed_speakers.csv: start clean
+    (OUT / stale).unlink(missing_ok=True)
+try:                                                                # output of stage l_dqual_g3
+    PERSONS = folder_with(G3, ["persons_g3.parquet"], "stage l_dqual_g3") / "persons_g3.parquet"
+except FileNotFoundError:                                           # saved copy = Experiment/DQUAL-01/persons.parquet itself
+    PERSONS = folder_with(G3, ["persons.parquet"], "stage l_dqual_g3 (persons_g3.parquet) or its saved copy persons.parquet") / "persons.parquet"
+print("G3 table:", PERSONS, "(merge.py reads only the columns source / spk / G3)", flush=True)
+env = dict(os.environ,
+           FF_FLAG42_DIR=str(folder_with(L42, LIDF + ["lid_labels.json"], "FLAG_42 output feats_vox2lid")),
+           FF_FLAG53_DIR=str(folder_with(VB2, LIDF, "FLAG_53 output feats_vox2b")),
+           FF_FLAG46_DIR=str(folder_with(C46, LIDF, "FLAG_46 output feats_vb (voice_lid_probs.npy is not in flag2027-lab-vb-p)")),
+           FF_LID_WHISPER=str(folder_with(L150, ["lid_whisper.json"], "FLAG_150 output lidw/") / "lid_whisper.json"),
+           FF_MAV_W=str(folder_with(AUD, ["mav_w.json"], "stage l_lid_audit, out/mav_w.json") / "mav_w.json"),
+           FF_PERSONS=str(PERSONS),
+           FF_OUT=str(OUT), FF_CREATED=os.environ.get("LIDSTRICT_CREATED", "2026-11-03 14:31"))
+for k in ("FF_LID_WHISPER", "FF_MAV_W", "FF_PERSONS"):           # merge.py silently skips a missing layer file: refuse that here
+    assert Path(env[k]).is_file(), f"{k}: {env[k]} missing"
+cmd = [sys.executable, "-u", str(STAGE_DIR / "merge.py")]
+print("run:", " ".join(cmd), flush=True)
+for k in ("FF_FLAG42_DIR", "FF_FLAG53_DIR", "FF_FLAG46_DIR", "FF_LID_WHISPER", "FF_MAV_W", "FF_PERSONS", "FF_CREATED"):
+    print(f"  {k} = {env[k]}", flush=True)
+p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1, env=env)
+for line in p.stdout:
+    print(line, end="", flush=True)
+assert p.wait() == 0, "merge.py failed"
+
+f = OUT / "lid_strict.json"
+b = f.read_bytes()
+J = json.loads(b)
+if b"\r\n" not in b:                                               # Linux: LF -> CRLF, the bytes of the uploaded dataset
+    f.write_bytes(b.replace(b"\n", b"\r\n"))
+assert json.loads(f.read_bytes()) == J
+rep = {"sha256": hashlib.sha256(f.read_bytes()).hexdigest(), "counts": J["counts"], "by_category": J["by_category"],
+       "mav_files": len(J.get("mav_files", [])), "created": J["created"]}
+rep["same_as_dataset"] = rep["sha256"] == LID_STRICT_SHA256
+rep["expected"] = {"counts": {"vox2": 608, "vb": 1637, "mav_v1": 0, "mav_v2": 0}, "mav_files": 58,
+                   "by_category": {"bn_vl": {"vox2": 150, "vb": 262}, "bn_wl": {"vox2": 29, "vb": 43}, "harm_g3": {"vox2": 454, "vb": 1388}}}
+action, why = ("pass", "sha256 equal") if rep["same_as_dataset"] else guard_action()
+rep["guard"] = {"action": action, "why": why, "FF_MODE": os.environ.get("FF_MODE", "")}
+(OUT / "l_lid_strict_check.json").write_text(json.dumps(rep, indent=1))
+print(json.dumps(rep, indent=1), flush=True)
+if action == "warn":
+    print("!! WARNING: lid_strict.json differs from ngnnguynchn/flag2027-lid-strict-p (sha256 f4065711...): every later stage "
+          "learns from a different speaker set; the run is a recipe-level rebuild, not the 13.54 list (" + why + ")", flush=True)
+assert action != "fail", (
+    "lid_strict.json differs from ngnnguynchn/flag2027-lid-strict-p (sha256 f4065711...): every later stage would learn from a "
+    "different speaker set. Use the stored outputs of FLAG_42 / 150 / 152 / 41 (FF_DATA/02_intermediate, configs/data_map.json) or "
+    "set FF_ALLOW_MISMATCH=1 to continue with this list (" + why + ").")
+# <<<FF-CELL>>>

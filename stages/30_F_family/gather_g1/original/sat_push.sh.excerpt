@@ -1,0 +1,18 @@
+# excerpt of kaggle/sat_push.sh (sha256 30baa4b2974e45014c7041a6b0f80b8e5b067f47fd4e8b43d246dfed5058efad, read 2026-11-18), lines 52-66 (gather_tables), 778 (111sg), 779 (111sr)
+   52  gather_tables() {   # gather_tables <tag> <dataset slug> <owner/kernel>... : fold tables of finished runs -> one private dataset
+   53    # (a notebook cannot read another account's private notebook output through --kernels: the tables travel as a dataset)
+   54    tag=$1; ds=$2; shift 2
+   55    d=$(mktemp -d); mkdir -p "$d/e2e_out"
+   56    for k in "$@"; do
+   57      need_complete "$k"
+   58      $K output "$k" --dest "$d/$(basename "$k")" --pattern "${PAT:-${tag}_fold[0-9]\.parquet}" >/dev/null   # PAT / GLOB (T3S-01): other table names
+   59      find "$d/$(basename "$k")" -name "${GLOB:-${tag}_fold*.parquet}" -exec cp {} "$d/e2e_out/" \;
+   60    done
+   61    ls "$d/e2e_out"
+   62    n=$(ls "$d/e2e_out" | wc -l); [ "$n" -eq "${NTAB:-5}" ] || { echo "!! $n fold tables (${NTAB:-5} needed)"; exit 1; }
+   63    (cd "$d" && python -c "import zipfile,pathlib; z=zipfile.ZipFile('${tag}_tables.zip','w'); [z.write(f, 'tables/'+f.name) for f in sorted(pathlib.Path('e2e_out').glob('*.parquet'))]; z.close()")
+   64    $K dscreate "$(cygpath -w "$d/${tag}_tables.zip" 2>/dev/null || echo "$d/${tag}_tables.zip")" --account ngnnguynchn --slug "$ds"   # Windows path (17/10: the POSIX one failed)
+   65    echo "wait until the dataset is ready (1-3 min), then: $K privatize ngnnguynchn/$ds"
+   66  }
+  778        111sg) gather_tables ct01g1 "${CTTS#*/}" ${RUNS:?RUNS = the 3 CLEANTUNE-02 g1 runs} ;;
+  779        111sr) gather_tables ct01r2 "${CT2S#*/}" ${RUNS:?RUNS = the 3 111s GPU runs} ;;

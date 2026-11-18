@@ -1,0 +1,101 @@
+{
+ "id": "a_fvbind",
+ "group": "60_fvbind",
+ "title": "FVBIND zips: U = F1s' + RFX' (1 : 1) and ENFUSE (English = F1s' Bangla fuser + RFX'; Bangla = bytes of U); source of the Bangla same-gender file of the 13.54 zip",
+ "kind": "assemble",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": [],
+  "notes": "needs bash, sha256sum, numpy, pandas, scipy"
+ },
+ "origin": {
+  "run": null,
+  "exactness": "local-script",
+  "source_file": "the six scripts under tree/ (byte-exact copies, see original/SOURCE.json)",
+  "builder": "new driver stage.ipy; scripts verbatim; inputs copied into a scratch copy of the original folder layout"
+ },
+ "code": {
+  "stage_ipy": "stage.ipy",
+  "sha256": "19cdd3bbe5dc92d487e65ebb5b2e74efa47e1350a7c72345873f03a55282875c",
+  "bytes": 12412,
+  "cells": 5,
+  "built_from": "new code (each cell opens with print(\"[cell] ...\", flush=True))"
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval",
+   "use": "e2e_out/submission_cleantune01_F1_CA_eval.zip (= f1s_eval.zip), e2e_out/cleantune01_fuser_bangla_CA.json, e2e_out/ct01r2_final_eval.npz (stage e112f1sx, group 50)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+   "use": "e2e_eval/components_eval.npz, e2e_eval/e2e_manifest.json (stage e50cc, group 50)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval",
+   "use": "FLAG_RF_E2E/submission.zip (= rfsfxfvb_eval.zip, stage e163i_fvb)"
+  }
+ ],
+ "inputs_note": "the driver also accepts the six flat files in $A_FVBIND_INPUTS, <FF_DATA root>/05_scores/ or <repo>/assembly/inputs/ (mode c), by name",
+ "outputs": {
+  "kernel": "notebooks/ff/a_fvbind",
+  "exports": {},
+  "files": [
+   "posteval_FVBIND_U_fvb.zip",
+   "posteval_FVBIND_ENFUSE_fvb.zip",
+   "FVBIND_ENFUSE_rebuilt.zip (one-step cross-check)",
+   "a_fvbind_report.json",
+   "logs/"
+  ],
+  "used_downstream": "posteval_FVBIND_ENFUSE_fvb.zip -> final_blend (group 80; Experiment/XJF-01/blend.py:16 reads it) and a_best4_ref; only its member gender/sub_score_v4_Bangla_unheard.txt reaches the 13.54 zip"
+ },
+ "env": {},
+ "env_note": "FF_MODE=assemble (or FF_STRICT_SHA=1) makes input and member sha256 mismatches fatal; FF_STRICT_CROSSCHECK=1 makes the rebuild_final.py cross-check fatal; XT_W / ENF_W are removed from the environment of the scripts",
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {
+  "lora_c1": "original",
+  "lora_c1_role_here": "no C1 artifact is read here; the original C1 reaches this stage only through rfsfxfvb_eval.zip of e163i_fvb"
+ },
+ "skip_with": [
+  "05_scores/posteval_FVBIND_ENFUSE_fvb.zip"
+ ],
+ "verify": [
+  {
+   "file": "posteval_FVBIND_ENFUSE_fvb.zip",
+   "members_sha256_from": "configs/expected_sha256.json#fvbind_enfuse",
+   "note": "fatal in FF_MODE=assemble (deterministic from the saved scores), informational otherwise; zip sha256 of the 15/11 file bb0e0175... (zip bytes hold timestamps: members are compared)"
+  },
+  {
+   "file": "posteval_FVBIND_U_fvb.zip",
+   "members_sha256_from": "configs/expected_sha256.json#fvbind_u",
+   "note": "as above; zip sha256 of the 15/11 file b61c84ed..."
+  },
+  {
+   "file": "a_fvbind_report.json",
+   "key": "checks.gender_bangla_member_equals_the_1354_file",
+   "equals": true,
+   "note": "the member taken by the 13.54 zip (9a619736...)"
+  },
+  {
+   "file": "a_fvbind_report.json",
+   "key": "checks.rebuild_final_identical_to_chain",
+   "equals": true,
+   "note": "expected by code equivalence; not yet observed (todo); warning only"
+  }
+ ],
+ "todo": [
+  "Run the stage once in mode assemble on the saved files (CPU seconds) and record: the four members of both zips equal the 15/11 files, and the cross-check (rebuild_final.py with rfx_eval.zip := rfsfxfvb_eval.zip) prints 'OK: identical'."
+ ],
+ "notes": [
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)",
+  "The gender/Bangla member (9a619736...) equals F1s' + RFX' per pair: that is all 13.54 takes from this group.",
+  "Selection of this file (declaration): FVBIND failed its pre-registered validation gate 2 (t163p_fvb/original/evidence/gate2_report_194/fvbg2_report.txt:15 'GATE 2: FAIL -> keep FACTOR_ENFUSE, paper only'). posteval_FVBIND_ENFUSE_fvb.zip was then submitted to the Evaluation phase (CodaBench submission 1053013, 15/11/2026, cells 14.29 / 12.22 / 22.12 / 18.99), and its gender/Bangla file was chosen cell by cell from Evaluation scores (18.99 against 20.11 for FACTOR_ENFUSE; a_best4_ref/original/make_probes.py KNOWN :36-38, BEST_NOW :112). The 13.54 zip keeps that file. Choosing on Evaluation scores is against question 11 of the organisers' FAQ; declared in stages/60_fvbind/README.md and docs/COMPLIANCE_NOTES.md."
+ ]
+}

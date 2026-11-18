@@ -1,0 +1,10 @@
+{
+ "mms.parquet (team copy)": "f9a436f81ce0521b7d8ab709ee9e7a48ac9546285a09c7f63853e40f9332f052",
+ "rows": 40271,
+ "flagged_files": 2528,
+ "flagged_speakers": {
+  "mav_v1": 62,
+  "mav_v2": 80
+ },
+ "read_errors": 0
+}

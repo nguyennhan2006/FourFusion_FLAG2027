@@ -1,0 +1,188 @@
+[{"stream_name":"stderr","time":7.113486224,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.113533381,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":8.082806978,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.082835615,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.082840706,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.082844894,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.688546904,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.688577728,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.688585801,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.688588421,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":9.834019531,"data":"[cell] 01 what to run (edit here)\n"}
+,{"stream_name":"stdout","time":9.834784287,"data":"[boot] FLAG_47b_voice_screen | python 3.13.16 | start 2026-11-11 08:53:41\n"}
+,{"stream_name":"stdout","time":9.837531938,"data":"KAGGLE | input /kaggle/input | output /kaggle/working/feats_screen2 | cache /tmp/flag_cache\n"}
+,{"stream_name":"stdout","time":9.859302806,"data":"[cell] 02 WeSpeaker (commit 9fecd6c, as Track 3) and openai CLIP (comm\n"}
+,{"stream_name":"stdout","time":24.886894866,"data":"  note: This error originates from a subprocess, and is likely not a problem with pip.\r\n"}
+,{"stream_name":"stdout","time":24.886940651,"data":"ERROR: Failed to build 'git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1' when getting requirements to build wheel\r\n"}
+,{"stream_name":"stdout","time":39.328526733,"data":"openai CLIP: /tmp/openai_clip/clip/__init__.py | wespeaker: /usr/local/lib/python3.13/dist-packages/wespeaker/__init__.py\n"}
+,{"stream_name":"stdout","time":51.517780177,"data":"torch 2.11.0+cu130 | transformers 5.20.2 | device cuda Tesla T4\n"}
+,{"stream_name":"stdout","time":51.555730958,"data":"[cell] 03 finding the data\n"}
+,{"stream_name":"stdout","time":54.841210337,"data":"08:54:26 scanned /kaggle/input: 38 files outside media folders, 11 media roots\n"}
+,{"stream_name":"stdout","time":162.543663346,"data":"08:56:14 gender/Bangla            716 rows | voice median 4.9s, max 41.8s | /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p/evaluation_phase/gender/Bangla_test.txt\n"}
+,{"stream_name":"stdout","time":269.034403061,"data":"08:58:00 no_gender/Bangla         802 rows | voice median 5.0s, max 38.9s | /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p/evaluation_phase/no_gender/Bangla_test.txt\n"}
+,{"stream_name":"stdout","time":324.565464604,"data":"08:58:56 gender/English           416 rows | voice median 5.3s, max 29.8s | /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p/evaluation_phase/gender/English_test.txt\n"}
+,{"stream_name":"stdout","time":382.819551591,"data":"08:59:54 no_gender/English        392 rows | voice median 5.1s, max 20.1s | /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p/evaluation_phase/no_gender/English_test.txt\n"}
+,{"stream_name":"stdout","time":864.147531809,"data":"09:07:55 train                   6485 rows | voice median 5.2s, max 60.0s | /kaggle/input/datasets/ngnnguynchn/flag2027-raw-v4-p/train_set/train_set/train_set/train_English.txt\n"}
+,{"stream_name":"stdout","time":896.160533372,"data":"09:08:27 v1_complete: 7580 face rows, 19556 voice rows in /kaggle/input/datasets/chnnhnnguyn/external-data-mavceleb/mavceleb_v1_complete-001/v1\n"}
+,{"stream_name":"stdout","time":929.797555437,"data":"09:09:01 v2_complete: 8953 face rows, 20715 voice rows in /kaggle/input/datasets/chnnhnnguyn/external-data-mavceleb/mavceleb_v2_complete-002/v2\n"}
+,{"stream_name":"stdout","time":929.798531038,"data":"09:09:01 resume: 0 arrays copied from an earlier run\n"}
+,{"stream_name":"stdout","time":929.799723586,"data":"{'gender/Bangla': 716, 'no_gender/Bangla': 802, 'gender/English': 416, 'no_gender/English': 392, 'train': 6485} | external: ['v1_complete', 'v2_complete']\n"}
+,{"stream_name":"stdout","time":929.833211503,"data":"[cell] 04 audio + batching\n"}
+,{"stream_name":"stdout","time":929.870563681,"data":"[cell] 05 T3ENC-01 encoders: the encoder family of Track 3s VoxBlink s\n"}
+,{"stream_name":"stdout","time":929.883932428,"data":"[cell] 06 ENC-SCREEN-02 voice encoders (frozen, WeSpeaker VoxCeleb2 LM\n"}
+,{"stream_name":"stdout","time":929.932973191,"data":"[cell] 07 running\n"}
+,{"stream_name":"stdout","time":941.630729967,"data":"{'data_type': 'shard', 'dataloader_args': {'batch_size': 32, 'drop_last': True, 'num_workers': 16, 'pin_memory': False, 'prefetch_factor': 8}, 'dataset_args': {'aug_prob': 0.6, 'fbank_args': {'dither': 1.0, 'frame_length': 25, 'frame_shift': 10, 'num_mel_bins': 80}, 'num_frms': 200, 'shuffle': True, 'shuffle_args': {'shuffle_size': 2500}, 'spec_aug': False, 'spec_aug_args': {'max_f': 8, 'max_t': 10, 'num_f_mask': 1, 'num_t_mask': 1, 'prob': 0.6}, 'speed_perturb': True}, 'exp_dir': 'exp/ResNet293-TSTP-emb256-fbank80-num_frms200-aug0.6-spTrue-saFalse-ArcMargin-SGD-epoch150', 'gpus': [0, 1], 'log_batch_interval': 100, 'loss': 'CrossEntropyLoss', 'loss_args': {}, 'margin_scheduler': 'MarginScheduler', 'margin_update': {'epoch_iter': 17062, 'final_margin': 0.2, 'fix_start_epoch': 40, 'increase_start_epoch': 20, 'increase_type': 'exp', 'initial_margin': 0.0, 'update_margin': True}, 'model': 'ResNet293', 'model_args': {'embed_dim': 256, 'feat_dim': 80, 'pooling_func': 'TSTP', 'two_emb_layer': False}, 'model_init': None, 'noise_data': 'data/musan/lmdb', 'num_avg': 2, 'num_epochs': 150, 'optimizer': 'SGD', 'optimizer_args': {'lr': 0.1, 'momentum': 0.9, 'nesterov': True, 'weight_decay': 0.0001}, 'projection_args': {'easy_margin': False, 'embed_dim': 256, 'num_class': 17982, 'project_type': 'arc_margin', 'scale': 32.0}, 'reverb_data': 'data/rirs/lmdb', 'save_epoch_interval': 5, 'scheduler': 'ExponentialDecrease', 'scheduler_args': {'epoch_iter': 17062, 'final_lr': 5e-05, 'initial_lr': 0.1, 'num_epochs': 150, 'scale_ratio': 1.0, 'warm_from_zero': True, 'warm_up_epoch': 6}, 'seed': 42, 'train_data': 'data/vox2_dev/shard.list', 'train_label': 'data/vox2_dev/utt2spk'}\n"}
+,{"stream_name":"stdout","time":949.295505736,"data":"09:09:21 rn293A self-check: {'fp16': 0.9999999999996575}\n"}
+,{"stream_name":"stdout","time":949.350248434,"data":"09:09:21   rn293A gender/Bangla 1/716  0s  eta 39s\n"}
+,{"stream_name":"stdout","time":1218.327441413,"data":"09:13:50   rn293A gender/Bangla 716/716  269s  eta 0s\n"}
+,{"stream_name":"stdout","time":1218.32864777,"data":"09:13:50 saved voice_rn293_gender_Bangla.npy (716, 256)\n"}
+,{"stream_name":"stdout","time":1218.472816126,"data":"09:13:50   rn293A no_gender/Bangla 1/802  0s  eta 115s\n"}
+,{"stream_name":"stdout","time":1453.129097347,"data":"09:17:44   rn293A no_gender/Bangla 802/802  235s  eta 0s\n"}
+,{"stream_name":"stdout","time":1453.130202036,"data":"09:17:44 saved voice_rn293_no_gender_Bangla.npy (802, 256)\n"}
+,{"stream_name":"stdout","time":1453.313157809,"data":"09:17:45   rn293A gender/English 1/416  0s  eta 76s\n"}
+,{"stream_name":"stdout","time":1572.761394409,"data":"09:19:44   rn293A gender/English 416/416  120s  eta 0s\n"}
+,{"stream_name":"stdout","time":1572.762225521,"data":"09:19:44 saved voice_rn293_gender_English.npy (416, 256)\n"}
+,{"stream_name":"stdout","time":1573.07373869,"data":"09:19:44   rn293A no_gender/English 1/392  0s  eta 123s\n"}
+,{"stream_name":"stdout","time":1674.208116782,"data":"09:21:26   rn293A no_gender/English 392/392  101s  eta 0s\n"}
+,{"stream_name":"stdout","time":1674.211219186,"data":"09:21:26 saved voice_rn293_no_gender_English.npy (392, 256)\n"}
+,{"stream_name":"stdout","time":1674.342609337,"data":"09:21:26   rn293A train 1/6485  0s  eta 809s\n"}
+,{"stream_name":"stdout","time":1922.368656329,"data":"09:25:34   rn293A train 1001/6485  248s  eta 1359s\n"}
+,{"stream_name":"stdout","time":2120.523761192,"data":"09:28:52   rn293A train 2001/6485  446s  eta 1000s\n"}
+,{"stream_name":"stdout","time":2308.128318169,"data":"09:31:59   rn293A train 3001/6485  634s  eta 736s\n"}
+,{"stream_name":"stdout","time":2479.614390479,"data":"09:34:51   rn293A train 4001/6485  805s  eta 500s\n"}
+,{"stream_name":"stdout","time":2659.855155878,"data":"09:37:51   rn293A train 5001/6485  986s  eta 292s\n"}
+,{"stream_name":"stdout","time":2831.091789488,"data":"09:40:42   rn293A train 6001/6485  1157s  eta 93s\n"}
+,{"stream_name":"stdout","time":2920.746101143,"data":"09:42:12   rn293A train 6485/6485  1247s  eta 0s\n"}
+,{"stream_name":"stdout","time":2920.754175659,"data":"09:42:12 saved voice_rn293_train.npy (6485, 256)\n"}
+,{"stream_name":"stdout","time":2921.290606701,"data":"09:42:13   rn293A v1_complete 1/19556  1s  eta 10342s\n"}
+,{"stream_name":"stdout","time":3203.476195516,"data":"09:46:55   rn293A v1_complete 1001/19556  283s  eta 5240s\n"}
+,{"stream_name":"stdout","time":3468.120591609,"data":"09:51:19   rn293A v1_complete 2001/19556  547s  eta 4802s\n"}
+,{"stream_name":"stdout","time":3742.439821018,"data":"09:55:54   rn293A v1_complete 3001/19556  822s  eta 4533s\n"}
+,{"stream_name":"stdout","time":4010.747357024,"data":"10:00:22   rn293A v1_complete 4001/19556  1090s  eta 4238s\n"}
+,{"stream_name":"stdout","time":4287.411537097,"data":"10:04:59   rn293A v1_complete 5001/19556  1367s  eta 3978s\n"}
+,{"stream_name":"stdout","time":4578.483896339,"data":"10:09:50   rn293A v1_complete 6001/19556  1658s  eta 3744s\n"}
+,{"stream_name":"stdout","time":4865.997493348,"data":"10:14:37   rn293A v1_complete 7001/19556  1945s  eta 3488s\n"}
+,{"stream_name":"stdout","time":5140.102605879,"data":"10:19:11   rn293A v1_complete 8001/19556  2219s  eta 3205s\n"}
+,{"stream_name":"stdout","time":5414.137221895,"data":"10:23:45   rn293A v1_complete 9001/19556  2493s  eta 2924s\n"}
+,{"stream_name":"stdout","time":5685.091091231,"data":"10:28:16   rn293A v1_complete 10001/19556  2764s  eta 2641s\n"}
+,{"stream_name":"stdout","time":5968.958680058,"data":"10:33:00   rn293A v1_complete 11001/19556  3048s  eta 2370s\n"}
+,{"stream_name":"stdout","time":6241.434918402,"data":"10:37:33   rn293A v1_complete 12001/19556  3321s  eta 2090s\n"}
+,{"stream_name":"stdout","time":6506.994698279,"data":"10:41:58   rn293A v1_complete 13001/19556  3586s  eta 1808s\n"}
+,{"stream_name":"stdout","time":6776.032993255,"data":"10:46:27   rn293A v1_complete 14001/19556  3855s  eta 1530s\n"}
+,{"stream_name":"stdout","time":7037.01149705,"data":"10:50:48   rn293A v1_complete 15001/19556  4116s  eta 1250s\n"}
+,{"stream_name":"stdout","time":7311.077331762,"data":"10:55:22   rn293A v1_complete 16001/19556  4390s  eta 975s\n"}
+,{"stream_name":"stdout","time":7580.235514278,"data":"10:59:52   rn293A v1_complete 17001/19556  4659s  eta 700s\n"}
+,{"stream_name":"stdout","time":7854.440788134,"data":"11:04:26   rn293A v1_complete 18001/19556  4934s  eta 426s\n"}
+,{"stream_name":"stdout","time":8135.777360513,"data":"11:09:07   rn293A v1_complete 19001/19556  5215s  eta 152s\n"}
+,{"stream_name":"stdout","time":8291.020670188,"data":"11:11:42   rn293A v1_complete 19556/19556  5370s  eta 0s\n"}
+,{"stream_name":"stdout","time":8291.096208514,"data":"11:11:42 saved ext_v1_complete_voice_rn293.npy (19556, 256)\n"}
+,{"stream_name":"stdout","time":8291.403156281,"data":"11:11:43   rn293A v2_complete 1/20715  0s  eta 6347s\n"}
+,{"stream_name":"stdout","time":8540.639604946,"data":"11:15:52   rn293A v2_complete 1001/20715  250s  eta 4914s\n"}
+,{"stream_name":"stdout","time":8793.111389948,"data":"11:20:04   rn293A v2_complete 2001/20715  502s  eta 4695s\n"}
+,{"stream_name":"stdout","time":9033.392291852,"data":"11:24:05   rn293A v2_complete 3001/20715  742s  eta 4382s\n"}
+,{"stream_name":"stdout","time":9278.021562288,"data":"11:28:09   rn293A v2_complete 4001/20715  987s  eta 4123s\n"}
+,{"stream_name":"stdout","time":9538.747206608,"data":"11:32:30   rn293A v2_complete 5001/20715  1248s  eta 3920s\n"}
+,{"stream_name":"stdout","time":9789.868159444,"data":"11:36:41   rn293A v2_complete 6001/20715  1499s  eta 3675s\n"}
+,{"stream_name":"stdout","time":10044.626508932,"data":"11:40:56   rn293A v2_complete 7001/20715  1754s  eta 3435s\n"}
+,{"stream_name":"stdout","time":10295.518662117,"data":"11:45:07   rn293A v2_complete 8001/20715  2004s  eta 3185s\n"}
+,{"stream_name":"stdout","time":10537.995352711,"data":"11:49:09   rn293A v2_complete 9001/20715  2247s  eta 2924s\n"}
+,{"stream_name":"stdout","time":10784.46455581,"data":"11:53:16   rn293A v2_complete 10001/20715  2493s  eta 2671s\n"}
+,{"stream_name":"stdout","time":11026.100539332,"data":"11:57:17   rn293A v2_complete 11001/20715  2735s  eta 2415s\n"}
+,{"stream_name":"stdout","time":11274.498385696,"data":"12:01:26   rn293A v2_complete 12001/20715  2983s  eta 2166s\n"}
+,{"stream_name":"stdout","time":11536.391011768,"data":"12:05:48   rn293A v2_complete 13001/20715  3245s  eta 1926s\n"}
+,{"stream_name":"stdout","time":11795.271420629,"data":"12:10:07   rn293A v2_complete 14001/20715  3504s  eta 1680s\n"}
+,{"stream_name":"stdout","time":12041.04962569,"data":"12:14:12   rn293A v2_complete 15001/20715  3750s  eta 1428s\n"}
+,{"stream_name":"stdout","time":12289.308731482,"data":"12:18:21   rn293A v2_complete 16001/20715  3998s  eta 1178s\n"}
+,{"stream_name":"stdout","time":12527.613498278,"data":"12:22:19   rn293A v2_complete 17001/20715  4237s  eta 925s\n"}
+,{"stream_name":"stdout","time":12765.614409928,"data":"12:26:17   rn293A v2_complete 18001/20715  4475s  eta 675s\n"}
+,{"stream_name":"stdout","time":13014.299671744,"data":"12:30:26   rn293A v2_complete 19001/20715  4723s  eta 426s\n"}
+,{"stream_name":"stdout","time":13245.44100465,"data":"12:34:17   rn293A v2_complete 20001/20715  4954s  eta 177s\n"}
+,{"stream_name":"stdout","time":13422.770768194,"data":"12:37:14   rn293A v2_complete 20715/20715  5132s  eta 0s\n"}
+,{"stream_name":"stdout","time":13422.816638057,"data":"12:37:14 saved ext_v2_complete_voice_rn293.npy (20715, 256)\n"}
+,{"stream_name":"stdout","time":13423.210326859,"data":"12:37:15 == rn293A done in 12493s\n"}
+,{"stream_name":"stdout","time":13431.361049376,"data":"{'data_type': 'shard', 'dataloader_args': {'batch_size': 128, 'drop_last': True, 'num_workers': 16, 'pin_memory': False, 'prefetch_factor': 8}, 'dataset_args': {'aug_prob': 0.6, 'fbank_args': {'dither': 1.0, 'frame_length': 25, 'frame_shift': 10, 'num_mel_bins': 80}, 'num_frms': 200, 'shuffle': True, 'shuffle_args': {'shuffle_size': 2500}, 'spec_aug': False, 'spec_aug_args': {'max_f': 8, 'max_t': 10, 'num_f_mask': 1, 'num_t_mask': 1, 'prob': 0.6}, 'speed_perturb': True}, 'exp_dir': 'exp/ECAPA_TDNN_GLOB_c1024-ASTP-emb192-fbank80-num_frms200-aug0.6-spTrue-saFalse-ArcMargin-SGD-epoch150', 'gpus': [0, 1], 'log_batch_interval': 100, 'loss': 'CrossEntropyLoss', 'loss_args': {}, 'margin_scheduler': 'MarginScheduler', 'margin_update': {'epoch_iter': 4265, 'final_margin': 0.2, 'fix_start_epoch': 40, 'increase_start_epoch': 20, 'increase_type': 'exp', 'initial_margin': 0.0, 'update_margin': True}, 'model': 'ECAPA_TDNN_GLOB_c1024', 'model_args': {'embed_dim': 192, 'feat_dim': 80, 'pooling_func': 'ASTP'}, 'model_init': None, 'noise_data': 'data/musan/lmdb', 'num_avg': 10, 'num_epochs': 150, 'optimizer': 'SGD', 'optimizer_args': {'lr': 0.1, 'momentum': 0.9, 'nesterov': True, 'weight_decay': 0.0001}, 'projection_args': {'easy_margin': False, 'embed_dim': 192, 'num_class': 17982, 'project_type': 'arc_margin', 'scale': 32.0}, 'reverb_data': 'data/rirs/lmdb', 'save_epoch_interval': 5, 'scheduler': 'ExponentialDecrease', 'scheduler_args': {'epoch_iter': 4265, 'final_lr': 5e-05, 'initial_lr': 0.1, 'num_epochs': 150, 'scale_ratio': 4.0, 'warm_from_zero': True, 'warm_up_epoch': 6}, 'seed': 42, 'train_data': 'data/vox2_dev/shard.list', 'train_label': 'data/vox2_dev/utt2spk'}\n"}
+,{"stream_name":"stdout","time":13432.55279757,"data":"12:37:24 ecapa1024A self-check: {'fp16': 0.9999999999999152}\n"}
+,{"stream_name":"stdout","time":13432.565357119,"data":"12:37:24   ecapa1024A gender/Bangla 1/716  0s  eta 9s\n"}
+,{"stream_name":"stdout","time":13499.758404539,"data":"12:38:31   ecapa1024A gender/Bangla 716/716  67s  eta 0s\n"}
+,{"stream_name":"stdout","time":13499.759395335,"data":"12:38:31 saved voice_ecapa1024_gender_Bangla.npy (716, 192)\n"}
+,{"stream_name":"stdout","time":13499.76907564,"data":"12:38:31   ecapa1024A no_gender/Bangla 1/802  0s  eta 11s\n"}
+,{"stream_name":"stdout","time":13532.569511955,"data":"12:39:04   ecapa1024A no_gender/Bangla 802/802  33s  eta 0s\n"}
+,{"stream_name":"stdout","time":13532.570831365,"data":"12:39:04 saved voice_ecapa1024_no_gender_Bangla.npy (802, 192)\n"}
+,{"stream_name":"stdout","time":13532.577958613,"data":"12:39:04   ecapa1024A gender/English 1/416  0s  eta 5s\n"}
+,{"stream_name":"stdout","time":13547.033567064,"data":"12:39:18   ecapa1024A gender/English 416/416  14s  eta 0s\n"}
+,{"stream_name":"stdout","time":13547.036283228,"data":"12:39:18 saved voice_ecapa1024_gender_English.npy (416, 192)\n"}
+,{"stream_name":"stdout","time":13547.051748445,"data":"12:39:18   ecapa1024A no_gender/English 1/392  0s  eta 6s\n"}
+,{"stream_name":"stdout","time":13555.560046231,"data":"12:39:27   ecapa1024A no_gender/English 392/392  9s  eta 0s\n"}
+,{"stream_name":"stdout","time":13555.561700932,"data":"12:39:27 saved voice_ecapa1024_no_gender_English.npy (392, 192)\n"}
+,{"stream_name":"stdout","time":13555.581955154,"data":"12:39:27   ecapa1024A train 1/6485  0s  eta 69s\n"}
+,{"stream_name":"stdout","time":13616.377460997,"data":"12:40:28   ecapa1024A train 1001/6485  61s  eta 333s\n"}
+,{"stream_name":"stdout","time":13650.863264022,"data":"12:41:02   ecapa1024A train 2001/6485  95s  eta 214s\n"}
+,{"stream_name":"stdout","time":13678.252794028,"data":"12:41:30   ecapa1024A train 3001/6485  123s  eta 142s\n"}
+,{"stream_name":"stdout","time":13697.643001506,"data":"12:41:49   ecapa1024A train 4001/6485  142s  eta 88s\n"}
+,{"stream_name":"stdout","time":13719.000008912,"data":"12:42:10   ecapa1024A train 5001/6485  163s  eta 48s\n"}
+,{"stream_name":"stdout","time":13738.448605002,"data":"12:42:30   ecapa1024A train 6001/6485  183s  eta 15s\n"}
+,{"stream_name":"stdout","time":13750.477200038,"data":"12:42:42   ecapa1024A train 6485/6485  195s  eta 0s\n"}
+,{"stream_name":"stdout","time":13750.494433391,"data":"12:42:42 saved voice_ecapa1024_train.npy (6485, 192)\n"}
+,{"stream_name":"stdout","time":13750.51423001,"data":"12:42:42   ecapa1024A v1_complete 1/19556  0s  eta 380s\n"}
+,{"stream_name":"stdout","time":13767.458355672,"data":"12:42:59   ecapa1024A v1_complete 1001/19556  17s  eta 314s\n"}
+,{"stream_name":"stdout","time":13783.192799344,"data":"12:43:15   ecapa1024A v1_complete 2001/19556  33s  eta 287s\n"}
+,{"stream_name":"stdout","time":13799.588901686,"data":"12:43:31   ecapa1024A v1_complete 3001/19556  49s  eta 271s\n"}
+,{"stream_name":"stdout","time":13815.62742305,"data":"12:43:47   ecapa1024A v1_complete 4001/19556  65s  eta 253s\n"}
+,{"stream_name":"stdout","time":13831.452508019,"data":"12:44:03   ecapa1024A v1_complete 5001/19556  81s  eta 236s\n"}
+,{"stream_name":"stdout","time":13849.119321101,"data":"12:44:20   ecapa1024A v1_complete 6001/19556  99s  eta 223s\n"}
+,{"stream_name":"stdout","time":13866.132449955,"data":"12:44:37   ecapa1024A v1_complete 7001/19556  116s  eta 207s\n"}
+,{"stream_name":"stdout","time":13882.169874761,"data":"12:44:53   ecapa1024A v1_complete 8001/19556  132s  eta 190s\n"}
+,{"stream_name":"stdout","time":13898.388778389,"data":"12:45:10   ecapa1024A v1_complete 9001/19556  148s  eta 173s\n"}
+,{"stream_name":"stdout","time":13914.338617198,"data":"12:45:26   ecapa1024A v1_complete 10001/19556  164s  eta 157s\n"}
+,{"stream_name":"stdout","time":13931.223099205,"data":"12:45:43   ecapa1024A v1_complete 11001/19556  181s  eta 141s\n"}
+,{"stream_name":"stdout","time":13947.511086766,"data":"12:45:59   ecapa1024A v1_complete 12001/19556  197s  eta 124s\n"}
+,{"stream_name":"stdout","time":13963.095306628,"data":"12:46:14   ecapa1024A v1_complete 13001/19556  213s  eta 107s\n"}
+,{"stream_name":"stdout","time":13978.824879452,"data":"12:46:30   ecapa1024A v1_complete 14001/19556  228s  eta 91s\n"}
+,{"stream_name":"stdout","time":13993.970523963,"data":"12:46:45   ecapa1024A v1_complete 15001/19556  243s  eta 74s\n"}
+,{"stream_name":"stdout","time":14009.863884102,"data":"12:47:01   ecapa1024A v1_complete 16001/19556  259s  eta 58s\n"}
+,{"stream_name":"stdout","time":14025.573649481,"data":"12:47:17   ecapa1024A v1_complete 17001/19556  275s  eta 41s\n"}
+,{"stream_name":"stdout","time":14041.117679834,"data":"12:47:32   ecapa1024A v1_complete 18001/19556  291s  eta 25s\n"}
+,{"stream_name":"stdout","time":14056.773074749,"data":"12:47:48   ecapa1024A v1_complete 19001/19556  306s  eta 9s\n"}
+,{"stream_name":"stdout","time":14065.683202695,"data":"12:47:57   ecapa1024A v1_complete 19556/19556  315s  eta 0s\n"}
+,{"stream_name":"stdout","time":14065.726115918,"data":"12:47:57 saved ext_v1_complete_voice_ecapa1024.npy (19556, 192)\n"}
+,{"stream_name":"stdout","time":14065.745106041,"data":"12:47:57   ecapa1024A v2_complete 1/20715  0s  eta 390s\n"}
+,{"stream_name":"stdout","time":14082.682782094,"data":"12:48:14   ecapa1024A v2_complete 1001/20715  17s  eta 334s\n"}
+,{"stream_name":"stdout","time":14099.106453249,"data":"12:48:30   ecapa1024A v2_complete 2001/20715  33s  eta 312s\n"}
+,{"stream_name":"stdout","time":14114.949478632,"data":"12:48:46   ecapa1024A v2_complete 3001/20715  49s  eta 290s\n"}
+,{"stream_name":"stdout","time":14130.925883855,"data":"12:49:02   ecapa1024A v2_complete 4001/20715  65s  eta 272s\n"}
+,{"stream_name":"stdout","time":14147.530030214,"data":"12:49:19   ecapa1024A v2_complete 5001/20715  82s  eta 257s\n"}
+,{"stream_name":"stdout","time":14164.281149455,"data":"12:49:36   ecapa1024A v2_complete 6001/20715  99s  eta 242s\n"}
+,{"stream_name":"stdout","time":14180.715772478,"data":"12:49:52   ecapa1024A v2_complete 7001/20715  115s  eta 225s\n"}
+,{"stream_name":"stdout","time":14197.071632577,"data":"12:50:08   ecapa1024A v2_complete 8001/20715  131s  eta 209s\n"}
+,{"stream_name":"stdout","time":14212.961528455,"data":"12:50:24   ecapa1024A v2_complete 9001/20715  147s  eta 192s\n"}
+,{"stream_name":"stdout","time":14229.164341809,"data":"12:50:40   ecapa1024A v2_complete 10001/20715  163s  eta 175s\n"}
+,{"stream_name":"stdout","time":14245.183093328,"data":"12:50:57   ecapa1024A v2_complete 11001/20715  179s  eta 158s\n"}
+,{"stream_name":"stdout","time":14261.991451062,"data":"12:51:13   ecapa1024A v2_complete 12001/20715  196s  eta 143s\n"}
+,{"stream_name":"stdout","time":14278.714319211,"data":"12:51:30   ecapa1024A v2_complete 13001/20715  213s  eta 126s\n"}
+,{"stream_name":"stdout","time":14295.519196422,"data":"12:51:47   ecapa1024A v2_complete 14001/20715  230s  eta 110s\n"}
+,{"stream_name":"stdout","time":14311.922698665,"data":"12:52:03   ecapa1024A v2_complete 15001/20715  246s  eta 94s\n"}
+,{"stream_name":"stdout","time":14328.629805965,"data":"12:52:20   ecapa1024A v2_complete 16001/20715  263s  eta 77s\n"}
+,{"stream_name":"stdout","time":14344.357022721,"data":"12:52:36   ecapa1024A v2_complete 17001/20715  279s  eta 61s\n"}
+,{"stream_name":"stdout","time":14360.014178624,"data":"12:52:51   ecapa1024A v2_complete 18001/20715  294s  eta 44s\n"}
+,{"stream_name":"stdout","time":14375.855840086,"data":"12:53:07   ecapa1024A v2_complete 19001/20715  310s  eta 28s\n"}
+,{"stream_name":"stdout","time":14390.907619496,"data":"12:53:22   ecapa1024A v2_complete 20001/20715  325s  eta 12s\n"}
+,{"stream_name":"stdout","time":14403.632865883,"data":"12:53:35   ecapa1024A v2_complete 20715/20715  338s  eta 0s\n"}
+,{"stream_name":"stdout","time":14403.675626317,"data":"12:53:35 saved ext_v2_complete_voice_ecapa1024.npy (20715, 192)\n"}
+,{"stream_name":"stdout","time":14404.001613406,"data":"12:53:35 == ecapa1024A done in 981s\n"}
+,{"stream_name":"stdout","time":14404.002689726,"data":"failed: none\n"}
+,{"stream_name":"stdout","time":14404.052262672,"data":"[cell] 08 zero-shot probe on TRUE labels (no training)\n"}
+,{"stream_name":"stdout","time":14404.489035534,"data":"          array  same_gender_identity_eer\n"}
+,{"stream_name":"stdout","time":14404.489065402,"data":"    voice_rn293                      4.10\n"}
+,{"stream_name":"stdout","time":14404.489071109,"data":"voice_ecapa1024                      5.28\n"}
+,{"stream_name":"stdout","time":14404.524758624,"data":"[cell] 09 man = created: time.strftime(Y-m-d H:M), splits: k: len(vwav\n"}
+,{"stream_name":"stdout","time":14404.530280337,"data":"14 arrays, 0.05 GB in /kaggle/working/feats_screen2 | failed: none\n"}
+,{"stream_name":"stdout","time":14404.53029799,"data":"NEXT: Save Version (Save \u0026 Run All) -\u003e Output -\u003e New Dataset -\u003e name it flag2027-feats-screen2 (re-run with this output attached until every encoder is done)\n"}
+,{"stream_name":"stderr","time":14409.940429774,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":14409.940458882,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":14410.10668214,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":14410.106707389,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":14410.946921659,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":14411.074077222,"data":"[NbConvertApp] Writing 74449 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":14413.515846769,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":14414.204706069,"data":"[NbConvertApp] Writing 528237 bytes to __results__.html\n"}
+]

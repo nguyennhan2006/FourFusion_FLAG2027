@@ -1,0 +1,70 @@
+{
+ "copied_from": "Experiment/EVALPATH-U/build_evalphase.py (untracked in git)",
+ "btc_zip": {
+  "path_team_machine": "D:/Sinh viên CNhan/download/evaluation_phase.zip",
+  "bytes": 472428761,
+  "sha256": "c9efa2100dc54188fbd9739970a98c1cd966985d9c6f7d46148e5a3af96fc9f9",
+  "members": 4681,
+  "files": 4664
+ },
+ "eval_set_zip": {
+  "path_team_machine": "D:/ff_data/evalphase/eval_set.zip",
+  "bytes": 473574461,
+  "sha256": "a70762a3fb52af6bbf52c14a86c79a4d074ec319b78d6ffedcdf195d71f9381e",
+  "members": 4669
+ },
+ "member_manifest": "expected/eval_set_members.sha256 = sha256 of every member of D:/ff_data/evalphase/eval_set.zip (computed 18/11/2026)",
+ "stage": "raw_evalphase",
+ "files": [
+  {
+   "path": "original/build_evalphase.py",
+   "bytes": 3027,
+   "md5": "f44295cbb8f9b2069d48810698bc19e8",
+   "sha256": "3c65a78b3e407ffa8308b6af2beb2d715e6a4d89472a7057f6aadfeb67e90522"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "build_evalphase.py",
+   "bytes": 3027,
+   "md5": "f44295cbb8f9b2069d48810698bc19e8",
+   "sha256": "3c65a78b3e407ffa8308b6af2beb2d715e6a4d89472a7057f6aadfeb67e90522"
+  },
+  {
+   "path": "cells/00_locate.py",
+   "bytes": 1775,
+   "md5": "4802aedd17dd34640ff11dedca8eecfc",
+   "sha256": "bb680d3b621ed42e6400758aff959b28487a7cb7210e5db1d56c9879b1653186"
+  },
+  {
+   "path": "cells/01_build.py",
+   "bytes": 1411,
+   "md5": "31e76501baa7492d066c1a736f98a44d",
+   "sha256": "41ceb9dfe9602830cddd7747e3893c3a9bdc4e7945ec11013b23a3abe2eef30f"
+  },
+  {
+   "path": "cells/02_verify.py",
+   "bytes": 1318,
+   "md5": "8a2ea9425d0a39e2a2637ce29771c6cf",
+   "sha256": "f7934cd6633b15ffcb7a19b9406ddd4ff82dafff56fa67c214944ea78fa513b7"
+  },
+  {
+   "path": "cells/03_unpack.py",
+   "bytes": 1071,
+   "md5": "ec66d6787f1e364020f6deb6c120f8c9",
+   "sha256": "59df9881d3abc613acf7d356169df5f4cfe5f8c38c58f1501ad21f4bab4fb29c"
+  },
+  {
+   "path": "expected/eval_set_members.sha256",
+   "bytes": 562075,
+   "md5": "8d452b438863cb82f512b8175f46e76c",
+   "sha256": "03c2d47195c33c170e98490772910e8f70ff994c16ada83736e7345faf5158e3"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 489,
+   "md5": "64e1e98faa11e2c6dbd2a28deabc1409",
+   "sha256": "e69515660d8d92ca361c0a30761bbbbb1b2c80af91b03ce4852ddf6a2a7d5101"
+  }
+ ]
+}

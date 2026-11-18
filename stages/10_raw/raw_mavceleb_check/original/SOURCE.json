@@ -1,0 +1,15 @@
+{
+ "note": "no original code: the stage checks a saved copy of the organisers' MAV-Celeb v1 / v2 releases as extracted by Kaggle (public dataset chnnhnnguyn/external-data-mavceleb)",
+ "expected_from": "stages/10_raw/raw_mavceleb/expected.json (zip central directories read 18/11/2026, WP-B)",
+ "partial_copy_seen": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/chnnhnnguyn__external-data-mavceleb/ = mavceleb_v1_complete-001/{meta_v1.csv, v1/faces} only: no v1/voices, no mavceleb_v2_complete-002 (listed 18/11/2026)",
+ "stage": "raw_mavceleb_check",
+ "files": [],
+ "stage_files": [
+  {
+   "path": "cells/00_check.py",
+   "bytes": 4053,
+   "md5": "dd5abeeabbcf75695d81da98e2e47080",
+   "sha256": "b65dd7c47d7c0de3f6ddc57707bd777728d50b137c08384fbb76da4d4490915a"
+  }
+ ]
+}

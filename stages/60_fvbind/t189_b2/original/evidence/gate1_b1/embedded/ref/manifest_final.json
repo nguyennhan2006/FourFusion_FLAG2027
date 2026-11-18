@@ -1,0 +1,74 @@
+{
+ "system": "RF-L2-092 (= RF-L2-088 + QF: per-pair log norms of the projected face / voice embeddings before L2 normalisation, nf / nv, as fuser streams): QV-Whisper t3 + ImageBind/LoRA-C1c ib + nf + nv (+ age in no_gender files); gender files LR on (t3, ib, nf, nv), no_gender files CA-FUSE; no score normalisation, no cohort, no test statistics",
+ "streams_g": [
+  "t3",
+  "ib",
+  "nf",
+  "nv"
+ ],
+ "streams_ng": [
+  "t3",
+  "ib",
+  "nf",
+  "nv",
+  "age"
+ ],
+ "t3_voice_extra": [
+  {
+   "block": "whv3",
+   "dim": 1280,
+   "model": "openai/whisper-large-v3 encoder, mean over the frames of the first 30 s, frozen"
+  }
+ ],
+ "projector": {
+  "dim": 512,
+  "drop_f": 0.8,
+  "drop_v": 0.5,
+  "lr": 0.0005,
+  "wd": 0.0001,
+  "steps": 3000,
+  "warmup": 100,
+  "persons": 512,
+  "tau": 0.05,
+  "seeds": [
+   1,
+   2,
+   3
+  ]
+ },
+ "dimensions": [
+  4096,
+  192
+ ],
+ "hf_revisions": {
+  "openai/whisper-large-v3": "06f233fe06e710322aca913c1bc4249a0d71fce1",
+  "nateraw/vit-age-classifier": "4b5acc345d9692c3ff4f45d250531afd3a3da0ef",
+  "audeering/wav2vec2-large-robust-24-ft-age-gender": "bad2737f529168bc3d3fcd97edfaba9583c7d36d",
+  "openai/clip-vit-large-patch14": "32bd64288804d66eefd0ccbe215aa642df71cc41"
+ },
+ "age": {
+  "models": [
+   "nateraw/vit-age-classifier expected age (face), frozen",
+   "audeering/wav2vec2-large-robust-24-ft-age-gender age x 100 (voice), frozen"
+  ],
+  "note": "no_gender fuser only; b fitted on the v4 (English) training rows"
+ },
+ "source_artifact_manifest": {
+  "ext.npz": "7f6a7ceb250c1acabdf4509d06a885ccb9798db3372eda7356cbf2d7292ef911",
+  "fuser_gender_lr4.joblib": "84e47e43c193fd316b0a8669d36f4eec3f7e271ea66a28a6fd86ade8038401c4",
+  "fuser_swap_Q.joblib": "86fcfd0711beb3362792459a492e93432f27987f7ac0361170c4effc5a608668",
+  "l1_train.npz": "a7cc5ee13736ba9fbcf7f42bbc722618b2177d70355a953b160350f87316f1f5",
+  "lora_C1.pt": "e00515d2ed976930a26d22f2a8b458adb38d68dc0ba85df62d3c6485a224e17c",
+  "projector.json": "2f09d46a96d12d3522a68876caeffe59166109e58fcd675cd3fe83536d814f2f",
+  "projector_Q.pt": "7cdc172f260155648f9d242f3aabf2e6e8b57e0215771456179232a2ccf02f7c",
+  "run_contract.json": "114853df415a023a55834a4dcb308ce194aa0c66584f5f2e8abae97b3f98518b",
+  "train_constants.npz": "a33772ce72efa773c39d3af39b4c5e6be3a997aa94d9a635ed7f8f075a380c96"
+ },
+ "files": {
+  "final_params.npz": "1da837a149cc174edac88a564092857a2e6c0d98a75c22db920d26480ae9b283",
+  "lora_C1.pt": "e00515d2ed976930a26d22f2a8b458adb38d68dc0ba85df62d3c6485a224e17c",
+  "projector_Q.pt": "7cdc172f260155648f9d242f3aabf2e6e8b57e0215771456179232a2ccf02f7c",
+  "submission_reference.zip": "26086f1fd3e953077086b3001eae488861dea95b1ee66fc91261cf80625853fb"
+ },
+ "declared": "External pool: VoxCeleb2 5 930 people (unofficial HF mirror ProgramComputer/voxceleb), MAV-Celeb v1/v2 24 people, VoxBlink 7 713 people / 15 426 clips (unofficial HF mirror of VoxBlink, CC BY-NC-SA, research use, not redistributed). Team Bengali rule (person level): VoxLingua107 + Whisper-small + Whisper-large-v3 on every 30 s window; 59 VoxCeleb2 people flagged on other videos (RF-L2-085) removed from both the projector pool and the LoRA data (LoRA C1c, RF-L2-087: 19 122 clips / 5 929 people). VoxBlink recipe chosen after the RF-L2-064 pilot OOF; RF-L2-066 passed its registered gate (nested OOF -0.43, 7/10, p90 31.93 -> 31.64); RF-L2-088 is a compliance retrain of 066, not a new selection. RF-L2-092: QF failed its registered gate twice on the 17-person p90 (066: -0.24, 8/10; 088: -0.23, 7/10); selected after its CodaBench check (18.61 vs 18.95), declared."
+}

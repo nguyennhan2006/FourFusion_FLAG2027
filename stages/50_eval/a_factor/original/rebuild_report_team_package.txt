@@ -1,0 +1,6 @@
+wrote E:\FLAG2027_submit\FACTOR_ENFUSE_c5rl\rebuild\FACTOR_ENFUSE_c5rl_rebuilt.zip
+  no_gender/sub_score_v4_English_heard.txt: 392 pairs, identical
+  no_gender/sub_score_v4_Bangla_unheard.txt: 802 pairs, identical
+  gender/sub_score_v4_English_heard.txt: 416 pairs, identical
+  gender/sub_score_v4_Bangla_unheard.txt: 716 pairs, identical
+OK: identical to the submitted zip

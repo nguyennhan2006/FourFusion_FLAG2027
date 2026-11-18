@@ -1,0 +1,224 @@
+print("[cell] safe04_lab 1/5: settings and inputs", flush=True)
+# NEW stage of the FourFusion reproduction repository (no Kaggle run of its own existed: the SAFE-04 lab of October 2026 ran on the
+# local CPU and its scratch folder was deleted on 1/11/2026). It rebuilds the SAFE-04 reference tables of the e2e-dev bundle
+# (datasets/ngnnguynchn/flag2027-e2e-dev-p, folder e2edev/safe04/) from flag2027-lab-data + flag2027-eda-bundle with the ORIGINAL lab
+# scripts (code/, verbatim; CODE_MANIFEST.json). The same code serves two stages (stage.json env FF_SAFE04_LEVEL):
+#   safe04_lab       FF_SAFE04_LEVEL=full: every table of e2edev/safe04/, each by the script that made it in October 2026; no table is
+#                    taken from a frozen copy. The only producer-less input is the dev wiring of the frozen bundle (artifact
+#                    datasets/ff-frozen/flag2027-e2e-dev-wiring-p: components_dev.npz, e2e_manifest.json, fusers/, ref/), copied byte
+#                    for byte (it describes the organisers' dev lists; build_e2e_dev_bundle.components() is never called). Output
+#                    e2e_dev_rebuilt/ = the producer of datasets/ngnnguynchn/flag2027-e2e-dev-p.
+#   safe04_lab_core  FF_SAFE04_LEVEL=core: a PARTIAL rebuild used only as evidence: keys + Extra streams (pf_m, pv_m, acl, lb, iba2,
+#                    ibal, gen) of streams_fold<s>, stack02_rows and fold_persons.json are rebuilt and spliced into the safe04/ tables
+#                    of the FROZEN bundle (XALL_* / CTRL_* columns and the relonly_* / t3enc01f / bigb01f / cafuse_en2 tables stay
+#                    frozen); output e2e_dev_core/ (kernel output only, never exported as flag2027-e2e-dev-p).
+#   FF_SAFE04_FOLDS=1,2,3,4,5 (smoke: 1). Level full requires all five folds outside smoke; a smoke output is marked incomplete.
+import os, sys, json, time, shutil, subprocess, hashlib
+from pathlib import Path
+import numpy as np
+IN, WORK = Path("/kaggle/input"), Path("/kaggle/working")
+LEVEL = os.environ.get("FF_SAFE04_LEVEL", "full")
+assert LEVEL in ("core", "full"), f"FF_SAFE04_LEVEL must be core or full, not {LEVEL!r}"
+SMOKE = os.environ.get("FF_SMOKE") == "1"
+FOLDS = [int(x) for x in os.environ.get("FF_SAFE04_FOLDS", "1" if SMOKE else "1,2,3,4,5").split(",") if x]
+ALL = [1, 2, 3, 4, 5]
+assert FOLDS and set(FOLDS) <= set(ALL), FOLDS
+assert SMOKE or LEVEL == "core" or sorted(FOLDS) == ALL, "level full rebuilds every fold (no frozen table may fill a fold); fewer folds only under FF_SMOKE=1"
+COMPLETE = sorted(FOLDS) == ALL or LEVEL == "core"
+STAGE_DIR = Path(os.environ.get("FF_STAGE_DIR", "."))
+CODE = next((c for c in (STAGE_DIR / "code", STAGE_DIR.parent / "safe04_lab" / "code") if (c / "CODE_MANIFEST.json").exists()), None)
+assert CODE is not None, f"FF_STAGE_DIR must be stages/30_F_family/safe04_lab or safe04_lab_core of the repository (got {STAGE_DIR})"
+
+
+def log(*a):
+    print(time.strftime("%H:%M:%S"), *a, flush=True)
+
+
+mans = [(m.parent, json.loads(m.read_text())) for m in sorted(IN.rglob("lab_manifest.json"))]
+main = [(d, m) for d, m in mans if m.get("kind", "data") == "data"]
+assert len(main) == 1, f"attach exactly one flag2027-lab-data (found {len(main)})"
+DATA, MAN = main[0]
+eda = sorted(IN.rglob("eda_bundle_manifest.json"))
+assert len(eda) == 1, f"attach exactly one flag2027-eda-bundle (found {len(eda)})"
+created = json.loads(eda[0].read_text())["created"]
+assert created == MAN["eda_bundle_created"], f"eda bundle {created} != the lab's {MAN['eda_bundle_created']}"
+BUNDLES = [m.parent for m in IN.rglob("e2e_manifest.json") if json.loads(m.read_text()).get("kind") == "e2e-dev"]
+WIRING_ENTRIES = ["components_dev.npz", "e2e_manifest.json", "fusers", "ref"]
+if LEVEL == "full":
+    assert len(BUNDLES) == 1, f"attach exactly one dev-wiring folder (artifact datasets/ff-frozen/flag2027-e2e-dev-wiring-p): {BUNDLES}"
+    WIRING, FROZEN = BUNDLES[0], None
+    assert not (WIRING / "safe04").exists(), (f"{WIRING} holds safe04/ tables: attach the dev-wiring subset (components_dev.npz, "
+                                              "e2e_manifest.json, fusers/, ref/), not the frozen bundle; level full takes no table from a frozen copy")
+    for n in WIRING_ENTRIES:
+        assert (WIRING / n).exists(), f"dev wiring: {WIRING / n} missing"
+else:
+    FROZEN = [b for b in BUNDLES if (b / "safe04/streams_fold1.parquet").exists()]
+    assert len(FROZEN) == 1, f"attach exactly one frozen e2e-dev bundle with safe04/ tables (artifact datasets/ff-frozen/flag2027-e2e-dev-p): {FROZEN}"
+    FROZEN, WIRING = FROZEN[0], None
+log(f"level {LEVEL} | folds rebuilt {FOLDS} (complete {COMPLETE}) | smoke {SMOKE} | lab data {DATA} (built {MAN['created']}) | eda {created} | "
+    f"{'dev wiring ' + str(WIRING) if LEVEL == 'full' else 'frozen bundle ' + str(FROZEN)} | code {CODE}")
+# <<<FF-CELL>>>
+print("[cell] safe04_lab 2/5: lab workspace (verbatim code checked by sha256, data folders linked as the lab notebooks do)", flush=True)
+LAB, SP = WORK / "lab", WORK / "sp"
+(SP / "out/safe04").mkdir(parents=True, exist_ok=True)
+CM = json.loads((CODE / "CODE_MANIFEST.json").read_text())
+for rel, meta in CM.items():
+    b = (CODE / rel).read_bytes()
+    assert hashlib.sha256(b).hexdigest() == meta["sha256"], f"code/{rel}: sha256 differs from CODE_MANIFEST.json"
+    (LAB / rel).parent.mkdir(parents=True, exist_ok=True); (LAB / rel).write_bytes(b)
+
+
+def link(target, path):
+    if path.exists() or path.is_symlink():
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    os.symlink(target, path, target_is_directory=Path(target).is_dir())
+
+
+# = DATA_DIRS of kaggle/build_lab_notebook.py / the FLAG_164 notebook (folders of flag2027-lab-data, linked next to the code)
+DATA_DIRS = ["kaggle/output/feats_av", "kaggle/output/feats_eval", "kaggle/output/feats_models", "Experiment/T3ENC-01/feats_t3enc",
+             "Experiment/T3ENC-01/feats_vox2t3", "Experiment/T3ENC-01/feats_vox2lid", "Experiment/VOX2-01/feats_vox2"]
+for d in DATA_DIRS:
+    assert (DATA / d).is_dir(), f"flag2027-lab-data has no {d}"
+    if d == "kaggle/output/feats_eval" and LEVEL == "full":
+        continue
+    link(DATA / d, LAB / d)
+if LEVEL == "full":
+    # lab-data carries (rows, 0) placeholders for the three ECAPA-6144 arrays (kaggle/build_lab_bundle.py PLACEHOLDERS); the October
+    # lab ran with the real arrays (kaggle/output/feats_eval of FLAG_12), which Experiment/CAFUSE-EN/run2.py reads. They come from the
+    # FLAG_12-round stage f12_eval_feats (artifact notebooks/ff/f12_eval_feats).
+    fe = LAB / "kaggle/output/feats_eval"; fe.mkdir(parents=True, exist_ok=True)
+    for f in sorted((DATA / "kaggle/output/feats_eval").iterdir()):
+        link(f, fe / f.name)
+    for n in ("voice_ecapa6144_train.npy", "ext_v1_complete_voice_ecapa6144.npy", "ext_v2_complete_voice_ecapa6144.npy"):
+        cand = [p for p in sorted(IN.rglob(n)) if np.load(p, mmap_mode="r").shape[-1] == 6144]
+        assert cand, f"{n}: no real ECAPA-6144 array among the inputs (attach notebooks/ff/f12_eval_feats)"
+        (fe / n).unlink(); os.symlink(cand[0], fe / n)
+        log(f"{n} {np.load(cand[0], mmap_mode='r').shape} <- {cand[0]}")
+ENVV = dict(os.environ, SAFE04_SCRATCH=str(SP), FLAG_LOCAL="1", FLAG_IN=str(eda[0].parent.parent), FLAG_OUT=str(SP / "out"),
+            VOX_LID=str(LAB / "Experiment/T3ENC-01/feats_vox2lid/lid_summary.json"), SAFE04_THREADS=str(os.cpu_count() or 4),
+            PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8")
+for k in ("LID_STRICT", "NOREL", "CLEANCOMP", "BN42", "SAFE04_NOMAIN"):       # the October tables were built before these opt-in flags
+    ENVV.pop(k, None)
+if SMOKE:
+    ENVV.update(L0_STEPS="10", L0_NETS="1")                                  # = the smoke settings of the FLAG_164 runs
+log(f"lab ready at {LAB}: {len(CM)} code files; VOX_LID {ENVV['VOX_LID']}")
+# <<<FF-CELL>>>
+print("[cell] safe04_lab 3/5: run the lab scripts (one subprocess each, output streamed line by line)", flush=True)
+import pandas as pd
+
+
+def run(script, extra):
+    t0 = time.time()
+    p = subprocess.Popen([sys.executable, "-u", str(LAB / script)], cwd=str(WORK), env=dict(ENVV, **extra), stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", bufsize=1)
+    tail = []
+    for line in p.stdout:
+        tail = (tail + [line])[-40:]
+        if "Warning" not in line and "warnings.warn" not in line:
+            print(f"[{script.split('/')[-2]}/{script.split('/')[-1]}] {line}", end="", flush=True)
+    if p.wait() != 0:
+        print("".join(tail)); raise RuntimeError(f"{script} failed")
+    log(f"{script} done [{time.time() - t0:.0f}s]")
+
+
+F_ = ",".join(map(str, FOLDS))
+SAFE = SP / "out/safe04"
+FT = FROZEN / "safe04" if FROZEN else None
+KEYS = ["fold", "data", "protocol", "y", "pf", "pv", "fi", "vi"]
+EXTRA = ["acl", "lb", "iba2", "ibal", "gen", "pf_m", "pv_m"]
+if LEVEL == "core":
+    run("Experiment/SAFE-04/ff_core_streams.py", dict(FOLDS=F_))
+    STREAMS_TAG, TABLES = "core_streams", ["core_streams"]
+else:
+    for script, extra in [("Experiment/SAFE-04/lab_streams.py", dict(SAFE04_FOLDS=F_)),        # streams_fold<s> (local run, Oct. 2026)
+                          ("Experiment/SAFE-04/rel_sweep2.py", dict(FOLDS=F_)),               # relonly_multi_fold<s> (bundle keeps relc_fia_eb)
+                          ("Experiment/SAFE-04/rel_sweep5.py", dict(FOLDS=F_)),               # relonly_g_fold<s> (relg_fia_eb)
+                          ("Experiment/T3ENC-01/run.py", dict(FOLDS=F_, T3_ARMS="B")),         # t3enc01f_fold<s>: arm B + C (T3ENC-01 README l.124)
+                          ("Experiment/BIGB-01/run.py", dict(FOLDS=F_, AN_ARMS="P256,B2x,P512,P256x2,P1024")),  # bigb01f_fold<s>: the bundle's 5 arms
+                          ("Experiment/CAFUSE-EN/run2.py", dict(FOLDS=F_))]:                   # cafuse_en2_fold<s>
+        run(script, extra)
+    STREAMS_TAG, TABLES = "streams", ["streams", "relonly_multi", "relonly_g", "t3enc01f", "bigb01f", "cafuse_en2"]
+REBUILT = {t: list(FOLDS) for t in TABLES}
+if LEVEL == "core":
+    for s in [x for x in ALL if x not in FOLDS]:                   # core only: folds not rebuilt (smoke / partial) = the frozen tables, marked so
+        d = pd.read_parquet(FT / f"streams_fold{s}.parquet")
+        d[KEYS + EXTRA].to_parquet(SAFE / f"core_streams_fold{s}.parquet")
+        log(f"fold {s}: frozen tables used (not rebuilt in this run)")
+run("Experiment/SAFE-04/ff_derive_stack02.py", dict(FOLDS="1,2,3,4,5" if LEVEL == "core" else F_, FF_STREAMS_TAG=STREAMS_TAG))
+# <<<FF-CELL>>>
+print("[cell] safe04_lab 4/5: bundle tables (packaging columns of build_e2e_dev_bundle.safe04_tables)", flush=True)
+import io, re
+REP = {"stage": os.environ.get("FF_STAGE", "safe04_lab"), "level": LEVEL, "folds_rebuilt": FOLDS, "complete": COMPLETE, "smoke": SMOKE,
+       "frozen_bundle": str(FROZEN) if FROZEN else None, "dev_wiring": str(WIRING) if WIRING else None,
+       "lab_data_built": MAN["created"], "eda_bundle_created": created, "tables": {}, "checks": {}}
+tabs = {}
+OUTB = WORK / ("e2e_dev_rebuilt" if LEVEL == "full" else "e2e_dev_core") / "e2edev"
+if LEVEL == "full":
+    sys.path.insert(0, str(LAB / "kaggle"))
+    import build_e2e_dev_bundle as BB                              # verbatim; only safe04_tables() (components() / main() read dev lists)
+    BB.SAFE = SAFE
+    if COMPLETE:
+        tabs = BB.safe04_tables()
+    else:                                                          # smoke: = BB.safe04_tables() restricted to the rebuilt folds
+        for s in FOLDS:
+            tabs[f"streams_fold{s}.parquet"] = pd.read_parquet(SAFE / f"streams_fold{s}.parquet")
+            tabs[f"relonly_multi_fold{s}.parquet"] = pd.read_parquet(SAFE / f"relonly_multi_fold{s}.parquet")[["relc_fia_eb"]]
+            tabs[f"relonly_g_fold{s}.parquet"] = pd.read_parquet(SAFE / f"relonly_g_fold{s}.parquet")[["relg_fia_eb"]]
+            for t in ("t3enc01f", "bigb01f", "cafuse_en2"):
+                tabs[f"{t}_fold{s}.parquet"] = pd.read_parquet(SAFE / f"{t}_fold{s}.parquet")
+        tabs["stack02_rows.parquet"] = pd.read_parquet(SAFE / "stack02_rows.parquet")[["fold", "data", "y", "fp", "vp"]]
+    for name in tabs:
+        REP["tables"][name] = "rebuilt"
+    for n in WIRING_ENTRIES:                                       # the dev wiring, byte for byte (never recomputed, never a table)
+        src = WIRING / n
+        for f in ([src] if src.is_file() else sorted(p for p in src.rglob("*") if p.is_file())):
+            dst = OUTB / f.relative_to(WIRING); dst.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(f, dst)
+        REP["tables"][n] = "dev wiring copied byte for byte from datasets/ff-frozen/flag2027-e2e-dev-wiring-p"
+else:
+    for s in ALL:
+        fz, cz = pd.read_parquet(FT / f"streams_fold{s}.parquet"), pd.read_parquet(SAFE / f"core_streams_fold{s}.parquet")
+        assert len(fz) == len(cz), (s, len(fz), len(cz))
+        for k in KEYS:
+            assert (fz[k].values == cz[k].values).all(), f"fold {s}: key column {k} differs from the frozen table"
+        REP["checks"][f"fold{s}"] = {c: float(np.nanmax(np.abs(fz[c].values.astype(np.float64) - cz[c].values.astype(np.float64)))) for c in EXTRA}
+        for c in EXTRA:
+            fz[c] = cz[c].values
+        tabs[f"streams_fold{s}.parquet"] = fz
+        REP["tables"][f"streams_fold{s}.parquet"] = ("keys + Extra columns rebuilt (keys asserted equal), XALL_* / CTRL_* columns frozen" if s in FOLDS
+                                                     else "frozen (fold not rebuilt)")
+    st = pd.read_parquet(SAFE / "stack02_rows.parquet")
+    tabs["stack02_rows.parquet"] = st[["fold", "data", "y", "fp", "vp"]]
+    REP["tables"]["stack02_rows.parquet"] = "rebuilt"
+    for f in sorted((FT).glob("*")):                               # core: the frozen safe04/ tables only (no dev wiring in this output)
+        if f.is_file():
+            dst = OUTB / "safe04" / f.name; dst.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(f, dst)
+(OUTB / "safe04").mkdir(parents=True, exist_ok=True)
+for name, df in tabs.items():                                       # = build_e2e_dev_bundle.main(): df.to_parquet(BytesIO) per table
+    b = io.BytesIO(); df.to_parquet(b); (OUTB / "safe04" / name).write_bytes(b.getvalue())
+shutil.copyfile(SAFE / "fold_persons.json", OUTB / "safe04/fold_persons.json")
+REP["tables"]["fold_persons.json"] = "rebuilt"
+for f in sorted((OUTB / "safe04").glob("*")):
+    REP["tables"].setdefault(f.name, "frozen")
+st = pd.read_parquet(OUTB / "safe04/stack02_rows.parquet")
+if FT is not None:                                                  # core: in-stage comparison with the frozen tables (full: safe04_compare)
+    sf = pd.read_parquet(FT / "stack02_rows.parquet")
+    REP["checks"]["stack02_rows_identical"] = bool(len(st) == len(sf) and all((st[c].astype(str).values == sf[c].astype(str).values).all() for c in st.columns))
+    REP["checks"]["fold_persons_identical"] = json.loads((OUTB / "safe04/fold_persons.json").read_text()) == json.loads((FT / "fold_persons.json").read_text())
+REP["checks"]["pairs"] = int(len(st))
+REP["rebuilt_per_table_folds"] = REBUILT
+(OUTB / "SAFE04_REBUILT.json").write_text(json.dumps(REP, indent=1))
+print(json.dumps(REP, indent=1), flush=True)
+# <<<FF-CELL>>>
+print("[cell] safe04_lab 5/5: output listing; the lab folder (code copies + input links) is removed from the artefact", flush=True)
+shutil.rmtree(LAB, ignore_errors=True)
+for f in sorted(OUTB.parent.rglob("*")):
+    if f.is_file():
+        print(f"  {hashlib.sha256(f.read_bytes()).hexdigest()}  {f.stat().st_size:10d}  {f.relative_to(WORK)}", flush=True)
+if COMPLETE:
+    assert REP["checks"]["pairs"] == 37110, REP["checks"]["pairs"]
+else:
+    log(f"SMOKE: folds {FOLDS} only ({REP['checks']['pairs']} pairs); the output is incomplete (SAFE04_REBUILT.json complete=false)")
+log(f"{REP['stage']} done: {OUTB.parent.name}/ " + ("-> datasets/ngnnguynchn/flag2027-e2e-dev-p (rebuilt); compare with safe04_compare" if LEVEL == "full"
+                                                   else "(partial rebuild, evidence only; not exported)"))
+# <<<FF-CELL>>>

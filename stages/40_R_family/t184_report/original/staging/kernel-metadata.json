@@ -1,0 +1,36 @@
+{
+ "id": "phantrnhuyntrn/flag-2027-nb-184-factor-report",
+ "title": "flag-2027-nb-184-factor-report",
+ "code_file": "flag-2027-nb-184-factor-report.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_internet": false,
+ "machine_shape": "",
+ "dataset_sources": [
+  "ngnnguynchn/flag2027-lab-data-p",
+  "ngnnguynchn/flag2027-lab-vb-p",
+  "ngnnguynchn/flag2027-eda-bundle-p",
+  "ngnnguynchn/flag2027-e2e-dev-p",
+  "ngnnguynchn/flag2027-cc5-oof-p",
+  "ngnnguynchn/flag2027-dsel02-oof-p",
+  "ngnnguynchn/flag2027-feats-vox2b-p",
+  "phanvnhtrng/flag2027-feats-ls-b3s-p",
+  "ngnnguynchn/flag2027-facelora03-tables-p",
+  "ngnnguynchn/flag2027-lab-avfull-p",
+  "quynhnhu82/flag2027-feats-ls-c5s-p",
+  "dnq1209/flag2027-feats-tap01-voice-p",
+  "ngnnguynchn/flag2027-feats-screen2-p",
+  "hthlin/flag2027-aux-voice-feats-p",
+  "ngnnguynchn/flag2027-lid-strict-p",
+  "ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+  "ngnnguynchn/flag2027-t3s01-tables-p"
+ ],
+ "kernel_sources": [
+  "phantrnhuyntrn/flag-2027-nb-183-factor-p1",
+  "phantrnhuyntrn/flag-2027-nb-183-factor-p2"
+ ],
+ "competition_sources": [],
+ "model_sources": []
+}

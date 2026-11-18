@@ -1,0 +1,4 @@
+# Byte-exact provenance copies (md5 / sha256 recorded in SOURCE.json and stage.json): no end-of-line conversion.
+**/original/** -text
+**/tree/** -text
+*.ipy -text

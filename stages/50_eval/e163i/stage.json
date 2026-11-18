@@ -1,0 +1,191 @@
+{
+ "id": "e163i",
+ "group": "50_eval",
+ "title": "RFX on the four Evaluation lists, scored with the c5rl artifact that holds the ORIGINAL ImageBind-audio LoRA C1 -> rfx_eval.zip",
+ "kind": "infer",
+ "role_in_1354": "score",
+ "role": "Re-extracts every RFX block from the Evaluation media (face: VGG-Face xf, ImageBind, CLIP ViT-L/14, age; voice: ECAPA xv, ImageBind-audio, ResNet221-LM, ImageBind-audio + LoRA C1 of the artifact, SimAM-ResNet100 ft, Whisper-large-v3 encoder, age; USE_CSV = True: the organiser VGG-Face / ECAPA csv features replace xf / xv), adds the FACTOR-01 extra blocks f_c5s (e65xcs) and v_rl (e47rs), and scores with the RFX c5rl artifact (InfoNCE projector 3 seeds, gender probe, fill constants, fusers) -> FLAG_RF_E2E/submission.zip (stored -logit, lower = same person) = rfx_eval.zip. Level-0 max |full - half| <= 1.82e-6. The artifact's lora_C1.pt is the ORIGINAL C1 (sha256 b97372e3..., trained with the cache-key bug on 210 MAV-Celeb clips of 70 persons), as in the 13.54 submission; release/flag2027_e2e/stages.py:526-527 (C1FIX artifact of system 16.18) is NOT applied.",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "machine_shape": "NvidiaTeslaT4",
+  "minutes_original": 31.0,
+  "internet": true,
+  "secrets": []
+ },
+ "origin": {
+  "run": "thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/07_flag-2027-nb-163i-rfsfxc5rl-eval.ipynb",
+  "notebook": "original/07_flag-2027-nb-163i-rfsfxc5rl-eval.ipynb",
+  "notebook_md5": "d3ab421af56cd368933fc9b34c41346c",
+  "notebook_sha256": "215de9106b36cbcd04a1e6e1477554899a44ce21d1e0a756065b369bf278bf47",
+  "exact_notebook_md5": "d3ab421af56cd368933fc9b34c41346c",
+  "exact_notebook_sha256": "215de9106b36cbcd04a1e6e1477554899a44ce21d1e0a756065b369bf278bf47",
+  "redacted": false,
+  "pushed": {
+   "time_utc+7": "2026-11-13 11:20",
+   "kapi_runs_line": 1553,
+   "pushed_notebook_md5": "cc1ec0fe56e910c92d2ef3146329a58a"
+  },
+  "log": "original/07_flag-2027-nb-163i-rfsfxc5rl-eval.log",
+  "kernel_metadata": "original/kernel-metadata.json",
+  "builder": "kaggle/FLAG_163i_rfs_infer.ipynb (the teammate's RF-E2E inference notebook, no builder) patched at push time by kaggle/rfx_chain.sh state 2 (13/11): `python kaggle/patch_163i_eval.py <copy> --data-root /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p` then `python kaggle/patch_163i_factor.py <copy>` (XSCORER block copied from Experiment/RFS-01/train/rfs_train.py as of 13/11; cell 'factor extra blocks'); patch_163i_dataroot.py (15/11) was NOT applied to this run; pre-staging patched copy: _staging_backup/tmp.am19u5QHTf/FLAG_163i_rfs_infer.ipynb (md5 ba03121d...). Embedded core CORE_SOURCE sha256 3cad7b8a83d3817c... = Experiment/RFS-01/ref/flag_final_core_092.py (sha256 25abe24d...) after CRLF -> LF (checked 18/11)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p",
+   "mount": "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p",
+   "use": "RFX c5rl artifact of stage t163p_c5rl: final_params.npz, projector_Q.pt, lora_C1.pt (ORIGINAL C1), manifest_final.json (file hashes checked by the notebook), fuse_report.json, split.json"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "mount": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "use": "attached as in the original run (CHƯA CHẮC whether it is read once DATA_ROOT is set; DESIGN G25)"
+  },
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb",
+   "mount": "datasets/chnnhnnguyn/external-data-mavceleb",
+   "use": "attached as in the original run (CHƯA CHẮC whether it is read: L.locate_roots uses the artifact folder as the external tree; DESIGN G25)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-evalphase-p",
+   "mount": "datasets/ngnnguynchn/flag2027-evalphase-p",
+   "use": "the four Evaluation lists, media and organiser csv; DATA_ROOT is hard-coded to /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p, so it must be mounted at exactly that path (the default mount = artifact id); content = eval_set.zip extracted (top folder evaluation_phase/)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+   "mount": "notebooks/thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+   "use": "voice_rn293 / voice_ecapa1024 + index_<protocol>_<lang>.txt of the lists (block v_rl; stage e47rs)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+   "mount": "notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+   "use": "face_clipC5_<protocol>_<lang>.npy (block f_c5s; stage e65xcs)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval",
+  "exports": {},
+  "main_files": [
+   "FLAG_RF_E2E/submission.zip (= rfx_eval.zip)",
+   "FLAG_RF_E2E/embeddings.npz",
+   "FLAG_RF_E2E/run_report.json",
+   "FLAG_RF_E2E/models/ (downloaded checkpoints, sha256-checked)"
+  ]
+ },
+ "flags_in_code": {
+  "DATA_ROOT": "Path('/kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p') (constant, cell 'config')",
+  "USE_CSV": "True",
+  "NAMES": "None (file names as on dev: no_gender|gender/sub_score_v4_<English_heard|Bangla_unheard>.txt)",
+  "ART": "None (found by manifest_final.json)",
+  "REF_ZIP": "None"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "original",
+  "require_files": [
+   {
+    "artifact": "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p",
+    "file": "lora_C1.pt",
+    "sha256": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c",
+    "applies_to": [
+     "saved",
+     "attached"
+    ]
+   },
+   {
+    "artifact": "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p",
+    "file": "manifest_final.json",
+    "sha256": "21adffb32edd59767079d1287c9aa3d971165cab8702f266defff492c7d04736",
+    "applies_to": [
+     "saved",
+     "attached"
+    ]
+   }
+  ],
+  "forbid_artifacts": [
+   "datasets/ngnnguynchn/flag2027-c1fix-rfx-art-p",
+   "datasets/ngnnguynchn/flag2027-rfs-lorafix1-p",
+   "datasets/ngnnguynchn/flag2027-c1fix-lora-p",
+   "datasets/ngnnguynchn/flag2027-rfsc4lf-art-p"
+  ],
+  "note": "the notebook itself refuses an artifact whose files differ from its manifest_final.json; manifest_final.json of this artifact lists lora_C1.pt = b97372e3... (read 18/11 from the team package dataset zip); require_files apply to saved / attached copies only (applies_to); for an artifact made in the session see made_check",
+  "made_check": {
+   "applies_to": [
+    "made"
+   ],
+   "why": "in FF_MODE=train (FF_USE_SAVED=collected) t163p_c5rl re-learns the projector on a non-deterministic GPU, so the manifest_final.json pin above cannot hold for an artifact made in the session; the LoRA C1 inside it can: every C1 consumer (t163p_c5rl, t163p_fvb, t183_p*, t189_b2, t192_fvbx, t213_p*, t216_p3) resolves the SAVED original C1 (resolve: saved_only, 19/11/2026 (integration fixer r2, INTEGRATION_r2 M3)), so a C1 retrained by t163l_orig (FF_FORCE=t163l_orig) is evidence only and never reaches RFX or RFX'. Mode (a) is a recipe-level reproduction around a fixed C1 (DESIGN 0 / 5.1, docs/VARIANTS.md)",
+   "artifact": "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p",
+   "requires": [
+    "made in this session by stage t163p_c5rl, whose C1 input datasets/onnhqunhh/flag2027-rfs-lora-p is the saved original (resolve: saved_only)",
+    "rfs_art/lora_C1.pt of the made artifact = b97372e3... (byte copy of the saved original C1; configs/variant_1354.json file_checks lora_c1 applies unchanged)",
+    "RFS_LORA_FIX unset or 0 and no forbidden artifact (forbid_artifacts) in the inputs of t163p_c5rl"
+   ],
+   "changed": "19/11/2026 (integration fixer r2, INTEGRATION_r2 M3): the earlier text required the C1 of a t163l_orig run made in the same session; since the r1 fixer made every C1 consumer saved_only that path is unreachable"
+  }
+ },
+ "skip_with": [
+  "04_run_outputs/flag-2027-nb-163i-rfsfxc5rl-eval"
+ ],
+ "verify": [
+  {
+   "file": "FLAG_RF_E2E/submission.zip",
+   "bytes": 32049,
+   "saved_sha256": "1fa53218c9501ef38f9b1c33680fac5b7f6a0ddace4fdaffed7cd5334b9aa369",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-163i-rfsfxc5rl-eval); a GPU re-run is not byte-identical",
+   "members_sha256": {
+    "no_gender/sub_score_v4_English_heard.txt": "6d1b5dfdd6be91c0faf33d250baf0b869be377c43b631e37e037e4201110a1cb",
+    "no_gender/sub_score_v4_Bangla_unheard.txt": "518840adbc65e948127f10abf3f0efd7c4ab71293a8a7f4eafc613ca5f38d723",
+    "gender/sub_score_v4_English_heard.txt": "6a8a7c95a2b5210a54a97ad959a8f35b033a49302373ad4e9e00932f3742a079",
+    "gender/sub_score_v4_Bangla_unheard.txt": "b26ec075324f649a85caaeb842660aad5f79a3d6b168520b1bf1cf0a010f37f6"
+   },
+   "also_named": "FF_DATA/05_scores/rfx_eval.zip (DESIGN 5.3)"
+  },
+  {
+   "file": "FLAG_RF_E2E/run_report.json",
+   "bytes": 1705,
+   "saved_sha256": "5a64f12d5f2ae3a035d369199cb959de2b722ae8c1c987d555f44187a2ee045d",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-163i-rfsfxc5rl-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "FLAG_RF_E2E/embeddings.npz",
+   "bytes": 45995605,
+   "saved_sha256": "3d92359ccc15c7dd2bd99c1bdf5d8a2bdd159778c083dad491cad23d9ad28025",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-163i-rfsfxc5rl-eval); a GPU re-run is not byte-identical"
+  }
+ ],
+ "rerun_expectation": "GPU / library re-runs are not bit-identical: compare the final zip per file (Spearman >= 0.9999, DESIGN 5.2); byte equality only for the saved outputs above",
+ "stage_ipy_sha256": "0948c0c00f67bdba2a3e86918e10edd10531395d9c4c3d737754bfefdc06be11",
+ "stage_ipy_cells": 6,
+ "release_e2e_code": {
+  "path": "release/flag2027_e2e/code/e163i.ipy",
+  "sha256": "0948c0c00f67bdba2a3e86918e10edd10531395d9c4c3d737754bfefdc06be11",
+  "equal_to_stage_ipy": true,
+  "equal_to_code_of_exact_notebook_with_patches": true
+ },
+ "todo": [
+  "DESIGN G25: check with a smoke run (after 20/11) whether external-data-mavceleb and raw-v4 can be detached once DATA_ROOT is set; until then they stay attached as in the original run.",
+  "WP-A runner: honour variant.require_files[].applies_to (skip a pin when the input was made in the session, how == 'made') and check variant.made_check instead; today build_vin enforces every require_files entry whatever `how` is, so FF_MODE=train stops here with VariantError. configs/variant_1354.json file_checks ('**/lora_C1.pt' = b97372e3..., when inputs + outputs) needs the same scoping (saved / attached copies only; provenance for made ones).",
+  "WP-F: t163p_c5rl post_checks / verify pin rfs_art/lora_C1.pt = b97372e3... ('exact'); in FF_MODE=train the re-learned C1 of t163l_orig has another hash, so that pin needs the same applies_to scoping (byte copy of the attached C1 instead of a fixed hash).",
+  "DESIGN G10: the original pip cell installs ImageBind from GitHub HEAD (not pinned; stage.ipy:28); the Docker image pins ImageBind@53680b02 (FF_PIP=pinned). Whether HEAD was 53680b02 on 13/11/2026 is CHƯA CHẮC. speechbrain>=1.1.1 is unpinned (stage.ipy:40): hold it with FF_PIP=pinned (pinned requirements)."
+ ],
+ "notes": [
+  "stage.ipy is byte-identical to release/flag2027_e2e/code/e163i.ipy (no change); the C1FIX artifact substitution of release/flag2027_e2e/stages.py:526-527 is deliberately absent.",
+  "Evidence for the variant: the run's FLAG_RF_E2E/run_report.json (team package output) lists artifact_manifest lora_C1.pt = b97372e3504a131d... (original C1), and the artifact's manifest_final.json says the same.",
+  "Markdown cell 0 (verbatim, not executed) is the teammate's description of their RF-092 notebook (LoRA 'C1c', 19 122 clips / 5 929 persons); it does not describe the artifact mounted here (original C1: 210 MAV-Celeb clips of 70 persons).",
+  "Checkpoints downloaded in-run are SHA-256-checked by the notebook (imagebind_huge d6f6c22b..., resnet221_lm 47d76239..., vgg_face f070b241..., voxblink2_samresnet100_ft 5aeee438...); the Hugging Face models are loaded at pinned revisions by the embedded core (CORE_SOURCE HF_REV: openai/whisper-large-v3 @06f233fe06e710322aca913c1bc4249a0d71fce1, openai/clip-vit-large-patch14 @32bd64288804d66eefd0ccbe215aa642df71cc41, nateraw/vit-age-classifier @4b5acc345d9692c3ff4f45d250531afd3a3da0ef, ...; from_pretrained(..., revision=HF_REV[...])). Unpinned: the ImageBind code (pip --no-deps git+https://github.com/facebookresearch/ImageBind.git, GitHub HEAD, stage.ipy:28) and speechbrain>=1.1.1 (stage.ipy:40); ruamel.yaml<0.19 only when >= 0.19 is installed.",
+  "Under ffrun the runner's string rewrite of '/kaggle/input' (runner/ffcore.py stage_code: count_sub('/kaggle/input', vin)) also hits one docstring line of the CORE_SOURCE literal (core line 1220, 'a recursive search of /kaggle/input with the 28.9 GB external tree'): the core module written to disk then differs from the one that ran, and FLAG_RF_E2E/run_report.json code_sha256 of a re-run is not 3cad7b8a83d3817c... (the value of the saved run_report and of origin.builder). Scores are unaffected (docstring only; no assert compares code_sha256). See CHANGES.md."
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": false,
+  "why": "every path of this stage is derived from the code text (/kaggle/input replaced by the runner); no base64-embedded module",
+  "core_source_rewrite": "the '/kaggle/input' rewrite also changes one docstring line inside CORE_SOURCE; run_report.json code_sha256 of a re-run differs from 3cad7b8a...; scores unaffected (WP-A may skip rewrites inside CORE_SOURCE)"
+ },
+ "dev_data": "NAMES / DATA_ROOT point at the Evaluation lists only; REF_ZIP = None and no submission_* file in the artifact, so no dev reference is read (log: 'reference ZIP: None')."
+}

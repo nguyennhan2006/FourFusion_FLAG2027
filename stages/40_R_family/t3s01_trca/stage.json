@@ -1,0 +1,63 @@
+{
+ "id": "t3s01_trca",
+ "group": "40_R_family",
+ "title": "T3S-01 job-table layout with the row keys + trCA of ct02s-r2ca-tables-p (the part of t3s01-tables-p that t219_dumpv4 reads)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "translates": "the trCA content of datasets/ngnnguynchn/flag2027-t3s01-tables-p (FLAG_167 T3S-01, 5 fold runs + kaggle/sat_push.sh 167g; staging folders empty, exact notebooks lost) restricted to what CLEANTUNE-01/run.py merge_t3s + FUSENET-01/run.py report (FUSENET_MODE=dumpv4) read",
+  "builder": null,
+  "added": "18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)"
+ },
+ "code": {
+  "stage_ipy": "stage.ipy",
+  "sha256": "1363420d6fcfa87e07117fbd8efff77e4783e7722b05b3d0c46ffbdb453d32df",
+  "bytes": 3980,
+  "cells": 1
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
+   "use": "tables/ct01r2_fold1..5.parquet: row keys (fold, data, protocol, y, fi, vi) + trCA"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/t3s01_trca",
+  "exports": {
+   "datasets/ff/flag2027-t3s01-trca-p": "ds"
+  }
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not_used (tables of the F1s' family; no LoRA C1 input)"
+ },
+ "skip_with": [],
+ "verify": [],
+ "post_checks": [
+  "when the frozen datasets/ngnnguynchn/flag2027-t3s01-tables-p is under FF_DATA (02_intermediate/_wiring/flag2027-t3s01-tables-p) or FF_T3S01_FROZEN, the code asserts that the row keys and trCA of every farl table are identical to it (max |diff| 0.0, as WP-F measured on 18/11)"
+ ],
+ "dev_usage": "none (SAFE-04 pair tables of the train persons; the tables carry no dev row)",
+ "notes": [
+  "Consumer: t219_dumpv4 mounts the export at the original mount path datasets/ngnnguynchn/flag2027-t3s01-tables-p, so its verbatim code (gather cell: rglob ct01r2?*_fold[1-5].parquet, faces farl / clip / b3s / c5s) is unchanged.",
+  "Not identical to the frozen dataset: the 24 trT3S_<face>_<voice> branch columns (sim, r293, ecapa, cat4, wsv, rdn) are absent. No stage of this repository can make them (FLAG_167 notebooks lost); they are not read by the dumpv4 path. t184_report (evidence) keeps the frozen dataset (resolve: saved_only).",
+  "sigma: U = F1s|oof + R|oof uses trCA only from these tables, so the sigma of dp_sigma is unchanged when trCA is identical (checked by the post check when the frozen copy is present)."
+ ],
+ "todo": [
+  "Run once on CPU (seconds) with the frozen t3s01-tables-p under FF_DATA so that the equality post check runs; then run t219_dumpv4 on the export and compare xjfdump_v4.parquet (U_c0r / U_c0s / U_c0t) with 9f0a5af4... (requires the 213 / 216 outputs)."
+ ]
+}

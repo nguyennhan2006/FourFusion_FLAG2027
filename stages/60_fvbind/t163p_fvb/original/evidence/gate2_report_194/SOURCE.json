@@ -1,0 +1,64 @@
+{
+ "stage": "t163p_fvb (evidence: gate2_report_194)",
+ "exactness": "exact-staging (NOT copied: private)",
+ "run": "thanhhuyen11/flag-2027-nb-194-fvbg2-report",
+ "kapi_runs": {
+  "file": "kaggle/kapi_runs.jsonl",
+  "line": 1606,
+  "record": {
+   "time": "2026-11-15 07:10",
+   "account": "thanhhuyen11",
+   "kernel": "thanhhuyen11/flag-2027-nb-194-fvbg2-report",
+   "source": "kaggle/FLAG_194_fvbg2_report.ipynb",
+   "notebook_md5": "7e4caa04c0283a0e0a4200b559934e43",
+   "gpu": false,
+   "smoke": {},
+   "secrets": [],
+   "datasets": [
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "ngnnguynchn/flag2027-eda-bundle-p",
+    "ngnnguynchn/flag2027-e2e-dev-p",
+    "ngnnguynchn/flag2027-cc5-oof-p",
+    "ngnnguynchn/flag2027-dsel02-oof-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "phanvnhtrng/flag2027-feats-ls-b3s-p",
+    "ngnnguynchn/flag2027-facelora03-tables-p",
+    "ngnnguynchn/flag2027-lab-avfull-p",
+    "quynhnhu82/flag2027-feats-ls-c5s-p",
+    "dnq1209/flag2027-feats-tap01-voice-p",
+    "ngnnguynchn/flag2027-feats-screen2-p",
+    "hthlin/flag2027-aux-voice-feats-p",
+    "ngnnguynchn/flag2027-lid-strict-p",
+    "ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+    "ngnnguynchn/flag2027-t3s01-tables-p"
+   ],
+   "kernels": [
+    "thanhhuyen11/flag-2027-nb-193-fvbg2"
+   ],
+   "ok": true
+  },
+  "is_last_push_for_kernel": true
+ },
+ "exact_notebook": {
+  "name": "flag-2027-nb-194-fvbg2-report.ipynb",
+  "bytes": 451033,
+  "md5": "7e4caa04c0283a0e0a4200b559934e43",
+  "sha256": "0cd43f3a670c60c933d7123c37053bc4d869b2413a843a513b3f2ee413a3c73d"
+ },
+ "kept_where": "FF_DATA/_private_originals/t163p_fvb/evidence/gate2_report_194/ (private data folder; the notebook embeds a dev score zip and is never published)",
+ "staging_provenance": "at build time: NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-194-fvbg2-report_31j5g30n/ (git-ignored) and C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-194-fvbg2-report_31j5g30n/; the staging folder _staging_backup/ is moved out of the repository before publication and kept privately (todo WP-A / WP-K)",
+ "why_not_in_repo": "the notebook embeds, inside its gzip/base64 code zip, the dev score zip Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip (sha256 b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d); user rule 6 / DESIGN 9.4: no dev data in the repository. Store it with the private data (FF_DATA) only.",
+ "files": [
+  {
+   "repo_file": "kernel-metadata.json",
+   "bytes": 1146,
+   "md5": "43631b673f95b6ec0aced490233b6a74",
+   "sha256": "33b9426ac0316161e9dd3614f389f4da5188592cb25f5a3a93e29c4a3f6a935c"
+  }
+ ],
+ "notes": [
+  "FVBIND-01 gate 2 (lab c0 / fvb on SAFE-04, then report): NOT PASSED -> U_fvb - U_c0 on the g cells -0.39, 1/5 folds (nhật ký 445); the FVBIND zips were built afterwards on the user's request as reference zips; evidence only, not in the 13.54 chain",
+  "built by `python kaggle/build_flag174.py 10`; reader Experiment/FVBIND-01/run.py report"
+ ]
+}

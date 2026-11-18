@@ -1,0 +1,616 @@
+{
+ "from_notebook": "t219_dumpv4/original/flag-2027-nb-219-fusenet-dumpv4.redacted.ipynb",
+ "note": "payloads embedded (gzip + base64, or the CODE_B64 zip) in the exact notebook; files kept byte-exact (CRLF where the original had CRLF)",
+ "files": {
+  "Experiment/ALLNEG-01/run.py": {
+   "bytes": 10388,
+   "sha256": "0776caba9bcdb017ef6d29e6d0276f19d9fd50e7d39d1ae472ce17f67d37cc2e",
+   "md5": "413e0779662fc2be0b5fb75930129e5b",
+   "lines": 175,
+   "crlf": 175,
+   "lf_sha256": "b88144feeb80b0893d60443546d9d33817dddd6b3690b546b703afa40da52661",
+   "extracted": true,
+   "path": "original/decoded/Experiment/ALLNEG-01/run.py"
+  },
+  "Experiment/AUXP-01/run.py": {
+   "bytes": 7443,
+   "sha256": "3758024ab5ab29fdaaacc946c4c67378fa1298e0ce43693f6d434e168938a9d0",
+   "md5": "900fe3e223b7edff837c579c817fd13a",
+   "lines": 136,
+   "crlf": 136,
+   "lf_sha256": "beb8d199d797c46f2727ce1d0cbb63e81113df7e94a1dc5c4f5494d470ff3d45",
+   "extracted": true,
+   "path": "original/decoded/Experiment/AUXP-01/run.py"
+  },
+  "Experiment/BIGB-01/run.py": {
+   "bytes": 1971,
+   "sha256": "19a652bb0ec7eb02427f6c2fbfad52dfb82ab65169e5feec7be4e3cd9ae0a067",
+   "md5": "f2a9a4f099496905ea93d9cf44025860",
+   "lines": 39,
+   "crlf": 39,
+   "lf_sha256": "1df18e3ea490710aaa1e7d251679ef2e92b6512c2780a8a78f617400e2cbd740",
+   "extracted": true,
+   "path": "original/decoded/Experiment/BIGB-01/run.py"
+  },
+  "Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip": {
+   "bytes": 91043,
+   "sha256": "b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d",
+   "md5": "ae902d1c7e87783bf88e345b459e39f2",
+   "lines": 4864,
+   "crlf": 0,
+   "lf_sha256": "b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d",
+   "withheld": true,
+   "why": "dev score zip (CodaBench dev phase); not distributed (user rule 6, DESIGN 9.4); not read by this stage's code path"
+  },
+  "Experiment/CLEANTUNE-01/ct_round2.json": {
+   "bytes": 4185,
+   "sha256": "d251142dec126de8776e9ebd5e8dc7b916a28f92f3f224a847e73b590197fcf3",
+   "md5": "21fa1fb37978e72c910f24ab6d0c364d",
+   "lines": 278,
+   "crlf": 0,
+   "lf_sha256": "d251142dec126de8776e9ebd5e8dc7b916a28f92f3f224a847e73b590197fcf3",
+   "extracted": true,
+   "path": "original/decoded/Experiment/CLEANTUNE-01/ct_round2.json"
+  },
+  "Experiment/CLEANTUNE-01/run.py": {
+   "bytes": 54129,
+   "sha256": "0b78fe20f168a3db580597789512862d67ea222fa5c497bd1616ce47177a24c0",
+   "md5": "634b708ef21f63d4366f0bafc6daaaaa",
+   "lines": 880,
+   "crlf": 880,
+   "lf_sha256": "f8f2cf8f75194f83456b8b98352dc6c2d05f063f5ddbb920faec2c49a07043b5",
+   "extracted": true,
+   "path": "original/decoded/Experiment/CLEANTUNE-01/run.py"
+  },
+  "Experiment/DSEL-01/vox2_groups.json": {
+   "bytes": 150156,
+   "sha256": "4f44f5cee3f9a3ae1109962158c07dcb0101a2a3bdd7c99cf27ed787c7a35cc6",
+   "md5": "70bc17d11d4d9c2ec29c8404f5e60e66",
+   "lines": 0,
+   "crlf": 0,
+   "lf_sha256": "4f44f5cee3f9a3ae1109962158c07dcb0101a2a3bdd7c99cf27ed787c7a35cc6",
+   "extracted": true,
+   "path": "original/decoded/Experiment/DSEL-01/vox2_groups.json"
+  },
+  "Experiment/DSEL-02/run.py": {
+   "bytes": 5394,
+   "sha256": "4a6d1d0004a11ee3b298ed1761fd90d1440dc32e5d14cff4482ce9eb76c99357",
+   "md5": "97acc6c949ecc0f146d6009a5f1929ee",
+   "lines": 110,
+   "crlf": 110,
+   "lf_sha256": "37fbd42b3d7e866ed3846ca48747cb33917957b0ea4572e6c0190eafc7e46b79",
+   "extracted": true,
+   "path": "original/decoded/Experiment/DSEL-02/run.py"
+  },
+  "Experiment/DSEL-03/run.py": {
+   "bytes": 8256,
+   "sha256": "b6e6a0ae82ceb57c209cfe2bed5a1e81c48b41e3ef9bb9393840d72a795b7d74",
+   "md5": "54da2a723624ff1b9ce320e47edc8074",
+   "lines": 164,
+   "crlf": 0,
+   "lf_sha256": "b6e6a0ae82ceb57c209cfe2bed5a1e81c48b41e3ef9bb9393840d72a795b7d74",
+   "extracted": true,
+   "path": "original/decoded/Experiment/DSEL-03/run.py"
+  },
+  "Experiment/E2E/e2e_lib.py": {
+   "bytes": 16836,
+   "sha256": "a609cebb35be09b3d6fa7edbb2ced1e9652bd5fe8c4174ee938388393ac19def",
+   "md5": "f8efa92934ba217d2b1e6c665815a729",
+   "lines": 288,
+   "crlf": 288,
+   "lf_sha256": "76af83350e142628891c70ab96879219defa3ab62f34343322aee3ffd9058cdf",
+   "extracted": true,
+   "path": "original/decoded/Experiment/E2E/e2e_lib.py"
+  },
+  "Experiment/EDA-3FAM-01/run.py": {
+   "bytes": 21851,
+   "sha256": "9f14945cbfd4d19bd86c2de2c52c44923886ec9bbccfee0f3b210190ede8f132",
+   "md5": "f5a34318fd3c5e62e3331c63b7ff3fad",
+   "lines": 333,
+   "crlf": 333,
+   "lf_sha256": "cf75b55c07b5ede82c315691fa1b09363636931c697a9ee4a978a974ff2c5419",
+   "extracted": true,
+   "path": "original/decoded/Experiment/EDA-3FAM-01/run.py"
+  },
+  "Experiment/EN-T3-01/run.py": {
+   "bytes": 7454,
+   "sha256": "90d4ba401239d36e136f2fc0119465e82365cf89686a61ca312c866f83038485",
+   "md5": "88ad33959014aff7855643001712af41",
+   "lines": 113,
+   "crlf": 0,
+   "lf_sha256": "90d4ba401239d36e136f2fc0119465e82365cf89686a61ca312c866f83038485",
+   "extracted": true,
+   "path": "original/decoded/Experiment/EN-T3-01/run.py"
+  },
+  "Experiment/ENBASE-01/run.py": {
+   "bytes": 12871,
+   "sha256": "7b186981aaa7a32e0e63dec9ec60fcd516cdd7ea4c4f5f4cf07b3db1bdb4cf61",
+   "md5": "4a40fb17c9585c2f66b177f5b529b777",
+   "lines": 182,
+   "crlf": 182,
+   "lf_sha256": "320fb5e43ba17375365cbd615833588a090eac92b8978e9e504ee2812bc2f375",
+   "extracted": true,
+   "path": "original/decoded/Experiment/ENBASE-01/run.py"
+  },
+  "Experiment/ENPROG-01/run.py": {
+   "bytes": 14088,
+   "sha256": "4e004e8d54d079e0cb8aa2f6bf98c64162ca723385a01082e4a0f9f9dccfebe3",
+   "md5": "1af057fc28b67f4f96bba3af0519f993",
+   "lines": 235,
+   "crlf": 0,
+   "lf_sha256": "4e004e8d54d079e0cb8aa2f6bf98c64162ca723385a01082e4a0f9f9dccfebe3",
+   "extracted": true,
+   "path": "original/decoded/Experiment/ENPROG-01/run.py"
+  },
+  "Experiment/FACELORA-03/run.py": {
+   "bytes": 26266,
+   "sha256": "62952da64b6f036272a01564d31a2c3c1d8a93f11d152ac3259c76326ffb27d2",
+   "md5": "c4d09a9fa645ab5094cc78654bc535ac",
+   "lines": 462,
+   "crlf": 462,
+   "lf_sha256": "290317a0b9054660757b1ae582dd456f36d5bb350c1f7fdc9752856fd56668e9",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FACELORA-03/run.py"
+  },
+  "Experiment/FACELORA-05/run.py": {
+   "bytes": 11911,
+   "sha256": "d8a93e963e9884ace8a0327c9437f2a0347f19fe1803ea67eb3fe72097819282",
+   "md5": "9be8d927c170cbb439e466041259b762",
+   "lines": 196,
+   "crlf": 196,
+   "lf_sha256": "22a16bdd59a64368c26bdf98ac33c69166e5b6c2bb290d77c3b1842c85660e68",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FACELORA-05/run.py"
+  },
+  "Experiment/FACTOR-01/run.py": {
+   "bytes": 9338,
+   "sha256": "818147c18c4bc973102f9685dd64992df9831ececeab70e906de6aea308ae300",
+   "md5": "2369525db58c9c255097b321a36dd0ea",
+   "lines": 158,
+   "crlf": 0,
+   "lf_sha256": "818147c18c4bc973102f9685dd64992df9831ececeab70e906de6aea308ae300",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FACTOR-01/run.py"
+  },
+  "Experiment/FACTOR-02/run.py": {
+   "bytes": 7778,
+   "sha256": "d07de072e6b1487b1a3083a771ab6a9ea9a0c2677ea6cc13af373f10f833f55a",
+   "md5": "e2805170dc15f9e97c247ab18a7d70d5",
+   "lines": 147,
+   "crlf": 0,
+   "lf_sha256": "d07de072e6b1487b1a3083a771ab6a9ea9a0c2677ea6cc13af373f10f833f55a",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FACTOR-02/run.py"
+  },
+  "Experiment/FUSEARCH-01/run.py": {
+   "bytes": 10168,
+   "sha256": "c77b5915f1f313e1fcfe221697f1f664b8b96a0f7562d10ccc27dad9454a0a3e",
+   "md5": "a6e82d3436d6d3efd79b7f86f4bc8c43",
+   "lines": 192,
+   "crlf": 0,
+   "lf_sha256": "c77b5915f1f313e1fcfe221697f1f664b8b96a0f7562d10ccc27dad9454a0a3e",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FUSEARCH-01/run.py"
+  },
+  "Experiment/FUSEARCH-02/run.py": {
+   "bytes": 6280,
+   "sha256": "92440271e763764ad8f0f4f278012d1f37b5daff94c45953a30a4482911c2599",
+   "md5": "efec3272c159a5fd397a3de732768de3",
+   "lines": 114,
+   "crlf": 0,
+   "lf_sha256": "92440271e763764ad8f0f4f278012d1f37b5daff94c45953a30a4482911c2599",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FUSEARCH-02/run.py"
+  },
+  "Experiment/FUSEARCH-03/run.py": {
+   "bytes": 2890,
+   "sha256": "a9dd89f6daa6700c77e72f77ae3cbbf508dc77f23339420092f85b4da8a78982",
+   "md5": "68f698d9f3ddba65d0adeb781f6aad1a",
+   "lines": 58,
+   "crlf": 0,
+   "lf_sha256": "a9dd89f6daa6700c77e72f77ae3cbbf508dc77f23339420092f85b4da8a78982",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FUSEARCH-03/run.py"
+  },
+  "Experiment/FUSEDIM-01/run.py": {
+   "bytes": 11942,
+   "sha256": "b4156a8a855796441e773207abd78300ab64c23bfd4b6e26e6805208304e1892",
+   "md5": "7e21c46f1e305643b814b530954b5410",
+   "lines": 234,
+   "crlf": 0,
+   "lf_sha256": "b4156a8a855796441e773207abd78300ab64c23bfd4b6e26e6805208304e1892",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FUSEDIM-01/run.py"
+  },
+  "Experiment/FUSEDIM-02/run.py": {
+   "bytes": 10708,
+   "sha256": "f463527013bef481a6545783ca88d15803037c07996c943a437ccc6da81d353b",
+   "md5": "e795a71aee63d33bba3dfbd1837a21dc",
+   "lines": 202,
+   "crlf": 0,
+   "lf_sha256": "f463527013bef481a6545783ca88d15803037c07996c943a437ccc6da81d353b",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FUSEDIM-02/run.py"
+  },
+  "Experiment/FUSENET-01/run.py": {
+   "bytes": 18875,
+   "sha256": "df6d739e5fef7b015a423f27ceec87882f4ac81ac6f8b2657b392a7eabd4303d",
+   "md5": "a5d3dac39d073981629a33bb28c899da",
+   "lines": 313,
+   "crlf": 0,
+   "lf_sha256": "df6d739e5fef7b015a423f27ceec87882f4ac81ac6f8b2657b392a7eabd4303d",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FUSENET-01/run.py"
+  },
+  "Experiment/FVBIND-01/run.py": {
+   "bytes": 7730,
+   "sha256": "8d7b853b765317f9c3ef4aa2673022a9dd123c7ad3431e0936d4e343a10c6d8c",
+   "md5": "252991c0ab6d4f6957e5e67ed63ef567",
+   "lines": 125,
+   "crlf": 125,
+   "lf_sha256": "f53a170a69c18d523384431abbf156c00f2d9bf88cc14212c6297d0d7ca6a894",
+   "extracted": true,
+   "path": "original/decoded/Experiment/FVBIND-01/run.py"
+  },
+  "Experiment/HARDNEG-RFS/run.py": {
+   "bytes": 6423,
+   "sha256": "be7a1deb56d9d44d810274b1454a6f204f7e61ed4b64e4fe0f59ee9858c72cef",
+   "md5": "894568bd5152e1ea20c9d15b354942bc",
+   "lines": 113,
+   "crlf": 0,
+   "lf_sha256": "be7a1deb56d9d44d810274b1454a6f204f7e61ed4b64e4fe0f59ee9858c72cef",
+   "extracted": true,
+   "path": "original/decoded/Experiment/HARDNEG-RFS/run.py"
+  },
+  "Experiment/IBLORA-01/run.py": {
+   "bytes": 7722,
+   "sha256": "2db91713008d64f12d2f670811a1ccbaccbf10085f4eb0ebd9aca4f3d2dbf26c",
+   "md5": "fb491fd425ee0a7b97cd26edf6ba4dd8",
+   "lines": 141,
+   "crlf": 0,
+   "lf_sha256": "2db91713008d64f12d2f670811a1ccbaccbf10085f4eb0ebd9aca4f3d2dbf26c",
+   "extracted": true,
+   "path": "original/decoded/Experiment/IBLORA-01/run.py"
+  },
+  "Experiment/LANGLANE-01/run.py": {
+   "bytes": 19745,
+   "sha256": "c1eb317c4336e26449b0b9e6c0dad07051606616d2835c55e2246113fb13cf07",
+   "md5": "6b0198920b12188b03858fdcdd12daa7",
+   "lines": 321,
+   "crlf": 0,
+   "lf_sha256": "c1eb317c4336e26449b0b9e6c0dad07051606616d2835c55e2246113fb13cf07",
+   "extracted": true,
+   "path": "original/decoded/Experiment/LANGLANE-01/run.py"
+  },
+  "Experiment/PEFACE-01/run.py": {
+   "bytes": 5410,
+   "sha256": "157854b07c03e9e2be62af9b154ae59c6fcd913040832dbbbe25d23147efd097",
+   "md5": "8a594b94d538337eb07235fb5d658ef5",
+   "lines": 87,
+   "crlf": 0,
+   "lf_sha256": "157854b07c03e9e2be62af9b154ae59c6fcd913040832dbbbe25d23147efd097",
+   "extracted": true,
+   "path": "original/decoded/Experiment/PEFACE-01/run.py"
+  },
+  "Experiment/RFSTUNE-01/run.py": {
+   "bytes": 8676,
+   "sha256": "828edf32d07b5bc5b592cf88baf7b36fccf2a3e3e5a90885c3e5f438f4547bc1",
+   "md5": "36def91d624ce9be15de073df0278ad9",
+   "lines": 151,
+   "crlf": 0,
+   "lf_sha256": "828edf32d07b5bc5b592cf88baf7b36fccf2a3e3e5a90885c3e5f438f4547bc1",
+   "extracted": true,
+   "path": "original/decoded/Experiment/RFSTUNE-01/run.py"
+  },
+  "Experiment/RFSTUNE-02/run.py": {
+   "bytes": 1116,
+   "sha256": "56c31db58bbc717f13e9bb9caba9ca5e7750835486792f88ad4499a14da7e326",
+   "md5": "5c59ef11f85d15a19c388c1df5384fcb",
+   "lines": 17,
+   "crlf": 0,
+   "lf_sha256": "56c31db58bbc717f13e9bb9caba9ca5e7750835486792f88ad4499a14da7e326",
+   "extracted": true,
+   "path": "original/decoded/Experiment/RFSTUNE-02/run.py"
+  },
+  "Experiment/RFXARCH-01/run.py": {
+   "bytes": 5495,
+   "sha256": "00038a503aa1f38a70be90acae0eba9e26605ef4175c2487e7e62da3be3390d5",
+   "md5": "13afe297278fb03ec0efd5af6b289f4e",
+   "lines": 107,
+   "crlf": 0,
+   "lf_sha256": "00038a503aa1f38a70be90acae0eba9e26605ef4175c2487e7e62da3be3390d5",
+   "extracted": true,
+   "path": "original/decoded/Experiment/RFXARCH-01/run.py"
+  },
+  "Experiment/RFXFUSE-01/run.py": {
+   "bytes": 8414,
+   "sha256": "88bb68fcf22e89712d75903912caa4386c8b26eac0a8a5fab8762c3d8aac25c1",
+   "md5": "dee0d22f79612c83b49306f69309946a",
+   "lines": 142,
+   "crlf": 0,
+   "lf_sha256": "88bb68fcf22e89712d75903912caa4386c8b26eac0a8a5fab8762c3d8aac25c1",
+   "extracted": true,
+   "path": "original/decoded/Experiment/RFXFUSE-01/run.py"
+  },
+  "Experiment/RFXSTD-01/run.py": {
+   "bytes": 7326,
+   "sha256": "e4d424c25f394152ba86842ffc4e1e2f865544b10061b4bfb7ba33aa6cfcfdec",
+   "md5": "f54075ff898cabe990c668e60299da3e",
+   "lines": 126,
+   "crlf": 0,
+   "lf_sha256": "e4d424c25f394152ba86842ffc4e1e2f865544b10061b4bfb7ba33aa6cfcfdec",
+   "extracted": true,
+   "path": "original/decoded/Experiment/RFXSTD-01/run.py"
+  },
+  "Experiment/RISKSIM-01/run.py": {
+   "bytes": 7157,
+   "sha256": "8fa4a6acdd63bf1acb52fd02a4dd5fe5780764f352c3eb6b66ca51e2a73275a4",
+   "md5": "64e0fcf32dd890334eef80d8374b42bc",
+   "lines": 141,
+   "crlf": 0,
+   "lf_sha256": "8fa4a6acdd63bf1acb52fd02a4dd5fe5780764f352c3eb6b66ca51e2a73275a4",
+   "extracted": true,
+   "path": "original/decoded/Experiment/RISKSIM-01/run.py"
+  },
+  "Experiment/SAFE-04/lab_fuse.py": {
+   "bytes": 3143,
+   "sha256": "3bea1e496286e688f5ab44a31ccb165729b38924228421cfb9cdccba973d026f",
+   "md5": "fa8ce8f652bf3ee13597e872fda40b83",
+   "lines": 77,
+   "crlf": 0,
+   "lf_sha256": "3bea1e496286e688f5ab44a31ccb165729b38924228421cfb9cdccba973d026f",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SAFE-04/lab_fuse.py"
+  },
+  "Experiment/SAFE-04/lab_streams.py": {
+   "bytes": 7338,
+   "sha256": "aaf3880c57fdfddda7be567369212af88a8318d08a4eb1fcfa9182ec2002a727",
+   "md5": "e288a49c7f77f9a22e9cce00aead459b",
+   "lines": 146,
+   "crlf": 0,
+   "lf_sha256": "aaf3880c57fdfddda7be567369212af88a8318d08a4eb1fcfa9182ec2002a727",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SAFE-04/lab_streams.py"
+  },
+  "Experiment/SAFE-04/rel.py": {
+   "bytes": 8279,
+   "sha256": "0ee274361b370112e54d3019b4e3f6b188ba3afff1cf99d098dbbb6a8d0f2bc5",
+   "md5": "402aaf561639e75409f2ead79d78a939",
+   "lines": 162,
+   "crlf": 162,
+   "lf_sha256": "9e6185fc5d4584b5fbc69d2f4a969ba1d5c84621a18d0f2a3e6d908a56b94c0b",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SAFE-04/rel.py"
+  },
+  "Experiment/SAFE-04/rel_sweep.py": {
+   "bytes": 3939,
+   "sha256": "a7290e7ad56fb54cf1e3c5b53757ae9c2ada3e5283d5526f9d806ad91f16e620",
+   "md5": "7166b20f70f25f342a22bfcadc5883ac",
+   "lines": 84,
+   "crlf": 84,
+   "lf_sha256": "01b60769cef6104f841e5cd6f1aebe85dbb3471337cc8e985a1559e866c32e5d",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SAFE-04/rel_sweep.py"
+  },
+  "Experiment/SAFE-04/rel_sweep2.py": {
+   "bytes": 3411,
+   "sha256": "7214c9083702a0e568b4fbee1d78ca9e1382c1f8154c8982d2ac7d812200cfc4",
+   "md5": "75899e4caf38b38bbf953da6b5b62a04",
+   "lines": 69,
+   "crlf": 0,
+   "lf_sha256": "7214c9083702a0e568b4fbee1d78ca9e1382c1f8154c8982d2ac7d812200cfc4",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SAFE-04/rel_sweep2.py"
+  },
+  "Experiment/SAFE-04/rel_sweep5.py": {
+   "bytes": 1885,
+   "sha256": "43960985823a6c29c4e853a9e513e91da15c9c3af013bf0ade92ad266cb57bab",
+   "md5": "557afcb255ab4f1b4696296633d87a88",
+   "lines": 39,
+   "crlf": 0,
+   "lf_sha256": "43960985823a6c29c4e853a9e513e91da15c9c3af013bf0ade92ad266cb57bab",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SAFE-04/rel_sweep5.py"
+  },
+  "Experiment/SAFE-04/stream_gate.py": {
+   "bytes": 9392,
+   "sha256": "fd62ecbb033b73c5ea4120dcb937bcc50f3ea770fdff90d09e7be71ca052ea79",
+   "md5": "db5d4fbbd5917d4813bd96797aa61058",
+   "lines": 143,
+   "crlf": 0,
+   "lf_sha256": "fd62ecbb033b73c5ea4120dcb937bcc50f3ea770fdff90d09e7be71ca052ea79",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SAFE-04/stream_gate.py"
+  },
+  "Experiment/SCALE-CC-01/run.py": {
+   "bytes": 13268,
+   "sha256": "3bc1d7c493a739e475fc1dc6c7ed1b9fbeb4221e46ec4f7ff4f9d21e8a7d17ca",
+   "md5": "e7be3e2bfa47c0e0af30e51daaa6400d",
+   "lines": 233,
+   "crlf": 233,
+   "lf_sha256": "752be50b751c55bee5b839955a4a68db29593dfc9d0a9235d07b5ee78060b946",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SCALE-CC-01/run.py"
+  },
+  "Experiment/SCALE-CC-01/vox2_gender.json": {
+   "bytes": 103941,
+   "sha256": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089",
+   "md5": "950a8ba9c44e60db1e9bb5b8aac8d4b7",
+   "lines": 6115,
+   "crlf": 6115,
+   "lf_sha256": "cebd5f25f418eac8692a3373512c3a52fdc646373453c976161b78ee90d6c0f1",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SCALE-CC-01/vox2_gender.json"
+  },
+  "Experiment/SCALE-CC-01/vox2b_groups.json": {
+   "bytes": 46751,
+   "sha256": "7beb7ce7f67de74bcc753e1d8f2be10560b105d74dbcbf220c493d65d27fc742",
+   "md5": "57092daac915915414588062dff6caff",
+   "lines": 6176,
+   "crlf": 6176,
+   "lf_sha256": "a2686d78959d3e99815be2f973f68bceca6a1549a910b325e898f0c31b8b43f5",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SCALE-CC-01/vox2b_groups.json"
+  },
+  "Experiment/SCALE-CC-02/run.py": {
+   "bytes": 4160,
+   "sha256": "5c5cb32e20d6738d1685ba265ff7f4a448ebcbd9ec46cb7d4ddf14975a6cb82d",
+   "md5": "73869739d0eaa9b842741269545f122e",
+   "lines": 68,
+   "crlf": 68,
+   "lf_sha256": "b8f26a543612fb8826ab219202cd51b037984f07bf796726c0eb44cc34f4e84e",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SCALE-CC-02/run.py"
+  },
+  "Experiment/SCALE-VB/run.py": {
+   "bytes": 12781,
+   "sha256": "620b0a292fcd053ff429925d49958ec0c0cc8ab5f834e667ef960a7b937cdf6e",
+   "md5": "2e2913fb5310c53191ead982de51582e",
+   "lines": 198,
+   "crlf": 198,
+   "lf_sha256": "e8e73dcdaf4ad6300c3c20ac1939411153945c91b19010ec673a7e4d4cca7d02",
+   "extracted": true,
+   "path": "original/decoded/Experiment/SCALE-VB/run.py"
+  },
+  "Experiment/STACK-02/eligible.json": {
+   "bytes": 673,
+   "sha256": "9b4fe3f56fdb1a05fa3a832da3522e34d6bd8e7e9f92bd3cb9390c69c4216897",
+   "md5": "bbab2a531702ab631652d21e25a825d2",
+   "lines": 8,
+   "crlf": 0,
+   "lf_sha256": "9b4fe3f56fdb1a05fa3a832da3522e34d6bd8e7e9f92bd3cb9390c69c4216897",
+   "extracted": true,
+   "path": "original/decoded/Experiment/STACK-02/eligible.json"
+  },
+  "Experiment/STACK-02/fold_persons.json": {
+   "bytes": 5481,
+   "sha256": "d76f684d719e5c4c47085e2d6763c55650899eef8def7637b506f1a0020ee27e",
+   "md5": "aede157945600732e0f8a8337b8df0b5",
+   "lines": 312,
+   "crlf": 312,
+   "lf_sha256": "43e77e8c4e9091a8120de7e4865e7f4fbdb9eb062fba0088b9649ed13f9cb884",
+   "extracted": true,
+   "path": "original/decoded/Experiment/STACK-02/fold_persons.json"
+  },
+  "Experiment/STACK-02/pools.py": {
+   "bytes": 2737,
+   "sha256": "ff99990d8fc6ee34ef4b758e3ef0b34e55bf13ac5adf5e81ee60da5f637242ba",
+   "md5": "cd867144bf43f0283003a8f1ba685cc0",
+   "lines": 25,
+   "crlf": 0,
+   "lf_sha256": "ff99990d8fc6ee34ef4b758e3ef0b34e55bf13ac5adf5e81ee60da5f637242ba",
+   "extracted": true,
+   "path": "original/decoded/Experiment/STACK-02/pools.py"
+  },
+  "Experiment/STACK-02/run.py": {
+   "bytes": 13396,
+   "sha256": "58522e65bb902310b8b049690cfb04b47b4b42e777c0021adbcbd0c660e35b29",
+   "md5": "3709cf4c175e60945144ec7c4198dbd0",
+   "lines": 248,
+   "crlf": 248,
+   "lf_sha256": "265eccfeebcdc84e0a000694c0e3ad165f82a123e1c47d469da8986c1038f209",
+   "extracted": true,
+   "path": "original/decoded/Experiment/STACK-02/run.py"
+  },
+  "Experiment/T3ENC-01/run.py": {
+   "bytes": 12721,
+   "sha256": "3cb048edfd4793173e937022404932705d186ba1e3ceacd7d24e237864099ee1",
+   "md5": "fd780c6f94762c24b9d9cf4db49df181",
+   "lines": 209,
+   "crlf": 209,
+   "lf_sha256": "692c4c0eca69d7a2781b0e45c8daff37815d6b76a2986a6ab3938e51ba037455",
+   "extracted": true,
+   "path": "original/decoded/Experiment/T3ENC-01/run.py"
+  },
+  "Experiment/T3RECIPE-01/run.py": {
+   "bytes": 15240,
+   "sha256": "7fda47e235f624f810d682fcefd6951e4522bbe2d063f8f5128c18ac4b20eca5",
+   "md5": "13cfbd6f8a5cc445b025de740c4bf1fb",
+   "lines": 256,
+   "crlf": 256,
+   "lf_sha256": "9bbb81fe43cbac2d05bcd3ce20bce213cb88a2a2bf1ce13a9c1290b786c35d9d",
+   "extracted": true,
+   "path": "original/decoded/Experiment/T3RECIPE-01/run.py"
+  },
+  "Experiment/T3RECIPE-01/t3r.py": {
+   "bytes": 29168,
+   "sha256": "c1877872fcecd97cf16688c246abbe81878bae8fd7b38b022723fa483a082de4",
+   "md5": "ba1034827f4d2c62a0afd3a3f6b8fe1f",
+   "lines": 522,
+   "crlf": 0,
+   "lf_sha256": "c1877872fcecd97cf16688c246abbe81878bae8fd7b38b022723fa483a082de4",
+   "extracted": true,
+   "path": "original/decoded/Experiment/T3RECIPE-01/t3r.py"
+  },
+  "Experiment/TRANSL-01/run.py": {
+   "bytes": 6753,
+   "sha256": "88907e7f22169954dd6a69377d11ddede83fab85a1ea2260ee0c0fe9e1e333ce",
+   "md5": "8b22851d325aef2029f5e2fd9620487e",
+   "lines": 126,
+   "crlf": 126,
+   "lf_sha256": "2db2a4960eb6665581f1d4731b8e058b449ee3b5774395ed062f6182c4cf0058",
+   "extracted": true,
+   "path": "original/decoded/Experiment/TRANSL-01/run.py"
+  },
+  "Experiment/VBSEL-01/run.py": {
+   "bytes": 7130,
+   "sha256": "e7e6b7013048b7cbe334610dbe323db3888907a89cf759b6f7ab1e1dfe708d36",
+   "md5": "2e99d3b90dc56675ca4b36ded1a83e96",
+   "lines": 125,
+   "crlf": 0,
+   "lf_sha256": "e7e6b7013048b7cbe334610dbe323db3888907a89cf759b6f7ab1e1dfe708d36",
+   "extracted": true,
+   "path": "original/decoded/Experiment/VBSEL-01/run.py"
+  },
+  "Experiment/VBSEL-01/vox2_sa_speakers.json": {
+   "bytes": 4094,
+   "sha256": "eccc765365323b2ea52a97822b17eb33ffaa4dc46e0aca00f85f2df1911dd278",
+   "md5": "37f4e8670949bc32f086003a593f9036",
+   "lines": 327,
+   "crlf": 327,
+   "lf_sha256": "e5c9dbe22ca89f5f3c8a6dab1aa5de15fdda89e57a191140590d86e08d91d76b",
+   "extracted": true,
+   "path": "original/decoded/Experiment/VBSEL-01/vox2_sa_speakers.json"
+  },
+  "Experiment/VOICELORA-01/run.py": {
+   "bytes": 18978,
+   "sha256": "fd6ff46728643d8045b6d27a12035961deb90d098421e357cd0d901f8b61918e",
+   "md5": "ebc0836826d71cf539ece938cbbb7ea5",
+   "lines": 364,
+   "crlf": 364,
+   "lf_sha256": "cb20eb85b38a77e2efa18a75c43ae018d70311caa33af60d1b6f08102c3527c4",
+   "extracted": true,
+   "path": "original/decoded/Experiment/VOICELORA-01/run.py"
+  },
+  "Experiment/VOX2-01/run_bridge.py": {
+   "bytes": 8524,
+   "sha256": "9daeeeec609a3e5e0a8d2764796391dc2bf8fb2291fa0ab6169695552e8b35ff",
+   "md5": "e3260d3276cfdca8eb08dbcfd26f19aa",
+   "lines": 157,
+   "crlf": 0,
+   "lf_sha256": "9daeeeec609a3e5e0a8d2764796391dc2bf8fb2291fa0ab6169695552e8b35ff",
+   "extracted": true,
+   "path": "original/decoded/Experiment/VOX2-01/run_bridge.py"
+  },
+  "kaggle/build_l0_notebooks.py": {
+   "bytes": 121966,
+   "sha256": "1097dd9537b505682e034e78330690f67a7e2fcc2a10cbad887a0f603088b96e",
+   "md5": "e2f63ea92aa5c62e66a034a20a5ab493",
+   "lines": 2043,
+   "crlf": 2043,
+   "lf_sha256": "131e0aa3080d6f9c988b6bc10fb9e519439b197324c0f74a14a1c11c6de07e47",
+   "extracted": true,
+   "path": "original/decoded/kaggle/build_l0_notebooks.py"
+  },
+  "lab_entry.py": {
+   "bytes": 802,
+   "sha256": "a021f3e8090006c8b7ac23ef9397332b768e2a6551a9ecdcd74324448ee6ca42",
+   "md5": "969ad42a47449a3a239cd9323a455f5a",
+   "lines": 14,
+   "crlf": 0,
+   "lf_sha256": "a021f3e8090006c8b7ac23ef9397332b768e2a6551a9ecdcd74324448ee6ca42",
+   "extracted": true,
+   "path": "original/decoded/lab_entry.py"
+  }
+ }
+}

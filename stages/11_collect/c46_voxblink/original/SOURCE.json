@@ -1,0 +1,58 @@
+{
+ "stage": "c46_voxblink",
+ "run": "unknown slug (2 sessions, 9-10/10/2026; session 2 attached session 1's output datasetVersion 20511943)",
+ "exactness": "exact-executed-copy",
+ "files": [
+  {
+   "path": "original/flag-2027-nb-46.ipynb",
+   "copied_from": "Experiment/SCALE-VB/flag-2027-nb-46.ipynb",
+   "bytes": 179069,
+   "md5": "a62939b942655a8ec10d1362e5a24ebc",
+   "sha256": "109e4fc72882e7331828226bedfe14cb29c782372d461bc7963ade32c0b41aa2"
+  },
+  {
+   "path": "original/__huggingface_repos__.json",
+   "copied_from": "Experiment/SCALE-VB/results_flag46.zip :: __huggingface_repos__.json (Kaggle HF cache record: model repo ids + commits, no data)",
+   "bytes": 446,
+   "md5": "66e72c4c7b48e331fc1e3714681ab596",
+   "sha256": "05a68c112d2722bb3d348b31e44fd3b97c4de1b335cac68030838c7906b905ed"
+  }
+ ],
+ "notes": [],
+ "builders_today": [
+  {
+   "path": "kaggle/build_vb_notebook.py",
+   "bytes": 25743,
+   "md5": "8d06540b38a70230afb7a59e5ad161c8",
+   "sha256": "7b674393ef6abce80bf767e1f66c3bdce3cff92296b2c1538081eec41d1dd4dd",
+   "mtime_local": "2026-10-09 13:01:46"
+  },
+  {
+   "path": "kaggle/vendor_vb/vb_media.py",
+   "bytes": 5372,
+   "md5": "a9b2575d4b0ae779f1db029d083b4206",
+   "sha256": "52a8b20675fc64b1ccc74fe1d79fb745337ff3477052cca5a920013d81146fc8",
+   "mtime_local": "2026-10-08 12:54:50"
+  },
+  {
+   "path": "kaggle/vendor_t3enc/t3enc_cell.py",
+   "bytes": 6751,
+   "md5": "9ee869ae454df33442705f6fa8a19252",
+   "sha256": "5083111e0beabcae34b3655b37ae05412bd0fa14ecdd40a5844d889b2851917a",
+   "mtime_local": "2026-10-09 18:19:28"
+  },
+  {
+   "path": "kaggle/FLAG_46_voxblink.ipynb",
+   "bytes": 52924,
+   "md5": "165d4959dbeacec3dd6c9b0a4e15ea15",
+   "sha256": "eb80e6938c979b060f7805c215949c0137735ca660b0f95bbd76943a770f2355",
+   "mtime_local": "2026-10-09 13:01:58"
+  }
+ ],
+ "builders_git": "all untracked in the source repo (git status '??'); kaggle/build_eval_notebooks.py (notebook writer) is tracked + modified",
+ "evidence": [
+  "internal provenance (not shipped): NOP_BTC_2026-11-20/repo_map/DESIGN.md §4.2, §6 WP-C, §7 G2 G9 G22 G27",
+  "internal provenance (not shipped): S1 A11; S2 A12"
+ ],
+ "exactness_note": "Only session 2 of the original run is kept (this notebook). selection.csv, timestamps.csv, shard_listing.csv and 473 of the 705 shard parts were written by session 1, whose code and log are not kept; session 2 copied them from session 1's attached output (datasetVersion 20511943) and only reused them. Session-1 code is presumed identical to this notebook: session 2 logs 'mirror: ... 15252 speakers ... excluded before download ...: 45 speakers' and 'selection: ... 15207 speakers' (= 15 252 - 45), and kaggle/FLAG_46_voxblink.ipynb (9 code cells = session 2) was written 2026-10-09 13:01:58 +07; that time precedes the latest possible start of a 10.5 h session 1 only if session 2 started right after it (not proven). The selection code is therefore not verified-executed. Session-2 statistics in feats_manifest.json (stats.faces 22 751, stats.videos 13 859, stats.videos_failed 33) cover session 2 only (STATS is reset at session start)."
+}

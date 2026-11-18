@@ -1,0 +1,26 @@
+{
+ "stage": "final_verify",
+ "exactness": "new",
+ "what": "verify_zip.py is new (per-member sha256 against assembly/expected.json, Spearman against the submitted zip); check_eval_zip.py is a verbatim copy (local-script).",
+ "files": [
+  {
+   "path": "original/check_eval_zip.py",
+   "bytes": 3244,
+   "mtime": "2026-11-03 18:22:40",
+   "md5": "40a27e648bf411995a60323c3adb268a",
+   "sha256": "bde629bc8473c60440e7ecdc7c0618680e5a459aa816b4b34aafb37d199dce16",
+   "git": "untracked (??) in the team repo",
+   "note": "format check used for every Evaluation zip (S7 D13)",
+   "copied_from": "Experiment/EVALPATH-U/check_eval_zip.py"
+  }
+ ],
+ "stage_files": {
+  "check_eval_zip.py": {
+   "sha256": "bde629bc8473c60440e7ecdc7c0618680e5a459aa816b4b34aafb37d199dce16",
+   "from": "original/check_eval_zip.py, unchanged"
+  },
+  "verify_zip.py": {
+   "sha256": "a2eec73abf5bbbbadf18eea4ad9cc866ff63d9ace43ffb8dc616a4d04e72e02c"
+  }
+ }
+}

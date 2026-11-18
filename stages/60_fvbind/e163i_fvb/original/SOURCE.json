@@ -1,0 +1,97 @@
+{
+ "stage": "e163i_fvb",
+ "exactness": "exact-staging",
+ "run": "thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval",
+ "rule": "DESIGN 2.3: folder kapi_<slug>_* whose kernel-metadata.json id = account/slug and whose notebook md5 = notebook_md5 of the LAST push of that kernel in kaggle/kapi_runs.jsonl",
+ "kapi_runs": {
+  "file": "kaggle/kapi_runs.jsonl",
+  "line": 1609,
+  "record": {
+   "time": "2026-11-15 07:11",
+   "account": "thanhhuyen11",
+   "kernel": "thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval",
+   "source": "C:/Users/ASUS/AppData/Local/Temp/fvb163i/FLAG_163i_rfs_infer.ipynb",
+   "notebook_md5": "354351113d5ed7f4350be800c4b0b79d",
+   "gpu": true,
+   "smoke": {},
+   "secrets": [],
+   "datasets": [
+    "thanhhuyen11/flag2027-rfsfxfvb-art-p",
+    "ngnnguynchn/flag2027-raw-v4-p",
+    "chnnhnnguyn/external-data-mavceleb",
+    "ngnnguynchn/flag2027-evalphase-p"
+   ],
+   "kernels": [
+    "thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+    "thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval",
+    "thanhhuyen11/flag-2027-nb-192-fvbx3"
+   ],
+   "ok": true
+  },
+  "is_last_push_for_kernel": true,
+  "other_lines_same_kernel_same_md5": [
+   1608
+  ]
+ },
+ "copied_from": {
+  "windows_temp_staging_folder": "C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-163i-rfsfxfvb-eval_qotpi72t/",
+  "byte_exact_private": "FF_DATA/_private_originals/e163i_fvb/flag-2027-nb-163i-rfsfxfvb-eval.ipynb (private data folder shared with the organisers, not in this repository; runner/check_stage.py looks there; byte-exact, including the organisers' literal where the notebook has one)",
+  "byte_exact_public_route": "the copy in this folder is byte-exact (the notebook holds no organisers' data)",
+  "staging_provenance": "build-time copy NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-163i-rfsfxfvb-eval_qotpi72t/ (with MANIFEST.json there: md5 vs kapi_runs, kernel-metadata vs kapi_runs, secret scan); the staging folder _staging_backup/ is moved out of the repository before publication and kept privately (todo WP-A / WP-K)",
+  "copied_on": "2026-11-18"
+ },
+ "exact_notebook": {
+  "name": "flag-2027-nb-163i-rfsfxfvb-eval.ipynb",
+  "bytes": 94135,
+  "md5": "354351113d5ed7f4350be800c4b0b79d",
+  "sha256": "50dc1c92c30ffdd0eb8bf5f4f2fa6964caa623bf34f817fd4028caf5d1cfc7d9",
+  "kept_where": "byte-exact in the backup folder above (outside the published tree) and in the Windows Temp folder; to be stored with the private data (FF_DATA) before publication"
+ },
+ "files": [
+  {
+   "repo_file": "flag-2027-nb-163i-rfsfxfvb-eval.ipynb",
+   "kind": "notebook (byte-exact copy)",
+   "bytes": 94135,
+   "md5": "354351113d5ed7f4350be800c4b0b79d",
+   "sha256": "50dc1c92c30ffdd0eb8bf5f4f2fa6964caa623bf34f817fd4028caf5d1cfc7d9"
+  },
+  {
+   "repo_file": "kernel-metadata.json",
+   "kind": "kernel metadata of the push (byte-exact copy)",
+   "bytes": 725,
+   "md5": "ec122464ca0b5940256a4054c0c66e48",
+   "sha256": "d3c48039641376cf28a71a0a2151844f672500907dc0bea7272d69b1b1d5b0cf"
+  },
+  {
+   "repo_file": "flag-2027-nb-163i-rfsfxfvb-eval.log",
+   "kind": "Kaggle log of the run (byte-exact copy)",
+   "copied_from": "Experiment/FVBIND-01/out/eval163i/flag-2027-nb-163i-rfsfxfvb-eval.log",
+   "bytes": 15796,
+   "md5": "b8b012264334e9ff838e664d4cddedb1",
+   "sha256": "4409bf44c561a292141c7a7752cbe9b6c1e387d87db17c1eb91d7b011c7fe971"
+  },
+  {
+   "repo_file": "pre_staging/FLAG_163i_rfs_infer.ipynb",
+   "kind": "pre-staging source of kapi (NOT the pushed bytes)",
+   "md5": "3d595a11b4eae57f96a630fc0443ccca",
+   "sha256": "fc6bf69722b7a318e040878de817a8cd77de59e02b1cf59805bb80fb49e56055",
+   "copied_from": "C:/Users/ASUS/AppData/Local/Temp/fvb163i/FLAG_163i_rfs_infer.ipynb (via the backup folder)"
+  }
+ ],
+ "redactions": [],
+ "notes": [
+  "kapi_runs:1608 is a failed push of the byte-identical notebook (Git Bash rewrote the kernel paths to D:/Git/...), staging folder _suiubpub; line 1609 is the run",
+  "builder chain at the time: kaggle/FLAG_163i_rfs_infer.ipynb (12/11 22:03) + `python kaggle/patch_163i_eval.py <D>/FLAG_163i_rfs_infer.ipynb --data-root /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p` + `python kaggle/patch_163i_factor.py <D>/FLAG_163i_rfs_infer.ipynb` (v_fvb branch); patch_163i_dataroot.py and the v_wh branch did not exist yet; today's patch_163i_factor.py was edited 15/11 09:03 (after this push)",
+  "pre-staging copy (Temp/fvb163i, md5 3d595a11...) kept in original/pre_staging/ (kapi then inserted its [boot] / [cell] lines)"
+ ],
+ "embedded": "embedded/EMBEDDED.json",
+ "builder": "kaggle/FLAG_163i_rfs_infer.ipynb + kaggle/patch_163i_eval.py --data-root /kaggle/input/datasets/ngnnguynchn/flag2027-evalphase-p + kaggle/patch_163i_factor.py (versions of 15/11 before 07:11), pushed by hand with kaggle/kapi.py",
+ "embedded_payloads": {
+  "code/flag_e2e_core.py": "3cad7b8a83d3817c3178e867cd6e7782bd2c77d48539a7051dbcef78066c8f3a"
+ },
+ "repo_versions_today": {
+  "Experiment/FVBIND-01/fvbind.py": "59b949e4... (adds arm B2g; the B2 path and its random stream unchanged, S6 1.1)",
+  "Experiment/FVBIND-01/fvb_extract.py": "72248d41... (= embedded copy of FLAG_192)",
+  "Experiment/RFS-01/train/rfs_train.py": "2f79b004... (later opt-in keys; RFS_LORA_FIX=1 by default since 16/11)"
+ }
+}

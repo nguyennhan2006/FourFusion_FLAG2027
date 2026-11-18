@@ -1,0 +1,19 @@
+{
+ "stage": "cleancomp_tables",
+ "exactness": "local-script",
+ "files": [
+  {
+   "repo_path": "original/build_tables.py",
+   "copied_from": "Experiment/CLEANCOMP-01/build_tables.py",
+   "sha256": "a37bfda0db73296a290d491faf55a4d307e5302b2e1625e7807716975b83de71",
+   "repo_git": "untracked (??)",
+   "byte_identical_to_source": true
+  }
+ ],
+ "related_not_copied": {
+  "Experiment/CLEANCOMP-01/build_dev.py": "b2fe72b7bd044930c02740c01375be753e95e551aa99214d7833dee8952dff7c",
+  "kaggle/cleancomp_chain.sh": "421c3bd1084d3a23bee35f179955b5dd730a8b90a6b1979dbbef5ea086e89e52"
+ },
+ "release_stage": "release/flag2027_e2e/stages.py:379-420",
+ "note": "stage.ipy = the release cell with English titles, output under ds/ (CHANGES.md)"
+}

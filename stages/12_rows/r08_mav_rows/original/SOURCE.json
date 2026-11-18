@@ -1,0 +1,84 @@
+{
+ "copied_from": "_from_download/flag-2027-nb-5-external-identities.ipynb (untracked in git; downloaded 27/09/2026)",
+ "papermill_start": "2026-09-26T09:45:39.365248+00:00",
+ "kaggle_metadata": {
+  "accelerator": "nvidiaTeslaT4",
+  "isInternetEnabled": true,
+  "dataSources": [
+   19835728,
+   19969558,
+   19986689,
+   20013233
+  ]
+ },
+ "compared_with_git": {
+  "8544b3b:kaggle/FLAG_08_external.ipynb": "md5 d92e62fbe4ab863aaabd79393396121d; differs (cells 0, 2, 4, 8)",
+  "a89a071:kaggle/FLAG_08_external.ipynb": "md5 bba8e3f551ac25f12872bdf59a9b0c27; differs (cells 2, 4)"
+ },
+ "team_machine_output": "kaggle/output/feats_ext_full/ (meta tables identical to kaggle/flag2027-ext-meta.zip sha256 4da564db...)",
+ "stage": "r08_mav_rows",
+ "files": [
+  {
+   "path": "original/decoded/flag_extract.py",
+   "bytes": 37319,
+   "md5": "8541a55b44a14608d157c4f6552d58cc",
+   "sha256": "8f4b62b0cf28c0be3630ebf8a9496f0564e923db98f4ad5ea7b95624e129a7c5",
+   "decoded_from": "cell 2 base64",
+   "equals": "no git commit"
+  },
+  {
+   "path": "original/decoded/flag_lib.py",
+   "bytes": 16737,
+   "md5": "a028937c8ebaa701437490899bd9effd",
+   "sha256": "6941a07811bca54575f06bec5a1e67776e9d13dda887a8e6efa8fb9b6d104bc6",
+   "decoded_from": "cell 2 base64",
+   "equals": "git 8544b3b / a89a071 kaggle/flag_lib.py"
+  },
+  {
+   "path": "original/decoded/flag_v2.py",
+   "bytes": 26886,
+   "md5": "ebe2b6abc54a5c7f43f9179a385768b8",
+   "sha256": "063083f053581d15044dd52603929fbc8a2235fc0aeb96417b29a5b93f0520af",
+   "decoded_from": "cell 2 base64",
+   "equals": "no git commit"
+  },
+  {
+   "path": "original/flag-2027-nb-5-external-identities.ipynb",
+   "bytes": 136979,
+   "md5": "85fd5ba3f82f2f5905453faf9242a91d",
+   "sha256": "d6664cb5d23d98033a385734af3bf0b70892b7ea4c497afea758ff5399ab61d0"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/00_guard.py",
+   "bytes": 2716,
+   "md5": "ca0efe7d3aa09a92989e2945137052fa",
+   "sha256": "d0b38fd193b72557038ab6cb6a9d9a947ef8a28d4ed003e95c559878afa3668e"
+  },
+  {
+   "path": "cells/01_vgg_preseed.py",
+   "bytes": 3237,
+   "md5": "4ca49e2b39ad2e56e08f6cb219bdee52",
+   "sha256": "1f4324aa514373a3351e5d6c59c63c4c358309fb6d413437bf83141bc31ba4ef"
+  },
+  {
+   "path": "cells/02_smoke_subset.py",
+   "bytes": 3603,
+   "md5": "9863a629dd9f289d744cddb6fcd5546c",
+   "sha256": "706bc9fc2ca0950ca40b85b10e41f678b76e1e7b374dea1f65844e80fd7ee965"
+  },
+  {
+   "path": "cells/99_verify.py",
+   "bytes": 2223,
+   "md5": "1eaca52aeeb7a2849c035d956b205611",
+   "sha256": "792bc0cd8631bbcf6a2abdd16d01b2937540127c198b0f107ed8be460ce479ee"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 1374,
+   "md5": "c0a6d31b7ff2ead74911636c3433db3b",
+   "sha256": "4b0ec7058462e37987cbb5f209ae9fc506de409bdbecd983865c54f884806d35"
+  }
+ ]
+}

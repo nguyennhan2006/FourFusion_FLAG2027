@@ -1,0 +1,353 @@
+{
+ "about": "The 20 frozen-encoder arrays / tables read by xjf.py (DP branch training data: FLAG train set + MAV-Celeb v1/v2). sha256 = the bytes used for the submission (team machine kaggle/output/, 18/11). Total ~0.9 GB.",
+ "inputs": {
+  "f12": "notebooks/ff/f12_eval_feats",
+  "f10": "notebooks/ff/f10_models",
+  "r08": "notebooks/ff/r08_mav_rows"
+ },
+ "files": [
+  {
+   "target": "feats_v2/face_arcface_train.npy",
+   "from": "f12",
+   "name": "face_arcface_train.npy",
+   "hint": "feats_eval",
+   "bytes": 13281408,
+   "sha256": "55491b54180e116cbe92e7dd96a314915dab7720b72e9d6915b0afb309e09ba9",
+   "made_by": "D1: FLAG_04 feats_v2 = FLAG_12 feats_eval (identical bytes)",
+   "used_by": [
+    "xjf.py:55",
+    "extract_eval.py:39 (self-check)"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/face_arcface_train.npy",
+   "shape": [
+    6485,
+    512
+   ],
+   "dtype": "float32"
+  },
+  {
+   "target": "feats_v2/voice_ecapa192_train.npy",
+   "from": "f12",
+   "name": "voice_ecapa192_train.npy",
+   "hint": "feats_eval",
+   "bytes": 4980608,
+   "sha256": "b3bd0a6430412e287f7b5ab1fc660f5d61a7285c251fdfe00eec57c0baf1fe44",
+   "made_by": "D1",
+   "used_by": [
+    "xjf.py:57",
+    "extract_eval.py:79 (self-check)"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/voice_ecapa192_train.npy",
+   "shape": [
+    6485,
+    192
+   ],
+   "dtype": "float32"
+  },
+  {
+   "target": "feats_v2/voice_ecapa6144_train.npy",
+   "from": "f12",
+   "name": "voice_ecapa6144_train.npy",
+   "hint": "feats_eval",
+   "bytes": 159375488,
+   "sha256": "195490e23b3c7bbf3401f5ba276ddd15276e348d1f39e4526aee4a672fe14eb9",
+   "made_by": "D1",
+   "used_by": [
+    "xjf.py:57"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/voice_ecapa6144_train.npy",
+   "shape": [
+    6485,
+    6144
+   ],
+   "dtype": "float32"
+  },
+  {
+   "target": "feats_models/face_adaface_train.npy",
+   "from": "f10",
+   "name": "face_adaface_train.npy",
+   "hint": "feats_models",
+   "bytes": 13281408,
+   "sha256": "c806596c394b1c94912cada2bf5d1f6fb3e158a410a68a594cae5a39e4f9112c",
+   "made_by": "D2: FLAG_10",
+   "used_by": [
+    "xjf.py:55",
+    "extract_eval.py:60 (self-check)"
+   ],
+   "team_machine_copy": "kaggle/output/feats_models/face_adaface_train.npy",
+   "shape": [
+    6485,
+    512
+   ],
+   "dtype": "float32"
+  },
+  {
+   "target": "feats_models/ext_v1_complete_face_adaface.npy",
+   "from": "f10",
+   "name": "ext_v1_complete_face_adaface.npy",
+   "hint": "feats_models",
+   "bytes": 7762048,
+   "sha256": "d160e51b74941f561e0ddd89165c0df3b4dc51926b75d6b15dd14fd3fd2a1863",
+   "made_by": "D5: FLAG_10 (MAV rows of ext-meta)",
+   "used_by": [
+    "xjf.py:65"
+   ],
+   "team_machine_copy": "kaggle/output/feats_models/ext_v1_complete_face_adaface.npy",
+   "shape": [
+    7580,
+    512
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_models/ext_v2_complete_face_adaface.npy",
+   "from": "f10",
+   "name": "ext_v2_complete_face_adaface.npy",
+   "hint": "feats_models",
+   "bytes": 9168000,
+   "sha256": "0844ca81857500168f8ef2cf7eaca4c10621085f56c3b5cfcdb98c4070d8eee1",
+   "made_by": "D5",
+   "used_by": [
+    "xjf.py:65"
+   ],
+   "team_machine_copy": "kaggle/output/feats_models/ext_v2_complete_face_adaface.npy",
+   "shape": [
+    8953,
+    512
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_eval/ext_v1_complete_face_arcface.npy",
+   "from": "f12",
+   "name": "ext_v1_complete_face_arcface.npy",
+   "hint": "feats_eval",
+   "bytes": 7762048,
+   "sha256": "e80283e1ee273581068214e4eab4d91e3a26f255e3b9295a82398196cd5f625a",
+   "made_by": "D4: FLAG_12 EXT loop",
+   "used_by": [
+    "xjf.py:64"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/ext_v1_complete_face_arcface.npy",
+   "shape": [
+    7580,
+    512
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_eval/ext_v2_complete_face_arcface.npy",
+   "from": "f12",
+   "name": "ext_v2_complete_face_arcface.npy",
+   "hint": "feats_eval",
+   "bytes": 9168000,
+   "sha256": "c1e99f58e41aef4bc49e4266d314ac927881e494c7fcc1d9905ca8a0b7d11812",
+   "made_by": "D4",
+   "used_by": [
+    "xjf.py:64"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/ext_v2_complete_face_arcface.npy",
+   "shape": [
+    8953,
+    512
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_eval/ext_v1_complete_voice_ecapa192.npy",
+   "from": "f12",
+   "name": "ext_v1_complete_voice_ecapa192.npy",
+   "hint": "feats_eval",
+   "bytes": 7509632,
+   "sha256": "e56824753c4fc9e124775c8f99e8dc2e33b8ec038ea047eff1ad804143c89ddc",
+   "made_by": "D4 (middle 12 s)",
+   "used_by": [
+    "xjf.py:76"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/ext_v1_complete_voice_ecapa192.npy",
+   "shape": [
+    19556,
+    192
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_eval/ext_v2_complete_voice_ecapa192.npy",
+   "from": "f12",
+   "name": "ext_v2_complete_voice_ecapa192.npy",
+   "hint": "feats_eval",
+   "bytes": 7954688,
+   "sha256": "611ec9c5f71eaef6e9cdf020744cc6463207c36cbb9ab167defdebe264187bf6",
+   "made_by": "D4",
+   "used_by": [
+    "xjf.py:76"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/ext_v2_complete_voice_ecapa192.npy",
+   "shape": [
+    20715,
+    192
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_eval/ext_v1_complete_voice_ecapa6144.npy",
+   "from": "f12",
+   "name": "ext_v1_complete_voice_ecapa6144.npy",
+   "hint": "feats_eval",
+   "bytes": 240304256,
+   "sha256": "7735d1111a1e57c15f4b3dc83c3bb0cbafc3bbe718765bd18e2ccd5d358e58e0",
+   "made_by": "D4",
+   "used_by": [
+    "xjf.py:77"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/ext_v1_complete_voice_ecapa6144.npy",
+   "shape": [
+    19556,
+    6144
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_eval/ext_v2_complete_voice_ecapa6144.npy",
+   "from": "f12",
+   "name": "ext_v2_complete_voice_ecapa6144.npy",
+   "hint": "feats_eval",
+   "bytes": 254546048,
+   "sha256": "b906a9328c8a9ffd0b66a1a4a9793d655ff4c3c6686246fb7c0a049204ee6786",
+   "made_by": "D4",
+   "used_by": [
+    "xjf.py:77"
+   ],
+   "team_machine_copy": "kaggle/output/feats_eval/ext_v2_complete_voice_ecapa6144.npy",
+   "shape": [
+    20715,
+    6144
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_ext_full/ext_v1_complete_face_meta.csv",
+   "from": "r08",
+   "name": "ext_v1_complete_face_meta.csv",
+   "hint": "feats_ext",
+   "bytes": 518148,
+   "sha256": "7b385161cfb9bcf998110b4f969c7268aaddb8c5567482d2888cc617f92601ae",
+   "made_by": "D3: FLAG_08 full run (git 8544b3b) = ext-meta table",
+   "used_by": [
+    "xjf.py:63"
+   ],
+   "team_machine_copy": "kaggle/output/feats_ext_full/ext_v1_complete_face_meta.csv"
+  },
+  {
+   "target": "feats_ext_full/ext_v1_complete_voice_meta.csv",
+   "from": "r08",
+   "name": "ext_v1_complete_voice_meta.csv",
+   "hint": "feats_ext",
+   "bytes": 1493090,
+   "sha256": "3fac359f6a5b4fcab53032296c063fdf3adb73ba587a5107507c67982164635e",
+   "made_by": "D3",
+   "used_by": [
+    "xjf.py:63"
+   ],
+   "team_machine_copy": "kaggle/output/feats_ext_full/ext_v1_complete_voice_meta.csv"
+  },
+  {
+   "target": "feats_ext_full/ext_v2_complete_face_meta.csv",
+   "from": "r08",
+   "name": "ext_v2_complete_face_meta.csv",
+   "hint": "feats_ext",
+   "bytes": 628788,
+   "sha256": "9db02bfc517ddf5ea5e52d0c54d937d0887d87038ad969b24172c86a37534c23",
+   "made_by": "D3",
+   "used_by": [
+    "xjf.py:63"
+   ],
+   "team_machine_copy": "kaggle/output/feats_ext_full/ext_v2_complete_face_meta.csv"
+  },
+  {
+   "target": "feats_ext_full/ext_v2_complete_voice_meta.csv",
+   "from": "r08",
+   "name": "ext_v2_complete_voice_meta.csv",
+   "hint": "feats_ext",
+   "bytes": 1634213,
+   "sha256": "1e22f7667044afe9bbcfa228d66ab4931f76a5df239ecc905e2bc31fa766378b",
+   "made_by": "D3",
+   "used_by": [
+    "xjf.py:63"
+   ],
+   "team_machine_copy": "kaggle/output/feats_ext_full/ext_v2_complete_voice_meta.csv"
+  },
+  {
+   "target": "feats_ext_full/ext_v1_complete_face.npy",
+   "from": "r08",
+   "name": "ext_v1_complete_face.npy",
+   "hint": "feats_ext",
+   "bytes": 62095488,
+   "sha256": "268290a0ad89291005a29abc63f6abf70b3782fecc8bf173201bc6f67c413a76",
+   "made_by": "D3: VGG-Face fc7 4096 (organisers' space), 8 frames / video",
+   "used_by": [
+    "xjf.py:71"
+   ],
+   "team_machine_copy": "kaggle/output/feats_ext_full/ext_v1_complete_face.npy",
+   "shape": [
+    7580,
+    4096
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_ext_full/ext_v2_complete_face.npy",
+   "from": "r08",
+   "name": "ext_v2_complete_face.npy",
+   "hint": "feats_ext",
+   "bytes": 73343104,
+   "sha256": "2529e6a76cfd72a58f82bd02472efc08bcec9ceaf56ad9d634b8c0d48a9346ec",
+   "made_by": "D3",
+   "used_by": [
+    "xjf.py:71"
+   ],
+   "team_machine_copy": "kaggle/output/feats_ext_full/ext_v2_complete_face.npy",
+   "shape": [
+    8953,
+    4096
+   ],
+   "dtype": "float16"
+  },
+  {
+   "target": "feats_ext_full/ext_v1_complete_voice.npy",
+   "from": "r08",
+   "name": "ext_v1_complete_voice.npy",
+   "hint": "feats_ext",
+   "bytes": 15019136,
+   "sha256": "27b668a183bb17c5329b894401c86ab2c9719b73fbd0b9c956956b5a766f1d34",
+   "made_by": "D3: ECAPA yangwang825/ecapa-tdnn-vox2 192, every wav, whole utterance, float32",
+   "used_by": [
+    "xjf.py:75"
+   ],
+   "team_machine_copy": "kaggle/output/feats_ext_full/ext_v1_complete_voice.npy",
+   "shape": [
+    19556,
+    192
+   ],
+   "dtype": "float32"
+  },
+  {
+   "target": "feats_ext_full/ext_v2_complete_voice.npy",
+   "from": "r08",
+   "name": "ext_v2_complete_voice.npy",
+   "hint": "feats_ext",
+   "bytes": 15909248,
+   "sha256": "3a83056d9f61bed382a124274414e0bd99baad902479d1237f315a246c220733",
+   "made_by": "D3",
+   "used_by": [
+    "xjf.py:75"
+   ],
+   "team_machine_copy": "kaggle/output/feats_ext_full/ext_v2_complete_voice.npy",
+   "shape": [
+    20715,
+    192
+   ],
+   "dtype": "float32"
+  }
+ ]
+}

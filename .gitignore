@@ -1,0 +1,41 @@
+# FourFusion FLAG 2027 reproduction repository: never commit data, caches or private material.
+# Team-only byte-exact backup of the Kaggle staging folders (embeds organisers' meta file and dev payloads).
+# It is kept outside this tree (NOP_BTC_2026-11-20/_staging_backup/); these lines guard against a copy coming back.
+_staging_backup/
+**/_staging_backup/
+**/_PRIVATE*/
+# Runner work folders and outputs
+ff_work/
+**/ff_work/
+FF_WORK/
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+# Data, checkpoints and score files live under FF_DATA (Drive), never in git
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.parquet
+*.zip
+*.tar
+*.tar.gz
+*.zipdata
+*.wav
+*.mp4
+*.m4a
+*.aac
+*.jpg
+*.jpeg
+*.png
+# assembly/inputs/ holds the ten mode (c) files only in a private copy of the repository (see assembly/inputs/README.md)
+assembly/inputs/*
+!assembly/inputs/README.md
+# Credentials
+.env
+*.env
+kaggle.json
+**/.kaggle/

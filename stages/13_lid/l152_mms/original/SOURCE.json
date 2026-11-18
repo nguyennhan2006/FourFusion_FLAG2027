@@ -1,0 +1,67 @@
+{
+ "copied_from": {
+  "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/02_flag-2027-nb-152-mmslid.ipynb": "E: package",
+  "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/02_flag-2027-nb-152-mmslid.log": "run log",
+  "kaggle/FLAG_152_mmslid.ipynb": "pushed bytes (md5 = kapi_runs.jsonl line 1063), kept as original/FLAG_152_mmslid.pushed.ipynb"
+ },
+ "runs_json": {
+  "gpu": true,
+  "internet": true,
+  "datasets": [
+   "chnnhnnguyn/external-data-mavceleb"
+  ],
+  "kernel_inputs": [],
+  "status": "COMPLETE"
+ },
+ "log_summary": {
+  "MAV voice files": {
+   "v1": 19556,
+   "v2": 20715
+  },
+  "MMS labels": 4017,
+  "MMS flagged files": 2528,
+  "flagged speakers": {
+   "mav_v1": 62,
+   "mav_v2": 80
+  },
+  "read errors": 0
+ },
+ "run_output_team_machine": {
+  "Experiment/LID-AUDIT-01/out/mms.parquet": "f9a436f81ce0521b7d8ab709ee9e7a48ac9546285a09c7f63853e40f9332f052"
+ },
+ "stage": "l152_mms",
+ "files": [
+  {
+   "path": "original/02_flag-2027-nb-152-mmslid.ipynb",
+   "bytes": 7432,
+   "md5": "f92d216a5c1f43f4a5dd5f6269eb5277",
+   "sha256": "6cebcacd7ef2e64c549492f0f4ae566672c0c70e73f5c11c6ad68db873ebbae3"
+  },
+  {
+   "path": "original/02_flag-2027-nb-152-mmslid.log",
+   "bytes": 12736,
+   "md5": "566e1b42109aedb91fcd71b690c6d8bc",
+   "sha256": "d4b9a7759f6f5f4414b0c54a7d990bf4057ab7e097f77e8f31a3e937c8d7cacb"
+  },
+  {
+   "path": "original/FLAG_152_mmslid.pushed.ipynb",
+   "bytes": 7623,
+   "md5": "e9e3555ed54bbc56d5b63b17bb86e24c",
+   "sha256": "3a899e9f90e7ae28940697f8f9579213cab4508c9c68b61ec076347031e29d60"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/99_compare.py",
+   "bytes": 1208,
+   "md5": "c283e09002e97564d4b8c93cb6ca3934",
+   "sha256": "f2b308484779c7721ee23980bc6e67b0d3bb50e21abf79875e1f4aa15ea65afc"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 216,
+   "md5": "98df49d23d8a9942a37885c392e22413",
+   "sha256": "619759409ce6913bf2288e8ad9314a479b071e648410353a3c8abc56f35f3281"
+  }
+ ]
+}

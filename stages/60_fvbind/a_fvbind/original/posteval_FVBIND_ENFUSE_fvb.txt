@@ -1,0 +1,5 @@
+no_gender/English: Bangla fuser on English + RFS, level-0 |diff| 0.0e+00; Spearman with U' English 0.9926
+no_gender/Bangla: wiring, F1s' Bangla scores reproduced, max |diff| 5.0e-07
+gender/English: Bangla fuser on English + RFS, level-0 |diff| 0.0e+00; Spearman with U' English 0.9841
+gender/Bangla: wiring, F1s' Bangla scores reproduced, max |diff| 5.0e-07
+-> posteval_FVBIND_ENFUSE_fvb.zip (English: Bangla fuser + rfsfxfvb_eval.zip; Bangla: posteval_FVBIND_U_fvb.zip bytes). NOT submitted; scored only if labels are released.

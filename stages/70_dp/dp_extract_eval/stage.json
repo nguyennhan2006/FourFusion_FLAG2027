@@ -1,0 +1,202 @@
+{
+ "id": "dp_extract_eval",
+ "group": "70_dp",
+ "title": "DP branch: ArcFace (insightface buffalo_l), AdaFace IR-101 and SpeechBrain ECAPA 192 / 6144 features of the two English Evaluation files",
+ "kind": "infer",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 34,
+  "internet": true,
+  "secrets": []
+ },
+ "origin": {
+  "run": null,
+  "exactness": "local-script",
+  "source_file": "Experiment/XJF-01/extract_eval.py",
+  "script_sha256": "dad9866ba2574c8aac5adfde706a5c6c4fd8803bf6305ec83276d2fe149a15ea",
+  "script_md5": "64ab0fede8758f08757f017430d738f8",
+  "notebook_md5": null,
+  "builder": null,
+  "local_run": {
+   "where": "team machine, Windows 11, CPU",
+   "when": "2026-11-16 01:22:37 - 01:56:45 +07:00",
+   "command": "python Experiment/XJF-01/extract_eval.py <eval_set.zip> <unzip folder> English",
+   "log": "original/extract.log"
+  },
+  "modules": {
+   "flag_extract.py": {
+    "from": "kaggle/flag_extract.py",
+    "sha256": "7c227c4cac1d6fee0b90aba8c63ec8a99783e0b7b78d6ab85c51e57ffb3b0e54"
+   },
+   "flag_models.py": {
+    "from": "kaggle/flag_models.py",
+    "sha256": "9172b68e22e3f3796f19b644e6fd48dca5b3ed2476b9e302c25ce2894a892c87"
+   }
+  }
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-evalphase-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p"
+  },
+  {
+   "artifact": "notebooks/ff/dp_feats_layout"
+  },
+  {
+   "artifact": "notebooks/ff/raw_evalphase",
+   "note": "eval_set.zip, the zip the DP branch read on 16/11; when only the extracted dataset view is available the stage rebuilds the zip; either way its members are checked against stages/10_raw/raw_evalphase/expected/eval_set_members.sha256"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/dp_extract_eval",
+  "exports": {},
+  "files": [
+   "feats_evalphase/{face_arcface,face_arcface_detok,face_adaface,voice_ecapa192,voice_ecapa6144}_{no_gender,gender}_English.npy",
+   "feats_evalphase/ids_{no_gender,gender}_English.txt",
+   "feats_evalphase/verify.json",
+   "dp_extract_eval_manifest.json"
+  ]
+ },
+ "env": {
+  "DP_LANGS": "English",
+  "DP_DEVICE": "cpu"
+ },
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {
+  "pinned_models": "models.json (buffalo_l onnx sha256, AdaFace @54f602a0, spkrec-ecapa-voxceleb @0f99f2d0)"
+ },
+ "skip_with": [
+  "05_scores/dp_eval_feats"
+ ],
+ "verify": [
+  {
+   "file": "feats_evalphase/verify.json",
+   "min_cos": {
+    "arcface_train_cos": 0.999,
+    "adaface_train_cos": 0.999,
+    "ecapa192_train_cos": 0.99
+   }
+  },
+  {
+   "file": "feats_evalphase/*English*",
+   "sha256_from": "expected_outputs.json",
+   "rule": "information (equal only on the team machine / libraries)"
+  }
+ ],
+ "todo": [
+  "the DP pretrained models are not yet in FF_DATA/06_pretrained (G14): without them the stage downloads the pinned versions (internet); WP-A fetch_models.py (group 'dp') stores buffalo_l, the AdaFace HF snapshot @54f602a0 and spkrec-ecapa-voxceleb @0f99f2d0",
+  "WP-A: pretrained/models is read directly from FF_DATA and not declared as an input, because declaring it would block this stage when 06_pretrained is absent (models_fetch has no stage.json yet, and the runner has no optional inputs). Declare {\"artifact\": \"pretrained/models\"} once models_fetch is runnable or optional inputs exist, so that 'ffrun.py plan' schedules it",
+  "DONE 19/11/2026 (integration fixer r2, M4): disclosed in docs/COMPLIANCE_NOTES.md §3 and the batch-size-1 check listed in docs/VERIFICATION.md §6. Was: WP-K docs/COMPLIANCE_NOTES.md: the ECAPA voice features of the Evaluation clips are computed in zero-padded batches packed by duration (flag_extract.run_batched, max 240 padded seconds / 32 clips), so a clip's embedding varies numerically with the other test clips of its batch (no label or test statistic enters). Kept verbatim; see CHANGES.md 'Not changed'. Optional check after 20/11: re-extract with max_bs=1 and report max |dz| and Spearman of z_DP against the submission arrays"
+ ],
+ "script_patches": {
+  "extract_eval.py": [
+   {
+    "id": "EE1",
+    "type": "path",
+    "count": 1,
+    "where": "line 6",
+    "old": "import io, json, sys, time, zipfile",
+    "new": "import io, json, os, sys, time, zipfile",
+    "why": "os is needed to read the path variables below",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "EE2",
+    "type": "path",
+    "count": 1,
+    "where": "line 11",
+    "old": "sys.path.insert(0, str(REPO / \"kaggle\"))",
+    "new": "sys.path.insert(0, os.environ.get(\"DP_CODE\", str(REPO / \"kaggle\")))   # FF repo: folder holding flag_extract.py / flag_models.py",
+    "why": "the helper modules sit in the stage folder, not in <team repo>/kaggle",
+    "effect_on_numbers": "none (same module files)"
+   },
+   {
+    "id": "EE3",
+    "type": "path",
+    "count": 1,
+    "where": "line 16",
+    "old": "OUT = HERE / \"feats_evalphase\"; OUT.mkdir(exist_ok=True)",
+    "new": "OUT = Path(os.environ.get(\"DP_EVAL_FEATS\", HERE / \"feats_evalphase\")); OUT.mkdir(exist_ok=True)   # FF repo: output folder",
+    "why": "the stage folder is read-only; output goes to the stage's working folder",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "EE4",
+    "type": "path",
+    "count": 1,
+    "where": "line 17",
+    "old": "KO = REPO / \"kaggle\" / \"output\"",
+    "new": "KO = Path(os.environ.get(\"DP_FEATS\", REPO / \"kaggle\" / \"output\"))   # FF repo: dp_feats folder of stage dp_feats_layout",
+    "why": "reference train arrays (self-check) come from stage dp_feats_layout",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "EE5",
+    "type": "path",
+    "count": 1,
+    "where": "line 36",
+    "old": "tz = zipfile.ZipFile(REPO / \"Input\" / \"train_set.zip\")",
+    "new": "tz = zipfile.ZipFile(os.environ.get(\"DP_TRAIN_ZIP\", REPO / \"Input\" / \"train_set.zip\"))   # FF repo: organisers' train_set.zip",
+    "why": "organisers' train zip from FF_DATA/00_raw/btc_mavceleb_v4 (only the 20 self-check rows are read)",
+    "effect_on_numbers": "none"
+   },
+   {
+    "id": "EE6",
+    "type": "bugfix",
+    "count": 1,
+    "where": "lines 74-75 (AdaFace except block)",
+    "old": "    ver[\"adaface_error\"] = repr(e)[:300]; X.log(\"AdaFace skipped:\", ver[\"adaface_error\"])",
+    "new": "    ver[\"adaface_error\"] = repr(e)[:300]; X.log(\"AdaFace skipped:\", ver[\"adaface_error\"])\n    raise   # FF repo: never skip AdaFace silently (xjf.py needs face_adaface_*; DESIGN WP-I, S7 gap 10)",
+    "why": "the original swallowed any AdaFace error and went on; xjf.py then fails later without the AdaFace arrays",
+    "effect_on_numbers": "none: the 16/11 run took the success path (extract.log 01:31:53 'AdaFace check', 01:38:59 / 01:46:14 'adaface ... done')"
+   },
+   {
+    "id": "EE7",
+    "type": "path",
+    "count": 1,
+    "where": "line 78",
+    "old": "ec = X.Ecapa(KO / \"_ecapa_sb\")",
+    "new": "ec = X.Ecapa(Path(os.environ.get(\"DP_ECAPA_SB\", KO / \"_ecapa_sb\")))   # FF repo: pinned speechbrain savedir (stage cell 2)",
+    "why": "the SpeechBrain savedir (5 files of speechbrain/spkrec-ecapa-voxceleb@0f99f2d0) is prepared by the stage, not kept under kaggle/output",
+    "effect_on_numbers": "none (same five files, sha256 checked)"
+   }
+  ],
+  "flag_models.py": [
+   {
+    "id": "FM1",
+    "type": "pin",
+    "count": 1,
+    "where": "class AdaFace.__init__ (line 123)",
+    "old": "        path = snapshot_download(self.ID)",
+    "new": "        path = snapshot_download(self.ID, revision=os.environ.get(\"FF_ADAFACE_REVISION\", \"54f602a0737bd1ee4a4e7e9fd089a485f397fefd\"))   # FF repo: pinned (= HF cache snapshot used on 16/11)",
+    "why": "the original took the latest revision of minchul/cvlface_adaface_ir101_webface12m; the team machine's cache (refs/main) held only snapshot 54f602a0, so that is what ran",
+    "effect_on_numbers": "none if the hub file is unchanged (pretrained_model/model.pt sha256 e312d792... checked by the stage)"
+   }
+  ],
+  "flag_extract.py": []
+ },
+ "env_spec": "docker/requirements-dp-local.txt (team CPU machine: Python 3.14.0, torch 2.12.1+cpu, numpy 2.3.5, pandas 3.0.5, insightface 2.0, onnxruntime 1.31.1, speechbrain 1.1.2; S8 E3)",
+ "env_overrides": {
+  "DP_EVAL_ZIP": "path of eval_set.zip (else the raw_evalphase output, else rebuilt from the evalphase view; members checked)",
+  "DP_TRAIN_ZIP_PATH": "path of the organisers' train_set.zip",
+  "DP_TMP": "scratch folder (unpacked media, rebuilt zips, model copies); default FF_WORK/tmp, emptied at every run (<base>/ff_dp/<stage>)",
+  "DP_HF_CACHE": "Hugging Face cache holding the AdaFace snapshot",
+  "DP_DEVICE": "cpu (default, as the original run) | gpu",
+  "DP_LANGS": "English (default; the submission uses only the English files)",
+  "FF_ADAFACE_REVISION": "AdaFace revision (default the pinned 54f602a0...)",
+  "DP_FEATS_DIR": "folder holding feats_v2/, feats_models/, feats_eval/, feats_ext_full/ with the 20 files of dp_feats_layout/dp_features.json (else found by structure in the dp_feats_layout input)",
+  "DP_ALLOW_INPUT_MISMATCH": "1 = go on when an input differs from the submission's: lid_strict.json not version 2, a saved dp_feats copy whose files differ from dp_features.json, eval_set.zip members that differ from the submitted zip"
+ },
+ "reads_undeclared": [
+  "FF_DATA/<entry>/06_pretrained: optional local copies of the three DP models (found by sha256 / HF cache folder name); without them the pinned versions are downloaded (models.json)"
+ ],
+ "python_packages_checked": "cell 1 stops with the list of missing packages (insightface, onnxruntime, speechbrain, omegaconf, huggingface_hub, ...) and points to docker/requirements-dp-local.txt / docker/requirements-kaggle-pinned.txt; pip_policy stays 'skip' (the runner has no per-stage requirement subset)"
+}

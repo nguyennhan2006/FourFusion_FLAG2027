@@ -1,0 +1,241 @@
+{
+ "id": "e50cc",
+ "group": "50_eval",
+ "title": "F1s′ components on the four Evaluation lists: XALL bridge (4 streams), v11 T3 head (2 streams), 7 conditions",
+ "kind": "infer",
+ "role_in_1354": "score",
+ "role": "Extracts the frozen features of train + the four lists (ImageBind face / voice, FaRL ep16 and ep64, CLIP, CLIP ViT-L/14, SimAM-ResNet100 VoxBlink2 and its VoxCeleb2 fine-tune, ViT age, wav2vec2 age / gender, AdaFace, ArcFace, SpeechBrain ECAPA, AudioCLIP), scores the saved XALL bridge s007_xall.pt (5 nets, CLEANCOMP-01 final; picked over best-v7 by XALL_PREFER) and the saved v11 T3 head v11_t3head.pt (reused, not retrained), fits the face-gender logistic model on 23 018 train faces inside the run (condition pf_m), and writes e2e_eval/components_eval.npz: b3 = XALL_deep0, XALL_cca, XALL_ib, XALL_age (+ rel, relg = 0 under NOREL), t3 = anP512_deep, anP512_cca (+ t3_relg = 0), co = is_en, pf_m, pv_m, gdiff, agef, agev, agegap, pid, and the face_farl16 / voice_sam100p / voice_sam100f arrays of the CA head; forwards the SAFE-04 tables (e2e_eval/safe04/, copied from cleancomp-e2e) on which e112f1sx refits the F1s′ fuser. Level-0 self-test <= 7.2e-7 (submission/checks.json).",
+ "compute": {
+  "device": "gpu",
+  "gpus": 2,
+  "machine_shape": "NvidiaTeslaT4",
+  "minutes_original": 221.1,
+  "internet": true,
+  "secrets": []
+ },
+ "origin": {
+  "run": "thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/04_flag-2027-nb-50cc-e2e-eval.ipynb",
+  "notebook": "original/04_flag-2027-nb-50cc-e2e-eval_redacted.ipynb",
+  "notebook_md5": "14f94495cbc036dbbe3a3fd890dc85b7",
+  "notebook_sha256": "377fcb83c7dd3a1d6ca79c770e102a4a158fb5cbad0fe1a5bf5d83b06d821369",
+  "exact_notebook_md5": "d650b86c544de5fd723ca631561793f3",
+  "exact_notebook_sha256": "49022347acefbc24eb43a2370e263d7aa6c081438c18bc0a23d62db5ef7abad1",
+  "redacted": true,
+  "pushed": {
+   "time_utc+7": "2026-11-11 20:47",
+   "kapi_runs_line": 1467,
+   "pushed_notebook_md5": "b34646dd394b6d52ede3b0b5279029ac"
+  },
+  "log": "original/04_flag-2027-nb-50cc-e2e-eval.log",
+  "kernel_metadata": "original/kernel-metadata.json",
+  "builder": "kaggle/build_e2e_v11.py -> kaggle/FLAG_50_e2e_v11.ipynb (verbatim embeds: kaggle/flag_lib.py, kaggle/flag_v2.py, BEST/v6_eval/pipeline.py, BEST/v7_safe/safe_lib.py, Experiment/E2E/system_v11.py, fuser JSONs, v11 head code as HEAD_B64); kaggle/patch_evalphase_checks.py (11/11 fix of the dev-only drift cell); pushed by kaggle/sat_push.sh step 50cc with --env 'LID_STRICT=1;CLEANCOMP=1;XALL_PREFER=cleancomp;NOREL=1' (re-push by hand 11/11 20:46 after the patch); pre-staging patched copy: _staging_backup/tmp.F6q4O4hNig/FLAG_50_e2e_v11.ipynb (md5 7852f19e...)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "mount": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "use": "organiser MAV-Celeb v4 files as stored in FF_DATA 00_raw/btc_mavceleb_v4 (train_set.zip, dev_set.zip, meta_file_train_set.csv): the train list and media come from train_set.zip, unpacked by the verbatim fallback into /kaggle/working/raw and removed by the stage's last cell; dev_set.zip is mounted but never opened (patch no_dev_zip; the original run saw Kaggle's auto-extracted tree, dev lists skipped by ONLY_UNDER)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-members-p",
+   "mount": "datasets/ngnnguynchn/flag2027-members-p",
+   "use": "v6 member seeds of s007 / s010B (s007_seed1.pt ...), asserted at stage.ipy:4548; they feed only the en7 / enco arrays (English v9 / v12 streams, System.en) of components_eval.npz, which no 13.54 fuser reads; this is NOT the XALL bridge s007_xall.pt of cleancomp-final, which is in the numbers (see notes); frozen wiring dataset (DESIGN G18)",
+   "wiring_g18": true
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+   "mount": "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+   "use": "train-side arrays: ImageBind faces of the face-gender model (23 018 faces), XALL train arrays, ages"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-best-v7-p",
+   "mount": "datasets/ngnnguynchn/flag2027-best-v7-p",
+   "use": "old s007_xall.pt (overridden by XALL_PREFER=cleancomp) + MAV-Celeb AdaFace arrays (feed only rel / relg, 0 under NOREL); ALSO holds dev-phase score files best_v7/submission_REL2_E0_B3/{gender,no_gender}/sub_score_v4_{English_heard,Bangla_unheard}.txt, mounted but never read (no reference in stage.ipy); frozen wiring dataset (DESIGN G18)",
+   "wiring_g18": true,
+   "dev_data": true
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p",
+   "mount": "datasets/ngnnguynchn/flag2027-lab-data-p",
+   "use": "data of the v11 T3 head job (manifest version asserted equal to the EDA bundle's)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+   "mount": "datasets/ngnnguynchn/flag2027-cleancomp-e2e-p",
+   "use": "SAFE-04 tables + e2e-dev manifest of CLEANCOMP-01 (forwarded to e2e_eval/safe04/)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cleancomp-final-p",
+   "mount": "datasets/ngnnguynchn/flag2027-cleancomp-final-p",
+   "use": "s007_xall.pt (sha256 e6b74a10...) and v11_head/v11_t3head.pt (sha256 84ab8690...) of stage t164f"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p",
+   "mount": "datasets/ngnnguynchn/flag2027-lid-strict-p",
+   "use": "lid_strict.json: 58 / 58 flagged MAV-Celeb voice files dropped (log)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-evalphase-p",
+   "mount": "datasets/ngnnguynchn/flag2027-evalphase-p",
+   "use": "organiser Evaluation data, *_valid renamed *_test (stage raw_evalphase): the four lists, media, organiser feature csv"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+  "exports": {},
+  "main_files": [
+   "e2e_eval/components_eval.npz",
+   "e2e_eval/e2e_manifest.json",
+   "e2e_eval/safe04/ (32 SAFE-04 tables)",
+   "e2e_eval/fusers/",
+   "feats_eval/",
+   "feats_av/",
+   "v11_head/t3_streams.npz",
+   "submission/checks.json"
+  ],
+  "contains": {
+   "dev_data": true,
+   "voxblink": null,
+   "organiser_media": false,
+   "what": "the SAVED run output (FF_DATA 04_run_outputs/flag-2027-nb-50cc-e2e-eval, the skip_with copy) holds repo/reference/{submission_CA_EN_BN,submission_v11,submission_v12}.zip, the three dev-phase score zips written by the unredacted cell 32 (md5 f6d77418..., bc741c4a..., a7323cc4...): dev data, private storage only. A re-run from this stage.ipy writes no such file (REF_ZIPS = {}). voxblink: not checked (null)."
+  }
+ },
+ "flags_in_code": {
+  "LID_STRICT": "1",
+  "CLEANCOMP": "1",
+  "XALL_PREFER": "cleancomp",
+  "NOREL": "1",
+  "ONLY_UNDER": "'evaluation_phase' (constant, code cell 02)"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [
+  {
+   "old": "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "new": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+   "count": 2,
+   "type": "url",
+   "why": "Meta's ImageBind link is dead since 12/11/2026; the pinned Hugging Face mirror serves the same file (sha256 d6f6c22bedcc90708448d5d2fbb7b2db9c73f505dc89bd0b2e09b23af1b62157, the hash that e163i asserts for this URL). Same substitution as release/flag2027_e2e/stages.py GLOBAL_PATCHES (lines 24-26).",
+   "effect_on_numbers": "none (same checkpoint bytes)"
+  },
+  {
+   "id": "no_dev_zip",
+   "old": "ZIP_PREFIXES = (\"train_set\", \"dev_set\", \"eval\", \"test\")             # organiser zips unpacked when not extracted",
+   "new": "ZIP_PREFIXES = (\"train_set\", \"eval\", \"test\")                        # FF dev-exclusion: dev_set.zip is never unpacked (original: (\"train_set\", \"dev_set\", \"eval\", \"test\")). organiser zips unpacked when not extracted",
+   "count": 1,
+   "type": "dev-exclusion",
+   "in_release": false,
+   "why": "The repository mounts datasets/ngnnguynchn/flag2027-raw-v4-p as the organisers' files in FF_DATA 00_raw/btc_mavceleb_v4 (train_set.zip, dev_set.zip, meta_file_train_set.csv; configs/data_map.json, no 'exclude'), not as the tree Kaggle had auto-extracted for the original run (log: .../flag2027-raw-v4-p/train_set/train_set/train_set/train_English.txt, no 'unpacking' line). No train list is then found among the extracted inputs, so the verbatim fallback unpack_zips() runs; without this patch it unpacks dev_set.zip too (9 757 members, 989 881 860 bytes zipped) into /kaggle/working/raw. ONLY_UNDER = 'evaluation_phase' kept the dev lists out of the numbers anyway; with the patch the dev archive is never opened. Same text as the patch of stage f47b_screen2 (group 20_features).",
+   "effect": "none on numbers: train_set.zip is unpacked by the same fallback into /kaggle/working/raw (same train list and media as the auto-extracted copy, other path) and the verbatim last cell removes raw/ (shutil.rmtree(WORKDIR / 'raw')), so the stage output holds no organiser media; the run log shows an 'unpacking .../train_set.zip' line the original log does not have"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not used",
+  "NOREL": "1",
+  "LID_STRICT": "1",
+  "CLEANCOMP": "1"
+ },
+ "dev_data": "dev_set.zip of datasets/ngnnguynchn/flag2027-raw-v4-p is mounted (FF_DATA layout: zips, not extracted) but never opened: patch no_dev_zip removes 'dev_set' from ZIP_PREFIXES, so the verbatim fallback unpack_zips() unpacks only train_set.zip (the original run found the train list in Kaggle's auto-extracted tree and unpacked nothing). In addition, ONLY_UNDER = 'evaluation_phase' (code cell 01, set by the kaggle/sat_push.sh sed at push time) skips every organiser list whose path lacks 'evaluation_phase' except train_English.txt, as in the original run. WP-A may also add \"exclude\": [\"dev_set.zip\"] to the raw-v4 entry of configs/data_map.json (defence in depth). Also mounted, never read: the dev-phase score files inside datasets/ngnnguynchn/flag2027-best-v7-p (best_v7/submission_REL2_E0_B3/*/sub_score_v4_*.txt; WP-A: set dev_data: true on that data_map entry; WP-K: list it in COMPLIANCE_NOTES beside evalu-f0s, evalu-f1s, e2e-dev and cleancomp-e2e). Code cell 32 (dev reference zips) is redacted, see CHANGES.md.",
+ "skip_with": [
+  "04_run_outputs/flag-2027-nb-50cc-e2e-eval"
+ ],
+ "verify": [
+  {
+   "file": "e2e_eval/components_eval.npz",
+   "bytes": 17384406,
+   "saved_sha256": "2cd160ae456447c0c47bf611f2f73480ffc5c9161e767812d42e5f380b1b56c7",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-50cc-e2e-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "e2e_eval/e2e_manifest.json",
+   "bytes": 12400,
+   "saved_sha256": "b0ba27c2982f917199d957cd42763fecfdd31c292352594a4e141105ce72bd58",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-50cc-e2e-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "submission/checks.json",
+   "bytes": 10396,
+   "saved_sha256": "ae697424c8f04a78101bfb744c50984ba87cf1b1466779291092ca505600c0a4",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-50cc-e2e-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "v11_head/t3_streams.npz",
+   "bytes": 86190,
+   "saved_sha256": "c1036ed63c926112dcbb29cf257bd3975c3483128a3aa0e1a2840ed2c5401ea3",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-50cc-e2e-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "v11_head/v11_t3head.pt",
+   "bytes": 22334773,
+   "saved_sha256": "84ab8690e2dbf6ca0dbfc916848fdf3f82c16970f7ee89e5298e4f0df2e5de29",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-50cc-e2e-eval); a GPU re-run is not byte-identical"
+  }
+ ],
+ "rerun_expectation": "GPU / library re-runs are not bit-identical: compare the final zip per file (Spearman >= 0.9999, DESIGN 5.2); byte equality only for the saved outputs above",
+ "stage_ipy_sha256": "4f9f4fb7c876adb869e4a2a4ba5a1379793236cd862eb2bea84233862067e925",
+ "stage_ipy_cells": 34,
+ "release_e2e_code": {
+  "path": "release/flag2027_e2e/code/e50cc.ipy",
+  "sha256": "9889e2a9a1d989a1c5c40101f2cf65cf926d1a13eda419fd184d13f31b455956",
+  "equal_to_stage_ipy": false,
+  "equal_to_code_of_exact_notebook_with_patches": true,
+  "ships_with_repo": false,
+  "note": "provenance only: release/flag2027_e2e/code/<stage>.ipy is a team file that is not part of the published repository (e50cc.ipy embeds the dev score zips); equal_to_code_of_exact_notebook_with_patches uses only the patches without \"in_release\": false"
+ },
+ "todo": [
+  "Store the exact (unredacted) notebook in private storage shared only with the organisers (proposed: FF_DATA 02_intermediate/_private_originals/e50cc/04_flag-2027-nb-50cc-e2e-eval.ipynb, sha256 49022347acefbc24eb43a2370e263d7aa6c081438c18bc0a23d62db5ef7abad1) next to the run output; it is not in the repository because it embeds dev score data. Copies exist at E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/ and, NOT protected (checked 18/11: outside _PRIVATE_NOT_FOR_PUBLICATION/, `git check-ignore` rc = 1), at repo/_staging_backup/kapi_flag-2027-nb-50cc-e2e-eval_7bpx85hr/flag-2027-nb-50cc-e2e-eval.ipynb (pushed bytes, md5 b34646dd394b6d52ede3b0b5279029ac = kapi_runs line 1467) and repo/_staging_backup/tmp.F6q4O4hNig/FLAG_50_e2e_v11.ipynb (pre-staging copy, md5 7852f19ecd3f5f6fd1ecfaa5136d1cbd); both embed the three dev-phase score zips (md5 f6d77418..., bc741c4a..., a7323cc4...). BLOCKING before any commit: the owner of _staging_backup (WP-K / securer) must move both folders into _staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/ or out of the tree; _tools/selfcheck_50_eval.py fails its staging scan until then.",
+  "The original pip cell installs ImageBind from GitHub HEAD (not pinned); the Docker image pins ImageBind@53680b02 (FF_PIP=pinned). Whether HEAD was 53680b02 on 11/11/2026 is CHƯA CHẮC (DESIGN G10).",
+  "WP-A runner: this stage has runner_requirements.literal_kaggle_input = true and kaggle_strict = true. Off Kaggle the runner points the literal /kaggle/input at the stage's virtual input (Linux symlink, Docker mount, or FF_LITERAL_KAGGLE=mounted); on Kaggle it cannot, and today it only warns unless FF_LITERAL_STRICT=1. Requested: honour kaggle_strict (refuse the stage on Kaggle when /kaggle/input holds attachments that are not inputs of the stage, unless FF_LITERAL_KAGGLE=mounted), i.e. strict by default for these stages. Until then set FF_LITERAL_STRICT=1, or run e50cc / e112f0sx / e112f1sx on Linux / Docker or in a dedicated Kaggle session with exactly the inputs of the stage attached (as the original runs).",
+  "DESIGN G18 (wiring inputs without a producing stage): datasets/ngnnguynchn/flag2027-members-p (source: old members package) and datasets/ngnnguynchn/flag2027-best-v7-p (source: old BEST/v7_safe package) are frozen wiring datasets (configs/data_map.json 'Source run', producer null, FF_DATA 02_intermediate/_wiring/); they are not rebuilt from raw data. Evidence that they do not enter the 13.54 numbers: best-v7's s007_xall.pt is overridden by XALL_PREFER=cleancomp (code cell 01 + stage.ipy:4540, the cleancomp-final copy of stage t164f is used); its MAV-Celeb AdaFace arrays ('ada' in REL_FACES, stage.ipy:2891 / 3166-3195) feed only the rel / relg columns, which NOREL=1 sets to 0; best-v7's submission_REL2_E0_B3/*/sub_score_v4_*.txt (dev-phase score files) are never read (no reference in stage.ipy); members-p (v6 member seeds of s007 / s010B, located at stage.ipy:4546 and asserted at 4548) feeds only System.en() (stage.ipy:3479-3490), i.e. the en7 / enco arrays of components_eval.npz (English v9 / v12 streams), which no fuser of the 13.54 chain reads (F1s′ / ENFUSE streams: XALL_deep0, XALL_cca, XALL_ib, XALL_age, anP512_deep, anP512_cca, trCA). A patch that drops these checks (change type 'wiring') is planned after 20/11 (G18).",
+  "Requirement-1 exception (registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)): the four frozen fuser JSONs embedded verbatim (embedded_data, configs/data_map.json embedded/...) have no producing stage; they feed only d['v9'] / d['v11'] / d['v12'], not the F1s' streams / conditions of 13.54. Closing it needs the v9 / v11 / v12 fit scripts as stages (not planned)."
+ ],
+ "notes": [
+  "Two changes, see CHANGES.md: (1) dead ImageBind URL -> pinned Hugging Face mirror (2 places), (2) the dev-reference payload of code cell 32 is removed (original/ holds the redacted copy; the exact notebook's code with change 1 is release/flag2027_e2e/code/e50cc.ipy).",
+  "Needs internet: pip installs (ImageBind from GitHub HEAD, insightface 2.0, wespeaker @9fecd6cb, CLIP @d50d76d), git clone of AudioCLIP + its BPE vocabulary from GitHub, model downloads (FaRL release, ModelScope WeSpeaker, Hugging Face).",
+  "The original notebook has no smoke mode (kaggle/sat_push.sh: 'no smoke mode in FLAG_50'); smoke_env is empty as in release/flag2027_e2e.",
+  "The saved run output (FF_DATA 04_run_outputs/flag-2027-nb-50cc-e2e-eval) contains repo/reference/*.zip, the three dev-reference zips written by the unredacted cell: private storage only.",
+  "Fix round 18/11: dev-exclusion patch no_dev_zip added (see CHANGES.md); stage.ipy is no longer byte-identical to release/flag2027_e2e/code/e50cc.ipy (previous stage.ipy sha256 6dddeed22d5292d44b51c726fdff5b0d23c8277cfc660273ed1a8bf98e3ee34a).",
+  "Dev-selection disclosure (for COMPLIANCE_NOTES, WP-K): the XALL streams that enter the 13.54 numbers (XALL_deep0, XALL_cca, XALL_ib, XALL_age; they reach both the Bangla F1s′ logit and the ENFUSE English fuser) come from s007_xall.pt, the XALL bridge of the 's007' member recipe (VGG + organiser ECAPA-192). That component was originally chosen per cell with dev pseudo-labels (FUSE-01 / SEL-01b; docs/DECISIONS.md:41 of the team repository flags it as a real risk that must be declared). The copy used here was retrained on train / clean data in CLEANCOMP-01 (stage t164f, datasets/ngnnguynchn/flag2027-cleancomp-final-p, sha256 e6b74a10...), and the F1s′ fuser weights are refitted in e112f1sx on SAFE-04 validation tables only; the choice of the s007 recipe itself was not re-justified on validation."
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": true,
+  "why": "The v11 T3 head job (HEAD_B64 decoded to lab/, run as head_entry.py) finds lid_strict.json through a literal Path('/kaggle/input').rglob fallback (Experiment/T3ENC-01/run.py strict_drop, kaggle/build_l0_notebooks.py line 143): v11_head/job.log of the run reads 'LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json'. Code decoded at run time from a base64 zip is written to disk and imported; the runner's replacement of the string '/kaggle/input' in the stage code does not reach it. The literal path /kaggle/input must therefore show exactly this stage's inputs while the stage runs: e.g. a container with the virtual input mounted at /kaggle/input (as release/docker/ff.py does), or a symlink /kaggle/input -> the virtual input on a Linux host without /kaggle. In a Kaggle notebook whose own /kaggle/input holds other attachments, run this stage in a session with exactly its inputs attached (as the original run).",
+  "kaggle": "separate session with exactly these inputs",
+  "kaggle_strict": true
+ },
+ "embedded_data": [
+  {
+   "artifact": "embedded/BEST/v7_safe/cafuse_fuser.json",
+   "sha256": "4148202185fa0c1b90bd47d3c6e32ed347a360b56c34920b1031b7b1446233e9",
+   "bytes": 3959,
+   "stage_ipy_line": 3553,
+   "use": "v9 Bangla CA-FUSE logistic model (mean / scale / coef / intercept); FUS['v9_bangla'], also passed to SY.System -> S.CAFuse, whose conditions() (the 7 conditions is_en, pf_m, pv_m, gdiff, agef, agev, agegap) do not read the model values; only CAFuse.__call__ (the v9 score) does"
+  },
+  {
+   "artifact": "embedded/BEST/v7_safe/fuser_en.json",
+   "sha256": "8c042484b55b0cd54691504f463910771104c8fe2d7b7049a8a25b5f0546532e",
+   "bytes": 4103,
+   "stage_ipy_line": 3750,
+   "use": "v9 English fuser; FUS['v9_english'] -> SY.scores -> d['v9']"
+  },
+  {
+   "artifact": "embedded/Experiment/BIGB-01/cafuse_t3_fuser_v11.json",
+   "sha256": "ec8a201ef8e598643ccd9797c8c07a638485c6393c59b77d2a56e3d623eb1dc3",
+   "bytes": 5806,
+   "stage_ipy_line": 3956,
+   "use": "v11 Bangla fuser (head P512); FUS['v11_bangla'] -> SY.scores -> d['v11'] (also the v11 submission.zip of the run)"
+  },
+  {
+   "artifact": "embedded/Experiment/EN-T3-01/fuser_en_t3.json",
+   "sha256": "fd549d18e983b415991110f2f8adf72acdcca113d71efeb20cc7e57c800534d9",
+   "bytes": 5663,
+   "stage_ipy_line": 4240,
+   "use": "v12 English fuser; FUS['v12_english'] -> SY.v12_scores -> d['v12']"
+  }
+ ]
+}

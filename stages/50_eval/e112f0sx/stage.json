@@ -1,0 +1,207 @@
+{
+ "id": "e112f0sx",
+ "group": "50_eval",
+ "title": "Saved B0s head on the Evaluation lists -> F0s zip (wiring only)",
+ "kind": "infer",
+ "role_in_1354": "wiring",
+ "role": "No training: scores the saved B0s head (ct01g1_final_models.pt of datasets/ngnnguynchn/flag2027-evalu-f0s-p, 5 seeds; face [farl16 || clipB3] of e65xbs, voice [sam100p || sam100f] of e50cc), runs the A0 audit (no Bengali speaker among the training rows) and writes e2e_out/submission_cleantune01_F0_eval.zip (English = CLEAN form). e112f1sx requires exactly one F0 zip of the split for its English bytes, which a_factor recomputes; so this stage does not enter the 13.54 numbers.",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "machine_shape": "",
+  "minutes_original": 2.1,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "thanhhuyen11/flag-2027-nb-112f0sx-eval",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/05_flag-2027-nb-112f0sx-eval.ipynb",
+  "notebook": "original/05_flag-2027-nb-112f0sx-eval_redacted.ipynb",
+  "notebook_md5": "b7512ce2a9522fee6fe52b9846ff5b26",
+  "notebook_sha256": "842b338f3036db6550ee8e7aa59ad4d206faab1ccb14ba686cb6e22beea9808e",
+  "exact_notebook_md5": "9118048a2b9f7f22e188b21d27dc30cf",
+  "exact_notebook_sha256": "0e0aeae47716e6a7dfa658ad560c33c2ccbcd88dd6c8790c0c6bd43cc00daae6",
+  "redacted": true,
+  "pushed": {
+   "time_utc+7": "2026-11-12 00:41",
+   "kapi_runs_line": 1484,
+   "pushed_notebook_md5": "a4c88727916dc7a9bb990ec4a59bbd02"
+  },
+  "log": "original/05_flag-2027-nb-112f0sx-eval.log",
+  "kernel_metadata": "original/kernel-metadata.json",
+  "builder": "python kaggle/build_flag112.py f0x -> kaggle/FLAG_112_f0x.ipynb (module Experiment/CLEANTUNE-01/run.py: final(), zip_ct() with F0_ZIP unset); pushed by kaggle/evalrun_chain.sh lane X0 (`push 112f0sx E2E_SPLIT=eval \"KX=<65xbs> <50cc>\"`, i.e. kaggle/sat_push.sh step 112f0sx)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p",
+   "mount": "datasets/ngnnguynchn/flag2027-lab-data-p",
+   "use": "lab bundle (exactly one required; version asserted against the EDA bundle)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p",
+   "mount": "datasets/ngnnguynchn/flag2027-lab-vb-p",
+   "use": "VoxBlink lab bundle (private)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+   "mount": "datasets/ngnnguynchn/flag2027-eda-bundle-p",
+   "use": "EDA bundle: train-side arrays of v4 train + MAV-Celeb v1 / v2 (FLAG_08 / 10 / 12)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+   "mount": "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+   "use": "wiring dataset (old out-of-fold tables required by the lab code)",
+   "wiring_g18": true
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+   "mount": "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+   "use": "wiring dataset",
+   "wiring_g18": true
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+   "mount": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
+   "use": "VoxCeleb2 FLAG_53 rows / arrays"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+   "mount": "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+   "use": "FACELORA-03 B3 tables (smoke stand-ins; wiring)",
+   "wiring_g18": true
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+   "mount": "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
+   "use": "5 out-of-fold tables of group g1 (fuser refit; wiring)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+   "mount": "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+   "use": "wiring dataset (full AudioCLIP / LanguageBind arrays)",
+   "wiring_g18": true
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p",
+   "mount": "datasets/ngnnguynchn/flag2027-lid-strict-p",
+   "use": "lid_strict.json (Bengali-voice filter, strict rule v2; 58 MAV-Celeb voice files)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-evalu-f0s-p",
+   "mount": "datasets/ngnnguynchn/flag2027-evalu-f0s-p",
+   "use": "saved B0s head ct01g1_final_models.pt (sha256 1933286f...) + the F0 dev zip next to it (read only on dev)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+   "mount": "notebooks/thanhhuyen11/flag-2027-nb-65xbs-b3sx-eval",
+   "use": "faces [clipB3] of the Evaluation lists (stage e65xbs)"
+  },
+  {
+   "artifact": "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+   "mount": "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+   "use": "components_eval.npz + e2e_manifest.json + SAFE-04 tables (stage e50cc)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/thanhhuyen11/flag-2027-nb-112f0sx-eval",
+  "exports": {},
+  "main_files": [
+   "e2e_out/submission_cleantune01_F0_eval.zip",
+   "e2e_out/ct01g1_final_eval.npz",
+   "e2e_out/ct01g1_audit_A0.txt",
+   "e2e_out/ct01g1_final_models.pt (copy)",
+   "e2e_out/progress.json",
+   "lab/ (decoded embedded code)",
+   "submission.zip"
+  ],
+  "contains": {
+   "dev_data": true,
+   "voxblink": true,
+   "organiser_media": false,
+   "what": "lab/ = the decoded CODE_B64 (the saved copy includes Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip, a dev score zip; a re-run from the redacted stage.ipy does not); e2e_out/ct01g1_final_models.pt is a copy of the B0s head, whose CLEANTUNE-01 arms are trained with auxiliary VoxCeleb2 and VoxBlink rows (Experiment/CLEANTUNE-01/run.py ARMS aux=('vox', 'vb')): treat as VoxBlink-derived weights, private only."
+  }
+ },
+ "flags_in_code": {
+  "E2E_SPLIT": "eval",
+  "LID_STRICT": "1",
+  "CLEANCOMP": "1",
+  "NOREL": "1",
+  "CT_GROUP": "g1",
+  "BN42": "1",
+  "FINAL_ARM": "B0c (default)",
+  "CT_FINAL_SEEDS": "5 (default)"
+ },
+ "env": {},
+ "smoke_env": {
+  "FL3Z_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not used",
+  "NOREL": "1",
+  "LID_STRICT": "1",
+  "CLEANCOMP": "1",
+  "BN42": "1"
+ },
+ "skip_with": [
+  "04_run_outputs/flag-2027-nb-112f0sx-eval"
+ ],
+ "verify": [
+  {
+   "file": "e2e_out/submission_cleantune01_F0_eval.zip",
+   "bytes": 43822,
+   "saved_sha256": "2802824d4aef85f21de2d1e634d5e5479b001b67c2077796a6b595dcff55fee4",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-112f0sx-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "e2e_out/ct01g1_final_eval.npz",
+   "bytes": 21310,
+   "saved_sha256": "3719253852344060853bf72d549a7f3fff5a380ecbab117fc0006c9e96994324",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-112f0sx-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "e2e_out/ct01g1_final_models.pt",
+   "bytes": 18457363,
+   "saved_sha256": "1933286f1d4c7a54d2e802b3298b27e306acca74e81a41038c02236c7f525d44",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-112f0sx-eval); a GPU re-run is not byte-identical"
+  },
+  {
+   "file": "e2e_out/ct01g1_audit_A0.txt",
+   "bytes": 612,
+   "saved_sha256": "89af802f82743ce79ab3b036ec0e773e57991b2bb037b6c62d74c307c4109927",
+   "applies_to": "saved run output (FF_DATA 04_run_outputs/flag-2027-nb-112f0sx-eval); a GPU re-run is not byte-identical"
+  }
+ ],
+ "rerun_expectation": "GPU / library re-runs are not bit-identical: compare the final zip per file (Spearman >= 0.9999, DESIGN 5.2); byte equality only for the saved outputs above",
+ "stage_ipy_sha256": "6b7984a8d4df9c668fd21b97b0311ec2f5902c998c7e9a7204522f7d6cb7c938",
+ "stage_ipy_cells": 8,
+ "release_e2e_code": {
+  "path": "release/flag2027_e2e/code/e112f0sx.ipy",
+  "sha256": "e9a29a4c818d4a535af4454b326417d3c4ff08171b1242ea5679c462cf67c62b",
+  "equal_to_stage_ipy": false,
+  "equal_to_code_of_exact_notebook_with_patches": true,
+  "ships_with_repo": false,
+  "note": "provenance only: release/flag2027_e2e/code/<stage>.ipy is a team file that is not part of the published repository (e50cc.ipy embeds the dev score zips); equal_to_code_of_exact_notebook_with_patches uses only the patches without \"in_release\": false"
+ },
+ "todo": [
+  "Store the exact (unredacted) notebook in private storage shared only with the organisers (proposed: FF_DATA 02_intermediate/_private_originals/e112f0sx/05_flag-2027-nb-112f0sx-eval.ipynb, sha256 0e0aeae47716e6a7dfa658ad560c33c2ccbcd88dd6c8790c0c6bd43cc00daae6) next to the run output; it is not in the repository because it embeds dev score data. Copies exist at E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/2_eval/ and in the git-ignored _staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/ (pushed bytes; checked 18/11: inside the git-ignored private folder, `git check-ignore` matches).",
+  "WP-A runner: this stage has runner_requirements.literal_kaggle_input = true and kaggle_strict = true. Off Kaggle the runner points the literal /kaggle/input at the stage's virtual input (Linux symlink, Docker mount, or FF_LITERAL_KAGGLE=mounted); on Kaggle it cannot, and today it only warns unless FF_LITERAL_STRICT=1. Requested: honour kaggle_strict (refuse the stage on Kaggle when /kaggle/input holds attachments that are not inputs of the stage, unless FF_LITERAL_KAGGLE=mounted), i.e. strict by default for these stages. Until then set FF_LITERAL_STRICT=1, or run e50cc / e112f0sx / e112f1sx on Linux / Docker or in a dedicated Kaggle session with exactly the inputs of the stage attached (as the original runs).",
+  "DESIGN G18 (wiring inputs without a producing stage): datasets/ngnnguynchn/flag2027-cc5-oof-p (FLAG_57 / T3RECIPE-02), -dsel02-oof-p (FLAG_58 / DSEL-02), -facelora03-tables-p (FLAG_86 / 86b) and -lab-avfull-p (package labavfull/) are frozen wiring datasets (configs/data_map.json 'Source run', producer null, FF_DATA 02_intermediate/_wiring/); the embedded lab code checks their presence / row counts, they are not in the 13.54 numbers (data_map notes); they are not rebuilt from raw data. A patch that drops these checks (change type 'wiring') is planned after 20/11 (G18)."
+ ],
+ "notes": [
+  "One change, see CHANGES.md: the dev-score member of the embedded code zip CODE_B64 is removed (original/ holds the redacted copy; the exact notebook's code is release/flag2027_e2e/code/e112f0sx.ipy).",
+  "Wiring datasets (cc5-oof, dsel02-oof, facelora03-tables, lab-avfull, the g1 / r2ca table datasets) stay attached because the verbatim lab code checks for them (DESIGN G18); they are not part of the Evaluation formula.",
+  "The saved run output contains lab/Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip (decoded embedded code): private storage only."
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": true,
+  "why": "The lab modules decoded from CODE_B64 (Experiment/CLEANTUNE-01/run.py _find / _find_all, FACELORA-03/run.py adir, SCALE-CC-01/run.py vox2b_dir, T3ENC-01/run.py strict_drop, DSEL-02 / DSEL-03 table lookups) locate the faces of e65xbs, feats_vox2b, lid_strict.json and the fold tables by scanning the literal path /kaggle/input (env overrides exist only for some: CT_DIRS, FL3_DIRS). Code decoded at run time from a base64 zip is written to disk and imported; the runner's replacement of the string '/kaggle/input' in the stage code does not reach it. The literal path /kaggle/input must therefore show exactly this stage's inputs while the stage runs: e.g. a container with the virtual input mounted at /kaggle/input (as release/docker/ff.py does), or a symlink /kaggle/input -> the virtual input on a Linux host without /kaggle. In a Kaggle notebook whose own /kaggle/input holds other attachments, run this stage in a session with exactly its inputs attached (as the original run). /kaggle/input must also hold no second copy of these files: the notebook itself asserts one face_clipB3_train.npy folder, the modules take the first hit.",
+  "kaggle": "separate session with exactly these inputs",
+  "kaggle_strict": true
+ },
+ "dev_data": "E2E_SPLIT = 'eval' (code cell 01): the dev branch (R11 reference zip next to the saved models, the dev score zip of CLEANTUNE-01/run.py:635) is never taken; the dev zips that sit inside evalu-f0s-p / evalu-f1s-p are attached but not read (DESIGN 2.8)."
+}

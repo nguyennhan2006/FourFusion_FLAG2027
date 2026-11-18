@@ -1,0 +1,1162 @@
+print("[cell] 01 run parameters (kapi --env): environment variables of this r", flush=True)
+# run parameters (kapi --env): environment variables of this run
+import os
+# FF: no upload to a Kaggle dataset (the output becomes an artifact). Original: os.environ['RFS_UPLOAD'] = 'phanththui/flag2027-feats-rfs-b-p'
+os.environ['RFS_BUDGET_H'] = '8.0'
+# <<<FF-CELL>>>
+print("[boot] FLAG_162b_rfs_auxb | python", __import__("sys").version.split()[0], "| start", __import__("time").strftime("%Y-%m-%d %H:%M:%S"), flush=True)  # heartbeat rule: first output, before any import
+print("[cell] b1", flush=True)
+import os, sys, io, re, time, json, types, shutil, zipfile, warnings
+from pathlib import Path
+warnings.filterwarnings("ignore", category=FutureWarning)
+LOCAL = os.environ.get("FLAG_LOCAL") == "1"          # CPU smoke test on a mini copy of the data
+IN = Path(os.environ.get("FLAG_IN", "/kaggle/input"))
+WORKDIR = Path(os.environ.get("FLAG_OUT", "/kaggle/working"))
+CACHE = Path(os.environ.get("FLAG_CACHE", "/tmp/flag_cache"))           # checkpoints stay out of the output
+ECAPA_DIR = Path(os.environ.get("FLAG_ECAPA", str(CACHE / "ecapa_sb")))
+OUT = WORKDIR / "feats_rfs_b"
+for d in (WORKDIR, CACHE, OUT):
+    d.mkdir(parents=True, exist_ok=True)
+os.chdir(WORKDIR)
+
+# ------------------------------------------------------------------ what to run (edit here)
+ENCODERS = ['rfface']   # RFS-01 step 1 (replaced below)
+EXT_SOURCES = ["v1_complete", "v2_complete"]                        # MAV-Celeb rows for STRESS-01; [] = skip
+EXT_ENCODERS = list(ENCODERS)                                       # every model also on the v1/v2 rows
+SPLIT_FILTER = ["train"]      # FF dev-exclusion: organiser train list only (original: None). e.g. ["no_gender/English"]; None = every split found (train + every test list)
+ZIP_PREFIXES = ("train_set", "eval", "test")                        # FF dev-exclusion: dev_set.zip is never unpacked (original: ("train_set", "dev_set", "eval", "test")). organiser zips unpacked when not extracted
+ONLY_UNDER = None              # e.g. "eval": keep only lists whose path contains this (dev and eval both attached)
+print("LOCAL" if LOCAL else "KAGGLE", "| input", IN, "| output", OUT, "| cache", CACHE)
+SMOKE_ROWS = int(os.environ.get("FLAG_SMOKE_ROWS", "0"))   # local smoke test only: rows kept per split / source
+if (LOCAL or os.environ.get("FLAG_SMOKE") == "1") and os.environ.get("FLAG_ENCODERS"):              # local smoke test only: a subset of the encoders
+    ENCODERS = EXT_ENCODERS = os.environ["FLAG_ENCODERS"].split(",")
+if (LOCAL or os.environ.get("FLAG_SMOKE") == "1") and os.environ.get("FLAG_SPLITS"):                # local smoke test only: a subset of the organiser lists
+    SPLIT_FILTER = os.environ["FLAG_SPLITS"].split(",")
+# <<<FF-CELL>>>
+print("[cell] b2", flush=True)
+# speechbrain -U: Kaggle's preinstalled one breaks on recent torchaudio. insightface / ImageBind --no-deps: their
+# declared deps would replace onnxruntime-gpu by the CPU build and pin an old torch. ImageBind's data loaders need
+# pytorchvideo, so the two loaders used here are reimplemented below and its module is stubbed.
+if not LOCAL:
+    !pip -q install -U "speechbrain>=1.1.1" onnxruntime-gpu onnx iopath ftfy omegaconf fvcore 2>&1 | tail -2
+    !pip -q install --no-deps "insightface==2.0" "git+https://github.com/facebookresearch/ImageBind" 2>&1 | tail -2
+import numpy as np, pandas as pd, torch, torch.nn as nn, torch.nn.functional as F, soundfile as sf, transformers
+DEV = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("torch", torch.__version__, "| transformers", transformers.__version__, "| device", DEV,
+      torch.cuda.get_device_name(0) if torch.cuda.is_available() else "")
+
+
+def log(*a):
+    print(time.strftime("%H:%M:%S"), *a, flush=True)
+
+# RF's own install recipe (ImageBind imports) on top of the framework's PIP12 cell
+if not LOCAL:
+    import subprocess, importlib.util
+    for mod in ("wcwidth", "regex", "portalocker", "einops", "timm", "hyperpyyaml"):
+        if importlib.util.find_spec(mod) is None:
+            subprocess.run([sys.executable, "-m", "pip", "install", "-q", "--no-deps", mod], check=True)
+    import importlib.metadata as md_
+    if tuple(int(x) for x in md_.version("ruamel.yaml").split(".")[:2]) >= (0, 19):
+        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "ruamel.yaml<0.19"], check=True)
+# <<<FF-CELL>>>
+print("[cell] b3", flush=True)
+# ============================================================================ finding the data
+def scan_inputs(inp: Path, media=("faces", "voices")):
+    """One os.walk over the inputs that never enters a faces/ or voices/ folder (an extracted MAV-Celeb holds hundreds of
+    thousands of files; every rglob over it costs minutes). The organiser csv live in features/{faces,voices}/: entered.
+    -> {"files": name -> [paths], "roots": folders holding both faces/ and voices/}"""
+    files, roots = {}, []
+    for dp, dns, fns in os.walk(inp, followlinks=True):
+        feat = Path(dp).name == "features"
+        if not feat and all(m in dns for m in media):
+            roots.append(Path(dp))
+        dns[:] = sorted(d for d in dns if feat or d not in media)
+        for f in fns:
+            files.setdefault(f, []).append(Path(dp) / f)
+    log(f"scanned {inp}: {sum(map(len, files.values()))} files outside media folders, {len(roots)} media roots")
+    return dict(files=files, roots=roots)
+
+
+def media_cols(txt: Path):
+    """Column of the .wav and of the image in an organiser list (train: 2 / 3; test: 1 / 2), or None."""
+    try:
+        row = pd.read_csv(txt, sep=" ", header=None, nrows=1).iloc[0]
+    except Exception:
+        return None
+    wav = [i for i, v in enumerate(row) if str(v).lower().endswith(".wav")]
+    jpg = [i for i, v in enumerate(row) if str(v).lower().endswith((".jpg", ".jpeg", ".png"))]
+    if not wav or not jpg:
+        return None
+    return wav[0], jpg[0]
+
+
+def has_media(txt: Path, cols):
+    row = pd.read_csv(txt, sep=" ", header=None, nrows=1).iloc[0]
+    return (txt.parent / row[cols[0]]).exists() and (txt.parent / row[cols[1]]).exists()
+
+
+def split_name(txt: Path):
+    """train_English.txt -> 'train'; <folder>/English_test.txt -> '<folder>/English' (dev: 'no_gender/English')."""
+    if txt.name == "train_English.txt":
+        return "train"
+    return f"{txt.parent.name}/{re.sub(r'_test$', '', txt.stem)}"
+
+
+tag = lambda split: split.replace("/", "_")
+
+
+def find_splits(scan):
+    """Every organiser list whose media sit beside it. A features-only copy of a list (no media) is ignored.
+    Two different lists with the same split name (dev and Evaluation both attached) stop the run: set ONLY_UNDER."""
+    S = {}
+    for name, paths in scan["files"].items():
+        if not name.endswith(".txt") or not (name == "train_English.txt" or name.endswith("_test.txt")):
+            continue
+        for p in sorted(paths, key=lambda q: len(q.as_posix())):
+            if ONLY_UNDER and ONLY_UNDER not in p.as_posix() and name != "train_English.txt":
+                continue
+            cols = media_cols(p)
+            if cols is None or not has_media(p, cols):
+                continue
+            k = split_name(p)
+            df = pd.read_csv(p, sep=" ", header=None)
+            if k in S:
+                same = len(df) == len(S[k]["wav"]) and df[cols[0]].tolist() == S[k]["wav"]
+                assert same, f"two different lists named {k}: {S[k]['txt']} and {p} -> set ONLY_UNDER"
+                continue
+            S[k] = dict(txt=p, root=p.parent, wav=df[cols[0]].tolist(), jpg=df[cols[1]].tolist())
+    return S
+
+
+def unpack_zips(scan, work: Path):
+    zips = [p for n, ps in scan["files"].items() if n.lower().endswith(".zip") and n.lower().startswith(ZIP_PREFIXES)
+            for p in ps]
+    for zp in zips:
+        marker = work / f".{zp.stem}.done"
+        if not marker.exists():
+            log("unpacking", zp)
+            with zipfile.ZipFile(zp) as z:
+                z.extractall(work)
+            marker.touch()
+    return bool(zips)
+
+
+SCAN = scan_inputs(IN)
+S = find_splits(SCAN)
+if "train" not in S or len(S) == 1:                  # something may still be zipped (Kaggle keeps some uploads as .zip)
+    if unpack_zips(SCAN, WORKDIR / "raw"):
+        for k, v in find_splits(scan_inputs(WORKDIR / "raw")).items():
+            S.setdefault(k, v)
+if SPLIT_FILTER:
+    S = {k: v for k, v in S.items() if k in SPLIT_FILTER}
+assert S, "no organiser list with media found: attach the raw v4 data (or the Evaluation data)"
+def wav_duration(p):
+    """Seconds; 1.0 for a file soundfile cannot open (load_audio then returns 1 s of silence for it)."""
+    try:
+        return sf.info(str(p)).duration
+    except Exception:
+        return 1.0
+
+
+for k, v in S.items():
+    v["dur"] = np.array([wav_duration(v["root"] / p) for p in v["wav"]], dtype=np.float32)
+    shutil.copy(v["txt"], OUT / f"index_{tag(k)}.txt")
+    log(f"{k:22s} {len(v['wav']):5d} rows | voice median {np.median(v['dur']):.1f}s, max {v['dur'].max():.1f}s | {v['txt']}")
+meta = SCAN["files"].get("meta_file_train_set.csv")
+if meta:
+    shutil.copy(meta[0], OUT / "meta_file_train_set.csv")
+
+
+# ============================================================================ MAV-Celeb v1/v2 rows (optional)
+def media_key(member):
+    """'.../faces/<id>/<lang>/<video>/<file>' -> 'faces/<id>/<lang>/<video>/<file>' (drops any version folder)."""
+    p = member.replace("\\", "/").split("/")
+    for kind in ("faces", "voices"):
+        if kind in p:
+            return "/".join(p[p.index(kind):])
+    return None
+
+
+def ext_source(scan, name):
+    """The attached zip for `name` (largest copy), else the extracted folder whose path names the source."""
+    norm = lambda t: t.lower().replace("-", "_")
+    zips = [p for n, ps in scan["files"].items() if n.lower().endswith(".zip") and norm(name) in norm(n) for p in ps]
+    if zips:
+        return max(zips, key=lambda p: p.stat().st_size)
+    short = name.split("_")[0]
+    for r in scan["roots"]:
+        hint = norm(r.as_posix()) + "/"
+        if f"/{short}/" in hint or name in hint:
+            return r
+    return None
+
+
+class ExtRows:
+    """The exact rows of ext_<name>_{face,voice}_meta.csv, read from the attached zip or folder (row order = csv)."""
+
+    def __init__(self, src, name, meta_dir: Path, max_sec=12.0):
+        fm = pd.read_csv(meta_dir / f"ext_{name}_face_meta.csv").path
+        vm = pd.read_csv(meta_dir / f"ext_{name}_voice_meta.csv").path
+        src = Path(src)
+        if src.is_dir():
+            from concurrent.futures import ThreadPoolExecutor
+            self.face, self.voice = [src / media_key(p) for p in fm], [src / media_key(p) for p in vm]
+            with ThreadPoolExecutor(32) as ex:
+                ok = list(ex.map(lambda q: q.exists(), self.face + self.voice))
+            if not all(ok):
+                raise KeyError(f"{ok.count(False)} rows missing, e.g. {(self.face + self.voice)[ok.index(False)]}")
+            self.read = lambda q: q.read_bytes()
+        else:
+            z = zipfile.ZipFile(src)
+            by = {media_key(i.filename): i.filename for i in z.infolist() if not i.is_dir() and media_key(i.filename)}
+            self.face, self.voice = [by[media_key(p)] for p in fm], [by[media_key(p)] for p in vm]
+            self.read = z.read
+        self.L = int(max_sec * 16000)          # 12 s centre crop, as the organiser-space features of these rows
+        log(f"{name}: {len(self.face)} face rows, {len(self.voice)} voice rows in {src}")
+
+
+EXT = {}
+for name in EXT_SOURCES:
+    metas = sorted(SCAN["files"].get(f"ext_{name}_voice_meta.csv", []), key=lambda p: -p.stat().st_size)
+    src = ext_source(SCAN, name)
+    if metas and src is not None:
+        try:
+            EXT[name] = ExtRows(src, name, metas[0].parent)
+        except Exception as e:                    # optional: a bad zip or a missing row must not stop the run
+            log(f"{name}: skipped ({type(e).__name__}: {e})")
+    else:
+        log(f"{name}: skipped (meta csv found: {bool(metas)}, source found: {src is not None})")
+
+
+# ============================================================================ resume
+def seed_from_previous(scan, out: Path):
+    """Copy arrays of an earlier run of THIS notebook (a folder named like flag2027-feats-eval / feats_eval), so finished
+    work is skipped. Arrays of other datasets (feats_v2, feats_models) are references for the check, never copied."""
+    copied = []
+    for n, ps in scan["files"].items():
+        if not n.endswith(".npy") or (out / n).exists():
+            continue
+        for p in ps:
+            if re.search(r"feats[-_]rfs[-_]b", p.as_posix()) and out not in p.parents:
+                shutil.copy(p, out / n); copied.append(n); break
+    log(f"resume: {len(copied)} arrays copied from an earlier run")
+    return copied
+
+
+SEEDED = seed_from_previous(SCAN, OUT)
+print({k: len(v["wav"]) for k, v in S.items()}, "| external:", list(EXT))
+if (LOCAL or os.environ.get("FLAG_SMOKE") == "1") and SMOKE_ROWS:                     # local smoke test: the first rows of every split and source
+    for v in S.values():
+        v.update(wav=v["wav"][:SMOKE_ROWS], jpg=v["jpg"][:SMOKE_ROWS], dur=v["dur"][:SMOKE_ROWS])
+    for r in EXT.values():
+        r.face, r.voice = r.face[:SMOKE_ROWS], r.voice[:SMOKE_ROWS]
+    log(f"smoke test: every split and source cut to {SMOKE_ROWS} rows")
+# <<<FF-CELL>>>
+print("[cell] b4", flush=True)
+# ============================================================================ audio + batching
+TARGET_SR = 16000
+AUDIO_STATS = {"files": 0, "resampled": 0, "multichannel": 0, "short": 0}
+MIN_SEC = 0.1                  # shorter clips are tiled to 0.1 s (w2v2 / AudioCLIP STFT fail on a few ms; v4 clips are >= 2 s)
+BROKEN = {"audio": [], "image": []}   # unreadable sources: scored from a stand-in, listed in the manifest
+
+
+def _src_name(src):
+    """Full path of a file source (base names repeat across splits); the archive member name of a zip stream."""
+    if isinstance(src, (bytes, bytearray)):
+        return f"<{len(src)} bytes>"
+    return str(src) if isinstance(src, (str, Path)) else str(getattr(src, "name", None) or src)
+
+
+def load_audio(src):
+    """Mono float32 at 16 kHz as the organiser loads audio (librosa.load(sr=16000, mono=True): channel mean + soxr_hq).
+    All v4 wavs are 16 kHz mono; MAV-Celeb v1 has 44.1 kHz files. `src` = path or file-like.
+    A file that cannot be read (or is empty / non-finite) -> 1 s of silence, listed in BROKEN["audio"]."""
+    try:
+        w, sr = sf.read(src if hasattr(src, "read") else str(src), dtype="float32", always_2d=True)
+        if w.size == 0 or not np.isfinite(w).all():
+            raise ValueError(f"{w.shape[0]} samples, finite {bool(np.isfinite(w).all())}")
+    except Exception as e:
+        BROKEN["audio"].append(f"{_src_name(src)} | {type(e).__name__}: {e}")
+        log("!! unreadable audio -> 1 s of silence:", BROKEN["audio"][-1])
+        return np.zeros(TARGET_SR, np.float32)
+    AUDIO_STATS["files"] += 1
+    if w.shape[1] > 1:
+        AUDIO_STATS["multichannel"] += 1
+        w = w.mean(1, keepdims=True)
+    w = w[:, 0]
+    if sr != TARGET_SR:
+        import librosa
+        w = librosa.resample(w, orig_sr=sr, target_sr=TARGET_SR).astype(np.float32)
+        AUDIO_STATS["resampled"] += 1
+    if len(w) < int(MIN_SEC * TARGET_SR):
+        AUDIO_STATS["short"] += 1
+        w = np.tile(w, int(np.ceil(MIN_SEC * TARGET_SR / len(w))))[:int(MIN_SEC * TARGET_SR)]
+    return w
+
+
+def centre_crop(w, L):
+    if len(w) <= L:
+        return w
+    s = (len(w) - L) // 2
+    return w[s:s + L]
+
+
+def pack_batches(durs, max_padded_sec=240.0, max_bs=32):
+    """Longest first; a batch costs len(batch) * longest item after padding."""
+    order = np.argsort(-np.asarray(durs), kind="stable")
+    batches, cur = [], []
+    for i in order:
+        longest = durs[cur[0]] if cur else durs[i]
+        if cur and ((len(cur) + 1) * longest > max_padded_sec or len(cur) >= max_bs):
+            batches.append(cur); cur = []
+        cur.append(int(i))
+    if cur:
+        batches.append(cur)
+    return batches
+
+
+def run_batched(items, fn, durs, max_padded_sec=240.0, max_bs=32, cpu_fn=None, label=""):
+    """fn(list of items) -> list of outputs, in item order. A CUDA OOM halves the batch; a single item goes to CPU."""
+    out = [None] * len(items)
+    t0, done_n = time.time(), 0
+
+    def go(idx):
+        try:
+            res = fn([items[i] for i in idx])
+        except torch.cuda.OutOfMemoryError:
+            torch.cuda.empty_cache()
+            if len(idx) == 1:
+                res = (cpu_fn or fn)([items[idx[0]]])
+            else:
+                h = len(idx) // 2
+                go(idx[:h]); go(idx[h:])
+                return
+        for i, r in zip(idx, res):
+            out[i] = r
+
+    batches = pack_batches(durs, max_padded_sec, max_bs)
+    for bi, b in enumerate(batches):
+        go(b)
+        done_n += len(b)
+        if bi % 50 == 0 or done_n == len(items):
+            el = time.time() - t0
+            log(f"  {label} {done_n}/{len(items)}  {el:.0f}s  eta {el / done_n * (len(items) - done_n):.0f}s")
+    return out
+
+
+def cos_rows(a, b):
+    a, b = np.asarray(a, np.float64), np.asarray(b, np.float64)
+    return np.sum(a * b, 1) / (np.linalg.norm(a, axis=1) * np.linalg.norm(b, axis=1) + 1e-12)
+
+
+def amp(flag):
+    return torch.autocast("cuda", dtype=torch.float16, enabled=bool(flag) and DEV.type == "cuda")
+
+
+def read_rgb(src):
+    """PIL RGB image; an image that cannot be read -> a black 224 x 224 image, listed in BROKEN["image"]."""
+    from PIL import Image
+    try:
+        return Image.open(io.BytesIO(src) if isinstance(src, (bytes, bytearray)) else src).convert("RGB")
+    except Exception as e:
+        BROKEN["image"].append(f"{_src_name(src)} | {type(e).__name__}: {e}")
+        log("!! unreadable image -> black image:", BROKEN["image"][-1])
+        return Image.new("RGB", (224, 224))
+# <<<FF-CELL>>>
+print("[cell] b5", flush=True)
+# ============================================================================ encoders
+# Face encoders: embed(list of sources) -> {suffix: (N, d)}; "" is the main array. A source is a path or raw bytes.
+# Voice encoders: embed(list of waveforms, durations) -> {suffix: (N, d)}.
+
+class ArcFace:
+    """insightface buffalo_l: SCRFD detection + 5-point norm_crop + ArcFace R100 (512). fp32, as FLAG_04."""
+    kind = "face"
+
+    def __init__(self):
+        import onnxruntime as ort
+        from insightface.app import FaceAnalysis
+        prov = [p for p in ["CUDAExecutionProvider", "CPUExecutionProvider"] if p in ort.get_available_providers()]
+        try:
+            self.app = FaceAnalysis(name="buffalo_l", allowed_modules=["detection", "recognition"], providers=prov)
+        except TypeError:
+            self.app = FaceAnalysis(name="buffalo_l", allowed_modules=["detection", "recognition"])
+        self.app.prepare(ctx_id=0 if DEV.type == "cuda" else -1, det_size=(224, 224), det_thresh=0.3)
+        self.rec = self.app.models["recognition"]
+        log("ArcFace recognition runs on", self.rec.session.get_providers())
+
+    def align(self, img):
+        """BGR image -> (112 x 112 crop on the ArcFace 5-point template, detected?). Keeps the big central face."""
+        import cv2
+        from insightface.utils import face_align
+        faces = self.app.det_model.detect(img, max_num=0, metric="default")
+        bboxes, kpss = faces if isinstance(faces, tuple) else (faces, None)
+        if bboxes is not None and len(bboxes) and kpss is not None:
+            h, w = img.shape[:2]
+            ctr = np.array([w / 2, h / 2])
+            area = (bboxes[:, 2] - bboxes[:, 0]) * (bboxes[:, 3] - bboxes[:, 1])
+            dist = np.linalg.norm((bboxes[:, :2] + bboxes[:, 2:4]) / 2 - ctr, axis=1)
+            j = int(np.argmax(area - 2.0 * dist ** 2))
+            return face_align.norm_crop(img, landmark=kpss[j], image_size=112), True
+        h, w = img.shape[:2]; m = int(min(h, w) * 0.15)
+        return cv2.resize(img[m:h - m, m:w - m], (112, 112)), False
+
+    def embed(self, srcs, label=""):
+        import cv2
+        E, OK, t0 = [], [], time.time()
+        for i, s in enumerate(srcs):
+            img = cv2.imdecode(np.frombuffer(s, np.uint8), cv2.IMREAD_COLOR) if isinstance(s, (bytes, bytearray)) \
+                else cv2.imread(str(s))
+            if img is None:                                # unreadable: black image (the pair is still scored)
+                BROKEN["image"].append(f"{_src_name(s)} | cv2 could not decode it")
+                log("!! unreadable image -> black image:", BROKEN["image"][-1])
+                img = np.zeros((224, 224, 3), np.uint8)
+            a, ok = self.align(img)
+            E.append(self.rec.get_feat(a).flatten().astype(np.float32)); OK.append(ok)
+            if i % 2000 == 0:
+                log(f"  arcface {label} {i}/{len(srcs)} {time.time() - t0:.0f}s")
+        log(f"  arcface {label}: detection + alignment {100 * np.mean(OK):.1f}%")
+        return {"": np.stack(E), "_detok": np.array(OK)}
+
+
+def speechbrain_import():
+    import torchaudio
+    for n, f in [("list_audio_backends", lambda: ["soundfile"]), ("get_audio_backend", lambda: "soundfile"),
+                 ("set_audio_backend", lambda *a, **k: None)]:
+        if not hasattr(torchaudio, n):
+            setattr(torchaudio, n, f)
+    from speechbrain.inference.speaker import EncoderClassifier
+    return EncoderClassifier
+
+
+class Ecapa:
+    """speechbrain/spkrec-ecapa-voxceleb -> 192 (ecapa192) + attentive-statistics pooling 6144 (ecapa6144). fp32."""
+    kind = "voice"
+
+    def __init__(self):
+        EncoderClassifier = speechbrain_import()
+        kw = {}
+        try:
+            from speechbrain.utils.fetching import LocalStrategy
+            kw["local_strategy"] = LocalStrategy.COPY
+        except Exception:
+            pass
+        self.m = EncoderClassifier.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", savedir=str(ECAPA_DIR),
+                                                run_opts={"device": str(DEV)}, **kw)
+        self.m.eval()
+        self._pool = {}
+        self.m.mods.embedding_model.asp.register_forward_hook(lambda mod, i, o: self._pool.__setitem__("x", o))
+
+    @torch.no_grad()
+    def batch(self, sigs, device=None):
+        device = device or DEV
+        lens = [len(s) for s in sigs]
+        L = max(lens)
+        x = torch.zeros(len(sigs), L)
+        for i, s in enumerate(sigs):
+            x[i, :len(s)] = torch.from_numpy(s)
+        rel = torch.tensor([l / L for l in lens], dtype=torch.float32, device=device)
+        mods = self.m.mods if device == DEV else self._cpu_mods()
+        f = mods.mean_var_norm(mods.compute_features(x.to(device)), rel)
+        e = mods.embedding_model(f, rel).squeeze(1)
+        p = self._pool["x"].squeeze(-1)
+        return list(zip(e.float().cpu().numpy(), p.float().cpu().numpy()))
+
+    def _cpu_mods(self):
+        if not hasattr(self, "_cpu"):
+            import copy
+            self._cpu = copy.deepcopy(self.m.mods).to("cpu")
+            self._cpu.embedding_model.asp.register_forward_hook(lambda mod, i, o: self._pool.__setitem__("x", o))
+        return self._cpu
+
+    def embed(self, load, n, durs, label=""):
+        res = run_batched(list(range(n)), lambda ii: self.batch([load(i) for i in ii]), durs,
+                          cpu_fn=lambda ii: self.batch([load(i) for i in ii], device="cpu"), label=f"ecapa {label}")
+        return {"192": np.stack([r[0] for r in res]).astype(np.float32),
+                "6144": np.stack([r[1] for r in res]).astype(np.float32)}
+
+
+class ViTAge:
+    """nateraw/vit-age-classifier: post-LayerNorm CLS (768) + the 9 FairFace age-bin probabilities (fp16 autocast)."""
+    kind = "face"
+    ID = "nateraw/vit-age-classifier"
+
+    def __init__(self):
+        from transformers import ViTImageProcessor, ViTForImageClassification
+        self.proc = ViTImageProcessor.from_pretrained(self.ID)
+        self.m = ViTForImageClassification.from_pretrained(self.ID).to(DEV).eval()
+
+    def prep(self, im):
+        return self.proc(images=im, return_tensors="pt").pixel_values[0]
+
+    @torch.no_grad()
+    def __call__(self, x, use_amp=True):
+        with amp(use_amp):
+            h = self.m.vit(x.to(DEV)).last_hidden_state[:, 0]
+            p = torch.softmax(self.m.classifier(h).float(), 1)
+        return {"": h.float().cpu().numpy(), "prob": p.cpu().numpy()}
+
+
+class AgeGenderHead(nn.Module):
+    def __init__(self, config, num_labels):
+        super().__init__()
+        self.dense = nn.Linear(config.hidden_size, config.hidden_size)
+        self.dropout = nn.Dropout(config.final_dropout)
+        self.out_proj = nn.Linear(config.hidden_size, num_labels)
+
+    def forward(self, x):
+        return self.out_proj(self.dropout(torch.tanh(self.dense(self.dropout(x)))))
+
+
+class W2V2AgeGender:
+    """audeering/wav2vec2-large-robust-24-ft-age-gender: mean hidden state (1024), age (x 100 = years), gender
+    probabilities (female, male, child). 20 s windows, 10 s hop, length-weighted mean. fp16 autocast."""
+    kind = "voice"
+    ID = "audeering/wav2vec2-large-robust-24-ft-age-gender"
+
+    def __init__(self):
+        from transformers import Wav2Vec2Processor
+        from transformers.models.wav2vec2.modeling_wav2vec2 import Wav2Vec2Model, Wav2Vec2PreTrainedModel
+
+        class AgeGenderModel(Wav2Vec2PreTrainedModel):
+            def __init__(self, config):
+                super().__init__(config)
+                self.config = config
+                self.wav2vec2 = Wav2Vec2Model(config)
+                self.age = AgeGenderHead(config, 1)
+                self.gender = AgeGenderHead(config, 3)
+                self.post_init()        # not init_weights(): transformers >= 5 sets all_tied_weights_keys here
+
+        # transformers 5.0 reads sys.modules[cls.__module__].__file__; a class defined in a notebook lives in __main__,
+        # which has no __file__ under Jupyter (w2v2ag failed on Kaggle). Point it at the real wav2vec2 module.
+        AgeGenderModel.__module__ = Wav2Vec2Model.__module__
+        self.proc = Wav2Vec2Processor.from_pretrained(self.ID)
+        self.m = AgeGenderModel.from_pretrained(self.ID).to(DEV).eval()
+        self.W, self.H = 20 * 16000, 10 * 16000
+
+    def windows(self, w):
+        starts = [0] if len(w) <= self.W else list(range(0, len(w) - self.W + self.H, self.H))
+        for i, s in enumerate(starts):
+            seg = w[s:s + self.W]
+            if i and len(seg) < 16000:
+                break
+            yield seg
+
+    @torch.no_grad()
+    def __call__(self, w, use_amp=True):
+        acc, tot = None, 0
+        for seg in self.windows(w):
+            x = self.proc(seg, sampling_rate=16000, return_tensors="pt").input_values.to(DEV)
+            with amp(use_amp):
+                h = self.m.wav2vec2(x)[0].float().mean(1)[0]
+            acc = h * len(seg) if acc is None else acc + h * len(seg)
+            tot += len(seg)
+        h = (acc / tot)[None]
+        return {"": h[0].cpu().numpy(), "age": self.m.age(h)[0].cpu().numpy(),
+                "gen": torch.softmax(self.m.gender(h), 1)[0].cpu().numpy()}
+
+
+IB_URL = "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth"
+_IB = {}
+
+
+def imagebind():
+    """ImageBind-huge, loaded once for vision and audio. imagebind/__init__ imports imagebind.data (needs
+    pytorchvideo): stubbed, the two loaders used are reimplemented below."""
+    if "m" not in _IB:
+        sys.modules.setdefault("imagebind.data", types.ModuleType("imagebind.data"))
+        from imagebind.models import imagebind_model
+        from imagebind.models.imagebind_model import ModalityType
+        f = CACHE / "imagebind_huge.pth"
+        if not f.exists():
+            log("downloading", IB_URL)
+            torch.hub.download_url_to_file(IB_URL, str(f) + ".part", progress=False)
+            Path(str(f) + ".part").rename(f)
+        m = imagebind_model.imagebind_huge(pretrained=False)
+        m.load_state_dict(torch.load(f, map_location="cpu", mmap=True))
+        _IB.update(m=m.to(DEV).eval(), MT=ModalityType)
+    return _IB
+
+
+class IBVision:
+    kind = "face"
+
+    def __init__(self):
+        from torchvision import transforms as T
+        self.ib = imagebind()
+        self.tf = T.Compose([T.Resize(224, interpolation=T.InterpolationMode.BICUBIC), T.CenterCrop(224), T.ToTensor(),
+                             T.Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711))])
+
+    def prep(self, im):
+        return self.tf(im)
+
+    @torch.no_grad()
+    def __call__(self, x, use_amp=True):
+        with amp(use_amp):
+            e = self.ib["m"]({self.ib["MT"].VISION: x.to(DEV)})[self.ib["MT"].VISION]
+        return {"": e.float().cpu().numpy()}
+
+
+def ib_audio_clips(w, sr=16000, clip=2.0, mel=128, frames=204, mean=-4.268, std=9.138):
+    """imagebind.data.load_and_transform_audio_data for one waveform, with n = max(3, ceil(duration / 2 s)) clips evenly
+    spaced from start to end (covers the whole file; ImageBind's default n = 3 is identical up to 6 s)."""
+    import torchaudio
+    n = max(3, int(np.ceil(len(w) / sr / clip)))
+    mx = max(len(w) / sr - clip, 0.0)
+    out = []
+    for k in range(n):
+        s = mx * k / max(n - 1, 1)
+        seg = torch.from_numpy(np.ascontiguousarray(w[int(s * sr):int((s + clip) * sr)], dtype=np.float32))[None]
+        if seg.shape[1] < 400:
+            seg = F.pad(seg, (0, 400 - seg.shape[1]))
+        seg = seg - seg.mean()
+        fb = torchaudio.compliance.kaldi.fbank(seg, htk_compat=True, sample_frequency=sr, use_energy=False,
+                                               window_type="hanning", num_mel_bins=mel, dither=0.0,
+                                               frame_length=25, frame_shift=10).T
+        fb = F.pad(fb, (0, frames - fb.shape[1])) if fb.shape[1] < frames else fb[:, :frames]
+        out.append((fb[None] - mean) / std)
+    return torch.stack(out)
+
+
+class IBAudio:
+    kind = "voice"
+
+    def __init__(self):
+        self.ib = imagebind()
+
+    @torch.no_grad()
+    def __call__(self, w, use_amp=True):
+        x = ib_audio_clips(w)[None].to(DEV)                       # the model averages the clips
+        with amp(use_amp):
+            e = self.ib["m"]({self.ib["MT"].AUDIO: x})[self.ib["MT"].AUDIO]
+        return {"": e[0].float().cpu().numpy()}
+
+
+def build(name):
+    return {"arcface": ArcFace, "ecapa": Ecapa, "vitage": ViTAge, "w2v2ag": W2V2AgeGender,
+            "ibv": IBVision, "iba": IBAudio}[name]()
+
+
+def release(keep_ib=False):
+    if not keep_ib:
+        _IB.clear()
+    import gc
+    gc.collect()
+    torch.cuda.empty_cache()
+# <<<FF-CELL>>>
+print("[cell] b6", flush=True)
+# ============================================================================ RFS-01 step 1: RF's extractors (core embedded verbatim) and checkpoints
+import base64, zlib, hashlib, importlib.util, urllib.request
+CORE_B64 = "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"
+CORE_SHA = "25abe24db6fbe863109dafd5f75f9075164dce75f77ce276695daf8687d338f7"
+RFS_DIR = WORKDIR / "rfs_code"; RFS_DIR.mkdir(exist_ok=True)
+_src = zlib.decompress(base64.b64decode(CORE_B64))
+assert hashlib.sha256(_src).hexdigest() == CORE_SHA, "embedded RF core differs from the registered file"
+(RFS_DIR / "flag_final_core_092.py").write_bytes(_src)
+log("RF core sha256", CORE_SHA[:12])
+
+
+def load_core(dev, tag):
+    """One module object per device (the core reads its global DEVICE at call time): a lane may run faces on cuda:0 and voices on cuda:1."""
+    spec = importlib.util.spec_from_file_location(f"flag_final_core_092_{tag}", RFS_DIR / "flag_final_core_092.py")
+    m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); m.DEVICE = torch.device(dev)
+    return m
+
+
+URL = {"imagebind": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+       "r221": "https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet221-LM/resolve/main/voxceleb_resnet221_LM.pt",
+       "sam": "https://huggingface.co/MCplayer/voxblink2_samresnet100_ft/resolve/main/models/voxblink2_samresnet100_ft/avg_model.pt"}
+SHA = {"imagebind": "d6f6c22bedcc90708448d5d2fbb7b2db9c73f505dc89bd0b2e09b23af1b62157",
+       "r221": "47d76239f1e865b273e31e30f691959061ff6565ed6c4e7be9639a65d9662eb5",
+       "sam": "5aeee438ca23c0ca6e341bab6c6bf7f465497e1dc323bb1bc1074d6a0c778b11"}
+CK = {}
+for _n, _u in URL.items():
+    _t = CACHE / "rfs_models" / f"{_n}.pt"; _t.parent.mkdir(exist_ok=True)
+    for _k in range(4):
+        if _t.exists():
+            break
+        try:
+            log("download", _n); urllib.request.urlretrieve(_u, str(_t) + ".part"); Path(str(_t) + ".part").replace(_t)
+        except OSError as e:
+            log("  download error", _n, type(e).__name__, "- retry"); Path(str(_t) + ".part").unlink(missing_ok=True); time.sleep(30 * (_k + 1))
+    _h = hashlib.sha256()
+    with open(_t, "rb") as f_:
+        for b_ in iter(lambda: f_.read(1 << 24), b""):
+            _h.update(b_)
+    assert _h.hexdigest() == SHA[_n], f"{_n}: sha256 differs from the registered checkpoint"
+    CK[_n] = _t
+log("checkpoints", {k: str(v.stat().st_size // 2 ** 20) + " MB" for k, v in CK.items()})
+from PIL import Image
+import torchvision.transforms as TV
+
+
+def tile1s(w):
+    """load_wave's rule: a clip shorter than 1 s is tiled to 1 s (uses only this clip)."""
+    return w if len(w) >= 16000 else np.tile(w, int(np.ceil(16000 / len(w))))[:16000]
+
+
+class RFFace:
+    """CLIP-L image_embeds (fp32) and ImageBind vision (fp16 on GPU) of one PIL image each, exactly ClipFaceExtractor.faces / L1Extractor.faces."""
+
+    def __init__(self, c, dev):
+        self.c, self.dev = c, torch.device(dev); self.half = self.dev.type == "cuda"
+        self.clip = c.ClipFaceExtractor()
+        self.ib, self.MT = c.load_imagebind(CK["imagebind"])
+        if not self.half:
+            self.ib = self.ib.float()
+        self.vis = TV.Compose([TV.Resize(224, interpolation=TV.InterpolationMode.BICUBIC), TV.CenterCrop(224), TV.ToTensor(),
+                               TV.Normalize(c.IB_VIS_MEAN, c.IB_VIS_STD)])
+
+    def prep(self, im):
+        im = im.convert("RGB")
+        return torch.stack([self.clip.p(images=im, return_tensors="pt")["pixel_values"][0], self.vis(im)])
+
+    @torch.inference_mode()
+    def run(self, x):
+        cl = self.clip.m(pixel_values=x[:, 0].to(self.dev)).image_embeds.float().cpu().numpy()
+        v = x[:, 1].to(self.dev)
+        ibf = self.ib({self.MT.VISION: v.half() if self.half else v})[self.MT.VISION].float().cpu().numpy()
+        return {"": ibf, "clip": cl}
+
+
+class RFVoice:
+    """ImageBind audio, ResNet221-LM, SimAM-ResNet100 (60 s), SpeechBrain ECAPA of one 16 kHz waveform (L2Extractor.voice_features, VB2Extractor)."""
+
+    def __init__(self, c, dev):
+        self.c, self.dev = c, torch.device(dev); self.half = self.dev.type == "cuda"
+        self.ib, self.MT = c.load_imagebind(CK["imagebind"])
+        if not self.half:
+            self.ib = self.ib.float()
+        r = c.ENCODERS["resnet221_lm"]["make"]()
+        sd = torch.load(CK["r221"], map_location="cpu"); sd = sd.get("model", sd)
+        res = r.load_state_dict(sd, strict=False)
+        if res.missing_keys or set(res.unexpected_keys) - {"projection.weight"}:
+            raise ValueError(f"ResNet221 checkpoint mismatch: {res}")
+        self.r221 = r.to(self.dev).eval()
+        self.sam = c.VB2Extractor(CK["sam"]).m
+        EncoderClassifier = speechbrain_import()
+        from speechbrain.utils.fetching import LocalStrategy
+        self.btc = EncoderClassifier.from_hparams(source="yangwang825/ecapa-tdnn-vox2", savedir=str(CACHE / "sb_btc"),
+                                                  run_opts={"device": str(self.dev)}, local_strategy=LocalStrategy.COPY)
+
+    @torch.inference_mode()
+    def feats(self, w):
+        c = self.c; w = tile1s(np.ascontiguousarray(w, dtype=np.float32))
+        a = c.ib_audio_clips(w)[None].to(self.dev)
+        ibv = self.ib({self.MT.AUDIO: a.half() if self.half else a})[self.MT.AUDIO].float().cpu().numpy()[0]
+        o = self.r221(c.kaldi_fbank(w)[None].to(self.dev))
+        r2 = (o[-1] if isinstance(o, tuple) else o).squeeze(0).float().cpu().numpy()
+        sam = self.sam(c.kaldi_fbank(w[:16000 * 60])[None].to(self.dev)).squeeze(0).float().cpu().numpy()
+        xv = self.btc.encode_batch(torch.tensor(w)[None]).squeeze().float().cpu().numpy()
+        return {"": ibv, "r221": r2, "sam": sam, "xv": xv}
+
+
+class RFAge:
+    """AgeExtractor's two models on one image / one waveform (face: [expected age, 9 probabilities]; voice: [age, p(f), p(m), p(child)])."""
+
+    def __init__(self, c, dev):
+        self.c, self.dev = c, torch.device(dev); self.ag = c.AgeExtractor()
+
+    def prep(self, im):
+        return self.ag.fp(im.convert("RGB"), return_tensors="pt")["pixel_values"][0]
+
+    @torch.inference_mode()
+    def face(self, x):
+        pr = torch.softmax(self.ag.fm(x.to(self.dev)).logits, -1).float().cpu().numpy()
+        return {"": np.concatenate([(pr @ self.c.AGE_MID)[:, None], pr], 1)}
+
+    @torch.inference_mode()
+    def voice(self, w):
+        w = tile1s(np.ascontiguousarray(w, dtype=np.float32))
+        x = self.ag.vp(w, sampling_rate=16000, return_tensors="pt")["input_values"].to(self.dev)
+        a, g = self.ag.vm(x)
+        return {"": np.r_[100 * a.float().cpu().numpy()[0], g.float().cpu().numpy()[0]].astype(np.float32)}
+# <<<FF-CELL>>>
+print("[cell] b7", flush=True)
+# ============================================================================ aux lanes: the MAV loop of this framework does nothing
+ENCODERS = EXT_ENCODERS = []
+NEW, ARRAYS_NEW, MAIN_NEW, RESHAPE = {}, {}, {}, {}
+
+
+def build(name):
+    raise RuntimeError(name)
+
+
+def release(keep_ib=False):
+    import gc
+    gc.collect()
+# <<<FF-CELL>>>
+print("[cell] b8", flush=True)
+# ============================================================================ running
+def run_faces_tensor(enc, srcs, bs=64, label=""):
+    out, t0 = {}, time.time()
+    for s in range(0, len(srcs), bs):
+        x = torch.stack([enc.prep(read_rgb(p() if callable(p) else p)) for p in srcs[s:s + bs]])
+        for k, v in enc(x).items():
+            out.setdefault(k, []).append(v)
+        if (s // bs) % 40 == 0:
+            log(f"  {label} {s + len(x)}/{len(srcs)}  {time.time() - t0:.0f}s")
+    return {k: np.concatenate(v).astype(np.float32) for k, v in out.items()}
+
+
+def run_voices_single(enc, n, load, label=""):
+    """One file at a time: no padding enters a mean."""
+    out, t0 = {}, time.time()
+    for i in range(n):
+        for k, v in enc(load(i)).items():
+            out.setdefault(k, []).append(np.atleast_1d(v))
+        if i % 1000 == 0 or i == n - 1:
+            el = time.time() - t0
+            log(f"  {label} {i + 1}/{n}  {el:.0f}s  eta {el / (i + 1) * (n - i - 1):.0f}s")
+    return {k: np.stack(v).astype(np.float32) for k, v in out.items()}
+
+
+# output names: {kind}_{array}_{split}.npy for organiser splits, ext_{src}_{kind}_{array}.npy for v1/v2
+ARRAYS = {"arcface": ("face", {"": "arcface", "_detok": "arcface_detok"}),
+          "ecapa": ("voice", {"192": "ecapa192", "6144": "ecapa6144"}),
+          "vitage": ("face", {"": "vitage", "prob": "vitageprob"}),
+          "w2v2ag": ("voice", {"": "w2v2ag", "age": "w2v2agage", "gen": "w2v2aggen"}),
+          "ibv": ("face", {"": "ibv"}), "iba": ("voice", {"": "iba"})}
+MAIN = {"arcface": "", "ecapa": "192", "vitage": "", "w2v2ag": "", "ibv": "", "iba": ""}
+ARRAYS.update(ARRAYS_NEW); MAIN.update(MAIN_NEW)                         # this notebook's arrays
+
+
+def _dt(v, split):
+    """float16 for the v1/v2 rows (as FLAG_12) and for every wide array (layers / tokens); float32 otherwise."""
+    return v if (split and v.ndim == 2 and v.shape[1] <= 4096) or v.ndim == 1 else v.astype(np.float16)
+
+
+def target(name, suffix, split=None, src=None):
+    kind, names = ARRAYS[name]
+    return OUT / (f"{kind}_{names[suffix]}_{tag(split)}.npy" if split else f"ext_{src}_{kind}_{names[suffix]}.npy")
+
+
+def complete(name, split=None, src=None):
+    return all(target(name, s, split, src).exists() for s in ARRAYS[name][1])
+
+
+def save(name, R, split=None, src=None):
+    for s, v in R.items():                         # main array last: its presence marks the job as done
+        if s != MAIN[name]:
+            np.save(target(name, s, split, src), _dt(v, split))
+    np.save(target(name, MAIN[name], split, src), _dt(R[MAIN[name]], split))
+
+
+def extract(name, enc, split=None, src=None):
+    kind = ARRAYS[name][0]
+    if split:
+        sp = S[split]
+        faces = [sp["root"] / p for p in sp["jpg"]]
+        load = lambda i: load_audio(sp["root"] / sp["wav"][i])
+        n, durs, label = len(sp["wav"]), sp["dur"], split
+    else:
+        rows = EXT[src]
+        faces = [rows.read(p) for p in rows.face] if name == "arcface" else [(lambda p=p: rows.read(p)) for p in rows.face]
+        load = lambda i: centre_crop(load_audio(io.BytesIO(rows.read(rows.voice[i]))), rows.L)
+        n, label = len(rows.voice), src
+        durs = np.full(n, 12.0, np.float32)          # upper bound after the crop: batches stay within budget
+    if kind == "face":
+        R = enc.embed(faces, label=label) if name == "arcface" else run_faces_tensor(enc, faces, label=f"{name} {label}")
+    elif name == "ecapa":
+        R = enc.embed(load, n, durs, label=label)
+    else:
+        R = run_voices_single(enc, n, load, label=f"{name} {label}")
+    save(name, R, split, src)
+    log(f"saved {target(name, MAIN[name], split, src).name} {R[MAIN[name]].shape}")
+
+
+def self_check(name, enc):
+    """Batching / fp16 must not change the embeddings (min cosine over a few rows; must be > 0.995)."""
+    k = next(k for k in S if k != "train") if len(S) > 1 else next(iter(S))
+    sp = S[k]
+    if name == "arcface":
+        return {}
+    if name == "ecapa":
+        idx = list(np.argsort(-sp["dur"])[:3]) + list(range(min(5, len(sp["wav"]))))
+        sigs = [load_audio(sp["root"] / sp["wav"][i]) for i in idx]
+        b, s = enc.batch(sigs), [enc.batch([x])[0] for x in sigs]
+        return {"batch192": float(cos_rows([r[0] for r in b], [r[0] for r in s]).min()),
+                "batch6144": float(cos_rows([r[1] for r in b], [r[1] for r in s]).min())}
+    if ARRAYS[name][0] == "face":
+        x = torch.stack([enc.prep(read_rgb(sp["root"] / p)) for p in sp["jpg"][:6]])
+        full = enc(x, use_amp=False)[""]
+        single = np.concatenate([enc(x[i:i + 1], use_amp=False)[""] for i in range(len(x))])
+        return {"batch": float(cos_rows(full, single).min()), "fp16": float(cos_rows(full, enc(x)[""]).min())}
+    waves = [load_audio(sp["root"] / p) for p in sp["wav"][:3]]
+    return {"fp16": float(cos_rows([enc(w, use_amp=False)[""] for w in waves], [enc(w)[""] for w in waves]).min())}
+
+
+CHECKS, FAILED = {}, {}
+for name in ENCODERS:
+    jobs = [("split", k) for k in S if not complete(name, split=k)]
+    if name in EXT_ENCODERS:
+        jobs += [("src", s) for s in EXT if not complete(name, src=s)]
+    if not jobs:
+        log(f"== {name}: every array already exists -> skipped")
+        continue
+    t0 = time.time()
+    try:
+        enc = build(name)
+        CHECKS[name] = self_check(name, enc)
+        log(name, "self-check:", CHECKS[name])
+        assert not CHECKS[name] or min(CHECKS[name].values()) > 0.995, f"{name}: batching / fp16 changes the output"
+        for what, key in jobs:
+            try:
+                extract(name, enc, **({"split": key} if what == "split" else {"src": key}))
+            except Exception as e:                  # one bad source must not cost the other splits
+                FAILED[f"{name}:{key}"] = f"{type(e).__name__}: {e}"
+                log(f"!! {name} on {key} FAILED: {FAILED[f'{name}:{key}']}")
+    except Exception as e:
+        FAILED[name] = f"{type(e).__name__}: {e}"
+        log(f"!! {name} FAILED -> skipped: {FAILED[name]}")
+    enc = None
+    release(keep_ib=(name in ('ibv',)))
+    log(f"== {name} done in {time.time() - t0:.0f}s")
+print("failed:", FAILED or "none")
+# <<<FF-CELL>>>
+print("[cell] rfs check vs RF embeddings", flush=True)
+# registered check: the RF-092 reproduction run (onnhqunhh/flag-rf-092-tailap-p, FLAG_RF_E2E/embeddings.npz, copied to the private dataset ngnnguynchn/flag2027-rf092-dev-emb-p: sorted unique dev files) vs the arrays above on
+# the dev lists. Path-independent: every dev row is matched to its best row in the RF array on rfibf (faces) / rfibv (voices); then EVERY block (and the age) of the
+# matched pair must agree (cos >= 0.999). Skipped without the reference attached.
+_ref = SCAN["files"].get("embeddings.npz", [])
+RFCHK = {}
+if not _ref or 'auxb' != "mav":
+    log("RF embeddings.npz not attached / aux lane: check skipped", bool(_ref))
+else:
+    Rz = np.load(_ref[0])
+    def _cos(a, b):
+        a, b = np.asarray(a, np.float64), np.asarray(b, np.float64)
+        return np.sum(a * b, 1) / (np.linalg.norm(a, axis=1) * np.linalg.norm(b, axis=1) + 1e-12)
+    def _best(M, Rm):
+        Mn = M / (np.linalg.norm(M, axis=1, keepdims=True) + 1e-12); Rn = Rm / (np.linalg.norm(Rm, axis=1, keepdims=True) + 1e-12)
+        sim = Mn @ Rn.T; j = sim.argmax(1)
+        return j, sim[np.arange(len(M)), j]
+    for kind, key, blocks in (("face", "ibf", [("rfclip", "clip"), ("rfibf", "ibf")]), ("voice", "ibv", [("rfsam", "sam"), ("rfr221", "r221"), ("rfxv", "xv"), ("rfibv", "ibv")])):
+        Ms = {b: [] for b, _ in blocks}; Age = []; Rj = []
+        for k in S:
+            if k == "train":
+                continue
+            f = {b: OUT / f"{kind}_{b}_{tag(k)}.npy" for b, _ in blocks}
+            if not all(p.exists() for p in f.values()):
+                continue
+            for b, _ in blocks:
+                Ms[b].append(np.load(f[b]).astype(np.float32))
+            fa = OUT / f"{kind}_rfage{kind[0]}_{tag(k)}.npy"
+            Age.append(np.load(fa)[:, 0] if fa.exists() else np.full(len(Ms[blocks[0][0]][-1]), np.nan, np.float32))
+        if not Ms[blocks[0][0]]:
+            continue
+        Ms = {b: np.concatenate(v) for b, v in Ms.items()}; Age = np.concatenate(Age)
+        j, c_main = _best(Ms["rf" + key], Rz[f"{kind}_{key}"].astype(np.float32))
+        res = {"rows": len(j), "match_cos_min": round(float(c_main.min()), 5)}
+        for b, k_ in blocks:
+            c = _cos(Ms[b], Rz[f"{kind}_{k_}"].astype(np.float32)[j]); res[b] = dict(cos_min=round(float(c.min()), 5), cos_mean=round(float(c.mean()), 6), below_0999=int((c < 0.999).sum()))
+        if np.isfinite(Age).any():
+            d = np.abs(Age - Rz[f"{kind}_age"][j]); res["age_max_abs_diff"] = round(float(np.nanmax(d)), 4)
+        RFCHK[kind] = res
+        log("RF check", kind, res)
+    CHECKS["rfs01_vs_rf"] = RFCHK
+    bad = {k: v for k, r in RFCHK.items() for k, v in r.items() if isinstance(v, dict) and v["cos_min"] < (0.99 if (os.environ.get("FLAG_SMOKE") == "1") else 0.999)}
+    assert not bad, f"definition differs from RF: {bad}"
+# <<<FF-CELL>>>
+print("[cell] b10", flush=True)
+man = {"created": time.strftime("%Y-%m-%d %H:%M"), "splits": {k: len(v["wav"]) for k, v in S.items()},
+       "external": {k: [len(r.face), len(r.voice)] for k, r in EXT.items()}, "encoders": ENCODERS,
+       "checks": CHECKS, "failed": FAILED, "audio": AUDIO_STATS, "broken": BROKEN, "resumed_arrays": len(SEEDED),
+       "versions": {"torch": torch.__version__, "transformers": transformers.__version__},
+       "files": {f.name: list(np.load(f, mmap_mode="r").shape) for f in sorted(OUT.glob("*.npy"))}}
+try:
+    import speechbrain, insightface
+    man["versions"].update(speechbrain=speechbrain.__version__, insightface=insightface.__version__)
+except Exception:
+    pass
+man["reshape"] = RESHAPE                 # flattened wide arrays: row -> (L, D)
+(OUT / "feats_manifest.json").write_text(json.dumps(man, indent=1))
+shutil.rmtree(WORKDIR / "raw", ignore_errors=True)
+tot = sum(p.stat().st_size for p in OUT.glob("*")) / 1e9
+print(f"{len(man['files'])} arrays, {tot:.2f} GB in {OUT} | failed: {FAILED or 'none'}")
+print("NEXT: Save Version (Save & Run All) -> Output -> New Dataset -> name it flag2027-feats-rfs-b-p (re-run with this output attached until every encoder is done)")
+# <<<FF-CELL>>>
+print("[cell] rfs aux", flush=True)
+# VoxCeleb2 (vox = FLAG_37 rows, vox2b = FLAG_53 rows) and VoxBlink (vb = FLAG_46): voices from the audio cache, faces from the cached frames,
+# each source in its own voice_meta.csv / face_meta.csv row order; rows of the other lane (and rows without audio / frame) stay NaN.
+import threading
+import concurrent.futures as cf
+SMOKE = os.environ.get("FLAG_SMOKE") == "1"
+LANE = "auxb"
+PAR = 1 if LANE == "auxc" else 0
+BUDGET = float(os.environ.get("RFS_BUDGET_H", "8.0")) * 3600
+LIM = int(os.environ.get("RFS_AUX_MAX", "0")) or (24 if SMOKE else 0)
+T_START = time.time()
+
+
+def _inroots():
+    base = Path("/kaggle/input")
+    out = []
+    for p in (base.iterdir() if base.exists() else []):
+        if p.name in ("datasets", "notebooks", "kernels", "models"):
+            out += [q for o in p.iterdir() if o.is_dir() for q in o.iterdir() if q.is_dir()]
+        elif p.is_dir():
+            out.append(p)
+    return [p for p in out if not any(k in p.name for k in ("mavceleb", "raw-v4", "ext-meta"))]
+
+
+_roots = _inroots()
+_meta = {}
+for r in _roots:
+    for kind in ("voice", "face"):
+        for p in r.rglob(f"{kind}_meta.csv"):
+            for s, par in (("vox", "feats_vox2"), ("vox2b", "feats_vox2b"), ("vb", "feats_vb")):
+                if p.parent.name == par:
+                    _meta.setdefault((kind, s), p)
+assert len(_meta) == 6, f"face / voice meta found for {sorted(_meta)}: attach lab-data / feats-vox2b / lab-vb"
+_tar = sorted(q for r in _roots for q in r.rglob("tar0000.npz") if q.parent.name == "vox")
+assert _tar, "attach duongphihoang/flag2027-audio-cache-p (vox/tar*.npz, vb/*.npz)"
+ACROOT = _tar[0].parent.parent
+CH = [(p, "vox") for p in sorted((ACROOT / "vox").glob("tar*.npz"))] + [(p, "vb") for p in sorted((ACROOT / "vb").glob("*.npz"))]
+CH = CH[PAR::2]                                                 # b = even chunks, c = odd chunks (as FLAG_160)
+dt = {"spk": str, "video": str, "utt": str}
+VM = {s: pd.read_csv(_meta[("voice", s)], dtype=dt) for s in ("vox", "vox2b", "vb")}
+FM = {s: pd.read_csv(_meta[("face", s)], dtype=dt) for s in ("vox", "vox2b", "vb")}
+ROW = {s: {k: r for r, k in enumerate(zip(d.spk, d.video, d.utt))} for s, d in VM.items()}
+log("audio cache", ACROOT, len(CH), "chunks of this lane | voice rows", {s: len(d) for s, d in VM.items()}, "| face rows", {s: len(d) for s, d in FM.items()})
+
+# -- frames (FACELORA-03's layout): FLAG_37 rows in vox_frames_png.zip ("<row>.png"), FLAG_53 / VoxBlink in the FLAG_63 chunk zips ("spk/video/utt.png")
+FILES = SCAN["files"]
+_z37 = FILES.get("vox_frames_png.zip") or FILES.get("vox_frames_png.zipdata")
+_zch = FILES.get("frames_manifest.json", [])
+assert _z37 and _zch, "attach onnhqunhh/flag2027-lora-frames-p (vox_frames_png.zipdata + frames/)"
+Z37, FR63 = sorted(_z37, key=lambda p: len(p.as_posix()))[0], _zch[0].parent
+MEMBER = {}
+with zipfile.ZipFile(Z37) as z:
+    for n in z.namelist():
+        MEMBER["v37/" + n] = Z37
+for part in ("vox2b", "vb"):
+    for zf in sorted([*(FR63 / part).glob("*.zip"), *(FR63 / part).glob("*.zipdata")]):
+        with zipfile.ZipFile(zf) as z:
+            for n in z.namelist():
+                MEMBER[f"{part}/" + n] = zf
+log(f"frames indexed: {sum(k.startswith('v37/') for k in MEMBER)} FLAG_37, {sum(k.startswith('vox2b/') for k in MEMBER)} FLAG_53, {sum(k.startswith('vb/') for k in MEMBER)} VoxBlink")
+_ZT = threading.local()
+
+
+def frame_bytes(member):
+    zs = getattr(_ZT, "z", None)
+    if zs is None:
+        zs = _ZT.z = {}
+    zp = MEMBER[member]
+    if zp not in zs:
+        zs[zp] = zipfile.ZipFile(zp)
+    return zs[zp].read(member.split("/", 1)[1])
+
+
+def member_of(s, i, r):
+    return f"v37/{i}.png" if s == "vox" else f"{s}/{r.spk}/{r.video}/{r.utt}.png"
+
+
+ND = torch.cuda.device_count()
+D_F, D_V = ("cuda:0", "cuda:1" if ND > 1 else "cuda:0") if ND else ("cpu", "cpu")
+CF, CV = load_core(D_F, "f"), load_core(D_V, "v")
+FACE, VOICE = RFFace(CF, D_F), RFVoice(CV, D_V)
+log("models ready: faces on", D_F, "| voices on", D_V)
+A = {}                                                          # (kind, src, block) -> (N, d) float16
+for s in ("vox", "vox2b", "vb"):
+    for b, d in (("clip", 768), ("ibf", 1024)):
+        A[("face", s, b)] = np.full((len(FM[s]), d), np.nan, np.float16)
+    for b, d in (("sam", 256), ("r221", 256), ("xv", 192), ("ibv", 1024)):
+        A[("voice", s, b)] = np.full((len(VM[s]), d), np.nan, np.float16)
+DONE = {"face": 0, "voice": 0}
+STOP = {"budget": False}
+
+
+def face_job():
+    log("[aux-face] start")
+    n_all = sum(len(d) for d in FM.values()); t0 = time.time()
+    with cf.ThreadPoolExecutor(8) as ex:
+        for s in ("vox", "vox2b", "vb"):
+            rows = [(i, r) for i, r in enumerate(FM[s].itertuples()) if i % 2 == PAR and member_of(s, i, r) in MEMBER]
+            if LIM:
+                rows = rows[:LIM]
+            for b0 in range(0, len(rows), 64):
+                if time.time() - T_START > BUDGET:
+                    STOP["budget"] = True; return
+                chunk = rows[b0:b0 + 64]
+                xs = list(ex.map(lambda ir: FACE.prep(Image.open(io.BytesIO(frame_bytes(member_of(s, *ir)))).convert("RGB")), chunk))
+                R = FACE.run(torch.stack(xs))
+                idx = [i for i, _ in chunk]
+                A[("face", s, "clip")][idx] = R["clip"]; A[("face", s, "ibf")][idx] = R[""]
+                DONE["face"] += len(idx)
+                if LIM or (b0 // 64) % 20 == 0:
+                    log(f"[aux-face] {s} {b0 + len(idx)}/{len(rows)} (all {DONE['face']}) {DONE['face'] / max(time.time() - t0, 1):.1f} img/s")
+
+
+def clips(Z, a, b):
+    W = Z["wav"][a:b]
+    ln = Z["n"][a:b].astype(int) if "n" in Z.files else [W.shape[1]] * len(W)
+    return [W[i][:max(int(ln[i]), 16000 // 2)].astype(np.float32) / 32768.0 for i in range(len(W))]
+
+
+def voice_job():
+    log("[aux-voice] start")
+    t0 = time.time()
+    for ci, (p, kind) in enumerate(CH):
+        Z = np.load(p)
+        keys = [tuple(map(str, k)) for k in zip(Z["spk"], Z["video"], Z["utt"])]
+        for c0 in range(0, len(keys), 64):
+            if time.time() - T_START > BUDGET:
+                STOP["budget"] = True; return
+            for j, w in enumerate(clips(Z, c0, c0 + 64)):
+                F_ = VOICE.feats(w)
+                for s in (("vb",) if kind == "vb" else ("vox", "vox2b")):
+                    r = ROW[s].get(keys[c0 + j])
+                    if r is not None:
+                        for b, k in (("ibv", ""), ("sam", "sam"), ("r221", "r221"), ("xv", "xv")):
+                            A[("voice", s, b)][r] = F_[k]
+                DONE["voice"] += 1
+                if LIM:
+                    log(f"[aux-voice] clip {DONE['voice']}")
+                if LIM and DONE["voice"] >= LIM:
+                    return
+        log(f"[aux-voice] chunk {ci + 1}/{len(CH)}: {DONE['voice']} clips ({DONE['voice'] / max(time.time() - t0, 1):.1f} clips/s, {time.time() - t0:.0f}s)")
+
+
+ERR = []
+def guard(fn):
+    def w():
+        try:
+            fn()
+        except BaseException as e:
+            import traceback; ERR.append(f"{fn.__name__}: {e!r}"); traceback.print_exc()
+    return w
+
+
+if D_F == D_V == "cpu":                                         # smoke on CPU: one job at a time (two jobs would fight for the same cores)
+    guard(face_job)(); guard(voice_job)()
+else:
+    th = [threading.Thread(target=guard(face_job)), threading.Thread(target=guard(voice_job))]
+    [t.start() for t in th]; [t.join() for t in th]
+assert not ERR, ERR
+for s in ("vox", "vox2b", "vb"):
+    (OUT / s).mkdir(exist_ok=True)
+    shutil.copy(_meta[("voice", s)], OUT / s / "voice_meta.csv"); shutil.copy(_meta[("face", s)], OUT / s / "face_meta.csv")
+    for (kind, ss, b), X in A.items():
+        if ss == s:
+            np.save(OUT / s / f"{kind}_rf{b}.npy", X)
+AUX_COVER = {f"{s}/{kind}_rf{b}": int(np.isfinite(X[:, 0].astype(np.float32)).sum()) for (kind, s, b), X in A.items()}
+log(f"[aux] faces {DONE['face']}, voices {DONE['voice']} [{time.time() - T_START:.0f}s]; budget stop: {STOP['budget']}; rows per array {AUX_COVER}")
+CHECKS["rfs01_aux"] = dict(cover=AUX_COVER, chunks=len(CH), lane=LANE, faces=DONE["face"], voices=DONE["voice"], budget_stop=STOP["budget"])
+# <<<FF-CELL>>>
+print("[cell] upload", flush=True)
+UPL = os.environ.get("RFS_UPLOAD", "")
+(OUT / "rfs01_meta.json").write_text(json.dumps(dict(exp="RFS-01 step 1", lane="auxb", core_sha256="25abe24db6fbe863109dafd5f75f9075164dce75f77ce276695daf8687d338f7", dtype="float16 (aux, v1 / v2) / float32 (v4 train + dev lists)",
+        blocks="face: rfclip 768, rfibf 1024, rfagef 10 (splits only); voice: rfsam 256, rfr221 256, rfxv 192, rfibv 1024, rfagev 4 (splits only)",
+        rows="a: split / ext arrays in the FLAG_12 order (feats_manifest.json: splits, external); b, c: <vox|vox2b|vb>/{face,voice}_rf<block>.npy in that source's face_meta.csv / voice_meta.csv order (copied beside), NaN = not in this lane (faces: i % 2 == 0 in b, 1 in c; voices: even / odd chunks of the cache list)",
+        voice_clip="aux: cached centre 3 s clip; MAV: FLAG_12 loader (whole file, v1 / v2 12 s centre crop)", faces="aux: cached 224 PNG frames",
+        unreadable_file="a: framework stand-in (1 s silence / black image), listed in feats_manifest.json broken"), indent=1))
+if UPL and os.environ.get("FLAG_SMOKE") != "1":
+    try:
+        import kagglehub
+        kagglehub.dataset_upload(UPL, str(OUT), version_notes="RFS-01 step 1 lane auxb")
+        print("uploaded ->", UPL, flush=True)
+    except Exception as e:
+        print(f"upload to {UPL} failed ({e!r}); the arrays are in the notebook output", flush=True)
+print("ALL CELLS OK", flush=True)
+# <<<FF-CELL>>>

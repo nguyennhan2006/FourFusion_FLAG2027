@@ -1,0 +1,125 @@
+{
+ "about": "Outputs of the 16/11 run (team machine, CPU). Byte equality is expected only on the same machine and libraries; elsewhere compare the self-check (verify.json) and, downstream, the DP scores (Spearman). These hashes are for information.",
+ "verify_json": {
+  "arcface_train_cos": [
+   0.9999995231628418,
+   0.9999999344348908
+  ],
+  "adaface_train_cos": [
+   0.9999995231628418,
+   0.9999999374151229
+  ],
+  "ecapa192_train_cos": [
+   0.9993875026702881,
+   0.9998963534832
+  ]
+ },
+ "min_cos_required": {
+  "arcface_train_cos": 0.999,
+  "adaface_train_cos": 0.999,
+  "ecapa192_train_cos": 0.99
+ },
+ "files": {
+  "face_adaface_gender_English.npy": {
+   "bytes": 852096,
+   "sha256": "0871673bf72e931e318b777ecd5e9ea06212454377f6447988396b5884805a80",
+   "shape": [
+    416,
+    512
+   ],
+   "dtype": "float32"
+  },
+  "face_adaface_no_gender_English.npy": {
+   "bytes": 802944,
+   "sha256": "377167ba6d9ec78e9bed58dd9bdadb8f3e39f96934070b63fb76bffea2c6a385",
+   "shape": [
+    392,
+    512
+   ],
+   "dtype": "float32"
+  },
+  "face_arcface_detok_gender_English.npy": {
+   "bytes": 544,
+   "sha256": "5375b6fa1786b4282f120ae73d846be65e832789e83bb12975c3779cd81a3148",
+   "shape": [
+    416
+   ],
+   "dtype": "bool"
+  },
+  "face_arcface_detok_no_gender_English.npy": {
+   "bytes": 520,
+   "sha256": "86afc6d7267f7fcf102315c2b3f7f4f29df9ab12cad0db9bae920cc5f95d35a3",
+   "shape": [
+    392
+   ],
+   "dtype": "bool"
+  },
+  "face_arcface_gender_English.npy": {
+   "bytes": 852096,
+   "sha256": "d3bb01c4f733e9a419f5ce2f603d6ef9edd4d0984d608e80ca26dc13054f2ba4",
+   "shape": [
+    416,
+    512
+   ],
+   "dtype": "float32"
+  },
+  "face_arcface_no_gender_English.npy": {
+   "bytes": 802944,
+   "sha256": "085a813fb166124eb00bbd6f26edd7d72133b76c9722a92cd5676db05e4decbb",
+   "shape": [
+    392,
+    512
+   ],
+   "dtype": "float32"
+  },
+  "ids_gender_English.txt": {
+   "bytes": 4160,
+   "sha256": "334c1e593763b658dc55bcb20e088e535e315648faf0e183d03ef8ee6de058f9"
+  },
+  "ids_no_gender_English.txt": {
+   "bytes": 3920,
+   "sha256": "59c779df2072c3e01045e050b8b080b2d3647e06e1bb111208afc174cc5536a8"
+  },
+  "verify.json": {
+   "bytes": 226,
+   "sha256": "9ef21fed389b46d2bee1c292d960f149864d42a9c93ba138f15ad3b75be6d67a",
+   "note": "written by extract_eval.py as verify.json; the team kept the English run's copy as verify_english.json (original/verify_english.json) because the later Bangla run wrote verify.json again"
+  },
+  "voice_ecapa192_gender_English.npy": {
+   "bytes": 319616,
+   "sha256": "8587736b2e353e929376c26e075a4c9696654c8432b70dc8224465f542f91041",
+   "shape": [
+    416,
+    192
+   ],
+   "dtype": "float32"
+  },
+  "voice_ecapa192_no_gender_English.npy": {
+   "bytes": 301184,
+   "sha256": "72668be63b9f8b35ec357d98a7c06dc6776d9d08409e18c7d2caf6f714c7ae80",
+   "shape": [
+    392,
+    192
+   ],
+   "dtype": "float32"
+  },
+  "voice_ecapa6144_gender_English.npy": {
+   "bytes": 10223744,
+   "sha256": "b7c32e06ef52aab06df22900acacff4a48e496e602fce138c4e2684e3f1a68b5",
+   "shape": [
+    416,
+    6144
+   ],
+   "dtype": "float32"
+  },
+  "voice_ecapa6144_no_gender_English.npy": {
+   "bytes": 9633920,
+   "sha256": "bc7de035a09d3b3d8887b643714bb4b4d86dae68a6eb666a601c8896487e848d",
+   "shape": [
+    392,
+    6144
+   ],
+   "dtype": "float32"
+  }
+ }
+}

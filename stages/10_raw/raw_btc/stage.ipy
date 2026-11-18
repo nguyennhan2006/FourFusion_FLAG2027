@@ -1,0 +1,78 @@
+print("[cell] raw_btc: check the organisers' MAV-Celeb v4 release (sha256, members)", flush=True)
+# New cell (FourFusion reproduction repo). The organisers' train / dev release has no producing code: this stage only checks that
+# the folder mounted as datasets/ngnnguynchn/flag2027-raw-v4-p (FF_DATA/00_raw/btc_mavceleb_v4) holds the exact files every later
+# stage of the 13.54 chain read. dev_set.zip is optional: no stage of the chain reads dev data (docs/COMPLIANCE_NOTES.md).
+import hashlib, json, os, time, zipfile
+from pathlib import Path
+
+IN = Path("/kaggle/input/datasets/ngnnguynchn/flag2027-raw-v4-p")
+OUT = Path("/kaggle/working")
+SMOKE = os.environ.get("FF_SMOKE") == "1"            # smoke: sizes + zip members only, no full-file sha256 of the two zips
+EXPECTED = {                                          # name: (bytes, sha256, required) -- E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/MANIFEST.sha256
+    "train_set.zip": (1428601179, "1803739f059860d5aede064839a17b01c6297f3160ab80cc9d3c929b27ae2ad9", True),
+    "meta_file_train_set.csv": (560, "fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030", True),
+    "dev_set.zip": (989881860, "f29cc4139bc3e40bf9e9cd6533b6822e41296de972589d85ac71953cd1a92983", False),
+}
+TRAIN_MEMBERS = {                                     # members of train_set.zip read directly by later stages (checked 18/11/2026)
+    "train_set/train_set/train_English.txt": "9da76d23473dabc1e8822c99d1f24398bd5222a382b50efdeaa87bb9b9222d5e",
+    "train_set/features/faces/train_English_faces.csv": "3f96079d7d0f192a1e02fcc0bda0245826fbd8918f9e9caccee295dc578e78bc",
+    "train_set/features/voices/train_English_voices.csv": "be650b98adeaff8c5fb1c3978e6b60fd51b4782147af1b917926c685bd962925",
+}
+TRAIN_ENTRIES, TRAIN_PAIRS, TRAIN_SPEAKERS = 13122, 6485, 70
+
+
+def sha256_file(p):
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(1 << 22), b""):
+            h.update(b)
+    return h.hexdigest()
+
+
+def find(name):
+    """The file at the dataset root, else anywhere below the mount (copies under another layout)."""
+    if (IN / name).is_file():
+        return IN / name
+    hits = sorted(p for p in Path("/kaggle/input").rglob(name) if p.is_file())
+    return hits[0] if hits else None
+
+
+rep, bad = {"checked": time.strftime("%Y-%m-%d %H:%M:%S"), "smoke": SMOKE, "files": {}}, []
+for name, (size, digest, required) in EXPECTED.items():
+    p = find(name)
+    if p is None:
+        rep["files"][name] = "absent" + ("" if required else " (optional: the 13.54 chain never reads dev data)")
+        if required:
+            bad.append(f"{name}: missing")
+        continue
+    r = {"path": str(p), "bytes": p.stat().st_size, "bytes_ok": p.stat().st_size == size}
+    if not SMOKE or p.stat().st_size < 10 ** 6:
+        r["sha256"] = sha256_file(p)
+        r["sha256_ok"] = r["sha256"] == digest
+    rep["files"][name] = r
+    if not r["bytes_ok"] or r.get("sha256_ok") is False:
+        bad.append(f"{name}: {r}")
+    print(name, r, flush=True)
+
+tz = find("train_set.zip")
+if tz is not None:
+    with zipfile.ZipFile(tz) as z:
+        names = z.namelist()
+        mem = {m: hashlib.sha256(z.read(m)).hexdigest() for m in TRAIN_MEMBERS if m in names}
+        pairs = [l for l in z.read("train_set/train_set/train_English.txt").decode("utf-8").splitlines() if l.strip()] \
+            if "train_set/train_set/train_English.txt" in names else []
+    rep["train_set_zip"] = {"entries": len(names), "entries_ok": len(names) == TRAIN_ENTRIES,
+                            "members": {m: (mem.get(m), mem.get(m) == d) for m, d in TRAIN_MEMBERS.items()},
+                            "pairs": len(pairs), "speakers": len({l.split()[4] for l in pairs})}
+    ok = (rep["train_set_zip"]["entries_ok"] and all(v[1] for v in rep["train_set_zip"]["members"].values())
+          and rep["train_set_zip"]["pairs"] == TRAIN_PAIRS and rep["train_set_zip"]["speakers"] == TRAIN_SPEAKERS)
+    if not ok:
+        bad.append(f"train_set.zip content: {rep['train_set_zip']}")
+    print("train_set.zip:", rep["train_set_zip"], flush=True)
+
+rep["ok"] = not bad
+rep["problems"] = bad
+(OUT / "raw_btc_check.json").write_text(json.dumps(rep, indent=1))
+assert not bad, "raw_btc: the organisers' v4 release differs from the one the system used:\n  " + "\n  ".join(bad)
+print("raw_btc: OK (organisers' v4 release identical to the one used by the 13.54 system)", flush=True)
+# <<<FF-CELL>>>

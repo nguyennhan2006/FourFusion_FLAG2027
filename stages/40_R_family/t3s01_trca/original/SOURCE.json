@@ -1,0 +1,15 @@
+{
+ "stage": "t3s01_trca",
+ "exactness": "new",
+ "translates": {
+  "what": "part of datasets/ngnnguynchn/flag2027-t3s01-tables-p read by t219_dumpv4 (row keys + trCA)",
+  "evidence": [
+   "stages/40_R_family/t219_dumpv4/original/decoded/Experiment/CLEANTUNE-01/run.py merge_t3s (T3S_F = farl, clip, b3s, c5s)",
+   "stages/40_R_family/t219_dumpv4/original/decoded/Experiment/FUSENET-01/run.py report (F1S = S6 + V11_T3 + ['trCA'])",
+   "repo_map/build/WP-F.md finding 7 (keys and trCA equal ct02s-r2ca-tables-p, max |diff| 0.0)",
+   "schemas read 18/11 from package E zips: t3s01 ct01r2farl_fold1 = keys + trCA + trT3S_farl_{sim,r293,ecapa,cat4,wsv,rdn}; ct01r2b3s_fold1 = keys + trT3S_b3s_*; ct02s ct01r2_fold1 = keys + trCA + trCAb (7 406 rows each)"
+  ],
+  "lost_original": "FLAG_167 staging folders C:/Users/ASUS/AppData/Local/Temp/kapi_flag-2027-nb-167-t3s01-f{1..5}_* exist but are empty (18/11); last pushes kaggle/kapi_runs.jsonl lines 1370-1374"
+ },
+ "files": []
+}

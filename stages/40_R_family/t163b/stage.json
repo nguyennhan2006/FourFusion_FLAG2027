@@ -1,0 +1,178 @@
+{
+ "id": "t163b",
+ "group": "40_R_family",
+ "title": "RFS bundle (ext.npz, v4.npz): assemble the FLAG_160 a/b/c Whisper and FLAG_162 a/b/c RF-092 feature datasets, the MAV row order and the v4 train list",
+ "kind": "data",
+ "role_in_1354": "score",
+ "optional": false,
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 4,
+  "internet": true,
+  "secrets": []
+ },
+ "origin": {
+  "run": "ngnnguynchn/flag-2027-nb-163-rfs-b",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/14_flag-2027-nb-163-rfs-b.ipynb",
+  "notebook_md5": "4fd83ff36e12b0d36eb2ee6e22c10866",
+  "notebook_sha256": "50c147da0094dd8bd6fb4f51cf8387f1d9ad9718e0bad64617a8c4fe04865df7",
+  "kapi_runs": {
+   "line": 1327,
+   "time": "2026-11-04 02:10",
+   "notebook_md5_pushed": "d2ed403618c620d6f253981b43cbdbf5",
+   "is_last_push_of_kernel": true
+  },
+  "builder": "kaggle/build_flag163.py (cell INPUTS, RFS_MODE=B); embedded train/assemble.py = Experiment/RFS-01/train/assemble.py (sha256 b46dd180..., identical)",
+  "original_notebook": "original/14_flag-2027-nb-163-rfs-b.redacted.ipynb",
+  "redacted": true,
+  "redactions": [
+   {
+    "cell": 2,
+    "kind": "redaction",
+    "what": "string literal of the (\"train/gender.csv\", ...) entry of the embedded-file loop"
+   }
+  ],
+  "private_exact_copy": "the exact notebook embeds the organisers' meta_file_train_set.csv (train/gender.csv blob); exact copy: E: package notebooks/1_train/14_flag-2027-nb-163-rfs-b.ipynb"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ext-meta-p"
+  },
+  {
+   "artifact": "datasets/nguynchnngn1/flag2027-feats-rfs-a-p"
+  },
+  {
+   "artifact": "datasets/phanththui/flag2027-feats-rfs-b-p"
+  },
+  {
+   "artifact": "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p"
+  },
+  {
+   "artifact": "datasets/tranthuytien2511/flag2027-feats-whv3-a-p"
+  },
+  {
+   "artifact": "datasets/thanhhuyen11/flag2027-feats-whv3-b-p"
+  },
+  {
+   "artifact": "datasets/phuonggmaii/flag2027-feats-whv3-c-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ngnnguynchn/flag-2027-nb-163-rfs-b",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-rfs-bundle-p": "rfs_bundle"
+  }
+ },
+ "env": {},
+ "run_params_cell0": {
+  "RFS_MODE": "B",
+  "RFS_UPLOAD": "ngnnguynchn/flag2027-rfs-bundle-p"
+ },
+ "smoke_env": {
+  "FLAG_SMOKE": "1"
+ },
+ "patches": [
+  {
+   "old": "os.environ['RFS_UPLOAD'] = 'ngnnguynchn/flag2027-rfs-bundle-p'",
+   "new": "# FF: upload disabled, the output folder becomes a runner artifact (CHANGES.md). Original: os.environ['RFS_UPLOAD'] = 'ngnnguynchn/flag2027-rfs-bundle-p'",
+   "count": 1,
+   "why": "the original run uploaded its output folder to the Kaggle dataset ngnnguynchn/flag2027-rfs-bundle-p with kagglehub; here the runner keeps it as an artifact (cell 'upload' then sees RFS_UPLOAD unset and skips)",
+   "type": "upload",
+   "effect_on_numbers": "none",
+   "cell": 0,
+   "line_in_cell": 5
+  },
+  {
+   "old": "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "new": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+   "count": 1,
+   "why": "Meta's ImageBind link is dead since 12/11/2026; pinned Hugging Face mirror of the same file (imagebind_huge.pth sha256 d6f6c22bedcc90708448d5d2fbb7b2db9c73f505dc89bd0b2e09b23af1b62157)",
+   "type": "url",
+   "effect_on_numbers": "none",
+   "cell": 4,
+   "line_in_cell": 6
+  },
+  {
+   "old": "(\"train/gender.csv\", \"FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030\"), ",
+   "new": "",
+   "count": 1,
+   "why": "the embedded copy of the organisers' meta_file_train_set.csv is not distributed with the repo (user rule 6); its entry is removed from the embedded-file loop (the literal was already replaced by a placeholder in original/*.redacted.ipynb, see SOURCE.json)",
+   "type": "redaction",
+   "effect_on_numbers": "none",
+   "cell": 2,
+   "line_in_cell": 8
+  },
+  {
+   "old": "    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\n",
+   "new": "    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\nif MODE == \"B\":   # FF redaction (CHANGES.md): train/gender.csv was an embedded copy of the organisers' meta_file_train_set.csv; the same bytes come from the raw-v4 input (only assemble.py, RFS_MODE=B, reads the file)\n    _ff_g = [q for q in sorted(Path(\"/kaggle/input\").rglob(\"meta_file_train_set.csv\")) if __import__(\"hashlib\").sha256(q.read_bytes()).hexdigest() == \"fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030\"]\n    assert _ff_g, \"the organisers' meta_file_train_set.csv (sha256 fd7991a3...) was not found under /kaggle/input (dataset ngnnguynchn/flag2027-raw-v4-p)\"\n    (CODE / \"train\" / \"gender.csv\").write_bytes(_ff_g[0].read_bytes()); print(\"FF: train/gender.csv <-\", _ff_g[0], flush=True)\n",
+   "count": 1,
+   "why": "puts back train/gender.csv in RFS_MODE=B from the organisers' file itself (sha256 asserted = the embedded copy), so assemble.py reads the same 560 bytes; in modes L / P / LAB no code reads train/gender.csv (checked in every embedded rfs_train.py version), so nothing is written",
+   "type": "redaction",
+   "effect_on_numbers": "none",
+   "cell": 2,
+   "line_in_cell": 9
+  },
+  {
+   "old": "def find_all(name):\n    return sorted(p for p in IN.rglob(name)) if IN.exists() else []\n",
+   "new": "def find_all(name):\n    return sorted(p for p in IN.rglob(name)) if IN.exists() else []\nif MODE in (\"B\", \"L\") and not find_all(\"train_English.txt\"):   # FF path (CHANGES.md): FF_DATA keeps the organisers' train_set.zip packed (Kaggle served the dataset extracted); unpack train_set.zip only, next to itself; dev_set.zip is never opened\n    import zipfile as _ff_zf\n    _ff_tz = find_all(\"train_set.zip\")\n    assert len(_ff_tz) == 1, f\"raw-v4: neither train_English.txt nor exactly one train_set.zip under {IN}: {_ff_tz}\"\n    with _ff_zf.ZipFile(_ff_tz[0]) as _ff_z:\n        _ff_z.extractall(_ff_tz[0].parent)\n    print(\"FF: unpacked\", _ff_tz[0], \"->\", _ff_tz[0].parent / \"train_set\", \"(dev_set.zip left packed)\", flush=True)\n",
+   "count": 1,
+   "type": "path",
+   "effect_on_numbers": "none (same files as the extracted Kaggle view: members of the organisers' train_set.zip, sha256 1803739f... checked by raw_btc)",
+   "why": "the original run read ngnnguynchn/flag2027-raw-v4-p as Kaggle served it, extracted (train_set/train_set/train_English.txt next to faces/ and voices/, train_set/features/{faces,voices}/*.csv). FF_DATA/00_raw/btc_mavceleb_v4/ keeps the organisers' files as delivered (train_set.zip, dev_set.zip, meta_file_train_set.csv) and the runner does not unzip raw data, so Q('train_English.txt') (mode B) / the os.walk for train_English.txt + faces/ (mode L) found nothing. When train_English.txt is absent, the block unpacks train_set.zip ONLY, beside itself inside the stage's own input view (real directories made by the runner; FF_DATA is not written), giving the Kaggle layout; dev_set.zip stays packed and is never opened (dev exclusion, DESIGN 2.8). It does nothing when an extracted view is mounted (Kaggle, or a WP-B extracted train-only view)",
+   "cell": 3,
+   "line_in_cell": 3,
+   "added": "18/11/2026 (fixer, review of WP-F)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [
+  "RFS_UPLOAD"
+ ],
+ "pip_policy": "original",
+ "pip_calls": [],
+ "variant": {},
+ "forbidden_inputs": [],
+ "post_checks": [],
+ "skip_with": [
+  "02_intermediate/rfs_bundle"
+ ],
+ "verify": [
+  {
+   "file": "rfs_bundle/ext.npz",
+   "bytes": 1440318452,
+   "sha256": "74315529a3f504ad6ef59dd7d69c04a038e8594ff9599e95459e2d942eb55b5f",
+   "check": "arrays",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-rfs-bundle-p.zip :: ext.npz",
+   "note": "assembly is CPU-only and deterministic: a rerun on the same inputs gives equal arrays; file bytes differ (npz members carry the write time)"
+  },
+  {
+   "file": "rfs_bundle/v4.npz",
+   "bytes": 206317944,
+   "sha256": "292b1231ab025fabbd7335b5cbdb5ec1d292924926e0bafa30219f02dff6a947",
+   "check": "arrays",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-rfs-bundle-p.zip :: v4.npz",
+   "note": "as ext.npz"
+  }
+ ],
+ "stage_ipy_sha256": "09ab431d415b3338cd3c5d36bd9d09f5ed83a0ba3f6aa8a596b49245324df8d8",
+ "stage_ipy_bytes": 51516,
+ "stage_ipy_cells": 6,
+ "rebuild": "python stages/40_R_family/_wpf_tools.py check  (code cells of origin.original_notebook, CRLF -> LF, patches in order, joined by '\\n# <<<FF-CELL>>>\\n')",
+ "notes": [
+  "Output = version 5 of ngnnguynchn/flag2027-rfs-bundle-p (log start 2026-11-03 19:10:42 UTC; kapi_runs line 1327 = last of four pushes). The original L run (t163l_orig) read version 4 (pushed 00:31, line 1313), which was not kept; versions 4 and 5 differ only in the v4 columns f_xf / v_xv (embedded assemble.py 432bdbf9... -> b46dd180...; S4 1.1), which the LoRA C1 code does not read (G26).",
+  "The embedded train/gender.csv (= organisers' meta_file_train_set.csv) is read only here (assemble.py --gender_csv): the redaction patch copies the organisers' file from the raw-v4 mount and checks its sha256, so the bundle gets the same gender labels.",
+  "Requires the raw-v4 mount laid out as on Kaggle (train_set extracted: train_English.txt, faces/, voices/, features/*.csv) plus meta_file_train_set.csv; nothing of dev_set is read (assemble.py reads train_English.txt and the train feature CSVs only). (fixer 18/11: when FF_DATA holds the organisers' train_set.zip packed, the 'path' patch on cell 2 unpacks train_set.zip only, inside the stage's input view; dev_set.zip stays packed)"
+ ],
+ "todo": [
+  "WP-B / WP-A (optional): an extracted train-only view of raw-v4 (train_set/ unpacked + meta_file_train_set.csv, no dev_set) would make the unpack block a no-op; until then the block unpacks train_set.zip (1.43 GB, 13 122 members) at every run of this stage and of t163l_orig. Never executed (18/11)."
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": false,
+  "why": "mode B: assemble.py receives every path as an argument (--rfs_a ... --rawv4 --gender_csv); the decoded assemble.py / rfs_train.py (98aa07ae) contain no /kaggle path (grep); all lookups are in the stage text, which the runner rewrites"
+ }
+}

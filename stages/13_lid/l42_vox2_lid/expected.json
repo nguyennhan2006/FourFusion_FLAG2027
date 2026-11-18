@@ -1,0 +1,9 @@
+{
+ "lid_summary.json": "4d05cb34fc0fa66951750bb8f37d1f01b18f32a3e26847c7f42caad8e3341085",
+ "voice_lid_probs.npy": "2bd938fc64872bd0352de4a5b400264208c023e48a4b02f6a7715ffb48960f49",
+ "voice_meta.csv": "3db779d3e58e1bdda05ea460335b808c5e17b66d67aab32dc6adeb4fb84cdfa4",
+ "speakers_dropped": 25,
+ "speakers_dropped_sha256": "35d31f681975b96950d6af4ad04e56c4281732dc504b74f2be693e205127822d",
+ "clips": 38345,
+ "clips_flagged": 54
+}

@@ -1,0 +1,3 @@
+# Keep every file in src/ byte-for-byte: SRC_MANIFEST.json records the sha256 of the exact bytes, and 83 copies use
+# CRLF line endings as in the team repository. No line-ending conversion; diffs still shown as text.
+* -text diff

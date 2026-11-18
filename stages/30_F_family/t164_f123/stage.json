@@ -1,0 +1,152 @@
+{
+ "id": "t164_f123",
+ "group": "30_F_family",
+ "title": "CLEANCOMP-01 folds 1,2,3: XALL bridge (S6) + v11 T3 head (P512) relearned per SAFE-04 fold under LID_STRICT=1 -> cleancomp01_fold<s>.parquet",
+ "kind": "train",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 2,
+  "accelerator": "NvidiaTeslaT4 (code uses GPU 0)",
+  "minutes_original": 16,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123",
+  "exactness": "exact-pulled",
+  "source_file": "d:/Sinh viên CNhan/FLAG_2027_FourFusion/release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb",
+  "notebook_md5": "167b3ef3942f7f0072a1f31600e9779a",
+  "notebook_sha256": "21c36cccdc5699f9332f29077c48038929dc32ec64822fc19df83c1753d9ce4a",
+  "original_in_repo": "original/flag-2027-nb-164-cleancomp01-f123.ipynb",
+  "original_in_repo_sha256": "21c36cccdc5699f9332f29077c48038929dc32ec64822fc19df83c1753d9ce4a",
+  "original_in_repo_is_byte_exact": true,
+  "kapi_runs": [
+   {
+    "line": 1115,
+    "time": "2026-11-03 16:13",
+    "kernel": "thanhthaoph/flag-2027-nb-164-cleancomp01-smoke",
+    "notebook_md5_pushed": "70964da119445629546075bbfdaa4b08",
+    "smoke": {
+     "LID_STRICT": "1",
+     "LAB_FOLDS": "1",
+     "L0_STEPS": "10",
+     "L0_NETS": "1",
+     "SAFE04_THREADS": "4"
+    }
+   },
+   {
+    "line": 1116,
+    "time": "2026-11-03 16:16",
+    "kernel": "thanhthaoph/flag-2027-nb-164-cleancomp01-smoke",
+    "notebook_md5_pushed": "c2902118ec248f0d6ffbe07ee55f4ddf",
+    "smoke": {
+     "LID_STRICT": "1",
+     "LAB_FOLDS": "1",
+     "L0_STEPS": "10",
+     "L0_NETS": "1",
+     "SAFE04_THREADS": "4"
+    }
+   },
+   {
+    "line": 1117,
+    "time": "2026-11-03 16:18",
+    "kernel": "thanhthaoph/flag-2027-nb-164-cleancomp01-smoke",
+    "notebook_md5_pushed": "ef70ebb00efee609c3de1d7d4c96ef3f",
+    "smoke": {
+     "LID_STRICT": "1",
+     "LAB_FOLDS": "1",
+     "L0_STEPS": "10",
+     "L0_NETS": "1",
+     "SAFE04_THREADS": "4"
+    }
+   },
+   {
+    "line": 1120,
+    "time": "2026-11-03 16:25",
+    "kernel": "nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123",
+    "notebook_md5_pushed": "3f0c656687748c63cfa8a02ced2fa044",
+    "smoke": {}
+   }
+  ],
+  "builder": "python kaggle/build_flag164.py -> kaggle/FLAG_164_cleancomp01.ipynb; pushed by `ACC=<acc> FOLDS=<folds> bash kaggle/sat_push.sh 164` (kaggle/sat_push.sh:813-821)",
+  "release_e2e_check": {
+   "release_code": "release/flag2027_e2e/code/t164_f123.ipy",
+   "release_sha256": "5aa303120f09c8b689a92e45cdccd0259b14865e941a2eed6d8d546b76005594",
+   "rebuilt_from_exact_notebook_with_release_patches_sha256": "5aa303120f09c8b689a92e45cdccd0259b14865e941a2eed6d8d546b76005594",
+   "equal": true
+  }
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-eda-bundle-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123",
+  "exports": {}
+ },
+ "env": {},
+ "smoke_env": {
+  "LID_STRICT": "1",
+  "LAB_FOLDS": "1",
+  "L0_STEPS": "10",
+  "L0_NETS": "1",
+  "SAFE04_THREADS": "4"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not_used (no input of this stage is a LoRA C1 artifact; the F1s' family does not use the ImageBind-audio LoRA)"
+ },
+ "skip_with": [],
+ "verify": [
+  {
+   "expect_log": [
+    "LID_STRICT MAV voice files dropped from training rows: 58 of 58"
+   ]
+  },
+  {
+   "expect_files": [
+    "lab_out/cleancomp01_fold1.parquet",
+    "lab_out/cleancomp01_fold2.parquet",
+    "lab_out/cleancomp01_fold3.parquet"
+   ],
+   "note": "the original fold tables were not kept (package E (E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/) holds only the merged dataset flag2027-cleancomp-e2e-p); cleancomp_tables asserts row alignment with the e2e-dev tables"
+  }
+ ],
+ "dev_usage": "none (inputs: flag2027-lab-data, flag2027-eda-bundle, flag2027-lid-strict-p; v4 train + MAV-Celeb v1 / v2 + VoxCeleb2 rows only; validation pairs = SAFE-04 held-out persons).",
+ "todo": [
+  "output of the original run notebooks/nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 not downloaded (DESIGN 9.3: `kaggle kernels output nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123` if it still exists); only needed to compare a re-run fold table by fold table"
+ ],
+ "flags": {
+  "set_by_the_notebook_env_cell": {
+   "LID_STRICT": "1",
+   "LAB_FOLDS": "1,2,3"
+  },
+  "set_by_the_notebook": {
+   "VOX_LID": "Experiment/T3ENC-01/feats_vox2lid/lid_summary.json (FLAG_42, from flag2027-lab-data)"
+  }
+ },
+ "stage_ipy": {
+  "file": "stage.ipy",
+  "sha256": "5aa303120f09c8b689a92e45cdccd0259b14865e941a2eed6d8d546b76005594",
+  "bytes": 116415,
+  "cells": 6,
+  "cell_separator": "\\n# <<<FF-CELL>>>\\n"
+ },
+ "runner_requirements": {
+  "literal_kaggle_input": true,
+  "why": "Modules of CODE_B64 that read the literal /kaggle/input: kaggle/build_l0_notebooks.py lines 141-146 (LID_STRICT=1: lid_strict.json is searched under IN = FLAG_IN, which this notebook sets to the eda-bundle folder (FLAG_IN=str(eda[0].parent.parent)), so only the fallback list(Path(\"/kaggle/input\").rglob(\"lid_strict.json\")) finds flag2027-lid-strict-p; the original logs show that route: 'LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json'); Experiment/T3ENC-01/run.py lines 27-36 strict_drop() (LIDSTRICT-01/lid_strict.json is not embedded, so only Path(\"/kaggle/input\").rglob(\"lid_strict.json\") satisfies `assert hit`). Code decoded at run time from the base64 zip CODE_B64 is written to /kaggle/working/lab and run as lab_entry.py subprocesses; the runner's replacement of the string '/kaggle/input' in the stage code does not reach it. The literal path /kaggle/input must therefore show exactly this stage's inputs while the stage runs: e.g. a container with the virtual input mounted at /kaggle/input (as release/docker/ff.py does; FF_LITERAL_KAGGLE=mounted), or a symlink /kaggle/input -> the virtual input on a Linux host without /kaggle (the runner makes it when this flag is set). In a Kaggle notebook whose own /kaggle/input holds other attachments, run this stage in a session with exactly its inputs attached (as the original run); the runner can only warn there (FF_LITERAL_STRICT=1 makes it an error). /kaggle/input must also hold no second copy of the files these modules look for (e.g. an original saved copy of an artifact rebuilt in the session): they take the first hit of their own scan. Same wording as stages/50_eval/e112f1sx (WP-G), which carries the same modules."
+ },
+ "identity_linkage": "kaggle/build_l0_notebooks.py (embedded, md5 e2f63ea92aa5) line 92 OVERLAP = {\"v1_complete:shaukat_tarin\", \"v2_complete:id0073\"} (MAV-Celeb persons matched to v4 persons, SET-07) and line 153 PERSONS = sorted(set(VMETA.p) - OVERLAP): these two MAV-Celeb identities are left out of every MAV-Celeb row set of the F1s' family (the same file is loaded by Experiment/BEST/v7_safe safe_lib.OVERLAP in t164f). It is an identity link between two sources; disclosure belongs in docs/COMPLIANCE_NOTES.md (DESIGN G17, WP-K); the user's decision on it is still open.",
+ "smoke_note": "the verbatim env cell (cell 01) sets os.environ['LAB_FOLDS'] = '1,2,3' AFTER the runner applied smoke_env LAB_FOLDS=1, so a smoke run trains the tiny XALL / v11 T3 heads (L0_STEPS=10, L0_NETS=1 from smoke_env) on folds 1, 2, 3, not on fold 1 as the original smoke push (kapi_runs.jsonl line 1117, which had no env cell). Full runs are unaffected; no smoke-only patch (the runner has no smoke_patches key)."
+}

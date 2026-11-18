@@ -1,0 +1,42 @@
+{
+ "source": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-lab-vb-p.zip",
+ "note": "sha256 of every file of ngnnguynchn/flag2027-lab-vb-p (package E: re-download; members = the original zip's members)",
+ "members": {
+  "labvb/Experiment/SCALE-VB/feats_vb/face_clipL.npy": {
+   "bytes": 104511104,
+   "sha256": "47b09c04bd2eb0bf422911ed3270a1015aec9bcb37a67e2c907bb9f25696854f"
+  },
+  "labvb/Experiment/SCALE-VB/feats_vb/face_farl16.npy": {
+   "bytes": 69674112,
+   "sha256": "88ff7a0f58fb819ba7f228542a97874e832e6f72879770a27fb213be38e99954"
+  },
+  "labvb/Experiment/SCALE-VB/feats_vb/face_meta.csv": {
+   "bytes": 3478361,
+   "sha256": "60ee5ca25cc918656be5422e27d997480c89178415053045238754a67f57ecd5"
+  },
+  "labvb/Experiment/SCALE-VB/feats_vb/feats_manifest.json": {
+   "bytes": 4575,
+   "sha256": "3d20537e315f8409d04716ccc484042349b6bb2975146ec7cd063c95e9fd24f1"
+  },
+  "labvb/Experiment/SCALE-VB/feats_vb/lid_summary.json": {
+   "bytes": 1832,
+   "sha256": "a345b2b0c1854b83cbd4dd9c6e0ad6e2ca61cb99836f0da1edf34f29ebe292c9"
+  },
+  "labvb/Experiment/SCALE-VB/feats_vb/voice_meta.csv": {
+   "bytes": 3416769,
+   "sha256": "952c3c7289ecd1af073953721cd27e9c7840dc64edee2690df15d2dd8318dd4b"
+  },
+  "labvb/Experiment/SCALE-VB/feats_vb/voice_sam100f.npy": {
+   "bytes": 34838144,
+   "sha256": "e69c2a0d07013519ee5300a1084c0d6a161de6226fde082d877b10c259be36b8"
+  },
+  "labvb/Experiment/SCALE-VB/feats_vb/voice_sam100p.npy": {
+   "bytes": 34838144,
+   "sha256": "0eabc1bfae41a9738140b2f5c2be89838d2d06702670c0cf1bfddd8525618f52"
+  },
+  "labvb/lab_manifest.json": {
+   "bytes": 648,
+   "sha256": "98e94e17ae47e5606e252415ae2aaa1419f3df24696a2b738dd28e1c42480fc0"
+  }
+ }
+}

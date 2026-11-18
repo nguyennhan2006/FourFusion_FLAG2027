@@ -1,0 +1,18 @@
+{
+ "stage": "safe04_lab",
+ "exactness": "new",
+ "code_manifest": "code/CODE_MANIFEST.json",
+ "frozen_bundle": {
+  "kaggle/flag2027-e2e-dev.zip": {
+   "sha256": "0257b1fe2be4f2fde704c9662b845a4531d1ab8787eeb6c44e917d79014d130e",
+   "bytes": 43564672,
+   "mtime": "2026-10-10 21:01"
+  },
+  "E package zip": "0795818f7c1f2cfa32be86d2c7408601d127bddd81e6e356691d250f78579d26",
+  "note": "dev data inside (components_dev.npz, ref zips): FF_DATA only, never in the repository"
+ },
+ "evidence": {
+  "S3_F_family.md": "A3, G1",
+  "release/ff1618/src/p5_fold_validation.py": "reproduced 100 % of the held-out persons and the 37 110 pairs, without pf_m / pv_m"
+ }
+}

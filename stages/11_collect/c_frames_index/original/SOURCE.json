@@ -1,0 +1,117 @@
+{
+ "stage": "c_frames_index",
+ "run": "none (packed by hand on 12/10/2026; the packing script is not kept)",
+ "exactness": "new",
+ "files": [],
+ "notes": [],
+ "published_dataset": {
+  "zip": {
+   "path": "kaggle/flag2027-frames-index-p.zip",
+   "bytes": 25860062,
+   "md5": "136ef242dc2f00d426d3b2186eadc608",
+   "sha256": "a9be8284b387c5c92ae7082f0c9b827d3bac756f992dc922a2173a72ef33f735"
+  },
+  "members": [
+   {
+    "name": "vb/selection.csv",
+    "bytes": 4365212,
+    "sha256": "93aedb71809d328d8ce4dc1a1f9698f358d66bb79d01d5ea1b9bd056a7db7900",
+    "date_time": [
+     2026,
+     10,
+     10,
+     8,
+     3,
+     52
+    ]
+   },
+   {
+    "name": "vb/timestamps.csv",
+    "bytes": 3604264,
+    "sha256": "119e953cf430251ecea1b33c049eb6379b7cea9f041edbad3dac5792ca56f279",
+    "date_time": [
+     2026,
+     10,
+     10,
+     8,
+     3,
+     52
+    ]
+   },
+   {
+    "name": "vb/shard_listing.csv",
+    "bytes": 15153038,
+    "sha256": "538a68f57651f8d134d2eec225c3ba9d4a7a1b37eb2e970606101adf00046003",
+    "date_time": [
+     2026,
+     10,
+     10,
+     8,
+     3,
+     52
+    ]
+   },
+   {
+    "name": "vb/face_meta.csv",
+    "bytes": 3478361,
+    "sha256": "60ee5ca25cc918656be5422e27d997480c89178415053045238754a67f57ecd5",
+    "date_time": [
+     2026,
+     10,
+     10,
+     8,
+     3,
+     52
+    ]
+   },
+   {
+    "name": "vox2b/listing_dev_mp4.parquet",
+    "bytes": 24818093,
+    "sha256": "49ac66949802fb5bbdf4512719e87e13b424973ca569ba54e4f80235e28822bd",
+    "date_time": [
+     2026,
+     10,
+     12,
+     12,
+     33,
+     6
+    ]
+   },
+   {
+    "name": "vox2b/listing_test_mp4.parquet",
+    "bytes": 991764,
+    "sha256": "6b560e7733249460b01c11b87876674c26f2510f7ef30fdf07a5b8044d29fb2e",
+    "date_time": [
+     2026,
+     10,
+     12,
+     12,
+     33,
+     8
+    ]
+   },
+   {
+    "name": "vox2b/face_meta.csv",
+    "bytes": 1121815,
+    "sha256": "2a06d5204f5c6719862c53dcab07f0ac495268eef2efdfb2a8faedbf465593ac",
+    "date_time": [
+     2026,
+     10,
+     12,
+     12,
+     20,
+     6
+    ]
+   }
+  ],
+  "same_bytes_as": [
+   "Experiment/SCALE-VB/feats_vb/{selection,timestamps,shard_listing,face_meta}.csv (= FLAG_46 output)",
+   "Experiment/SCALE-ID-01/feats_vox2b/face_meta.csv (= FLAG_53 output)",
+   "listing_{dev,test}_mp4.parquet: not kept elsewhere locally (FLAG_53 kernel output only)"
+  ]
+ },
+ "evidence": [
+  "internal provenance (not shipped): NOP_BTC_2026-11-20/repo_map/DESIGN.md §4.2, §6 WP-C, §7 G2 G9 G22 G27",
+  "internal provenance (not shipped): S1 A9, A11; S2 3.2; docs/DATASETS.md:56"
+ ]
+}

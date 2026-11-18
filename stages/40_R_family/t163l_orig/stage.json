@@ -1,0 +1,280 @@
+{
+ "id": "t163l_orig",
+ "group": "40_R_family",
+ "title": "ORIGINAL LoRA C1 of the ImageBind audio tower (cache-key bug: 0 VoxCeleb2 clips, 210 MAV-Celeb v1 clips of 70 persons, 1 200 steps) + v_lora of the 6 485 v4 train voices",
+ "kind": "train",
+ "role_in_1354": "score",
+ "optional": false,
+ "compute": {
+  "device": "gpu",
+  "gpus": 2,
+  "minutes_original": 66,
+  "internet": true,
+  "secrets": []
+ },
+ "origin": {
+  "run": "onnhqunhh/flag-2027-nb-163-rfs-l",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/15_flag-2027-nb-163-rfs-l.ipynb",
+  "notebook_md5": "0e80fd17a307fa522eb87663821848f9",
+  "notebook_sha256": "d2603b9c8bfe37c52ce5f444868bb31e235a9a22b7aa60228b083a2b0aca100e",
+  "kapi_runs": {
+   "line": 1315,
+   "time": "2026-11-04 00:37",
+   "notebook_md5_pushed": "72b75238af56b4fc55a2d998b29c92b6",
+   "is_last_push_of_kernel": true
+  },
+  "builder": "kaggle/build_flag163.py (cell LORA lines 84-106; MAV root finder line 93; today's builder already has the HF ImageBind URL at line 89)",
+  "original_notebook": "original/15_flag-2027-nb-163-rfs-l.redacted.ipynb",
+  "redacted": true,
+  "redactions": [
+   {
+    "cell": 2,
+    "kind": "redaction",
+    "what": "string literal of the (\"train/gender.csv\", ...) entry of the embedded-file loop"
+   }
+  ],
+  "private_exact_copy": "the exact notebook embeds the organisers' meta_file_train_set.csv (train/gender.csv blob); exact copy: E: package notebooks/1_train/15_flag-2027-nb-163-rfs-l.ipynb"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p"
+  },
+  {
+   "artifact": "datasets/duongphihoang/flag2027-audio-cache-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-rfs-bundle-p"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/onnhqunhh/flag-2027-nb-163-rfs-l",
+  "exports": {
+   "datasets/onnhqunhh/flag2027-rfs-lora-p": "rfs_lora"
+  }
+ },
+ "env": {},
+ "run_params_cell0": {
+  "RFS_MODE": "L",
+  "RFS_UPLOAD": "onnhqunhh/flag2027-rfs-lora-p"
+ },
+ "smoke_env": {
+  "RFS_LORA_STEPS": "3",
+  "RFS_LORA_BATCH": "4",
+  "RFS_LORA_CAP": "16"
+ },
+ "patches": [
+  {
+   "old": "os.environ['RFS_UPLOAD'] = 'onnhqunhh/flag2027-rfs-lora-p'",
+   "new": "# FF: upload disabled, the output folder becomes a runner artifact (CHANGES.md). Original: os.environ['RFS_UPLOAD'] = 'onnhqunhh/flag2027-rfs-lora-p'",
+   "count": 1,
+   "why": "the original run uploaded its output folder to the Kaggle dataset onnhqunhh/flag2027-rfs-lora-p with kagglehub; here the runner keeps it as an artifact (cell 'upload' then sees RFS_UPLOAD unset and skips)",
+   "type": "upload",
+   "effect_on_numbers": "none",
+   "cell": 0,
+   "line_in_cell": 5
+  },
+  {
+   "old": "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "new": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+   "count": 1,
+   "why": "Meta's ImageBind link is dead since 12/11/2026; pinned Hugging Face mirror of the same file (imagebind_huge.pth sha256 d6f6c22bedcc90708448d5d2fbb7b2db9c73f505dc89bd0b2e09b23af1b62157)",
+   "type": "url",
+   "effect_on_numbers": "none",
+   "cell": 4,
+   "line_in_cell": 6
+  },
+  {
+   "old": "(\"train/gender.csv\", \"FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030\"), ",
+   "new": "",
+   "count": 1,
+   "why": "the embedded copy of the organisers' meta_file_train_set.csv is not distributed with the repo (user rule 6); its entry is removed from the embedded-file loop (the literal was already replaced by a placeholder in original/*.redacted.ipynb, see SOURCE.json)",
+   "type": "redaction",
+   "effect_on_numbers": "none",
+   "cell": 2,
+   "line_in_cell": 8
+  },
+  {
+   "old": "    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\n",
+   "new": "    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\nif MODE == \"B\":   # FF redaction (CHANGES.md): train/gender.csv was an embedded copy of the organisers' meta_file_train_set.csv; the same bytes come from the raw-v4 input (only assemble.py, RFS_MODE=B, reads the file)\n    _ff_g = [q for q in sorted(Path(\"/kaggle/input\").rglob(\"meta_file_train_set.csv\")) if __import__(\"hashlib\").sha256(q.read_bytes()).hexdigest() == \"fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030\"]\n    assert _ff_g, \"the organisers' meta_file_train_set.csv (sha256 fd7991a3...) was not found under /kaggle/input (dataset ngnnguynchn/flag2027-raw-v4-p)\"\n    (CODE / \"train\" / \"gender.csv\").write_bytes(_ff_g[0].read_bytes()); print(\"FF: train/gender.csv <-\", _ff_g[0], flush=True)\n",
+   "count": 1,
+   "why": "puts back train/gender.csv in RFS_MODE=B from the organisers' file itself (sha256 asserted = the embedded copy), so assemble.py reads the same 560 bytes; in modes L / P / LAB no code reads train/gender.csv (checked in every embedded rfs_train.py version), so nothing is written",
+   "type": "redaction",
+   "effect_on_numbers": "none",
+   "cell": 2,
+   "line_in_cell": 9
+  },
+  {
+   "old": "        if Path(d).name in (\"v1\", \"v2\") and {\"faces\", \"voices\"} <= set(dirs): mav = Path(d).parent; break\n",
+   "new": "        dirs.sort()   # FF determinism (CHANGES.md): visit folders in name order so mavceleb_v1_complete-001/v1 is found before mavceleb_v2_complete-002/v2, as in the original run (210 clips of the 70 MAV-Celeb v1 persons)\n        if Path(d).name in (\"v1\", \"v2\") and {\"faces\", \"voices\"} <= set(dirs): mav = Path(d).parent; break\n",
+   "count": 1,
+   "why": "os.walk order depends on the file system; the original Kaggle run took the MAV-Celeb v1 parent folder (its LoRA C1 saw 210 clips of 70 persons = the 70 v1 identities x 3 videos; v2 has 84 identities), so every v2/... wav path failed to load and was skipped silently. Sorting reproduces that choice on any mount; the dry check below verifies the outcome",
+   "type": "variant",
+   "effect_on_numbers": "none if the original run found v1 first (evidence: 70 persons = MAV v1); otherwise this restores the original data selection",
+   "cell": 4,
+   "line_in_cell": 10
+  },
+  {
+   "old": "    run([\"lora\", \"--bundle\", str(BUNDLE), \"--work\", str(WORK), \"--lid\", LID, \"--ib_ckpt\", str(ck), \"--cache\", str(tars[0].parent.parent), \"--mav\", str(mav), \"--v4root\", str(v4)])\n",
+   "new": "    if not SMOKE:   # FF variant guard (CHANGES.md): dry run of lora_data before training, no weights touched\n        print(\"[cell] FF dry check: LoRA C1 clip list (expected 210 clips, 70 persons, all MAV-Celeb v1, 0 VoxCeleb2)\", flush=True)\n        _ff_src = '''import collections, json, sys, types, importlib.util\ntrain, bundle, lid, cache, mav, out = sys.argv[1:7]\nspec = importlib.util.spec_from_file_location(\"rfs_train_ff_drycheck\", train)\nR = importlib.util.module_from_spec(spec); spec.loader.exec_module(R)\nE, _ = R.load_bundle(bundle)\na = types.SimpleNamespace(lid=lid, cache=cache, mav=mav)\nwavs, pid, names = R.lora_data(E, R.read_lid(a), a, cap=None)\nkey = lambda k: k[0] + \":\" + (k[1].split(\"_\")[0] if k[0] == \"mav\" else \"-\")\ninv = {j: k for k, j in names.items()}\ngot = {\"clips\": len(wavs), \"persons\": len(names), \"clips_by_source\": dict(collections.Counter(key(inv[int(j)]) for j in pid)),\n       \"persons_by_source\": dict(collections.Counter(key(k) for k in names))}\nexp = {\"clips\": 210, \"persons\": 70, \"clips_by_source\": {\"mav:v1\": 210}, \"persons_by_source\": {\"mav:v1\": 70}}\nok = got == exp\njson.dump({\"ok\": ok, \"mav_root\": mav, \"expected\": exp, \"got\": got}, open(out, \"w\"), indent=1)\nprint(\"FF lora dry check:\", \"OK\" if ok else \"MISMATCH\", json.dumps(got), flush=True)\nsys.exit(0 if ok else 3)\n'''\n        _ff_dry = WORK / \"ff_lora_drycheck.py\"; _ff_dry.write_text(_ff_src, encoding=\"utf-8\")\n        _ff_p = subprocess.Popen([sys.executable, \"-u\", str(_ff_dry), str(TRAIN), str(BUNDLE), LID, str(tars[0].parent.parent), str(mav), str(W / \"ff_lora_drycheck.json\")], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)\n        for _ff_l in _ff_p.stdout: print(_ff_l, end=\"\", flush=True)\n        assert _ff_p.wait() == 0, \"FF dry check failed: the LoRA C1 data selection differs from the original run (expected 210 clips / 70 persons, all MAV-Celeb v1); see ff_lora_drycheck.json\"\n    run([\"lora\", \"--bundle\", str(BUNDLE), \"--work\", str(WORK), \"--lid\", LID, \"--ib_ckpt\", str(ck), \"--cache\", str(tars[0].parent.parent), \"--mav\", str(mav), \"--v4root\", str(v4)])\n",
+   "count": 1,
+   "why": "DESIGN 4.7 / G8: before training, run the original lora_data() (same code, same arguments, cap=None) in a separate process and require the original selection: 210 clips, 70 persons, all MAV-Celeb v1, 0 VoxCeleb2 (the VoxCeleb2 cache key bug of rfs_train.py line 406 is kept on purpose). Always runs, except with FLAG_SMOKE=1 (the notebook's synthetic path; the runner's smoke_env of this stage does not set it, so a runner smoke run is a real-data mini run and the dry check runs). Writes /kaggle/working/ff_lora_drycheck.json (not part of the exported dataset). Fixer 18/11: the FF_LORA_DRYCHECK=0 opt-out was removed (it skipped the file that the post_check requires)",
+   "type": "variant",
+   "effect_on_numbers": "none (extra read-only pass; the training subprocess is unchanged)",
+   "cell": 4,
+   "line_in_cell": 18,
+   "modified": "18/11/2026 (fixer, review of WP-F): opt-out FF_LORA_DRYCHECK removed"
+  },
+  {
+   "old": "def find_all(name):\n    return sorted(p for p in IN.rglob(name)) if IN.exists() else []\n",
+   "new": "def find_all(name):\n    return sorted(p for p in IN.rglob(name)) if IN.exists() else []\nif MODE in (\"B\", \"L\") and not find_all(\"train_English.txt\"):   # FF path (CHANGES.md): FF_DATA keeps the organisers' train_set.zip packed (Kaggle served the dataset extracted); unpack train_set.zip only, next to itself; dev_set.zip is never opened\n    import zipfile as _ff_zf\n    _ff_tz = find_all(\"train_set.zip\")\n    assert len(_ff_tz) == 1, f\"raw-v4: neither train_English.txt nor exactly one train_set.zip under {IN}: {_ff_tz}\"\n    with _ff_zf.ZipFile(_ff_tz[0]) as _ff_z:\n        _ff_z.extractall(_ff_tz[0].parent)\n    print(\"FF: unpacked\", _ff_tz[0], \"->\", _ff_tz[0].parent / \"train_set\", \"(dev_set.zip left packed)\", flush=True)\n",
+   "count": 1,
+   "type": "path",
+   "effect_on_numbers": "none (same files as the extracted Kaggle view: members of the organisers' train_set.zip, sha256 1803739f... checked by raw_btc)",
+   "why": "the original run read ngnnguynchn/flag2027-raw-v4-p as Kaggle served it, extracted (train_set/train_set/train_English.txt next to faces/ and voices/, train_set/features/{faces,voices}/*.csv). FF_DATA/00_raw/btc_mavceleb_v4/ keeps the organisers' files as delivered (train_set.zip, dev_set.zip, meta_file_train_set.csv) and the runner does not unzip raw data, so Q('train_English.txt') (mode B) / the os.walk for train_English.txt + faces/ (mode L) found nothing. When train_English.txt is absent, the block unpacks train_set.zip ONLY, beside itself inside the stage's own input view (real directories made by the runner; FF_DATA is not written), giving the Kaggle layout; dev_set.zip stays packed and is never opened (dev exclusion, DESIGN 2.8). It does nothing when an extracted view is mounted (Kaggle, or a WP-B extracted train-only view)",
+   "cell": 3,
+   "line_in_cell": 3,
+   "added": "18/11/2026 (fixer, review of WP-F)"
+  },
+  {
+   "old": "        _t.hub.download_url_to_file(\"https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth\", str(ck) + \".part\", progress=False); os.replace(str(ck) + \".part\", ck)\n",
+   "new": "        _t.hub.download_url_to_file(\"https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth\", str(ck) + \".part\", progress=False); os.replace(str(ck) + \".part\", ck)\n    _ff_h = __import__(\"hashlib\").sha256()   # FF url (CHANGES.md): the pinned mirror must serve Meta's imagebind_huge.pth byte for byte\n    with open(ck, \"rb\") as _ff_f:\n        for _ff_b in iter(lambda: _ff_f.read(1 << 24), b\"\"): _ff_h.update(_ff_b)\n    assert _ff_h.hexdigest() == \"d6f6c22bedcc90708448d5d2fbb7b2db9c73f505dc89bd0b2e09b23af1b62157\", f\"imagebind_huge.pth sha256 {_ff_h.hexdigest()} != d6f6c22b... (ImageBind-huge of Meta)\"\n",
+   "count": 1,
+   "type": "url",
+   "effect_on_numbers": "none (check only; stops the stage if the mirror served another file)",
+   "why": "completes the url change above: the Hugging Face mirror replaces Meta's dead link, so the file is checked against the sha256 of Meta's imagebind_huge.pth (d6f6c22b..., the value release/docker/ff.py IB_SHA checks) before it is loaded into the LoRA C1 training; a cached W/imagebind_huge.pth is checked too (S4 section 3 item 12: 'kiem sha256 truoc khi nap')",
+   "cell": 4,
+   "line_in_cell": 6,
+   "added": "18/11/2026 (fixer, review of WP-F)"
+  },
+  {
+   "old": "    for n in (\"lora_C1.pt\", \"v4_extra.npz\"): shutil.copy(WORK / n, OUTD / n)\n",
+   "new": "    for n in (\"lora_C1.pt\", \"v4_extra.npz\"): shutil.copy(WORK / n, OUTD / n)\n    _ff_m = torch.load(OUTD / \"lora_C1.pt\", map_location=\"cpu\")   # FF variant guard (CHANGES.md): training metadata of this C1 for the post_check (original file: 48 params, 1200 steps, batch 64, 210 clips, 70 persons, 0 skipped)\n    (W / \"ff_lora_meta.json\").write_text(json.dumps({\"n_params\": len(_ff_m[\"params\"]), **{k: _ff_m[k] for k in (\"steps\", \"batch\", \"clips\", \"persons\", \"skipped\")}}, indent=1))\n",
+   "count": 1,
+   "type": "variant",
+   "effect_on_numbers": "none (reads the saved file after training; nothing is changed)",
+   "why": "a re-trained C1 is not byte-identical (GPU), so its sha256 cannot be compared with b97372e3...; what can be compared is the metadata that rfs_train.py stores in the file (torch.save at line 438 of the embedded copy: params, steps, batch, clips, persons, skipped). The new post_check ff_lora_meta.json requires the values of the original file (read from its pickle on 18/11: 48 params, steps 1200, batch 64, clips 210, persons 70, skipped 0). Written to /kaggle/working, not into the exported dataset rfs_lora/",
+   "cell": 4,
+   "line_in_cell": 20,
+   "added": "18/11/2026 (fixer, review of WP-F)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [
+  "RFS_UPLOAD"
+ ],
+ "pip_policy": "original",
+ "pip_calls": [
+  {
+   "cell": 1,
+   "call": "pip -q install iopath ftfy regex fvcore",
+   "pinned_in_docker": "yes (release/docker/Dockerfile pins iopath==0.1.10, ftfy==6.3.1, fvcore==0.1.5.post20221221; regex from the base image)"
+  },
+  {
+   "cell": 1,
+   "call": "pip -q install --no-deps git+https://github.com/facebookresearch/ImageBind",
+   "pinned_equivalent": "git+https://github.com/facebookresearch/ImageBind@53680b02d7e37b19b124fa37bae4b6c98c38f5be",
+   "note": "kept as run (HEAD); runs only in RFS_MODE=L and not in smoke"
+  }
+ ],
+ "variant": {
+  "lora_c1": "original",
+  "outputs_file_checks": "exempt (todo WP-A): the export rfs_lora/lora_C1.pt of a forced re-train differs from b97372e3 by construction; accept it on the post_checks instead of configs/variant_1354.json file_checks"
+ },
+ "forbidden_inputs": [
+  "datasets/ngnnguynchn/flag2027-rfs-lorafix1-p",
+  "datasets/ngnnguynchn/flag2027-c1fix-lora-p",
+  "datasets/ngnnguynchn/flag2027-c1fix-rfx-art-p",
+  "datasets/ngnnguynchn/flag2027-rfsc4lf-art-p",
+  "datasets/ngnnguynchn/flag2027-rf092-dev-emb-p"
+ ],
+ "post_checks": [
+  {
+   "file": "ff_lora_drycheck.json",
+   "json_path": "ok",
+   "equals": true
+  },
+  {
+   "file": "ff_lora_meta.json",
+   "equals": {
+    "n_params": 48,
+    "steps": 1200,
+    "batch": 64,
+    "clips": 210,
+    "persons": 70,
+    "skipped": 0
+   }
+  }
+ ],
+ "skip_with": [
+  "03_checkpoints/rfs_lora_c1_original"
+ ],
+ "verify": [
+  {
+   "file": "ff_lora_drycheck.json",
+   "check": "exact",
+   "expect": {
+    "ok": true,
+    "got": {
+     "clips": 210,
+     "persons": 70,
+     "clips_by_source": {
+      "mav:v1": 210
+     },
+     "persons_by_source": {
+      "mav:v1": 70
+     }
+    }
+   },
+   "note": "written by the dry-check patch before training; the stage stops if it differs"
+  },
+  {
+   "file": "rfs_lora/lora_C1.pt",
+   "bytes": 1782355,
+   "sha256": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c",
+   "check": "metadata",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/onnhqunhh__flag2027-rfs-lora-p.zip :: lora_C1.pt",
+   "note": "GPU training: a rerun is not bit-identical; the saved file is the artifact used by 13.54 (consumers mount it with resolve saved_only). Runner: check 'metadata' only logs the sha256; the enforced checks of a forced re-train are the post_checks ff_lora_drycheck.json and ff_lora_meta.json = {'n_params': 48, 'steps': 1200, 'batch': 64, 'clips': 210, 'persons': 70, 'skipped': 0} (values read from the saved file's pickle 18/11)"
+  },
+  {
+   "file": "rfs_lora/v4_extra.npz",
+   "bytes": 26562826,
+   "sha256": "793f81bd3909597cd9d60b5f062c85b64b81d1b56e169b424391853a1a4a8fb9",
+   "check": "info",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/onnhqunhh__flag2027-rfs-lora-p.zip :: v4_extra.npz",
+   "note": "v_lora 6 485 x 1 024 (ImageBind audio + this LoRA on every v4 train wav); depends on the LoRA weights"
+  }
+ ],
+ "stage_ipy_sha256": "d956a0144620f92dca3c2decc6a2c7c2ab7a056f152cf3ea116b10e2b858fe74",
+ "stage_ipy_bytes": 54331,
+ "stage_ipy_cells": 6,
+ "rebuild": "python stages/40_R_family/_wpf_tools.py check  (code cells of origin.original_notebook, CRLF -> LF, patches in order, joined by '\\n# <<<FF-CELL>>>\\n')",
+ "notes": [
+  "Original run: onnhqunhh/flag-2027-nb-163-rfs-l, GPU T4 x2, Internet on, start 2026-11-03 17:37:31 UTC, 3 986 s; log: 'lora data: 210 clip, 70 nguoi (vox 0, mav 210)', 1 200 steps, loss 3.4451 -> 0.0803, 'ALL CELLS OK'.",
+  "THE KEY BUG IS KEPT ON PURPOSE: embedded rfs_train.py (sha256 98aa07ae..., original/decoded/train/rfs_train.py line 406) looks the VoxCeleb2 clips up in the audio cache with (v_spk, v_vid, v_utt) where v_vid = 'spk/video' while the cache stores the bare video, so 0 VoxCeleb2 clips match; only MAV clips are learned. This IS the 13.54 variant (DESIGN 2.7). Do not run the current Experiment/RFS-01/train/rfs_train.py (RFS_LORA_FIX defaults to 1 there, line 959).",
+  "Data actually learned: 210 MAV-Celeb v1 clips (centre 3 s of the wav, at most 3 videos per person) of the 70 v1 persons, face anchor = mean unit ImageBind face (f_ibf) per person from the bundle; v4: the 6 485 train wavs are only embedded (v_lora), not learned. The audio cache, MAV v2 and VoxCeleb2 are mounted but contribute nothing (v2: wav paths do not resolve under the v1 parent folder; VoxCeleb2: key bug).",
+  "MAV mount: keep the two parent folders mavceleb_v1_complete-001/v1 and mavceleb_v2_complete-002/v2 (DESIGN 4.1); merging v1 and v2 under one parent would make the code learn v2 too (the dry check then fails).",
+  "Bundle input (wiring, fixer 18/11): the repo's t163l_orig reads the bundle made by t163b (FLAG_163 B version 5, assemble.py b46dd180, v4.npz f_xf 4 096 columns); the original L run (pushed 2026-11-04 00:37, kapi_runs line 1315) read the earlier bundle of B version 4 (assemble.py 432bdbf9, embedded in the L notebook, keeps the 4 097 / 193-column CSV cut); B was re-pushed at 02:10 (line 1327). The two assemble.py differ only in lines 71-74 (rd() column cut of the v4 CSVs, i.e. v4.npz f_xf / v_xv). Mode L reads ext.npz (lora_data, face_by_person; same code and inputs in both versions), V4 v_path (v_lora) and the presence of f_age (present in both, so the age branch is not taken): no effect on lora_C1.pt or v4_extra.npz.",
+  "Runner smoke (FF_SMOKE=1) of this stage is a real-data mini run (smoke_env RFS_LORA_STEPS=3, RFS_LORA_BATCH=4, RFS_LORA_CAP=16; FLAG_SMOKE is not set): ImageBind is downloaded and hash-checked, the dry check runs on the full data, v_lora is computed for the 6 485 v4 wavs. Its post_check ff_lora_meta.json fails by construction (3 steps), which is not fatal in smoke.",
+  "LoRA C1 policy (fixer 18/11, ../README.md): force_only; consumers read the saved original with resolve saved_only."
+ ],
+ "todo": [
+  "The dry check and the folder sort are new (18/11) and have never been executed (no compute allowed in this workflow): the first real run must print 'FF lora dry check: OK'.",
+  "pip line kept as run: 'pip -q install --no-deps git+https://github.com/facebookresearch/ImageBind' installs the repository HEAD; the Docker image pins ImageBind@53680b02d7e37b19b124fa37bae4b6c98c38f5be. Whether that commit equals HEAD on 2026-11-03 is not verified (S8).",
+  "WP-A: a forced run of this stage re-trains lora_C1.pt, which configs/variant_1354.json file_checks (outputs) rejects with VariantError before the post_checks run; exempt this stage's outputs (stage.json variant.outputs_file_checks) and accept it on the post_checks.",
+  "WP-A: data_map datasets/onnhqunhh/flag2027-rfs-lora-p could carry default_saved: true (variant-defining). WP-F's consumers do not need it (resolve saved_only), but WP-H's t163p_fvb / t189_b2 / t192_fvbx do in mode (a): with this stage force_only and the checkpoint class not saved in FF_USE_SAVED=collected they are otherwise blocked (or they adopt resolve saved_only as WP-F did).",
+  "The ImageBind sha256 check, the metadata file and the train_set.zip unpack block are new (18/11) and have never been executed."
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": false,
+  "why": "mode L: rfs_train.py lora gets --bundle / --lid / --cache / --mav / --v4root / --ib_ckpt as arguments and the dry-check subprocess the same paths; the decoded rfs_train.py (98aa07ae) contains no /kaggle path (grep); all lookups are in the stage text"
+ },
+ "force_only": true,
+ "force_only_why": "variant-defining artifact: 13.54 used the saved lora_C1.pt (sha256 b97372e3...); a GPU re-train is not byte-identical and could not pass the 13.54 guard, so no mode re-trains it by default. FF_FORCE=t163l_orig re-runs the recipe as a provenance check, accepted on ff_lora_drycheck.json (210 clips / 70 persons / all mav:v1) + ff_lora_meta.json (48 params, 1200 steps, batch 64, 210 clips, 70 persons, 0 skipped); the C1 consumers keep reading the saved file (resolve saved_only)"
+}

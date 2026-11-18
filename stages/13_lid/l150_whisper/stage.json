@@ -1,0 +1,164 @@
+{
+ "id": "l150_whisper",
+ "group": "13_lid",
+ "title": "FLAG_150: Whisper-large-v3 language ID on every cached 3 s training clip + every MAV voice file (+ VoxLingua107 on MAV)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 2,
+  "accelerator": "T4 x 2",
+  "minutes_original": 567,
+  "internet": true,
+  "secrets": [
+   "HF_TOKEN"
+  ],
+  "timing_note": "log: ALL CELLS OK at 33 994 s; notebook end 34 037 s"
+ },
+ "origin": {
+  "run": "duongphihoang/flag-2027-nb-150-lidwhisper",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/01_flag-2027-nb-150-lidwhisper.ipynb",
+  "notebook_md5": "9440704a3127dd97c01c3727770f4f76",
+  "builder": "kaggle/build_flag150.py (the repo's kaggle/FLAG_150_lidwhisper.ipynb was regenerated after the run: md5 02f93cd7..., pushed md5 14b53c4ee2e8c761b3c03c87cb34d834)",
+  "push_record": "kaggle/kapi_runs.jsonl line 1033 (2026-11-02 23:55, account duongphihoang, GPU, secrets HF_TOKEN)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  },
+  {
+   "artifact": "datasets/duongphihoang/flag2027-audio-cache-p"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/duongphihoang/flag-2027-nb-150-lidwhisper",
+  "aliases": [
+   "notebooks/ff/l150_whisper"
+  ],
+  "exports": {},
+  "kernel_layout": {
+   "lidw/": "lid_whisper.json, mav.parquet, cache_p{1,2}_*.parquet, listen_candidates.csv, risk_not_in_cache.json",
+   "lid_vl107/": "VoxLingua107 files fetched by speechbrain",
+   "ff_l150_compare.json": "comparison with the original output"
+  },
+  "scratch": [
+   "lid_vl107"
+  ]
+ },
+ "env": {},
+ "smoke_env": {
+  "WL_MODEL": "openai/whisper-tiny",
+  "WL_MAX": "24"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "pretrained": [
+  {
+   "name": "openai/whisper-large-v3",
+   "how": "WhisperProcessor / WhisperForConditionalGeneration.from_pretrained(WL_MODEL), unpinned (2/11/2026)",
+   "pin_option": "WL_MODEL=<local snapshot>"
+  },
+  {
+   "name": "speechbrain/lang-id-voxlingua107-ecapa",
+   "how": "EncoderClassifier.from_hparams, unpinned",
+   "note": "FLAG_42 used commit 0253049ae131d6a4be1c4f0d8b0ff483a0f8c8e9"
+  }
+ ],
+ "skip_with": [
+  "02_intermediate/lid_whisper"
+ ],
+ "skip_with_note": "= Experiment/LIDSTRICT-01/out/{lid_whisper.json, mav.parquet, listen_candidates.csv, risk_not_in_cache.json}",
+ "verify": [
+  {
+   "file": "lidw/lid_whisper.json",
+   "check": "flagged counts vox2 29, vb 43, mav_v1 46, mav_v2 71 (report only: fp16 GPU)"
+  },
+  {
+   "file": "lidw/mav.parquet",
+   "check": "58 Whisper-flagged files (report only)"
+  }
+ ],
+ "todo": [
+  "Whisper-large-v3 and facebook-style models were fetched unpinned at run time (2/11/2026); to pin, set WL_MODEL to a local snapshot (e.g. openai/whisper-large-v3@06f233fe06e710322aca913c1bc4249a0d71fce1 under FF_DATA/06_pretrained) - unverified that revision equals the one of 2/11",
+  "13.54: consumers need the STORED output of this stage for the exact filter list (a rerun is not bit-identical: GPU; drop42 / lid_strict.json could change). Machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict (FF_MODE=train warns, infer fails). WP-A: data_map default_saved: true for this artifact so FF_MODE=train keeps the stored copy and a rebuild needs FF_FORCE=l150_whisper"
+ ],
+ "notes": [
+  "Package notebook = `kaggle kernels pull` of the run with the secret value redacted by release/factor_enfuse/make_package.py (cell 0 now holds only a comment); HF_TOKEN is read from the environment if set (public models: optional).",
+  "The notebook embeds the 'risk speaker' order (VoxCeleb2 / VoxBlink speaker ids, read from the stored VoxLingua probabilities when the notebook was built): ids only, no media.",
+  "Kept as in the run: pip install of speechbrain inside cell 5 (pip_policy original)."
+ ],
+ "changes_summary": [
+  "new: new cells/99_compare.py (after the last original cell): compares the flagged lists (counts + digests) and the Whisper-flagged MAV files with the original output (report only)"
+ ],
+ "build": {
+  "base": "original/01_flag-2027-nb-150-lidwhisper.ipynb",
+  "sequence": [
+   {
+    "orig": 0
+   },
+   {
+    "orig": 2
+   },
+   {
+    "orig": 3
+   },
+   {
+    "orig": 4
+   },
+   {
+    "orig": 5
+   },
+   {
+    "orig": 6
+   },
+   {
+    "new": "cells/99_compare.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "orig": 0,
+    "title": "01 secrets (kapi --secret): environment variables only never pr"
+   },
+   {
+    "orig": 2,
+    "title": "setup"
+   },
+   {
+    "orig": 3,
+    "title": "whisper model"
+   },
+   {
+    "orig": 4,
+    "title": "audio cache: every cached VoxCeleb2 / VoxBlink training clip (risk speakers first)"
+   },
+   {
+    "orig": 5,
+    "title": "MAV-Celeb v1 / v2 voices: VoxLingua107 (whole file) + Whisper (30 s windows)"
+   },
+   {
+    "orig": 6,
+    "title": "summary: flagged speakers (one flagged window drops the speaker)"
+   },
+   {
+    "new": "cells/99_compare.py",
+    "title": "l150 compare: this run vs the original FLAG_150 output (new cell, report only)"
+   }
+  ],
+  "n_cells": 7,
+  "stage_ipy_sha256": "f0720c9f010f34d2d703e10145fee4d6c584b5f4eed2e59a66d241b91d379dfd",
+  "base_hash": {
+   "bytes": 57953,
+   "md5": "9440704a3127dd97c01c3727770f4f76",
+   "sha256": "746ab052d5073cc0ff8815ff3322c0dac8e9f68ff05c0026786cebd56d39cf32"
+  }
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)"
+}

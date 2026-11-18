@@ -1,0 +1,258 @@
+[{"stream_name":"stderr","time":9.755249821,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":9.755349286,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":11.376652799,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.376693774,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.376700605,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.376705861,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":12.269513565,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":12.269580406,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":12.269589648,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":12.269594416,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":13.78422817,"data":"[cell] 01 run parameters (kapi --env): environment variables of this r\n"}
+,{"stream_name":"stdout","time":13.822832822,"data":"[boot] FLAG_163_rfs | python 3.13.18 | start 2026-11-03 19:10:42\n"}
+,{"stream_name":"stdout","time":13.823915127,"data":"[cell] setup: files + deps\n"}
+,{"stream_name":"stdout","time":18.654885005,"data":"mode B smoke False cuda False gpus 0\n"}
+,{"stream_name":"stdout","time":18.677124229,"data":"[cell] inputs: bundle, lid, roots\n"}
+,{"stream_name":"stdout","time":215.569067132,"data":"bundle: {'f_spk': (150251,), 'f_vid': (150251,), 'f_src': (150251,), 'f_clip': (150251, 768), 'f_ibf': (150251, 1024), 'v_spk': (194188,), 'v_vid': (194188,), 'v_src': (194188,), 'v_utt': (194188,), 'v_path': (194188,), 'v_sam': (194188, 256), 'v_r221': (194188, 256), 'v_xv': (194188, 192), 'v_whv3': (194188, 1280)}\n"}
+,{"stream_name":"stdout","time":215.842451647,"data":"bundle /kaggle/working/rfs_bundle | lid \n"}
+,{"stream_name":"stdout","time":215.863149403,"data":"[cell] lora C1 (ImageBind-audio) + v4 lora/tuoi\n"}
+,{"stream_name":"stdout","time":215.864400733,"data":"mode P: lora tu dataset cua luot L\n"}
+,{"stream_name":"stdout","time":215.880099029,"data":"[cell] split + oof + proj + fuse + release + selfcheck\n"}
+,{"stream_name":"stdout","time":215.895493459,"data":"[cell] upload\n"}
+,{"stream_name":"stdout","time":217.250067347,"data":"Uploading Dataset https://kaggle.com/datasets/ngnnguynchn/flag2027-rfs-bundle-p ...\n"}
+,{"stream_name":"stdout","time":217.253798009,"data":"Starting upload for file /kaggle/working/rfs_bundle/ext.npz\n"}
+,{"stream_name":"stdout","time":217.255241548,"data":"Starting upload for file /kaggle/working/rfs_bundle/v4.npz\n"}
+,{"stream_name":"stderr","time":217.54808504,"data":"\rUploading:   0%|          | 0.00/1.44G [00:00\u003c?, ?B/s]\n"}
+,{"stream_name":"stderr","time":217.55967905,"data":"\rUploading:   0%|          | 0.00/1.44G [00:00\u003c?, ?B/s]\n"}
+,{"stream_name":"stderr","time":217.559722013,"data":"\n"}
+,{"stream_name":"stderr","time":217.559730617,"data":"\n"}
+,{"stream_name":"stderr","time":217.560715758,"data":"\rUploading:   0%|          | 0.00/206M [00:00\u003c?, ?B/s]\n"}
+,{"stream_name":"stderr","time":217.562003049,"data":"\rUploading:   0%|          | 0.00/206M [00:00\u003c?, ?B/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":217.660740565,"data":"\u001b[A\rUploading:   0%|          | 115k/1.44G [00:00\u003c22:10, 1.08MB/s]\n"}
+,{"stream_name":"stderr","time":217.699232544,"data":"\rUploading:   0%|          | 115k/1.44G [00:00\u003c22:10, 1.08MB/s]\n"}
+,{"stream_name":"stderr","time":217.699270271,"data":"\n"}
+,{"stream_name":"stderr","time":217.699276311,"data":"\n"}
+,{"stream_name":"stderr","time":217.700703971,"data":"\rUploading:   0%|          | 16.4k/206M [00:00\u003c28:32, 120kB/s]\n"}
+,{"stream_name":"stderr","time":217.702053594,"data":"\rUploading:   0%|          | 16.4k/206M [00:00\u003c28:32, 120kB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":217.756294844,"data":"\u001b[A\rUploading:   1%|          | 10.2M/1.44G [00:00\u003c00:24, 58.1MB/s]\n"}
+,{"stream_name":"stderr","time":217.799714993,"data":"\rUploading:   1%|          | 10.2M/1.44G [00:00\u003c00:24, 58.1MB/s]\n"}
+,{"stream_name":"stderr","time":217.799752536,"data":"\n"}
+,{"stream_name":"stderr","time":217.799758247,"data":"\n"}
+,{"stream_name":"stderr","time":217.800699055,"data":"\rUploading:   5%|▌         | 10.7M/206M [00:00\u003c00:03, 54.6MB/s]\n"}
+,{"stream_name":"stderr","time":217.803006931,"data":"\rUploading:   5%|▌         | 10.7M/206M [00:00\u003c00:03, 54.6MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":217.856545481,"data":"\u001b[A\rUploading:   2%|▏         | 29.9M/1.44G [00:00\u003c00:11, 121MB/s] \n"}
+,{"stream_name":"stderr","time":217.911739427,"data":"\rUploading:   2%|▏         | 29.9M/1.44G [00:00\u003c00:11, 121MB/s] \n"}
+,{"stream_name":"stderr","time":217.911780801,"data":"\n"}
+,{"stream_name":"stderr","time":217.911786916,"data":"\n"}
+,{"stream_name":"stderr","time":217.913085292,"data":"\rUploading:  17%|█▋        | 35.2M/206M [00:00\u003c00:01, 128MB/s] \n"}
+,{"stream_name":"stderr","time":217.914655487,"data":"\rUploading:  17%|█▋        | 35.2M/206M [00:00\u003c00:01, 128MB/s] \u001b[A\n"}
+,{"stream_name":"stderr","time":217.97062348,"data":"\u001b[A\rUploading:   3%|▎         | 42.1M/1.44G [00:00\u003c00:12, 115MB/s]\n"}
+,{"stream_name":"stderr","time":218.05798299,"data":"\rUploading:   3%|▎         | 42.1M/1.44G [00:00\u003c00:12, 115MB/s]\n"}
+,{"stream_name":"stderr","time":218.058022742,"data":"\n"}
+,{"stream_name":"stderr","time":218.058028308,"data":"\n"}
+,{"stream_name":"stderr","time":218.05972457,"data":"\rUploading:  24%|██▎       | 48.6M/206M [00:00\u003c00:01, 112MB/s]\n"}
+,{"stream_name":"stderr","time":218.061355199,"data":"\rUploading:  24%|██▎       | 48.6M/206M [00:00\u003c00:01, 112MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":218.083910678,"data":"\u001b[A\rUploading:   4%|▍         | 56.0M/1.44G [00:00\u003c00:11, 118MB/s]\n"}
+,{"stream_name":"stderr","time":218.19029714,"data":"\rUploading:   4%|▍         | 56.0M/1.44G [00:00\u003c00:11, 118MB/s]\n"}
+,{"stream_name":"stderr","time":218.190353914,"data":"\n"}
+,{"stream_name":"stderr","time":218.190360392,"data":"\n"}
+,{"stream_name":"stderr","time":218.192263487,"data":"\rUploading:  29%|██▉       | 60.3M/206M [00:00\u003c00:01, 103MB/s]\n"}
+,{"stream_name":"stderr","time":218.19384286,"data":"\rUploading:  29%|██▉       | 60.3M/206M [00:00\u003c00:01, 103MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":218.199416104,"data":"\u001b[A\rUploading:   5%|▍         | 67.9M/1.44G [00:00\u003c00:12, 113MB/s]\n"}
+,{"stream_name":"stderr","time":218.333183739,"data":"\rUploading:   5%|▍         | 67.9M/1.44G [00:00\u003c00:12, 113MB/s]\rUploading:   6%|▌         | 79.3M/1.44G [00:00\u003c00:13, 102MB/s]\n"}
+,{"stream_name":"stderr","time":218.34241862,"data":"\rUploading:   6%|▌         | 79.3M/1.44G [00:00\u003c00:13, 102MB/s]\n"}
+,{"stream_name":"stderr","time":218.342458913,"data":"\n"}
+,{"stream_name":"stderr","time":218.342465241,"data":"\n"}
+,{"stream_name":"stderr","time":218.344024134,"data":"\rUploading:  34%|███▍      | 70.9M/206M [00:00\u003c00:01, 90.6MB/s]\n"}
+,{"stream_name":"stderr","time":218.345324263,"data":"\rUploading:  34%|███▍      | 70.9M/206M [00:00\u003c00:01, 90.6MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":218.442762853,"data":"\u001b[A\rUploading:   6%|▌         | 89.7M/1.44G [00:00\u003c00:13, 100MB/s]\n"}
+,{"stream_name":"stderr","time":218.445267044,"data":"\rUploading:   6%|▌         | 89.7M/1.44G [00:00\u003c00:13, 100MB/s]\n"}
+,{"stream_name":"stderr","time":218.445302042,"data":"\n"}
+,{"stream_name":"stderr","time":218.445307747,"data":"\n"}
+,{"stream_name":"stderr","time":218.446685656,"data":"\rUploading:  43%|████▎     | 87.9M/206M [00:00\u003c00:01, 110MB/s] \n"}
+,{"stream_name":"stderr","time":218.448151773,"data":"\rUploading:  43%|████▎     | 87.9M/206M [00:00\u003c00:01, 110MB/s] \u001b[A\n"}
+,{"stream_name":"stderr","time":218.551133605,"data":"\u001b[A\n"}
+,{"stream_name":"stderr","time":218.55117412,"data":"\n"}
+,{"stream_name":"stderr","time":218.551180122,"data":"\n"}
+,{"stream_name":"stderr","time":218.55279748,"data":"\rUploading:  49%|████▊     | 100M/206M [00:00\u003c00:00, 112MB/s] \n"}
+,{"stream_name":"stderr","time":218.55457021,"data":"\rUploading:  49%|████▊     | 100M/206M [00:00\u003c00:00, 112MB/s] \u001b[A\n"}
+,{"stream_name":"stderr","time":218.566215034,"data":"\u001b[A\rUploading:   7%|▋         | 99.8M/1.44G [00:01\u003c00:14, 94.4MB/s]\n"}
+,{"stream_name":"stderr","time":218.650595926,"data":"\rUploading:   7%|▋         | 99.8M/1.44G [00:01\u003c00:14, 94.4MB/s]\n"}
+,{"stream_name":"stderr","time":218.65063465,"data":"\n"}
+,{"stream_name":"stderr","time":218.65064046,"data":"\n"}
+,{"stream_name":"stderr","time":218.652255574,"data":"\rUploading:  56%|█████▌    | 115M/206M [00:01\u003c00:00, 121MB/s]\n"}
+,{"stream_name":"stderr","time":218.65378152,"data":"\rUploading:  56%|█████▌    | 115M/206M [00:01\u003c00:00, 121MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":218.68026822,"data":"\u001b[A\rUploading:   8%|▊         | 109M/1.44G [00:01\u003c00:14, 91.1MB/s] \n"}
+,{"stream_name":"stderr","time":218.768272482,"data":"\rUploading:   8%|▊         | 109M/1.44G [00:01\u003c00:14, 91.1MB/s] \n"}
+,{"stream_name":"stderr","time":218.768318089,"data":"\n"}
+,{"stream_name":"stderr","time":218.768322449,"data":"\n"}
+,{"stream_name":"stderr","time":218.77011082799999,"data":"\rUploading:  63%|██████▎   | 130M/206M [00:01\u003c00:00, 124MB/s]\n"}
+,{"stream_name":"stderr","time":218.772068839,"data":"\rUploading:  63%|██████▎   | 130M/206M [00:01\u003c00:00, 124MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":218.780948336,"data":"\u001b[A\rUploading:   8%|▊         | 118M/1.44G [00:01\u003c00:14, 91.0MB/s]\n"}
+,{"stream_name":"stderr","time":218.869116762,"data":"\rUploading:   8%|▊         | 118M/1.44G [00:01\u003c00:14, 91.0MB/s]\n"}
+,{"stream_name":"stderr","time":218.869154488,"data":"\n"}
+,{"stream_name":"stderr","time":218.8691606,"data":"\n"}
+,{"stream_name":"stderr","time":218.87111258,"data":"\rUploading:  71%|███████   | 146M/206M [00:01\u003c00:00, 133MB/s]\n"}
+,{"stream_name":"stderr","time":218.872480157,"data":"\rUploading:  71%|███████   | 146M/206M [00:01\u003c00:00, 133MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":218.900926589,"data":"\u001b[A\rUploading:   9%|▉         | 132M/1.44G [00:01\u003c00:13, 98.7MB/s]\n"}
+,{"stream_name":"stderr","time":219.006897301,"data":"\rUploading:   9%|▉         | 132M/1.44G [00:01\u003c00:13, 98.7MB/s]\rUploading:  10%|█         | 145M/1.44G [00:01\u003c00:12, 104MB/s] \n"}
+,{"stream_name":"stderr","time":219.027632424,"data":"\rUploading:  10%|█         | 145M/1.44G [00:01\u003c00:12, 104MB/s] \n"}
+,{"stream_name":"stderr","time":219.027672975,"data":"\n"}
+,{"stream_name":"stderr","time":219.027679822,"data":"\n"}
+,{"stream_name":"stderr","time":219.028979815,"data":"\rUploading:  77%|███████▋  | 159M/206M [00:01\u003c00:00, 115MB/s]\n"}
+,{"stream_name":"stderr","time":219.030819134,"data":"\rUploading:  77%|███████▋  | 159M/206M [00:01\u003c00:00, 115MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":219.108683765,"data":"\u001b[A\rUploading:  11%|█         | 155M/1.44G [00:01\u003c00:12, 104MB/s]\n"}
+,{"stream_name":"stderr","time":219.130987616,"data":"\rUploading:  11%|█         | 155M/1.44G [00:01\u003c00:12, 104MB/s]\n"}
+,{"stream_name":"stderr","time":219.131053553,"data":"\n"}
+,{"stream_name":"stderr","time":219.131060442,"data":"\n"}
+,{"stream_name":"stderr","time":219.132514194,"data":"\rUploading:  83%|████████▎ | 172M/206M [00:01\u003c00:00, 116MB/s]\n"}
+,{"stream_name":"stderr","time":219.134312573,"data":"\rUploading:  83%|████████▎ | 172M/206M [00:01\u003c00:00, 116MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":219.212615921,"data":"\u001b[A\rUploading:  11%|█▏        | 166M/1.44G [00:01\u003c00:12, 103MB/s]\n"}
+,{"stream_name":"stderr","time":219.241417963,"data":"\rUploading:  11%|█▏        | 166M/1.44G [00:01\u003c00:12, 103MB/s]\n"}
+,{"stream_name":"stderr","time":219.241456178,"data":"\n"}
+,{"stream_name":"stderr","time":219.241461527,"data":"\n"}
+,{"stream_name":"stderr","time":219.24320531,"data":"\rUploading:  89%|████████▉ | 184M/206M [00:01\u003c00:00, 114MB/s]\n"}
+,{"stream_name":"stderr","time":219.244836098,"data":"\rUploading:  89%|████████▉ | 184M/206M [00:01\u003c00:00, 114MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":219.31966336,"data":"\u001b[A\rUploading:  12%|█▏        | 176M/1.44G [00:01\u003c00:12, 102MB/s]\n"}
+,{"stream_name":"stderr","time":219.366396292,"data":"\rUploading:  12%|█▏        | 176M/1.44G [00:01\u003c00:12, 102MB/s]\n"}
+,{"stream_name":"stderr","time":219.366451284,"data":"\n"}
+,{"stream_name":"stderr","time":219.36645711,"data":"\n"}
+,{"stream_name":"stderr","time":219.367758385,"data":"\rUploading:  95%|█████████▍| 195M/206M [00:01\u003c00:00, 107MB/s]\n"}
+,{"stream_name":"stderr","time":219.368895803,"data":"\rUploading:  95%|█████████▍| 195M/206M [00:01\u003c00:00, 107MB/s]\u001b[A\n"}
+,{"stream_name":"stderr","time":219.464733297,"data":"\u001b[A\rUploading:  13%|█▎        | 186M/1.44G [00:01\u003c00:13, 90.0MB/s]\n"}
+,{"stream_name":"stderr","time":219.591266026,"data":"\rUploading:  13%|█▎        | 186M/1.44G [00:01\u003c00:13, 90.0MB/s]\rUploading:  14%|█▍        | 201M/1.44G [00:02\u003c00:12, 99.1MB/s]\n"}
+,{"stream_name":"stderr","time":219.706698353,"data":"\rUploading:  14%|█▍        | 201M/1.44G [00:02\u003c00:12, 99.1MB/s]\rUploading:  15%|█▍        | 211M/1.44G [00:02\u003c00:12, 95.5MB/s]\n"}
+,{"stream_name":"stderr","time":219.828633045,"data":"\rUploading:  15%|█▍        | 211M/1.44G [00:02\u003c00:12, 95.5MB/s]\rUploading:  15%|█▌        | 221M/1.44G [00:02\u003c00:13, 90.4MB/s]\n"}
+,{"stream_name":"stderr","time":219.952906031,"data":"\rUploading:  15%|█▌        | 221M/1.44G [00:02\u003c00:13, 90.4MB/s]\rUploading:  16%|█▌        | 231M/1.44G [00:02\u003c00:13, 86.8MB/s]\n"}
+,{"stream_name":"stderr","time":219.970306565,"data":"\rUploading:  16%|█▌        | 231M/1.44G [00:02\u003c00:13, 86.8MB/s]\rUploading: 100%|██████████| 206M/206M [00:02\u003c00:00, 85.7MB/s]\n"}
+,{"stream_name":"stdout","time":219.973672532,"data":"Upload successful: /kaggle/working/rfs_bundle/v4.npz (197MB)\n"}
+,{"stream_name":"stderr","time":220.029112512,"data":"\rUploading: 100%|██████████| 206M/206M [00:02\u003c00:00, 85.7MB/s]\n"}
+,{"stream_name":"stderr","time":220.029154912,"data":"\n"}
+,{"stream_name":"stderr","time":220.029161321,"data":"\n"}
+,{"stream_name":"stderr","time":220.05497467,"data":"\rUploading:  17%|█▋        | 245M/1.44G [00:02\u003c00:11, 102MB/s] \n"}
+,{"stream_name":"stderr","time":220.157204874,"data":"\rUploading:  17%|█▋        | 245M/1.44G [00:02\u003c00:11, 102MB/s] \rUploading:  18%|█▊        | 256M/1.44G [00:02\u003c00:11, 102MB/s]\n"}
+,{"stream_name":"stderr","time":220.258116525,"data":"\rUploading:  18%|█▊        | 256M/1.44G [00:02\u003c00:11, 102MB/s]\rUploading:  19%|█▊        | 267M/1.44G [00:02\u003c00:11, 103MB/s]\n"}
+,{"stream_name":"stderr","time":220.375407078,"data":"\rUploading:  19%|█▊        | 267M/1.44G [00:02\u003c00:11, 103MB/s]\rUploading:  19%|█▉        | 277M/1.44G [00:02\u003c00:11, 98.5MB/s]\n"}
+,{"stream_name":"stderr","time":220.475376897,"data":"\rUploading:  19%|█▉        | 277M/1.44G [00:02\u003c00:11, 98.5MB/s]\rUploading:  20%|██        | 291M/1.44G [00:02\u003c00:10, 111MB/s] \n"}
+,{"stream_name":"stderr","time":220.641383094,"data":"\rUploading:  20%|██        | 291M/1.44G [00:02\u003c00:10, 111MB/s] \rUploading:  21%|██        | 303M/1.44G [00:03\u003c00:12, 93.7MB/s]\n"}
+,{"stream_name":"stderr","time":220.743781601,"data":"\rUploading:  21%|██        | 303M/1.44G [00:03\u003c00:12, 93.7MB/s]\rUploading:  22%|██▏       | 312M/1.44G [00:03\u003c00:11, 94.4MB/s]\n"}
+,{"stream_name":"stderr","time":220.875080044,"data":"\rUploading:  22%|██▏       | 312M/1.44G [00:03\u003c00:11, 94.4MB/s]\rUploading:  23%|██▎       | 325M/1.44G [00:03\u003c00:11, 95.2MB/s]\n"}
+,{"stream_name":"stderr","time":220.982711821,"data":"\rUploading:  23%|██▎       | 325M/1.44G [00:03\u003c00:11, 95.2MB/s]\rUploading:  23%|██▎       | 338M/1.44G [00:03\u003c00:10, 101MB/s] \n"}
+,{"stream_name":"stderr","time":221.116963144,"data":"\rUploading:  23%|██▎       | 338M/1.44G [00:03\u003c00:10, 101MB/s] \rUploading:  24%|██▍       | 348M/1.44G [00:03\u003c00:11, 94.0MB/s]\n"}
+,{"stream_name":"stderr","time":221.247940681,"data":"\rUploading:  24%|██▍       | 348M/1.44G [00:03\u003c00:11, 94.0MB/s]\rUploading:  25%|██▍       | 358M/1.44G [00:03\u003c00:12, 86.8MB/s]\n"}
+,{"stream_name":"stderr","time":221.387989847,"data":"\rUploading:  25%|██▍       | 358M/1.44G [00:03\u003c00:12, 86.8MB/s]\rUploading:  26%|██▌       | 371M/1.44G [00:03\u003c00:11, 90.2MB/s]\n"}
+,{"stream_name":"stderr","time":221.487479132,"data":"\rUploading:  26%|██▌       | 371M/1.44G [00:03\u003c00:11, 90.2MB/s]\rUploading:  27%|██▋       | 383M/1.44G [00:03\u003c00:10, 98.0MB/s]\n"}
+,{"stream_name":"stderr","time":221.605716595,"data":"\rUploading:  27%|██▋       | 383M/1.44G [00:03\u003c00:10, 98.0MB/s]\rUploading:  27%|██▋       | 393M/1.44G [00:04\u003c00:11, 94.4MB/s]\n"}
+,{"stream_name":"stderr","time":221.727210487,"data":"\rUploading:  27%|██▋       | 393M/1.44G [00:04\u003c00:11, 94.4MB/s]\rUploading:  28%|██▊       | 405M/1.44G [00:04\u003c00:10, 94.4MB/s]\n"}
+,{"stream_name":"stderr","time":221.83634697,"data":"\rUploading:  28%|██▊       | 405M/1.44G [00:04\u003c00:10, 94.4MB/s]\rUploading:  29%|██▉       | 414M/1.44G [00:04\u003c00:11, 92.1MB/s]\n"}
+,{"stream_name":"stderr","time":221.952298059,"data":"\rUploading:  29%|██▉       | 414M/1.44G [00:04\u003c00:11, 92.1MB/s]\rUploading:  30%|██▉       | 429M/1.44G [00:04\u003c00:09, 102MB/s] \n"}
+,{"stream_name":"stderr","time":222.057760467,"data":"\rUploading:  30%|██▉       | 429M/1.44G [00:04\u003c00:09, 102MB/s] \rUploading:  30%|███       | 439M/1.44G [00:04\u003c00:09, 101MB/s]\n"}
+,{"stream_name":"stderr","time":222.200116428,"data":"\rUploading:  30%|███       | 439M/1.44G [00:04\u003c00:09, 101MB/s]\rUploading:  31%|███       | 449M/1.44G [00:04\u003c00:10, 90.4MB/s]\n"}
+,{"stream_name":"stderr","time":222.302387345,"data":"\rUploading:  31%|███       | 449M/1.44G [00:04\u003c00:10, 90.4MB/s]\rUploading:  32%|███▏      | 462M/1.44G [00:04\u003c00:09, 101MB/s] \n"}
+,{"stream_name":"stderr","time":222.407147938,"data":"\rUploading:  32%|███▏      | 462M/1.44G [00:04\u003c00:09, 101MB/s] \rUploading:  33%|███▎      | 473M/1.44G [00:04\u003c00:09, 100MB/s]\n"}
+,{"stream_name":"stderr","time":222.549247985,"data":"\rUploading:  33%|███▎      | 473M/1.44G [00:04\u003c00:09, 100MB/s]\rUploading:  34%|███▎      | 483M/1.44G [00:04\u003c00:10, 90.3MB/s]\n"}
+,{"stream_name":"stderr","time":222.656305405,"data":"\rUploading:  34%|███▎      | 483M/1.44G [00:04\u003c00:10, 90.3MB/s]\rUploading:  34%|███▍      | 496M/1.44G [00:05\u003c00:09, 98.5MB/s]\n"}
+,{"stream_name":"stderr","time":222.803287975,"data":"\rUploading:  34%|███▍      | 496M/1.44G [00:05\u003c00:09, 98.5MB/s]\rUploading:  35%|███▌      | 506M/1.44G [00:05\u003c00:10, 88.1MB/s]\n"}
+,{"stream_name":"stderr","time":222.920708239,"data":"\rUploading:  35%|███▌      | 506M/1.44G [00:05\u003c00:10, 88.1MB/s]\rUploading:  36%|███▌      | 521M/1.44G [00:05\u003c00:09, 99.5MB/s]\n"}
+,{"stream_name":"stderr","time":223.035419858,"data":"\rUploading:  36%|███▌      | 521M/1.44G [00:05\u003c00:09, 99.5MB/s]\rUploading:  37%|███▋      | 531M/1.44G [00:05\u003c00:09, 96.4MB/s]\n"}
+,{"stream_name":"stderr","time":223.140511191,"data":"\rUploading:  37%|███▋      | 531M/1.44G [00:05\u003c00:09, 96.4MB/s]\rUploading:  38%|███▊      | 541M/1.44G [00:05\u003c00:09, 95.8MB/s]\n"}
+,{"stream_name":"stderr","time":223.333622682,"data":"\rUploading:  38%|███▊      | 541M/1.44G [00:05\u003c00:09, 95.8MB/s]\rUploading:  38%|███▊      | 551M/1.44G [00:05\u003c00:11, 76.7MB/s]\n"}
+,{"stream_name":"stderr","time":223.433987733,"data":"\rUploading:  38%|███▊      | 551M/1.44G [00:05\u003c00:11, 76.7MB/s]\rUploading:  39%|███▉      | 565M/1.44G [00:05\u003c00:09, 92.0MB/s]\n"}
+,{"stream_name":"stderr","time":223.543021712,"data":"\rUploading:  39%|███▉      | 565M/1.44G [00:05\u003c00:09, 92.0MB/s]\rUploading:  40%|████      | 578M/1.44G [00:05\u003c00:08, 98.9MB/s]\n"}
+,{"stream_name":"stderr","time":223.678709319,"data":"\rUploading:  40%|████      | 578M/1.44G [00:05\u003c00:08, 98.9MB/s]\rUploading:  41%|████      | 589M/1.44G [00:06\u003c00:09, 92.2MB/s]\n"}
+,{"stream_name":"stderr","time":223.782018882,"data":"\rUploading:  41%|████      | 589M/1.44G [00:06\u003c00:09, 92.2MB/s]\rUploading:  42%|████▏     | 601M/1.44G [00:06\u003c00:08, 100MB/s] \n"}
+,{"stream_name":"stderr","time":223.889585147,"data":"\rUploading:  42%|████▏     | 601M/1.44G [00:06\u003c00:08, 100MB/s] \rUploading:  42%|████▏     | 612M/1.44G [00:06\u003c00:08, 99.0MB/s]\n"}
+,{"stream_name":"stderr","time":223.990276982,"data":"\rUploading:  42%|████▏     | 612M/1.44G [00:06\u003c00:08, 99.0MB/s]\rUploading:  43%|████▎     | 624M/1.44G [00:06\u003c00:07, 106MB/s] \n"}
+,{"stream_name":"stderr","time":224.102199875,"data":"\rUploading:  43%|████▎     | 624M/1.44G [00:06\u003c00:07, 106MB/s] \rUploading:  45%|████▍     | 643M/1.44G [00:06\u003c00:06, 125MB/s]\n"}
+,{"stream_name":"stderr","time":224.207822966,"data":"\rUploading:  45%|████▍     | 643M/1.44G [00:06\u003c00:06, 125MB/s]\rUploading:  46%|████▌     | 660M/1.44G [00:06\u003c00:05, 135MB/s]\n"}
+,{"stream_name":"stderr","time":224.308119739,"data":"\rUploading:  46%|████▌     | 660M/1.44G [00:06\u003c00:05, 135MB/s]\rUploading:  47%|████▋     | 678M/1.44G [00:06\u003c00:05, 148MB/s]\n"}
+,{"stream_name":"stderr","time":224.410338979,"data":"\rUploading:  47%|████▋     | 678M/1.44G [00:06\u003c00:05, 148MB/s]\rUploading:  48%|████▊     | 693M/1.44G [00:06\u003c00:05, 147MB/s]\n"}
+,{"stream_name":"stderr","time":224.585298329,"data":"\rUploading:  48%|████▊     | 693M/1.44G [00:06\u003c00:05, 147MB/s]\rUploading:  49%|████▉     | 708M/1.44G [00:07\u003c00:06, 122MB/s]\n"}
+,{"stream_name":"stderr","time":224.736080184,"data":"\rUploading:  49%|████▉     | 708M/1.44G [00:07\u003c00:06, 122MB/s]\rUploading:  50%|█████     | 721M/1.44G [00:07\u003c00:06, 110MB/s]\n"}
+,{"stream_name":"stderr","time":224.873109278,"data":"\rUploading:  50%|█████     | 721M/1.44G [00:07\u003c00:06, 110MB/s]\rUploading:  51%|█████     | 735M/1.44G [00:07\u003c00:06, 108MB/s]\n"}
+,{"stream_name":"stderr","time":224.993076026,"data":"\rUploading:  51%|█████     | 735M/1.44G [00:07\u003c00:06, 108MB/s]\rUploading:  52%|█████▏    | 747M/1.44G [00:07\u003c00:06, 104MB/s]\n"}
+,{"stream_name":"stderr","time":225.102235254,"data":"\rUploading:  52%|█████▏    | 747M/1.44G [00:07\u003c00:06, 104MB/s]\rUploading:  53%|█████▎    | 757M/1.44G [00:07\u003c00:06, 103MB/s]\n"}
+,{"stream_name":"stderr","time":225.209830476,"data":"\rUploading:  53%|█████▎    | 757M/1.44G [00:07\u003c00:06, 103MB/s]\rUploading:  53%|█████▎    | 769M/1.44G [00:07\u003c00:06, 104MB/s]\n"}
+,{"stream_name":"stderr","time":225.317696572,"data":"\rUploading:  53%|█████▎    | 769M/1.44G [00:07\u003c00:06, 104MB/s]\rUploading:  54%|█████▍    | 779M/1.44G [00:07\u003c00:06, 102MB/s]\n"}
+,{"stream_name":"stderr","time":225.422921097,"data":"\rUploading:  54%|█████▍    | 779M/1.44G [00:07\u003c00:06, 102MB/s]\rUploading:  55%|█████▍    | 790M/1.44G [00:07\u003c00:06, 101MB/s]\n"}
+,{"stream_name":"stderr","time":225.544209035,"data":"\rUploading:  55%|█████▍    | 790M/1.44G [00:07\u003c00:06, 101MB/s]\rUploading:  56%|█████▌    | 800M/1.44G [00:07\u003c00:06, 96.3MB/s]\n"}
+,{"stream_name":"stderr","time":225.65298432,"data":"\rUploading:  56%|█████▌    | 800M/1.44G [00:07\u003c00:06, 96.3MB/s]\rUploading:  56%|█████▌    | 810M/1.44G [00:08\u003c00:06, 94.0MB/s]\n"}
+,{"stream_name":"stderr","time":225.784098633,"data":"\rUploading:  56%|█████▌    | 810M/1.44G [00:08\u003c00:06, 94.0MB/s]\rUploading:  57%|█████▋    | 823M/1.44G [00:08\u003c00:06, 97.3MB/s]\n"}
+,{"stream_name":"stderr","time":225.923320369,"data":"\rUploading:  57%|█████▋    | 823M/1.44G [00:08\u003c00:06, 97.3MB/s]\rUploading:  58%|█████▊    | 833M/1.44G [00:08\u003c00:06, 87.8MB/s]\n"}
+,{"stream_name":"stderr","time":226.036357805,"data":"\rUploading:  58%|█████▊    | 833M/1.44G [00:08\u003c00:06, 87.8MB/s]\rUploading:  59%|█████▉    | 848M/1.44G [00:08\u003c00:05, 102MB/s] \n"}
+,{"stream_name":"stderr","time":226.160544852,"data":"\rUploading:  59%|█████▉    | 848M/1.44G [00:08\u003c00:05, 102MB/s] \rUploading:  60%|█████▉    | 859M/1.44G [00:08\u003c00:06, 95.7MB/s]\n"}
+,{"stream_name":"stderr","time":226.266106846,"data":"\rUploading:  60%|█████▉    | 859M/1.44G [00:08\u003c00:06, 95.7MB/s]\rUploading:  60%|██████    | 869M/1.44G [00:08\u003c00:06, 94.8MB/s]\n"}
+,{"stream_name":"stderr","time":226.397460751,"data":"\rUploading:  60%|██████    | 869M/1.44G [00:08\u003c00:06, 94.8MB/s]\rUploading:  61%|██████    | 880M/1.44G [00:08\u003c00:06, 92.5MB/s]\n"}
+,{"stream_name":"stderr","time":226.511327595,"data":"\rUploading:  61%|██████    | 880M/1.44G [00:08\u003c00:06, 92.5MB/s]\rUploading:  62%|██████▏   | 890M/1.44G [00:08\u003c00:05, 92.2MB/s]\n"}
+,{"stream_name":"stderr","time":226.614288182,"data":"\rUploading:  62%|██████▏   | 890M/1.44G [00:08\u003c00:05, 92.2MB/s]\rUploading:  63%|██████▎   | 901M/1.44G [00:09\u003c00:05, 94.8MB/s]\n"}
+,{"stream_name":"stderr","time":226.739069723,"data":"\rUploading:  63%|██████▎   | 901M/1.44G [00:09\u003c00:05, 94.8MB/s]\rUploading:  63%|██████▎   | 911M/1.44G [00:09\u003c00:05, 88.9MB/s]\n"}
+,{"stream_name":"stderr","time":226.839443895,"data":"\rUploading:  63%|██████▎   | 911M/1.44G [00:09\u003c00:05, 88.9MB/s]\rUploading:  64%|██████▍   | 922M/1.44G [00:09\u003c00:05, 95.4MB/s]\n"}
+,{"stream_name":"stderr","time":226.952120328,"data":"\rUploading:  64%|██████▍   | 922M/1.44G [00:09\u003c00:05, 95.4MB/s]\rUploading:  65%|██████▍   | 932M/1.44G [00:09\u003c00:05, 92.6MB/s]\n"}
+,{"stream_name":"stderr","time":227.060987206,"data":"\rUploading:  65%|██████▍   | 932M/1.44G [00:09\u003c00:05, 92.6MB/s]\rUploading:  66%|██████▌   | 945M/1.44G [00:09\u003c00:04, 101MB/s] \n"}
+,{"stream_name":"stderr","time":227.171759661,"data":"\rUploading:  66%|██████▌   | 945M/1.44G [00:09\u003c00:04, 101MB/s] \rUploading:  66%|██████▋   | 955M/1.44G [00:09\u003c00:04, 98.5MB/s]\n"}
+,{"stream_name":"stderr","time":227.284954648,"data":"\rUploading:  66%|██████▋   | 955M/1.44G [00:09\u003c00:04, 98.5MB/s]\rUploading:  67%|██████▋   | 965M/1.44G [00:09\u003c00:04, 95.2MB/s]\n"}
+,{"stream_name":"stderr","time":227.395661204,"data":"\rUploading:  67%|██████▋   | 965M/1.44G [00:09\u003c00:04, 95.2MB/s]\rUploading:  68%|██████▊   | 976M/1.44G [00:09\u003c00:04, 97.4MB/s]\n"}
+,{"stream_name":"stderr","time":227.495264405,"data":"\rUploading:  68%|██████▊   | 976M/1.44G [00:09\u003c00:04, 97.4MB/s]\rUploading:  68%|██████▊   | 986M/1.44G [00:09\u003c00:04, 97.7MB/s]\n"}
+,{"stream_name":"stderr","time":227.637863478,"data":"\rUploading:  68%|██████▊   | 986M/1.44G [00:09\u003c00:04, 97.7MB/s]\rUploading:  69%|██████▉   | 997M/1.44G [00:10\u003c00:04, 91.0MB/s]\n"}
+,{"stream_name":"stderr","time":227.743534622,"data":"\rUploading:  69%|██████▉   | 997M/1.44G [00:10\u003c00:04, 91.0MB/s]\rUploading:  70%|██████▉   | 1.01G/1.44G [00:10\u003c00:04, 90.0MB/s]\n"}
+,{"stream_name":"stderr","time":227.857028088,"data":"\rUploading:  70%|██████▉   | 1.01G/1.44G [00:10\u003c00:04, 90.0MB/s]\rUploading:  71%|███████   | 1.02G/1.44G [00:10\u003c00:04, 99.7MB/s]\n"}
+,{"stream_name":"stderr","time":227.957747423,"data":"\rUploading:  71%|███████   | 1.02G/1.44G [00:10\u003c00:04, 99.7MB/s]\rUploading:  72%|███████▏  | 1.03G/1.44G [00:10\u003c00:04, 99.7MB/s]\n"}
+,{"stream_name":"stderr","time":228.059689088,"data":"\rUploading:  72%|███████▏  | 1.03G/1.44G [00:10\u003c00:04, 99.7MB/s]\rUploading:  72%|███████▏  | 1.04G/1.44G [00:10\u003c00:04, 99.3MB/s]\n"}
+,{"stream_name":"stderr","time":228.159367887,"data":"\rUploading:  72%|███████▏  | 1.04G/1.44G [00:10\u003c00:04, 99.3MB/s]\rUploading:  73%|███████▎  | 1.05G/1.44G [00:10\u003c00:03, 100MB/s] \n"}
+,{"stream_name":"stderr","time":228.259629409,"data":"\rUploading:  73%|███████▎  | 1.05G/1.44G [00:10\u003c00:03, 100MB/s] \rUploading:  74%|███████▎  | 1.06G/1.44G [00:10\u003c00:03, 100MB/s]\n"}
+,{"stream_name":"stderr","time":228.380668983,"data":"\rUploading:  74%|███████▎  | 1.06G/1.44G [00:10\u003c00:03, 100MB/s]\rUploading:  74%|███████▍  | 1.07G/1.44G [00:10\u003c00:03, 94.7MB/s]\n"}
+,{"stream_name":"stderr","time":228.502333843,"data":"\rUploading:  74%|███████▍  | 1.07G/1.44G [00:10\u003c00:03, 94.7MB/s]\rUploading:  75%|███████▌  | 1.09G/1.44G [00:10\u003c00:03, 103MB/s] \n"}
+,{"stream_name":"stderr","time":228.605660001,"data":"\rUploading:  75%|███████▌  | 1.09G/1.44G [00:10\u003c00:03, 103MB/s] \rUploading:  76%|███████▌  | 1.10G/1.44G [00:11\u003c00:03, 102MB/s]\n"}
+,{"stream_name":"stderr","time":228.713704797,"data":"\rUploading:  76%|███████▌  | 1.10G/1.44G [00:11\u003c00:03, 102MB/s]\rUploading:  77%|███████▋  | 1.11G/1.44G [00:11\u003c00:03, 99.9MB/s]\n"}
+,{"stream_name":"stderr","time":228.828929441,"data":"\rUploading:  77%|███████▋  | 1.11G/1.44G [00:11\u003c00:03, 99.9MB/s]\rUploading:  77%|███████▋  | 1.12G/1.44G [00:11\u003c00:03, 96.1MB/s]\n"}
+,{"stream_name":"stderr","time":228.940327515,"data":"\rUploading:  77%|███████▋  | 1.12G/1.44G [00:11\u003c00:03, 96.1MB/s]\rUploading:  78%|███████▊  | 1.13G/1.44G [00:11\u003c00:03, 92.9MB/s]\n"}
+,{"stream_name":"stderr","time":229.065742203,"data":"\rUploading:  78%|███████▊  | 1.13G/1.44G [00:11\u003c00:03, 92.9MB/s]\rUploading:  79%|███████▉  | 1.14G/1.44G [00:11\u003c00:03, 86.8MB/s]\n"}
+,{"stream_name":"stderr","time":229.165675948,"data":"\rUploading:  79%|███████▉  | 1.14G/1.44G [00:11\u003c00:03, 86.8MB/s]\rUploading:  80%|███████▉  | 1.15G/1.44G [00:11\u003c00:03, 92.5MB/s]\n"}
+,{"stream_name":"stderr","time":229.304982375,"data":"\rUploading:  80%|███████▉  | 1.15G/1.44G [00:11\u003c00:03, 92.5MB/s]\rUploading:  80%|████████  | 1.16G/1.44G [00:11\u003c00:03, 83.9MB/s]\n"}
+,{"stream_name":"stderr","time":229.412373937,"data":"\rUploading:  80%|████████  | 1.16G/1.44G [00:11\u003c00:03, 83.9MB/s]\rUploading:  81%|████████  | 1.17G/1.44G [00:11\u003c00:03, 86.1MB/s]\n"}
+,{"stream_name":"stderr","time":229.527487866,"data":"\rUploading:  81%|████████  | 1.17G/1.44G [00:11\u003c00:03, 86.1MB/s]\rUploading:  82%|████████▏ | 1.18G/1.44G [00:11\u003c00:03, 87.6MB/s]\n"}
+,{"stream_name":"stderr","time":229.673883928,"data":"\rUploading:  82%|████████▏ | 1.18G/1.44G [00:11\u003c00:03, 87.6MB/s]\rUploading:  82%|████████▏ | 1.18G/1.44G [00:12\u003c00:03, 78.1MB/s]\n"}
+,{"stream_name":"stderr","time":229.792421857,"data":"\rUploading:  82%|████████▏ | 1.18G/1.44G [00:12\u003c00:03, 78.1MB/s]\rUploading:  83%|████████▎ | 1.19G/1.44G [00:12\u003c00:03, 75.2MB/s]\n"}
+,{"stream_name":"stderr","time":229.904219906,"data":"\rUploading:  83%|████████▎ | 1.19G/1.44G [00:12\u003c00:03, 75.2MB/s]\rUploading:  83%|████████▎ | 1.20G/1.44G [00:12\u003c00:03, 74.8MB/s]\n"}
+,{"stream_name":"stderr","time":230.02928379,"data":"\rUploading:  83%|████████▎ | 1.20G/1.44G [00:12\u003c00:03, 74.8MB/s]\rUploading:  84%|████████▍ | 1.22G/1.44G [00:12\u003c00:02, 88.1MB/s]\n"}
+,{"stream_name":"stderr","time":230.129141864,"data":"\rUploading:  84%|████████▍ | 1.22G/1.44G [00:12\u003c00:02, 88.1MB/s]\rUploading:  85%|████████▌ | 1.23G/1.44G [00:12\u003c00:02, 93.6MB/s]\n"}
+,{"stream_name":"stderr","time":230.242479666,"data":"\rUploading:  85%|████████▌ | 1.23G/1.44G [00:12\u003c00:02, 93.6MB/s]\rUploading:  86%|████████▌ | 1.24G/1.44G [00:12\u003c00:02, 90.5MB/s]\n"}
+,{"stream_name":"stderr","time":230.370291843,"data":"\rUploading:  86%|████████▌ | 1.24G/1.44G [00:12\u003c00:02, 90.5MB/s]\rUploading:  86%|████████▋ | 1.25G/1.44G [00:12\u003c00:02, 84.4MB/s]\n"}
+,{"stream_name":"stderr","time":230.482501116,"data":"\rUploading:  86%|████████▋ | 1.25G/1.44G [00:12\u003c00:02, 84.4MB/s]\rUploading:  87%|████████▋ | 1.25G/1.44G [00:12\u003c00:02, 81.9MB/s]\n"}
+,{"stream_name":"stderr","time":230.594832568,"data":"\rUploading:  87%|████████▋ | 1.25G/1.44G [00:12\u003c00:02, 81.9MB/s]\rUploading:  88%|████████▊ | 1.26G/1.44G [00:13\u003c00:02, 79.5MB/s]\n"}
+,{"stream_name":"stderr","time":230.706281471,"data":"\rUploading:  88%|████████▊ | 1.26G/1.44G [00:13\u003c00:02, 79.5MB/s]\rUploading:  88%|████████▊ | 1.27G/1.44G [00:13\u003c00:01, 88.8MB/s]\n"}
+,{"stream_name":"stderr","time":230.839672874,"data":"\rUploading:  88%|████████▊ | 1.27G/1.44G [00:13\u003c00:01, 88.8MB/s]\rUploading:  89%|████████▉ | 1.28G/1.44G [00:13\u003c00:01, 81.7MB/s]\n"}
+,{"stream_name":"stderr","time":230.939159502,"data":"\rUploading:  89%|████████▉ | 1.28G/1.44G [00:13\u003c00:01, 81.7MB/s]\rUploading:  90%|████████▉ | 1.29G/1.44G [00:13\u003c00:01, 83.9MB/s]\n"}
+,{"stream_name":"stderr","time":231.045049667,"data":"\rUploading:  90%|████████▉ | 1.29G/1.44G [00:13\u003c00:01, 83.9MB/s]\rUploading:  91%|█████████ | 1.30G/1.44G [00:13\u003c00:01, 90.9MB/s]\n"}
+,{"stream_name":"stderr","time":231.152675953,"data":"\rUploading:  91%|█████████ | 1.30G/1.44G [00:13\u003c00:01, 90.9MB/s]\rUploading:  91%|█████████ | 1.31G/1.44G [00:13\u003c00:01, 92.8MB/s]\n"}
+,{"stream_name":"stderr","time":231.271532837,"data":"\rUploading:  91%|█████████ | 1.31G/1.44G [00:13\u003c00:01, 92.8MB/s]\rUploading:  92%|█████████▏| 1.32G/1.44G [00:13\u003c00:01, 88.1MB/s]\n"}
+,{"stream_name":"stderr","time":231.376845873,"data":"\rUploading:  92%|█████████▏| 1.32G/1.44G [00:13\u003c00:01, 88.1MB/s]\rUploading:  93%|█████████▎| 1.33G/1.44G [00:13\u003c00:01, 87.0MB/s]\n"}
+,{"stream_name":"stderr","time":231.498582111,"data":"\rUploading:  93%|█████████▎| 1.33G/1.44G [00:13\u003c00:01, 87.0MB/s]\rUploading:  93%|█████████▎| 1.34G/1.44G [00:13\u003c00:01, 82.7MB/s]\n"}
+,{"stream_name":"stderr","time":231.602035986,"data":"\rUploading:  93%|█████████▎| 1.34G/1.44G [00:13\u003c00:01, 82.7MB/s]\rUploading:  94%|█████████▍| 1.35G/1.44G [00:14\u003c00:00, 88.7MB/s]\n"}
+,{"stream_name":"stderr","time":231.708615853,"data":"\rUploading:  94%|█████████▍| 1.35G/1.44G [00:14\u003c00:00, 88.7MB/s]\rUploading:  94%|█████████▍| 1.36G/1.44G [00:14\u003c00:00, 86.5MB/s]\n"}
+,{"stream_name":"stderr","time":231.84113766,"data":"\rUploading:  94%|█████████▍| 1.36G/1.44G [00:14\u003c00:00, 86.5MB/s]\rUploading:  95%|█████████▌| 1.37G/1.44G [00:14\u003c00:00, 79.4MB/s]\n"}
+,{"stream_name":"stderr","time":231.956653182,"data":"\rUploading:  95%|█████████▌| 1.37G/1.44G [00:14\u003c00:00, 79.4MB/s]\rUploading:  96%|█████████▌| 1.38G/1.44G [00:14\u003c00:00, 91.5MB/s]\n"}
+,{"stream_name":"stderr","time":232.072312678,"data":"\rUploading:  96%|█████████▌| 1.38G/1.44G [00:14\u003c00:00, 91.5MB/s]\rUploading:  97%|█████████▋| 1.39G/1.44G [00:14\u003c00:00, 88.2MB/s]\n"}
+,{"stream_name":"stderr","time":232.172522447,"data":"\rUploading:  97%|█████████▋| 1.39G/1.44G [00:14\u003c00:00, 88.2MB/s]\rUploading:  98%|█████████▊| 1.41G/1.44G [00:14\u003c00:00, 98.6MB/s]\n"}
+,{"stream_name":"stderr","time":232.300117609,"data":"\rUploading:  98%|█████████▊| 1.41G/1.44G [00:14\u003c00:00, 98.6MB/s]\rUploading:  98%|█████████▊| 1.42G/1.44G [00:14\u003c00:00, 92.0MB/s]\n"}
+,{"stream_name":"stderr","time":232.406384967,"data":"\rUploading:  98%|█████████▊| 1.42G/1.44G [00:14\u003c00:00, 92.0MB/s]\rUploading:  99%|█████████▉| 1.42G/1.44G [00:14\u003c00:00, 90.8MB/s]\n"}
+,{"stream_name":"stderr","time":232.563097696,"data":"\rUploading:  99%|█████████▉| 1.42G/1.44G [00:14\u003c00:00, 90.8MB/s]\rUploading: 100%|█████████▉| 1.43G/1.44G [00:15\u003c00:00, 78.9MB/s]\n"}
+,{"stream_name":"stderr","time":233.328248178,"data":"\rUploading: 100%|█████████▉| 1.43G/1.44G [00:15\u003c00:00, 78.9MB/s]\rUploading: 100%|██████████| 1.44G/1.44G [00:15\u003c00:00, 91.3MB/s]\n"}
+,{"stream_name":"stdout","time":233.331973224,"data":"Upload successful: /kaggle/working/rfs_bundle/ext.npz (1GB)\n"}
+,{"stream_name":"stderr","time":233.528534154,"data":"\rUploading: 100%|██████████| 1.44G/1.44G [00:15\u003c00:00, 91.3MB/s]\n"}
+,{"stream_name":"stderr","time":233.528588771,"data":"\n"}
+,{"stream_name":"stderr","time":233.528595814,"data":"\n"}
+,{"stream_name":"stdout","time":234.955514177,"data":"Your dataset version has been created.\n"}
+,{"stream_name":"stdout","time":234.955551122,"data":"Files are being processed...\n"}
+,{"stream_name":"stdout","time":234.955556972,"data":"See at: https://kaggle.com/datasets/ngnnguynchn/flag2027-rfs-bundle-p\n"}
+,{"stream_name":"stdout","time":234.958041065,"data":"uploaded -\u003e ngnnguynchn/flag2027-rfs-bundle-p\n"}
+,{"stream_name":"stdout","time":234.960415677,"data":"ALL CELLS OK\n"}
+,{"stream_name":"stderr","time":239.386411358,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":239.386454571,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":239.639599131,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":239.63964691,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":240.675612033,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":240.802115986,"data":"[NbConvertApp] Writing 60524 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":244.34107852,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":245.102663468,"data":"[NbConvertApp] Writing 363429 bytes to __results__.html\n"}
+]

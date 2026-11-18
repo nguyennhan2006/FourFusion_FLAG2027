@@ -1,0 +1,70 @@
+print("[cell] dp_sigma: input (xjfdump_v4.parquet of FLAG_219, held-out train pairs of SAFE-04)", flush=True)
+# New code: the two blend constants were typed by hand from the FLAG_219 log in the original work; dp_sigma.py recomputes them from
+# the table that run wrote, with the statistic of that log line (numpy std, ddof 0). No Evaluation data is read.
+import json, os, subprocess, sys
+from pathlib import Path
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+assert os.environ.get("FF_STAGE_DIR"), "FF_STAGE_DIR (this stage's folder in the repo) must be set by the runner"
+SD = Path(os.environ["FF_STAGE_DIR"]).resolve()
+REPO = Path(os.environ.get("FF_REPO") or SD.parents[2]).resolve()
+MODE = os.environ.get("FF_MODE", "")
+NAME = "xjfdump_v4.parquet"
+K219 = IN / "notebooks/phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4"
+
+
+def shallowest(root):
+    hits = sorted(q for q in Path(root).rglob(NAME) if q.is_file())
+    if len(hits) > 1:                                                # several copies: the shallowest one (the run's own output)
+        d = min(len(q.relative_to(root).parts) for q in hits)
+        hits = [q for q in hits if len(q.relative_to(root).parts) == d]
+    assert len(hits) <= 1, f"{NAME}: {len(hits)} files under {root} (set DP_SIGMA_DUMP)"
+    return hits[0] if hits else None
+
+
+def stored_candidates():
+    """Stored copies of the table when the runner did not mount the FLAG_219 output (mode (c): soft input; with FF_USE_SAVED=collected
+    or none the checkpoint class is not mounted): flat <entry>/05_scores/<name> as in DESIGN 5.3 and assembly/inputs/README.md, then the
+    data_map folder of the FLAG_219 output (<entry>/03_checkpoints/sigma_source/...), then assembly/inputs of this repository."""
+    roots = [Path(r) for r in os.environ.get("FF_DATA", "").split(os.pathsep) if r]
+    for r in roots:
+        yield r / "05_scores" / NAME
+    for r in roots:
+        d = r / "03_checkpoints" / "sigma_source"
+        if d.is_dir():
+            q = shallowest(d)
+            if q is not None:
+                yield q
+    yield REPO / "assembly" / "inputs" / NAME
+
+
+if os.environ.get("DP_SIGMA_DUMP"):
+    DUMP, how = Path(os.environ["DP_SIGMA_DUMP"]), "$DP_SIGMA_DUMP"
+elif K219.is_dir() and shallowest(K219) is not None:
+    DUMP, how = shallowest(K219), "output of the FLAG_219 run (mounted)"
+else:
+    DUMP = next((q for q in stored_candidates() if q.is_file()), None)
+    how = "stored copy"
+    assert DUMP is not None, (f"{NAME}: not mounted at {K219} and not found in <FF_DATA entry>/05_scores/, "
+                              f"<FF_DATA entry>/03_checkpoints/sigma_source/ or assembly/inputs/ (set DP_SIGMA_DUMP)")
+print(f"  table: {DUMP}  <- {how}", flush=True)
+# <<<FF-CELL>>>
+print("[cell] dp_sigma: dp_sigma.py", flush=True)
+# Strict (stop on a mismatch with 5.0983,3.8376) by default in FF_MODE=assemble, where the table must be the stored original; reported
+# only in modes train / infer (a rebuilt SAFE-04 table may move the 4th decimal; final_blend keeps the pinned XJF_SIG). DP_SIGMA_STRICT
+# set explicitly (0 / 1) wins.
+STRICT = os.environ.get("DP_SIGMA_STRICT") or ("1" if MODE == "assemble" else "0")
+cmd = [sys.executable, "-u", str(SD / "dp_sigma.py"), "--dump", str(DUMP), "--out", str(OUT / "sigma.json"),
+       "--expect", os.environ.get("DP_SIGMA_EXPECT", "5.0983,3.8376")]
+if STRICT == "1":
+    cmd.append("--strict")
+print("$", " ".join(cmd), flush=True)
+p = subprocess.Popen(cmd, env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1", PYTHONIOENCODING="utf-8"), stdout=subprocess.PIPE,
+                     stderr=subprocess.STDOUT, text=True, encoding="utf-8", bufsize=1, errors="replace")
+for line in p.stdout:
+    print(line, end="", flush=True)
+assert p.wait() == 0, f"dp_sigma.py failed (exit code {p.returncode})"
+S = json.loads((OUT / "sigma.json").read_text(encoding="utf-8"))
+print(f"  SIG = {S['xjf_sig']} | expected {S['expected']} | match {S['matches_expected']} | table identical to the original run: "
+      f"{S['source']['same_as_original']} | strict {STRICT == '1'}", flush=True)
+if MODE == "assemble" and STRICT == "1":
+    assert S["source"]["same_as_original"], f"FF_MODE=assemble needs the stored original {NAME} (sha256 9f0a5af4...); got {S['source']['sha256']}"

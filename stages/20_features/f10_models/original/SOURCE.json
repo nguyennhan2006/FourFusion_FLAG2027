@@ -1,0 +1,32 @@
+{
+ "stage": "f10_models",
+ "files": [
+  {
+   "copy": "original/FLAG_10_models.ipynb",
+   "source": "git show a89a071:kaggle/FLAG_10_models.ipynb",
+   "obtained_by": "git show (read-only)",
+   "bytes": 145613,
+   "md5": "f5984d0134428a6aaa2e7c75e38437a0",
+   "sha256": "e021c64d9d89598da71028186fc01f09a9d9d9cd93407e95a6a0bec3ac067e96",
+   "git_commit": "a89a071",
+   "git_blob": "bd019ac0992424701467d37e9761846b88e91759",
+   "working_tree_status": "unchanged since a89a071 (kaggle/FLAG_10_models.ipynb, mtime 2026-09-27 23:21)"
+  },
+  {
+   "copy": "original/build_models_notebook.a89a071.py",
+   "source": "git show a89a071:kaggle/build_models_notebook.py",
+   "obtained_by": "git show (read-only); the builder of the notebook (provenance only)",
+   "bytes": 15309,
+   "md5": "050784270feaddbe03f74cada94dcf15",
+   "sha256": "ac082f790a04ef4930ed5a044ccf1bcd5ad2380b1fb67d0277e2a28e05b08204",
+   "git_blob": "ae99276cd820323002758e8641168c90350e2ba7"
+  }
+ ],
+ "run": "slug unknown (web-UI runs 27-28/09/2026, EXPERIMENT_LOG entries 55 / 58 / 59; feats_models manifest 2026-09-28 01:18)",
+ "evidence": [
+  "The 7 code cells of the notebook equal the builder's constants at a89a071 (ENV, embed_lib(...), PIP, CFG with ENC10 / feats_models / flag2027-feats-models, RUN, PROBE, DONE): checked 18/11/2026 by parsing the builder with ast (no builder run).",
+  "The 4 modules embedded in cell 2 (base64) decode to a89a071's flag_lib.py 6941a078..., flag_extract.py ea925901..., agegender.py 8d5282bb..., flag_models.py 575a7166... (sha256 of the LF text), i.e. the blobs of that commit.",
+  "kaggle/flag_models.py today differs from a89a071 by one line only (ImageBind URL; git diff a89a071 -- kaggle/flag_models.py).",
+  "EXPERIMENT_LOG 58: run 1 used 'the notebook before the fix' (siglip2 / adaface / w2v2ag failed on transformers 5.x); run 2 attached run 1's output and filled the missing encoders. The a89a071 notebook (written 27/09 23:21) is the fixed version."
+ ]
+}

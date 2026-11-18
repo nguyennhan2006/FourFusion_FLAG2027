@@ -1,0 +1,36 @@
+{
+ "id": "models_fetch",
+ "group": "00_env",
+ "title": "Download every public pretrained model at a pinned revision, check SHA-256 -> FF_DATA/06_pretrained (+ SOURCES.json)",
+ "kind": "data",
+ "role_in_1354": "optional",
+ "compute": {"device": "cpu", "gpus": 0, "minutes_original": 60, "internet": true, "secrets": ["HF_TOKEN"]},
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": "release/docker/ff.py",
+  "notebook_md5": null,
+  "builder": null,
+  "basis": "DESIGN 4.0 models_fetch: extends cmd_fetch_models of release/docker/ff.py (lines 286-306; ImageBind only, kept only when its SHA-256 is Meta's) to the full model table of DESIGN 9.2 / layer map S8 E10, implemented in tools/fetch_models.py. The WeSpeaker zips are unpacked exactly like kaggle/vendor_t3enc/t3enc_cell.py wespeaker_dir().",
+  "ff_py_sha256": "c706b0b729b3b77961515d6e888fe9a8a567ea64dd220a821ad81bc64a06d8d2"
+ },
+ "inputs": [],
+ "outputs": {"kernel": "notebooks/ff/models_fetch", "exports": {"pretrained/models": "06_pretrained"}, "files": ["06_pretrained/SOURCES.json"]},
+ "env": {"FF_FETCH_GROUP": "default"},
+ "smoke_env": {"FF_FETCH_DRY": "1"},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": ["06_pretrained"],
+ "verify": [
+  {"file": "06_pretrained/SOURCES.json", "note": "per-model 'verified' flags (true = SHA-256 equal to the value measured on 2026-11-18; null = no reference hash, recorded at fetch time)"}
+ ],
+ "post_checks": [],
+ "todo": [
+  "SHA-256 not known for: whisper_large_v3 (revision 06f233fe pinned; files recorded at fetch time), farl_ep64, siglip2_base, mms_lid_4017 (revision not recorded by the run) - wiring / LID-only models except Whisper",
+  "the HF repos MCplayer/voxblink2_samresnet100_ft and Wespeaker/wespeaker-voxceleb-resnet221-LM were read at revision 'main' by the original code: pinned by file SHA-256 only",
+  "FF_DATA/06_pretrained is not populated yet (needs network; ~15 GB for the default groups)"
+ ]
+}

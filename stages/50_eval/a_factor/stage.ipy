@@ -1,0 +1,192 @@
+print("[cell] a_factor 1/5: the six input files (outputs of e112f1sx, e50cc, e163i)", flush=True)
+# New code of the FourFusion reproduction repository (stage a_factor). It replays the CPU step that ran on the team machine on
+# 13/11/2026 12:00 (UTC+7), kaggle/rfx_chain.sh state 3: U = F1s' + RFX (make_eval_zip.sh -> XTEAM-03/run.py), then ENFUSE
+# (ENFUSE-U/run.py with ENF_RFS / ENF_U / ENF_OUT). The scripts in <stage>/tree/ are byte copies of the files that ran; they are run,
+# unmodified, inside a copy of the original repository layout under /kaggle/working/tree. Nothing outside /kaggle/working is written.
+import os, sys, json, shutil, hashlib, subprocess, zipfile
+from pathlib import Path
+
+IN, WORK = Path("/kaggle/input"), Path("/kaggle/working")
+SD = Path(os.environ.get("FF_STAGE_DIR") or Path(os.environ.get("FF_REPO", ".")) / "stages/50_eval/a_factor")
+assert (SD / "tree/Experiment/ENFUSE-U/run.py").is_file(), f"stage folder with tree/ not found at {SD}: set FF_STAGE_DIR (or FF_REPO)"
+MODE, SMOKE = os.environ.get("FF_MODE", ""), os.environ.get("FF_SMOKE", "0") == "1"
+STRICT = MODE == "assemble" or os.environ.get("FF_STRICT") == "1"   # inputs = the saved outputs -> every member must be byte-identical
+K = {"112f1sx": IN / "notebooks/thanhhuyen11/flag-2027-nb-112f1sx-eval",
+     "50cc": IN / "notebooks/thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+     "163i": IN / "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval"}
+NEED = {   # flat name (FF_DATA/05_scores, DESIGN 5.3) -> (kernel, path inside the output of the original run)
+    "f1s_eval.zip": ("112f1sx", "e2e_out/submission_cleantune01_F1_CA_eval.zip"),
+    "cleantune01_fuser_bangla_CA.json": ("112f1sx", "e2e_out/cleantune01_fuser_bangla_CA.json"),
+    "ct01r2_final_eval.npz": ("112f1sx", "e2e_out/ct01r2_final_eval.npz"),
+    "components_eval.npz": ("50cc", "e2e_eval/components_eval.npz"),
+    "e2e_manifest.json": ("50cc", "e2e_eval/e2e_manifest.json"),
+    "rfx_eval.zip": ("163i", "FLAG_RF_E2E/submission.zip"),
+}
+SAVED = {  # sha256 of the six files of the 13.54 chain (team package rebuild/in = the outputs of the seven Evaluation runs)
+    "f1s_eval.zip": "1b43b14ff763bd0eac72fea505e4cfd4ff98bc41d87d49baecdfd613525a6962",
+    "cleantune01_fuser_bangla_CA.json": "c4737367e787da6dc9a1e08453a9602e2ea60b830bd7a56e8d6728501e9d06a4",
+    "ct01r2_final_eval.npz": "bbad53ed8e32066240f405676e7f3676dd55040573c00d1fad07b81774c3d0fc",
+    "components_eval.npz": "2cd160ae456447c0c47bf611f2f73480ffc5c9161e767812d42e5f380b1b56c7",
+    "e2e_manifest.json": "b0ba27c2982f917199d957cd42763fecfdd31c292352594a4e141105ce72bd58",
+    "rfx_eval.zip": "1fa53218c9501ef38f9b1c33680fac5b7f6a0ddace4fdaffed7cd5334b9aa369",
+}
+
+
+def sha256(p):
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(1 << 20), b""):
+            h.update(b)
+    return h.hexdigest()
+
+
+def score_dirs():
+    """FF_DATA/05_scores of every FF_DATA root (os.pathsep-separated list), then FF_SCORES, then <repo>/assembly/inputs (DESIGN 5.3:
+    the saved files in a private copy of the repository; same fallback as a_fvbind, dp_sigma and final_blend, INTEGRATION_r1 M5)."""
+    roots = [Path(r) / "05_scores" for r in os.environ.get("FF_DATA", "").split(os.pathsep) if r]
+    roots += [Path(os.environ["FF_SCORES"])] if os.environ.get("FF_SCORES") else []
+    return roots + [SD.resolve().parents[2] / "assembly" / "inputs"]
+
+
+def locate(flat, kern, rel):
+    p = K[kern] / rel
+    if p.is_file():
+        return p, f"output of {K[kern].name}"
+    hits = sorted(q for q in IN.rglob(flat) if q.is_file()) if IN.is_dir() else []
+    if len(hits) == 1:
+        return hits[0], "attached file"
+    assert len(hits) < 2, f"{flat}: {len(hits)} candidates under the inputs: {hits}"
+    for d in score_dirs():
+        if (d / flat).is_file():
+            return d / flat, f"{d}"
+    raise FileNotFoundError(f"{flat}: not in {K[kern]}/{rel}, not attached, not in FF_DATA/05_scores, FF_SCORES or assembly/inputs")
+
+
+SRC, REPORT = {}, {"stage": "a_factor", "mode": MODE, "smoke": SMOKE, "strict": STRICT, "inputs": {}}
+for flat, (kern, rel) in NEED.items():
+    SRC[flat], how = locate(flat, kern, rel)
+    h = sha256(SRC[flat])
+    REPORT["inputs"][flat] = {"path": str(SRC[flat]), "from": how, "sha256": h, "saved_13_54": h == SAVED[flat]}
+    print(f"  {flat:34s} {h[:16]} {'= saved 13.54 file' if h == SAVED[flat] else 'differs from the saved 13.54 file'}  <- {how}", flush=True)
+if STRICT:
+    bad = [f for f, r in REPORT["inputs"].items() if not r["saved_13_54"]]
+    assert not bad, f"FF_MODE=assemble needs the saved 13.54 inputs; these differ: {bad}"
+# <<<FF-CELL>>>
+print("[cell] a_factor 2/5: original repository layout under /kaggle/working/tree", flush=True)
+TREE = WORK / "tree"
+shutil.rmtree(TREE, ignore_errors=True)
+shutil.copytree(SD / "tree", TREE)                   # Experiment/{EVALPATH-U,XTEAM-03,ENFUSE-U,E2E}/..., release/factor_enfuse/rebuild_final.py
+PLACE = {  # where the 13/11 run read each input (paths relative to the repository root)
+    "f1s_eval.zip": "Experiment/EVALPATH-U/eval_out/f1s_eval.zip",               # kaggle/evalrun_chain.sh: 112f1sx zip download
+    "rfx_eval.zip": "Experiment/FACTOR-01/out/rfsfxc5rl_eval.zip",               # kaggle/rfx_chain.sh state 3: cp "$z" $O/out/rfs${NAME}_eval.zip
+    "cleantune01_fuser_bangla_CA.json": "Experiment/ENFUSE-U/in/f1/e2e_out/cleantune01_fuser_bangla_CA.json",
+    "ct01r2_final_eval.npz": "Experiment/ENFUSE-U/in/f1/e2e_out/ct01r2_final_eval.npz",
+    "components_eval.npz": "Experiment/ENFUSE-U/in/c50/e2e_eval/components_eval.npz",
+    "e2e_manifest.json": "Experiment/ENFUSE-U/in/c50/e2e_eval/e2e_manifest.json",
+}
+for flat, rel in PLACE.items():
+    (TREE / rel).parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(SRC[flat], TREE / rel)
+(TREE / "Experiment/POSTEVAL-01/zips").mkdir(parents=True, exist_ok=True)
+(TREE / "Experiment/POSTEVAL-01/manifest.json").write_text(json.dumps({"zips": {}}, indent=1), encoding="utf-8")   # freeze log of the run
+for p in sorted(q for q in TREE.rglob("*") if q.is_file()):
+    print(f"  {sha256(p)[:16]}  {p.relative_to(TREE).as_posix()}", flush=True)
+# <<<FF-CELL>>>
+print("[cell] a_factor 3/5: U zip = F1s' + RFX (make_eval_zip.sh -> XTEAM-03/run.py), as run on 13/11", flush=True)
+CNT = ("no_gender/sub_score_v4_English_heard.txt=392,no_gender/sub_score_v4_Bangla_unheard.txt=802,"
+       "gender/sub_score_v4_English_heard.txt=416,gender/sub_score_v4_Bangla_unheard.txt=716")      # kaggle/rfx_chain.sh line 21
+EO, O, PZ = "Experiment/EVALPATH-U/eval_out", "Experiment/FACTOR-01", "Experiment/POSTEVAL-01/zips"
+ZU, ZE = "posteval_FACTOR_U_c5rl.zip", "posteval_FACTOR_ENFUSE_c5rl.zip"
+DROP = ("XT_W", "ENF_W", "ENF_RFS", "ENF_U", "ENF_OUT", "E2E_DIR", "E2E_SPLIT", "NOREL")   # 13.54: XT_W / ENF_W unset (1 : 1)
+ENV = {k: v for k, v in os.environ.items() if k not in DROP}
+ENV.update(PATH=os.path.dirname(sys.executable) + os.pathsep + ENV.get("PATH", ""), PYTHONIOENCODING="utf-8")
+CA = [] if SMOKE else ["--counts", CNT]          # smoke runs of the upstream stages hold fewer pairs: no count check then
+
+
+def sh(cmd, env=None):
+    print("  $", " ".join(cmd), flush=True)
+    r = subprocess.run(cmd, cwd=TREE, env=env or ENV, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    out = r.stdout + r.stderr
+    print("\n".join("    " + l for l in out.splitlines()), flush=True)
+    if r.returncode != 0:
+        raise RuntimeError(f"failed with code {r.returncode}: {' '.join(cmd)}")
+    return out
+
+
+sh(["bash", "Experiment/EVALPATH-U/make_eval_zip.sh", f"{EO}/f1s_eval.zip", f"{O}/out/rfsfxc5rl_eval.zip", f"{PZ}/{ZU}", "eval", *CA])
+FREEZE = '''import hashlib, json, sys
+from pathlib import Path
+dst = Path(sys.argv[1]); m = Path("Experiment/POSTEVAL-01/manifest.json"); M = json.loads(m.read_text(encoding="utf-8"))
+M["zips"][dst.name] = dict(sha256=hashlib.sha256(dst.read_bytes()).hexdigest(), note="rfx_chain (FACTOR-01 step 3): U_X = F1s' + RFX, frozen before any label")
+m.write_text(json.dumps(M, indent=1), encoding="utf-8"); print("frozen", dst, M["zips"][dst.name]["sha256"][:16])
+'''                                               # = the python heredoc of kaggle/rfx_chain.sh state 3, verbatim
+sh([sys.executable, "-c", FREEZE, f"{PZ}/{ZU}"])
+PEERS = ["--peer", f"{EO}/f1s_eval.zip", f"{O}/out/rfsfxc5rl_eval.zip"]   # the run used --peer <U' Evaluation zip>, not part of this chain
+out = sh([sys.executable, "Experiment/EVALPATH-U/check_eval_zip.py", f"{PZ}/{ZU}", *CA, *PEERS])
+assert out.strip().splitlines()[-1] == "OK", "check of the U zip failed"
+# <<<FF-CELL>>>
+print("[cell] a_factor 4/5: ENFUSE zip (ENFUSE-U/run.py with ENF_RFS / ENF_U / ENF_OUT), as run on 13/11", flush=True)
+sh([sys.executable, "Experiment/ENFUSE-U/run.py"], dict(ENV, ENF_RFS=f"{O}/out/rfsfxc5rl_eval.zip", ENF_U=f"{PZ}/{ZU}", ENF_OUT=f"{PZ}/{ZE}"))
+out = sh([sys.executable, "Experiment/EVALPATH-U/check_eval_zip.py", f"{PZ}/{ZE}", *CA, *PEERS])
+assert out.strip().splitlines()[-1] == "OK", "check of the ENFUSE zip failed"
+# <<<FF-CELL>>>
+print("[cell] a_factor 5/5: one-step cross-check (rebuild_final.py), member sha256, outputs", flush=True)
+RIN = WORK / "rebuild_in"
+shutil.rmtree(RIN, ignore_errors=True); RIN.mkdir()
+for flat in NEED:
+    shutil.copyfile(SRC[flat], RIN / flat)
+r = subprocess.run([sys.executable, str(TREE / "release/factor_enfuse/rebuild_final.py"), str(RIN), str(WORK / "FACTOR_ENFUSE_c5rl_rebuilt.zip"),
+                    str(TREE / PZ / ZE)], capture_output=True, text=True, env=ENV, encoding="utf-8", errors="replace")
+print(r.stdout, r.stderr, flush=True)
+print("  (REF of rebuild_final.py here = the ENFUSE zip of cell 4: 'identical' means the one-step script and the 13/11 chain agree)", flush=True)
+assert r.returncode == 0 and "OK: identical" in r.stdout, "rebuild_final.py disagrees with the ENFUSE-U chain"
+EXPECT = {  # members of the zips built on 13/11/2026 12:00 (Experiment/POSTEVAL-01/zips; ENFUSE = the base of 3 of the 4 files of 13.54)
+    ZU: {"no_gender/sub_score_v4_English_heard.txt": "1726bf9488cb6507e692a9bce0475dffea3db3e2db4aef660fd2c49ba70827b7",
+         "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+         "gender/sub_score_v4_English_heard.txt": "754eb4e3f8bcc662db8e082f97def050a9021aae1bbc7703d1fa2b9f0f18e9c6",
+         "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"},
+    ZE: {"no_gender/sub_score_v4_English_heard.txt": "44e2781f5673e318318c7662a2cc4feb28f347557db8288a18cbe2cbac5af69c",
+         "no_gender/sub_score_v4_Bangla_unheard.txt": "36056e7e8d9764ad16535e0d158f849a45e238180f8360df46105c654739f703",
+         "gender/sub_score_v4_English_heard.txt": "73e485fd8803a2f897974257f77bb45c6319d9f8466ca6fd067af2f48e6964db",
+         "gender/sub_score_v4_Bangla_unheard.txt": "4989b609f729bf718ad29c8386e7ad74e7c15d74e533628a8e005bc9e7741785"},
+}
+
+
+def members(p):
+    with zipfile.ZipFile(p) as z:
+        return {n: z.read(n) for n in z.namelist()}
+
+
+def find_ref(name):
+    """The zip of 13/11 if attached / in FF_DATA/05_scores / FF_REF_DIR (optional; only for the Spearman report of re-runs)."""
+    cands = [q for k in range(1, 7) for q in sorted(IN.glob("/".join(["*"] * k) + "/" + name))] if IN.is_dir() else []
+    cands += [d / name for d in score_dirs()] + ([Path(os.environ["FF_REF_DIR"]) / name] if os.environ.get("FF_REF_DIR") else [])
+    return next((q for q in cands if q.is_file()), None)
+
+
+import io
+import pandas as pd
+REPORT["zips"] = {}
+for zn in (ZU, ZE):
+    got = members(TREE / PZ / zn)
+    same = {n: hashlib.sha256(got.get(n, b"")).hexdigest() == h for n, h in EXPECT[zn].items()}
+    rec = {"sha256_zip": sha256(TREE / PZ / zn), "members_identical_to_13_54": same, "member_order": list(got)}
+    print(f"  {zn}: zip sha256 {rec['sha256_zip'][:16]} (zip bytes hold the build time); members identical to 13/11: {same}", flush=True)
+    ref = find_ref(zn)
+    if ref is not None and not all(same.values()):
+        rz = members(ref); rec["vs_reference"] = {}
+        for n in EXPECT[zn]:
+            a = pd.read_csv(io.BytesIO(got[n]), sep=" ", header=None, names=["pid", "s"], dtype={"pid": str}).set_index("pid").s
+            b = pd.read_csv(io.BytesIO(rz[n]), sep=" ", header=None, names=["pid", "s"], dtype={"pid": str}).set_index("pid").s.reindex(a.index)
+            rec["vs_reference"][n] = {"spearman": round(float(a.corr(b, method="spearman")), 6), "max_abs_diff": float((a - b).abs().max())}
+        print(f"    vs {ref}: {rec['vs_reference']}", flush=True)
+    REPORT["zips"][zn] = rec
+    if STRICT:
+        assert all(same.values()) and sorted(got) == sorted(EXPECT[zn]), f"{zn}: members differ from the 13/11 build: {same}"
+    shutil.copy2(TREE / PZ / zn, WORK / zn)
+shutil.copy2(TREE / "Experiment/ENFUSE-U/out/posteval_FACTOR_ENFUSE_c5rl.txt", WORK / "posteval_FACTOR_ENFUSE_c5rl.txt")
+shutil.copy2(TREE / "Experiment/POSTEVAL-01/manifest.json", WORK / "posteval_manifest.json")
+(WORK / "a_factor_report.json").write_text(json.dumps(REPORT, indent=1), encoding="utf-8")
+print("outputs:", [p.name for p in sorted(WORK.glob("*.zip"))], "-> /kaggle/working (the next stages read posteval_FACTOR_ENFUSE_c5rl.zip)", flush=True)
+
+# <<<FF-CELL>>>

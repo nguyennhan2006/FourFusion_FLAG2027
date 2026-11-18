@@ -1,0 +1,3 @@
+# Keep every byte as built: sha256 of stage.ipy, original/* and decoded/* are recorded in stage.json / SOURCE.json / DECODED.json.
+# The embedded rfs_train.py / core files have CRLF line ends on purpose (byte-exact copies of what ran).
+* -text

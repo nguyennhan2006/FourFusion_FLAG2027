@@ -1,0 +1,167 @@
+{
+ "id": "t184_report",
+ "group": "40_R_family",
+ "title": "FACTOR-01 gate report (CPU): nested choice of the RFX arm on SAFE-04, decision 'RFX = RFS a0 + add [f_c5s, v_rl]' (evidence)",
+ "kind": "train",
+ "role_in_1354": "evidence",
+ "optional": true,
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 5,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "phantrnhuyntrn/flag-2027-nb-184-factor-report",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/18_flag-2027-nb-184-factor-report.ipynb",
+  "notebook_md5": "c7b54a775ce9c57bd7b16285931339f2",
+  "notebook_sha256": "b92faf9a9fc01682b21e78e75efabc98abaca0071fecb5f2ce650b41aad39cf6",
+  "kapi_runs": {
+   "line": 1549,
+   "time": "2026-11-13 10:04",
+   "notebook_md5_pushed": "3bcb7ce1495f194756b9314ce32da588",
+   "is_last_push_of_kernel": true
+  },
+  "builder": "kaggle/build_flag174.py 7 + Experiment/FACTOR-01/run.py (sha256 818147c18c4bc973..., identical to the embedded copy); kaggle/sat_push.sh 184 (lines 994-1003)",
+  "original_notebook": "original/18_flag-2027-nb-184-factor-report.redacted.ipynb",
+  "redacted": true,
+  "redactions": [
+   {
+    "cell": 4,
+    "kind": "dev-exclusion",
+    "what": "member Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip removed from the code zip CODE_B64 (other members copied byte for byte)"
+   }
+  ],
+  "second_source": {
+   "file": "original/staging/flag-2027-nb-184-factor-report.redacted.ipynb",
+   "derived_from": "NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-184-factor-report_xj6ye6od/flag-2027-nb-184-factor-report.ipynb",
+   "md5": "3bcb7ce1495f194756b9314ce32da588",
+   "note": "exact push staging copy (md5 = kapi_runs); code cells identical, gives the same stage.ipy"
+  },
+  "private_exact_copy": "exact notebook(s) embed the dev score zip: kept outside git in repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/ and in the E: package; move to private storage shared only with the organisers"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p"
+  },
+  {
+   "artifact": "datasets/hthlin/flag2027-aux-voice-feats-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-e2e-dev-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-eda-bundle-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p"
+  },
+  {
+   "artifact": "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p"
+  },
+  {
+   "artifact": "datasets/quynhnhu82/flag2027-feats-ls-c5s-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-screen2-p"
+  },
+  {
+   "artifact": "datasets/dnq1209/flag2027-feats-tap01-voice-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-t3s01-tables-p",
+   "resolve": "saved_only",
+   "resolve_why": "evidence stage: reportt3s-style code may read the trT3S_* columns, which only the frozen dataset holds (FLAG_167 runs not rebuildable); t219_dumpv4 uses the t3s01_trca export instead. 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)"
+  },
+  {
+   "artifact": "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p1"
+  },
+  {
+   "artifact": "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p2"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-184-factor-report",
+  "exports": {}
+ },
+ "env": {},
+ "run_params_cell0": {
+  "LAB_FOLDS": "",
+  "LID_STRICT": "1",
+  "T3S": "1",
+  "CT_R2_ONLY": "CA",
+  "T3S_PER_GPU": "1",
+  "NOREL": "1"
+ },
+ "smoke_env": {
+  "FL3Z_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "pip_calls": [],
+ "variant": {},
+ "forbidden_inputs": [],
+ "post_checks": [],
+ "skip_with": [
+  "04_run_outputs/flag-2027-nb-184-factor-report"
+ ],
+ "verify": [
+  {
+   "file": "e2e_out/factor_report.txt",
+   "sha256": "115ea47bf0fbccb19a076a8f50ec36146c4631c942c97cb153e6cda16252f795",
+   "check": "content",
+   "note": "CPU report: identical text expected when the two 183 outputs and the wiring datasets are identical"
+  },
+  {
+   "file": "e2e_out/factor_summary.json",
+   "sha256": "3d36991c3c5d68afd4a340738210fc4a1534657b37aa6be138aac93e40fc3b62",
+   "check": "content",
+   "note": "as above"
+  }
+ ],
+ "stage_ipy_sha256": "7689f728a007dece7e20a410b87f42eda7f37188088ff37b2a62e7125cae40e0",
+ "stage_ipy_bytes": 347646,
+ "stage_ipy_cells": 9,
+ "rebuild": "python stages/40_R_family/_wpf_tools.py check  (code cells of origin.original_notebook, CRLF -> LF, patches in order, joined by '\\n# <<<FF-CELL>>>\\n')",
+ "notes": [
+  "Evidence only: the FACTOR-01 gate passed on SAFE-04 validation and selected c5rl. Saved report (e2e_out/factor_report.txt, E: package): '(a) SEL - U_a0: ... mean +0.37, 4/5 ... -> PASS', '(b) R_SEL - R_a0: ... mean +1.30, 5/5 ... -> PASS', 'best arm over the 5 folds: c5rl (mean g EER 25.32, a0 25.98)', 'GATE (a and b): PASS -> step 3 (final RFX = c5rl, Evaluation path)'. It is the compliance record that c5rl was chosen on validation, not on Evaluation scores.",
+  "Reads the frozen SAFE-04 tables of ngnnguynchn/flag2027-e2e-dev-p and several wiring datasets (cc5-oof, dsel02-oof, facelora03-tables, lab-avfull, t3s01-tables, feats-scout-wsvrdn); e2e-dev also holds dev-phase components (components_dev.npz) whose presence the original code asserts (DESIGN 2.8, G18).",
+  "Identity linkage constant (fixer 18/11): the decoded kaggle/build_l0_notebooks.py lines 92 and 1309 hold OVERLAP = {'v1_complete:shaukat_tarin', 'v2_complete:id0073'} ('# persons also in v4 (SET-07)'), i.e. a named MAV-Celeb person and an id linked to the organisers' anonymised v4 set; Experiment/SET-07/overlap.py derived it partly from dev faces (top20_cos_dev). SAFE-04/lab_streams.py imports it (PERSONS = MAV persons minus OVERLAP), e2e_lib.mav_flagged imports lab_streams, so it is on the path of this stage. Cross-reference: WP-B stage 12_rows/r07_overlap (train-only re-derivation) and docs/COMPLIANCE_NOTES.md; DESIGN G17."
+ ],
+ "todo": [
+  "Exact notebook (E: package copy md5 c7b54a77..., push staging md5 3bcb7ce1...) embeds the dev score zip; only the redacted copy is in the repo. Keep an exact copy in private storage shared with the organisers (today: repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/, git-ignored, and the E: package).",
+  "USER DECISION before the repo is public: publishing the OVERLAP constant (identity linkage, DESIGN G17) inside the embedded code (CODE_B64 of original/*.redacted.ipynb and the decoded copies); declare it in docs/COMPLIANCE_NOTES.md either way.",
+  "WP-A: configs/data_map.json datasets/ngnnguynchn/flag2027-e2e-dev-p holds dev-phase files (e2edev/components_dev.npz, e2edev/ref/submission_v{9,11,12}/...) and should carry dev_data: true (DESIGN 2.8).",
+  "Private storage: copy the exact notebook(s) of this stage to FF_DATA/_private_originals/t184_report/ (runner/check_stage.py looks there and in $FF_PRIVATE/t184_report/), record the md5 there, then point original/SOURCE.json derived_from at that location; repo/_staging_backup/ must not be published.",
+  "Requirement-1 exception (evidence only, not in the 13.54 numbers): datasets/ngnnguynchn/flag2027-t3s01-tables-p is taken frozen (resolve: saved_only); its producing FLAG_167 runs cannot be rebuilt (staging folders empty). 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)"
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": true,
+  "why": "the lab modules decoded from CODE_B64 scan the literal /kaggle/input: kaggle/build_l0_notebooks.py line 143 (LOAD cell, lid_strict.json fallback), Experiment/T3ENC-01/run.py lines 33-34 (lid_strict.json), CLEANTUNE-01/run.py lines 168-182 and 850 (_find / _find_all), FACELORA-03/run.py 53-54, SCALE-CC-01/run.py 32-33, DSEL-02/run.py 53-54, DSEL-03/run.py 75-76, VOICELORA-01/run.py 48-49, AUXP-01/run.py 34, IBLORA-01/run.py 30 (same modules as WP-G's e112f1sx)"
+ }
+}

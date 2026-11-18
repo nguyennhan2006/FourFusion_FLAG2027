@@ -1,0 +1,181 @@
+{
+ "id": "t160c",
+ "group": "20_features",
+ "title": "FLAG_160c: Whisper-large-v3 for VoxCeleb2 / VoxBlink (odd chunks of the 3 s audio cache)",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 2,
+  "minutes_original": 122,
+  "internet": true,
+  "secrets": []
+ },
+ "origin": {
+  "run": "phuonggmaii/flag-2027-nb-160c-whv3",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/10_flag-2027-nb-160c-whv3.ipynb",
+  "notebook_md5": "16a7be234775b34bf7fdb0e0f56d96c2",
+  "push": {
+   "kapi_runs_line": 1114,
+   "time": "2026-11-03 16:09",
+   "kernel": "phuonggmaii/flag-2027-nb-160c-whv3",
+   "notebook_md5": "5a495a051f401d25d377080acbf6c93a",
+   "gpu": true,
+   "datasets": [
+    "ngnnguynchn/flag2027-raw-v4-p",
+    "chnnhnnguyn/external-data-mavceleb",
+    "ngnnguynchn/flag2027-ext-meta-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "duongphihoang/flag2027-audio-cache-p"
+   ],
+   "kernels": [],
+   "secrets": []
+  },
+  "builder": "kaggle/build_flag160.py",
+  "original_copy": "original/10_flag-2027-nb-160c-whv3.ipynb",
+  "release_equivalent": "release/flag2027_e2e/code/t160c.ipy (sha256 99704a27edc3d64c...): URL + noup",
+  "original_sha256": "3e993966118c00b46610f1e420b25afc638aa8a850c4468fe9dc66b25b5003be"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  },
+  {
+   "artifact": "datasets/duongphihoang/flag2027-audio-cache-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ext-meta-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "exclude": [
+    "dev_set.zip",
+    "dev_set"
+   ],
+   "exclude_why": "dev-exclusion: this stage reads only train_set.zip / meta_file_train_set.csv; requested per-input mount filter (repo_map/build/WP-D.md H8; runner/ffcore.py build_vin applies only the data_map 'exclude' today)"
+  }
+ ],
+ "inputs_dropped": [],
+ "outputs": {
+  "kernel": "notebooks/phuonggmaii/flag-2027-nb-160c-whv3",
+  "exports": {
+   "datasets/phuonggmaii/flag2027-feats-whv3-c-p": "feats_whv3_c"
+  },
+  "main_folder": "feats_whv3_c",
+  "private": true,
+  "licence": "VoxBlink-derived: features computed from VoxBlink media (CC BY-NC-SA 4.0, no redistribution) next to VoxCeleb2-derived features; private, shared only with the organisers through FF_DATA, never public and never in the repository"
+ },
+ "env": {
+  "FLAG_SPLITS": "train"
+ },
+ "smoke_env": {
+  "FLAG_SMOKE": "1",
+  "FLAG_SMOKE_ROWS": "6",
+  "WH_AUX_MAX": "64"
+ },
+ "patches": [
+  {
+   "old": "os.environ['WH_UPLOAD'] = 'phuonggmaii/flag2027-feats-whv3-c-p'",
+   "new": "# FF: no upload to a Kaggle dataset (the output becomes an artifact). Original: os.environ['WH_UPLOAD'] = 'phuonggmaii/flag2027-feats-whv3-c-p'",
+   "count": 1,
+   "type": "upload",
+   "why": "the original run uploaded its output to a Kaggle dataset; here the output is a pipeline artifact (as release/flag2027_e2e/stages.py noup)",
+   "effect": "none"
+  },
+  {
+   "old": "SPLIT_FILTER = None            # e.g. [\"no_gender/English\"]; None = every split found (train + every test list)",
+   "new": "SPLIT_FILTER = [\"train\"]      # FF dev-exclusion: organiser train list only (original: None). e.g. [\"no_gender/English\"]; None = every split found (train + every test list)",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "no dev list is indexed or encoded (DESIGN §2.8; as TRAIN_ONLY of release/flag2027_e2e/stages.py:151); lanes b / c also index the 4 dev lists (durations + index_<list>.txt copies) although they encode no organiser split (WH_MODE != 'mav' sets ENCODERS = []); release/flag2027_e2e/stages.py patched lane a only",
+   "effect": "none on the train / MAV-Celeb / auxiliary arrays (each split is encoded on its own); the dev arrays and dev index files are no longer written"
+  },
+  {
+   "old": "ZIP_PREFIXES = (\"train_set\", \"dev_set\", \"eval\", \"test\")             # organiser zips unpacked when not extracted",
+   "new": "ZIP_PREFIXES = (\"train_set\", \"eval\", \"test\")                        # FF dev-exclusion: dev_set.zip is never unpacked (original: (\"train_set\", \"dev_set\", \"eval\", \"test\")). organiser zips unpacked when not extracted",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "with zipped raw data the original unpacked dev_set.zip too (then SPLIT_FILTER dropped it); now the dev archive is never read",
+   "effect": "none"
+  },
+  {
+   "old": "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "new": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+   "count": 1,
+   "type": "url",
+   "why": "Meta's link to imagebind_huge.pth is dead since 12/11/2026; same file (sha256 d6f6c22b...2157) on a pinned Hugging Face mirror, as release/flag2027_e2e/stages.py GLOBAL_PATCHES",
+   "effect": "none (same file)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [
+  "WH_UPLOAD"
+ ],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/feats_whv3_c"
+ ],
+ "verify": [
+  {
+   "file": "feats_whv3_c/vox/voice_whv3.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_whv3_c/vox2b/voice_whv3.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  },
+  {
+   "file": "feats_whv3_c/vb/voice_whv3.npy",
+   "strict": true,
+   "why": "auxiliary-source array / table of the original dataset (fatal when missing)"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 12,
+  "sha256": "71c3fcf064fd0230651c218b2642d51ea7ce6c19e75f45a502eaf81dd4ce4902",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "10_flag-2027-nb-160c-whv3.ipynb",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "t163b (RFS bundle, Experiment/RFS-01/train/assemble.py; reads no dev file)"
+ ],
+ "todo": [
+  "The Kaggle image digest of the 3/11 runs is not recorded (G15)."
+ ],
+ "verify_notes": [
+  "compare with the frozen dataset (row cosine >= 0.999; same NaN pattern of the lane); dev arrays / dev index files of the frozen dataset are not written by this stage"
+ ],
+ "saved_copy_dev_members": {
+  "saved_copy": "02_intermediate/feats_whv3_c (= package E zip, 11 members)",
+  "count": "4 dev index files (no dev array)",
+  "patterns": [
+   "*_gender_English.npy",
+   "*_gender_Bangla.npy",
+   "index_*gender_*.txt"
+  ],
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "files": [
+   "index_gender_Bangla.txt",
+   "index_gender_English.txt",
+   "index_no_gender_Bangla.txt",
+   "index_no_gender_English.txt"
+  ],
+  "files_source": "package E phuonggmaii__flag2027-feats-whv3-c-p.zip"
+ }
+}

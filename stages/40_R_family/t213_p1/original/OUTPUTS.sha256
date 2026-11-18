@@ -1,0 +1,6 @@
+# sha256 of the run output tables; the only saved copies are the ones gathered by t219: Experiment/XJF-01/out/dumpv4/sp/out/safe04/rfrc0rlab_fold*.parquet (computed 18/11)
+04d2466f69403d98905468cb44a98a9be310f1846dbdcefde73945985ea3b41f  rfs_art/rfrc0rlab_fold1.parquet
+ce431083b695db64f705babbd9d971e492d3bd243fd5823ffeff0180076537ee  rfs_art/rfrc0rlab_fold2.parquet
+38b8e6ab968e3d1f1715db2768a6ea0676ebcb1922ac3e918fd4184a23206642  rfs_art/rfrc0rlab_fold3.parquet
+a1da0887bcf77aeae298a3e389e565aebfe57f3519d70058eb2e7b51cf199f8d  rfs_art/rfrc0rlab_fold4.parquet
+bbde46377a4e9b4c8de6f14a6be36acc916beba1582b368a9316b41495cfbf12  rfs_art/rfrc0rlab_fold5.parquet

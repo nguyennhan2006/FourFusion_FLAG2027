@@ -1,0 +1,104 @@
+{
+ "stage": "c53_vox2b",
+ "run": "nguynlcnhtho/flag-2027-nb-53-scaleid",
+ "exactness": "exact-executed-copy",
+ "files": [
+  {
+   "path": "original/flag-2027-nb-53-scaleid.ipynb",
+   "copied_from": "kaggle/FLAG_53_scaleid.ipynb",
+   "bytes": 204373,
+   "md5": "ef50745327c79dbae1c08f154aa6ca4f",
+   "sha256": "0a76ff8bf4e40c55914ceebed71969640bdeda4f4332feceebbc70c9275688ea"
+  },
+  {
+   "path": "original/flag-2027-nb-53-scaleid.part0.log",
+   "copied_from": "Experiment/SCALE-ID-01/results_flag53.zip :: flag-2027-nb-53-scaleid.log (run log, JSON event list), CUT after part 0",
+   "cut_rule": "first 267 lines (CRLF) verbatim = every event up to the closing '}' of the part-0 feats_manifest print (time 29064.033420432 s), then the closing ']'; the cut-off events (lab code listing, SAFE-04 experiment, dev-scoring output of SCALE-ID-01) are not part of this stage",
+   "bytes": 39745,
+   "md5": "8ea8a7df180da3476639d802c389ff47",
+   "sha256": "f7ddd1b7d827b79f8070f5345c7e53c27c25633cf08801f3d0b3ee80da4cdf23"
+  }
+ ],
+ "notes": [],
+ "notebook_md5": "ef50745327c79dbae1c08f154aa6ca4f",
+ "push_records": [
+  {
+   "kapi_runs_line": 9,
+   "record": {
+    "time": "2026-10-11 21:49",
+    "account": "nguynlcnhtho",
+    "kernel": "nguynlcnhtho/flag-2027-nb-53-scaleid-smoke",
+    "source": "kaggle/FLAG_53_scaleid.ipynb",
+    "notebook_md5": "47963a88b4f32a0c89b8d0b070cd47b2",
+    "gpu": false,
+    "smoke": {
+     "FLAG_SMOKE": "1",
+     "VOX_SMOKE_IDS": "2",
+     "L0_STEPS": "10",
+     "L0_NETS": "1"
+    },
+    "datasets": [
+     "ngnnguynchn/flag2027-lab-data",
+     "berryyusilee/flag2027-eda-bundle",
+     "hieuhau/flag2027-e2e-dev"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  },
+  {
+   "kapi_runs_line": 13,
+   "record": {
+    "time": "2026-10-12 01:20",
+    "account": "nguynlcnhtho",
+    "kernel": "nguynlcnhtho/flag-2027-nb-53-scaleid",
+    "source": "kaggle/FLAG_53_scaleid.ipynb",
+    "notebook_md5": "ef50745327c79dbae1c08f154aa6ca4f",
+    "gpu": true,
+    "smoke": {},
+    "datasets": [
+     "ngnnguynchn/flag2027-lab-data",
+     "berryyusilee/flag2027-eda-bundle",
+     "hieuhau/flag2027-e2e-dev"
+    ],
+    "kernels": [],
+    "ok": true
+   }
+  }
+ ],
+ "builders_today": [
+  {
+   "path": "kaggle/build_e2e_lab.py",
+   "bytes": 79871,
+   "md5": "779e09644fd5f500f66762dcf707627c",
+   "sha256": "2af7c3242f72b0be4c26da48f43f1b4ea5898521cc8821e433809a8a8948dc0f",
+   "mtime_local": "2026-10-16 16:08:42"
+  },
+  {
+   "path": "kaggle/vendor_scaleid/vox2b_cell.py",
+   "bytes": 18857,
+   "md5": "d1a05ffa275bf5d3a65275a8a84ca15a",
+   "sha256": "d732b8f87d223b1f6077cd59991aba192fb47d50f629cb1c92c1ffbad5621d47",
+   "mtime_local": "2026-10-11 21:46:56"
+  },
+  {
+   "path": "kaggle/vendor_t3enc/t3enc_cell.py",
+   "bytes": 6751,
+   "md5": "9ee869ae454df33442705f6fa8a19252",
+   "sha256": "5083111e0beabcae34b3655b37ae05412bd0fa14ecdd40a5844d889b2851917a",
+   "mtime_local": "2026-10-09 18:19:28"
+  }
+ ],
+ "builders_git": "all untracked in the source repo (git status '??'); kaggle/build_eval_notebooks.py (notebook writer) is tracked + modified",
+ "evidence": [
+  "internal provenance (not shipped): NOP_BTC_2026-11-20/repo_map/DESIGN.md §4.2, §6 WP-C, §7 G2 G9 G22 G27",
+  "internal provenance (not shipped): S1 A9; S2 A13"
+ ],
+ "full_log": {
+  "source": "Experiment/SCALE-ID-01/results_flag53.zip :: flag-2027-nb-53-scaleid.log (team machine, not shipped)",
+  "bytes": 68609,
+  "md5": "acdb9786708b0f82f489f80aaddbb33b",
+  "sha256": "ecef1cd1795bec8122121199bb25eba12357f849ac3bd7dd939f3788a72e0a9b",
+  "lines": 475
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "id": "thanhhuyen11/flag-2027-nb-163i-rfsfxc5rl-eval",
+ "title": "flag-2027-nb-163i-rfsfxc5rl-eval",
+ "code_file": "flag-2027-nb-163i-rfsfxc5rl-eval.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_internet": true,
+ "machine_shape": "NvidiaTeslaT4",
+ "dataset_sources": [
+  "ngnnguynchn/flag2027-rfsfxc5rl-art-p",
+  "ngnnguynchn/flag2027-raw-v4-p",
+  "chnnhnnguyn/external-data-mavceleb",
+  "ngnnguynchn/flag2027-evalphase-p"
+ ],
+ "kernel_sources": [
+  "thanhhuyen11/flag-2027-nb-47rs-screen2-eval",
+  "thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval"
+ ],
+ "competition_sources": [],
+ "model_sources": []
+}

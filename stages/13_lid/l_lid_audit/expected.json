@@ -1,0 +1,10 @@
+{
+ "mav_w.json": "62919289f7ca53b4359ad20834d8c5079ba33e8490cbe8ae72a206272f20eb4a",
+ "n_files": 58,
+ "speakers": {
+  "mav_v1": 7,
+  "mav_v2": 23
+ },
+ "files_sha256": "76e7f50dfd9f6ac3a482d465abdab0da06210b2d2defb159f4de9481d200e220",
+ "line_ends": "sha256 of the CRLF form"
+}

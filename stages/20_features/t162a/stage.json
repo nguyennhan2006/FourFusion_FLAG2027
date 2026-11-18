@@ -1,0 +1,317 @@
+{
+ "id": "t162a",
+ "group": "20_features",
+ "title": "FLAG_162a: RF-092 recipe blocks (CLIP-L, ImageBind, SimAM 60 s, ResNet221, organiser-style ECAPA, age) for v4 train + MAV-Celeb",
+ "kind": "data",
+ "role_in_1354": "score",
+ "compute": {
+  "device": "gpu",
+  "gpus": 2,
+  "minutes_original": 434,
+  "internet": true,
+  "secrets": []
+ },
+ "origin": {
+  "run": "nguynchnngn1/flag-2027-nb-162a-rfs",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/11_flag-2027-nb-162a-rfs.ipynb",
+  "notebook_md5": "381dc98bfdc2e49c5b31f8f5c16a9b8b",
+  "push": {
+   "kapi_runs_line": 1118,
+   "time": "2026-11-03 16:24",
+   "kernel": "nguynchnngn1/flag-2027-nb-162a-rfs",
+   "notebook_md5": "ff83dd96e5dfc04cb4d0f511b7732975",
+   "gpu": true,
+   "datasets": [
+    "ngnnguynchn/flag2027-raw-v4-p",
+    "chnnhnnguyn/external-data-mavceleb",
+    "ngnnguynchn/flag2027-ext-meta-p",
+    "ngnnguynchn/flag2027-lab-data-p",
+    "ngnnguynchn/flag2027-feats-vox2b-p",
+    "ngnnguynchn/flag2027-lab-vb-p",
+    "onnhqunhh/flag2027-lora-frames-p",
+    "duongphihoang/flag2027-audio-cache-p",
+    "ngnnguynchn/flag2027-rf092-dev-emb-p"
+   ],
+   "kernels": [],
+   "secrets": []
+  },
+  "builder": "kaggle/build_flag162.py + Experiment/RFS-01/ref/flag_final_core_092.py (embedded, sha256 25abe24d...)",
+  "original_copy": "original/11_flag-2027-nb-162a-rfs.ipynb",
+  "release_equivalent": "release/flag2027_e2e/code/t162a.ipy (sha256 d79c26a042b08124...): URL + noup + TRAIN_ONLY",
+  "original_sha256": "5c38bdb3c5b87c8a476c4833fa452266ef384525c9d0a76e7b624101539fdc86"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb"
+  },
+  {
+   "artifact": "datasets/duongphihoang/flag2027-audio-cache-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ext-meta-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p"
+  },
+  {
+   "artifact": "datasets/onnhqunhh/flag2027-lora-frames-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "exclude": [
+    "dev_set.zip",
+    "dev_set"
+   ],
+   "exclude_why": "dev-exclusion: this stage reads only train_set.zip / meta_file_train_set.csv; requested per-input mount filter (repo_map/build/WP-D.md H8; runner/ffcore.py build_vin applies only the data_map 'exclude' today)"
+  }
+ ],
+ "inputs_dropped": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-rf092-dev-emb-p",
+   "why": "dev embeddings of the RF-092 reproduction, used only by the check cell 'rfs check vs RF embeddings' (skipped when absent); dev data must not be read (as release/flag2027_e2e/stages.py:203)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/nguynchnngn1/flag-2027-nb-162a-rfs",
+  "exports": {
+   "datasets/nguynchnngn1/flag2027-feats-rfs-a-p": "feats_rfs_a"
+  },
+  "main_folder": "feats_rfs_a",
+  "private": true,
+  "licence": "features of the organisers' MAV-Celeb v4 train media and of MAV-Celeb v1 / v2 (organisers' data, challenge terms); private, shared only with the organisers through FF_DATA, never in the repository"
+ },
+ "env": {
+  "FLAG_SPLITS": "train"
+ },
+ "smoke_env": {
+  "FLAG_SMOKE": "1",
+  "FLAG_SMOKE_ROWS": "6",
+  "RFS_AUX_MAX": "24"
+ },
+ "patches": [
+  {
+   "old": "os.environ['RFS_UPLOAD'] = 'nguynchnngn1/flag2027-feats-rfs-a-p'",
+   "new": "# FF: no upload to a Kaggle dataset (the output becomes an artifact). Original: os.environ['RFS_UPLOAD'] = 'nguynchnngn1/flag2027-feats-rfs-a-p'",
+   "count": 1,
+   "type": "upload",
+   "why": "the original run uploaded its output to a Kaggle dataset; here the output is a pipeline artifact (as release/flag2027_e2e/stages.py noup)",
+   "effect": "none"
+  },
+  {
+   "old": "SPLIT_FILTER = None            # e.g. [\"no_gender/English\"]; None = every split found (train + every test list)",
+   "new": "SPLIT_FILTER = [\"train\"]      # FF dev-exclusion: organiser train list only (original: None). e.g. [\"no_gender/English\"]; None = every split found (train + every test list)",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "no dev list is indexed or encoded (DESIGN §2.8; as TRAIN_ONLY of release/flag2027_e2e/stages.py:151)",
+   "effect": "none on the train / MAV-Celeb / auxiliary arrays (each split is encoded on its own); the dev arrays and dev index files are no longer written"
+  },
+  {
+   "old": "ZIP_PREFIXES = (\"train_set\", \"dev_set\", \"eval\", \"test\")             # organiser zips unpacked when not extracted",
+   "new": "ZIP_PREFIXES = (\"train_set\", \"eval\", \"test\")                        # FF dev-exclusion: dev_set.zip is never unpacked (original: (\"train_set\", \"dev_set\", \"eval\", \"test\")). organiser zips unpacked when not extracted",
+   "count": 1,
+   "type": "dev-exclusion",
+   "why": "with zipped raw data the original unpacked dev_set.zip too (then SPLIT_FILTER dropped it); now the dev archive is never read",
+   "effect": "none"
+  },
+  {
+   "old": "https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth",
+   "new": "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth",
+   "count": 2,
+   "type": "url",
+   "why": "Meta's link to imagebind_huge.pth is dead since 12/11/2026; same file (sha256 d6f6c22b...2157) on a pinned Hugging Face mirror, as release/flag2027_e2e/stages.py GLOBAL_PATCHES",
+   "effect": "none (same file)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [
+  "RFS_UPLOAD"
+ ],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/feats_rfs_a"
+ ],
+ "verify": [],
+ "stage_ipy": {
+  "cells": 12,
+  "sha256": "58eaf49d2d036f0e57f5144d1743513843a1440a562cdbb7843cc55f73a5376b",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "11_flag-2027-nb-162a-rfs.ipynb",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "t163b (RFS bundle, Experiment/RFS-01/train/assemble.py; reads no dev file)"
+ ],
+ "todo": [
+  "The Kaggle image digest of the 3/11 runs is not recorded (G15)."
+ ],
+ "verify_notes": [
+  "compare with the frozen dataset (row cosine >= 0.999; same NaN pattern of the lane); dev arrays / dev index files of the frozen dataset are not written by this stage"
+ ],
+ "post_checks": [
+  {
+   "file": "feats_rfs_a/feats_manifest.json",
+   "json_path": "files",
+   "equals": {
+    "ext_v1_complete_face_rfclip.npy": [
+     7580,
+     768
+    ],
+    "ext_v1_complete_face_rfibf.npy": [
+     7580,
+     1024
+    ],
+    "ext_v1_complete_voice_rfibv.npy": [
+     19556,
+     1024
+    ],
+    "ext_v1_complete_voice_rfr221.npy": [
+     19556,
+     256
+    ],
+    "ext_v1_complete_voice_rfsam.npy": [
+     19556,
+     256
+    ],
+    "ext_v1_complete_voice_rfxv.npy": [
+     19556,
+     192
+    ],
+    "ext_v2_complete_face_rfclip.npy": [
+     8953,
+     768
+    ],
+    "ext_v2_complete_face_rfibf.npy": [
+     8953,
+     1024
+    ],
+    "ext_v2_complete_voice_rfibv.npy": [
+     20715,
+     1024
+    ],
+    "ext_v2_complete_voice_rfr221.npy": [
+     20715,
+     256
+    ],
+    "ext_v2_complete_voice_rfsam.npy": [
+     20715,
+     256
+    ],
+    "ext_v2_complete_voice_rfxv.npy": [
+     20715,
+     192
+    ],
+    "face_rfagef_train.npy": [
+     6485,
+     10
+    ],
+    "face_rfclip_train.npy": [
+     6485,
+     768
+    ],
+    "face_rfibf_train.npy": [
+     6485,
+     1024
+    ],
+    "voice_rfagev_train.npy": [
+     6485,
+     4
+    ],
+    "voice_rfibv_train.npy": [
+     6485,
+     1024
+    ],
+    "voice_rfr221_train.npy": [
+     6485,
+     256
+    ],
+    "voice_rfsam_train.npy": [
+     6485,
+     256
+    ],
+    "voice_rfxv_train.npy": [
+     6485,
+     192
+    ]
+   },
+   "why": "every v4-train and MAV-Celeb v1 / v2 array of the original run with its shape (20 arrays; values from package E nguynchnngn1__flag2027-feats-rfs-a-p.zip :: feats_manifest.json (created 2026-11-03 16:38), dev entries left out). A failed encoder (recorded in 'failed' and skipped) or a skipped MAV-Celeb source (ExtRows error only logged) leaves an array out, so the stage fails here instead of hours later downstream"
+  },
+  {
+   "file": "feats_rfs_a/feats_manifest.json",
+   "json_path": "external",
+   "equals": {
+    "v1_complete": [
+     7580,
+     19556
+    ],
+    "v2_complete": [
+     8953,
+     20715
+    ]
+   },
+   "why": "MAV-Celeb v1 / v2 [face rows, voice rows] of the original manifest"
+  },
+  {
+   "file": "feats_rfs_a/feats_manifest.json",
+   "json_path": "splits/train",
+   "equals": 6485,
+   "why": "organiser train rows"
+  }
+ ],
+ "saved_copy_dev_members": {
+  "saved_copy": "02_intermediate/feats_rfs_a (= package E zip, 60 members)",
+  "count": "32 dev arrays + 4 dev index files",
+  "patterns": [
+   "*_gender_English.npy",
+   "*_gender_Bangla.npy",
+   "index_*gender_*.txt"
+  ],
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "files": [
+   "face_rfagef_gender_Bangla.npy",
+   "face_rfagef_gender_English.npy",
+   "face_rfagef_no_gender_Bangla.npy",
+   "face_rfagef_no_gender_English.npy",
+   "face_rfclip_gender_Bangla.npy",
+   "face_rfclip_gender_English.npy",
+   "face_rfclip_no_gender_Bangla.npy",
+   "face_rfclip_no_gender_English.npy",
+   "face_rfibf_gender_Bangla.npy",
+   "face_rfibf_gender_English.npy",
+   "face_rfibf_no_gender_Bangla.npy",
+   "face_rfibf_no_gender_English.npy",
+   "index_gender_Bangla.txt",
+   "index_gender_English.txt",
+   "index_no_gender_Bangla.txt",
+   "index_no_gender_English.txt",
+   "voice_rfagev_gender_Bangla.npy",
+   "voice_rfagev_gender_English.npy",
+   "voice_rfagev_no_gender_Bangla.npy",
+   "voice_rfagev_no_gender_English.npy",
+   "voice_rfibv_gender_Bangla.npy",
+   "voice_rfibv_gender_English.npy",
+   "voice_rfibv_no_gender_Bangla.npy",
+   "voice_rfibv_no_gender_English.npy",
+   "voice_rfr221_gender_Bangla.npy",
+   "voice_rfr221_gender_English.npy",
+   "voice_rfr221_no_gender_Bangla.npy",
+   "voice_rfr221_no_gender_English.npy",
+   "voice_rfsam_gender_Bangla.npy",
+   "voice_rfsam_gender_English.npy",
+   "voice_rfsam_no_gender_Bangla.npy",
+   "voice_rfsam_no_gender_English.npy",
+   "voice_rfxv_gender_Bangla.npy",
+   "voice_rfxv_gender_English.npy",
+   "voice_rfxv_no_gender_Bangla.npy",
+   "voice_rfxv_no_gender_English.npy"
+  ],
+  "files_source": "package E nguynchnngn1__flag2027-feats-rfs-a-p.zip"
+ }
+}

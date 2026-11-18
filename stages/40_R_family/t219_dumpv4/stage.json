@@ -1,0 +1,205 @@
+{
+ "id": "t219_dumpv4",
+ "group": "40_R_family",
+ "title": "Base score U = F1s' out-of-fold + RFX out-of-fold on the held-out v4 train cells (12 896 trials) for the three RFX replicates -> xjfdump_v4.parquet (source of sigma 5.0983 / 3.8376)",
+ "kind": "train",
+ "role_in_1354": "score",
+ "optional": false,
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 2,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4",
+  "exactness": "exact-staging",
+  "source_file": "NOP_BTC_2026-11-20/repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/kapi_flag-2027-nb-219-fusenet-dumpv4_a1nyz4zf/flag-2027-nb-219-fusenet-dumpv4.ipynb",
+  "notebook_md5": "6ad5b31c797b6323120eec0cc4dd727d",
+  "notebook_sha256": "7a84b0ccaad7beea633e7cbd291c91067e1b44515493c151409a05622bac22d8",
+  "kapi_runs": {
+   "line": 1887,
+   "time": "2026-11-16 11:00",
+   "notebook_md5_pushed": "6ad5b31c797b6323120eec0cc4dd727d",
+   "is_last_push_of_kernel": true
+  },
+  "builder": "kaggle/build_flag174.py 20 (lines 136-141, FLAG_219_fusenet_report.ipynb) + Experiment/FUSENET-01/run.py (dumpv4 branch); kaggle/sat_push.sh 219 (lines 1276-1293, FMODE=dumpv4)",
+  "original_notebook": "original/flag-2027-nb-219-fusenet-dumpv4.redacted.ipynb",
+  "redacted": true,
+  "redactions": [
+   {
+    "cell": 4,
+    "kind": "dev-exclusion",
+    "what": "member Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip removed from the code zip CODE_B64 (other members copied byte for byte)"
+   }
+  ],
+  "private_exact_copy": "exact notebook(s) embed the dev score zip: kept outside git in repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/ ; move to private storage shared only with the organisers"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-eda-bundle-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-e2e-dev-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  },
+  {
+   "artifact": "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p"
+  },
+  {
+   "artifact": "datasets/quynhnhu82/flag2027-feats-ls-c5s-p"
+  },
+  {
+   "artifact": "datasets/dnq1209/flag2027-feats-tap01-voice-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-screen2-p"
+  },
+  {
+   "artifact": "datasets/hthlin/flag2027-aux-voice-feats-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p"
+  },
+  {
+   "artifact": "datasets/ff/flag2027-t3s01-trca-p",
+   "mount": "datasets/ngnnguynchn/flag2027-t3s01-tables-p",
+   "use": "T3S-01 job tables ct01r2{farl,clip,b3s,c5s}_fold<s> (row keys + trCA), made by stage t3s01_trca from ct02s-r2ca-tables-p; mounted at the original path so the verbatim gather cell is unchanged",
+   "replaces": "datasets/ngnnguynchn/flag2027-t3s01-tables-p",
+   "replaced": "18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)"
+  },
+  {
+   "artifact": "notebooks/phantrnhuyntrn/flag-2027-nb-213-seedrep-p1"
+  },
+  {
+   "artifact": "notebooks/phantrnhuyntrn/flag-2027-nb-213-seedrep-p2"
+  },
+  {
+   "artifact": "notebooks/phantrnhuyntrn/flag-2027-nb-216-seedrep3"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4",
+  "exports": {}
+ },
+ "env": {},
+ "run_params_cell0": {
+  "LAB_FOLDS": "",
+  "LID_STRICT": "1",
+  "T3S": "1",
+  "CT_R2_ONLY": "CA",
+  "T3S_PER_GPU": "1",
+  "NOREL": "1",
+  "FUSENET_MODE": "dumpv4"
+ },
+ "smoke_env": {
+  "FL3Z_SMOKE": "1"
+ },
+ "patches": [
+  {
+   "old": "for n in (\"fusenet_report.txt\", \"fusenet_summary.json\"):\n    shutil.copy(SP / \"out/safe04\" / n, OUTD / n)\n",
+   "new": "for n in (\"fusenet_report.txt\", \"fusenet_summary.json\"):\n    if os.environ.get(\"FUSENET_MODE\") == \"dumpv4\" and not (SP / \"out/safe04\" / n).exists():   # FF bugfix (CHANGES.md): dumpv4 writes xjfdump_* and returns before the report; the original run stopped here with FileNotFoundError after its outputs were written\n        continue\n    shutil.copy(SP / \"out/safe04\" / n, OUTD / n)\n",
+   "count": 1,
+   "why": "in FUSENET_MODE=dumpv4, Experiment/FUSENET-01/run.py report() writes xjfdump_v4.parquet / xjfdump_persons.json / xjfdump_report.txt and returns without fusenet_report.txt; the original run (16/11 04:00 UTC) therefore ended with FileNotFoundError at this copy, AFTER its outputs were written (log line 'FileNotFoundError ... fusenet_report.txt'), and Kaggle marked it ERROR. Skipping the two missing report files lets the stage finish; nothing that is computed changes",
+   "type": "bugfix",
+   "effect_on_numbers": "none",
+   "cell": 11,
+   "line_in_cell": 13,
+   "side_effect": "the rest of the 'RFSTUNE-01 report' cell (one print) and the whole 'summary' cell now run; in the original run they never ran because this cell died. The summary cell rewrites e2e_out/progress.json with five more keys (gpu, torch, lab_data, e2e, finished), so this stage's progress.json differs from the saved one (Experiment/XJF-01/out/dumpv4/e2e_out/progress.json, sha256 f28b4783..., keys code_md5 / done / exp / files / seconds / split; listed in original/OUTPUTS.sha256). No number changes; only the xjfdump_* files are read downstream (WP-I dp_sigma reads xjfdump_v4.parquet) (recorded by the fixer 18/11)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "pip_calls": [],
+ "variant": {},
+ "forbidden_inputs": [],
+ "post_checks": [],
+ "skip_with": [
+  "03_checkpoints/sigma_source"
+ ],
+ "verify": [
+  {
+   "file": "sp/out/safe04/xjfdump_v4.parquet",
+   "bytes": 681816,
+   "sha256": "9f0a5af468d1f973e1ff33264ff10239cf21f1813a0f370740e8c2d8e02f7a09",
+   "check": "values",
+   "saved_copy": "Experiment/XJF-01/out/dumpv4/sp/out/safe04/xjfdump_v4.parquet",
+   "note": "CPU, logistic fits only: equal values expected on identical input tables; file bytes may differ with another pyarrow version. 12 896 trials (v4 g 6 448, v4 ng 6 448); columns fold, data, protocol, y, pf, pv, fi, vi, cell, vp, fp, is_gp, F1s|oof, U_c0r, U_c0s, U_c0t"
+  },
+  {
+   "file": "sp/out/safe04/xjfdump_persons.json",
+   "bytes": 5157,
+   "sha256": "d6ae5b56ad865b9be9104e1e69a2193f15ea07d3707068359e56504578dd7528",
+   "check": "content",
+   "saved_copy": "Experiment/XJF-01/out/dumpv4/sp/out/safe04/xjfdump_persons.json"
+  },
+  {
+   "file": "sp/out/safe04/xjfdump_report.txt",
+   "bytes": 1154,
+   "sha256": "f48ab778076cec322dfd90f7f82c5878aaec1366ddf6085a6f3c8412fd52e96a",
+   "check": "content",
+   "saved_copy": "Experiment/XJF-01/out/dumpv4/sp/out/safe04/xjfdump_report.txt",
+   "note": "std per cell and replicate (ddof 0): v4 ng 5.1007 / 5.0980 / 5.0961, v4 g 3.8331 / 3.8481 / 3.8314; sigma = mean of the full-precision values (5.098270 / 3.837570 -> 5.0983 / 3.8376) is computed by WP-I stage dp_sigma"
+  }
+ ],
+ "stage_ipy_sha256": "8f0de824b34a79178a728a9e4b56d04e31c9453e86e41e221411bbc6de9cbb59",
+ "stage_ipy_bytes": 419070,
+ "stage_ipy_cells": 9,
+ "rebuild": "python stages/40_R_family/_wpf_tools.py check  (code cells of origin.original_notebook, CRLF -> LF, patches in order, joined by '\\n# <<<FF-CELL>>>\\n')",
+ "notes": [
+  "Original run phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4 (CPU, start 2026-11-16 04:00:43 UTC): outputs written at ~90 s, then FileNotFoundError on fusenet_report.txt -> status ERROR -> notebook deleted on Kaggle (notebook rule). Its /kaggle/working was downloaded before deletion: Experiment/XJF-01/out/dumpv4/ (log sha256 7f5cf325..., copied to original/run_output/).",
+  "Proof that the staging notebook is the code that ran: the 61 code files decoded from it (CODE_B64 zip + the 22 run.py blobs of the report cell) are md5-identical to the 61 files of the run's own lab/ folder in Experiment/XJF-01/out/dumpv4/lab/ (checked 18/11).",
+  "Kernel inputs: the three seed replicates t213_p1 (rfrc0r), t213_p2 (rfrc0s), t216_p3 (rfrc0t); U uses only their t3 / nf / nv streams (FUSENET-01 STR), so the LoRA C1 version does not enter sigma (S7 D11).",
+  "Saved artifact (03_checkpoints/sigma_source), layout fixed 18/11: sp/out/safe04/xjfdump_v4.parquet (consumer: WP-I dp_sigma, found by rglob), sp/out/safe04/xjfdump_persons.json, sp/out/safe04/xjfdump_report.txt and the run log flag-2027-nb-219-fusenet-dumpv4.log. Do NOT upload the whole team copy Experiment/XJF-01/out/dumpv4/: its lab/ folder holds lab/Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip (91 043 bytes, the dev-phase score zip removed from this stage's notebook). A fresh run of this stage decodes the redacted CODE_B64, so its lab/ has no dev zip.",
+  "The dev score zip was in the code zip only because the builder packs Experiment/CLEAN-EN-01/ for CLEANTUNE-01's dev zip step (CLEANTUNE-01/run.py line 635, zip_ct()); the FUSENET-01 dumpv4 path never calls it, so removing it changes nothing (EXP_CODE / CODE_MD5 still list its md5 and are only printed or compared).",
+  "Identity linkage constant (fixer 18/11): the decoded kaggle/build_l0_notebooks.py lines 92 and 1309 hold OVERLAP = {'v1_complete:shaukat_tarin', 'v2_complete:id0073'} ('# persons also in v4 (SET-07)'), i.e. a named MAV-Celeb person and an id linked to the organisers' anonymised v4 set; Experiment/SET-07/overlap.py derived it partly from dev faces (top20_cos_dev). SAFE-04/lab_streams.py imports it (PERSONS = MAV persons minus OVERLAP), e2e_lib.mav_flagged imports lab_streams, so it is on the path of this stage. Cross-reference: WP-B stage 12_rows/r07_overlap (train-only re-derivation) and docs/COMPLIANCE_NOTES.md; DESIGN G17.",
+  "datasets/ngnnguynchn/flag2027-t3s01-tables-p is NOT wiring for this stage (correction 18/11): CLEANTUNE-01/run.py merge_t3s (lines 654-673) builds ct01r2_fold<s> from its four job tables (row keys + every tr* column), and FUSENET-01/run.py report() takes F1S = S6 + V11_T3 + ['trCA'] from that table, D['U_<rep>'] = D['F1s|oof'] + D['R_<rep>|oof'] -> xjfdump_v4.parquet -> sigma. Light check 18/11: the six key columns and trCA of its ct01r2farl_fold1..5 equal tables/ct01r2_fold1..5 of ngnnguynchn/flag2027-ct02s-r2ca-tables-p exactly (max |diff| 0.0; 7 406 / 7 658 / 7 598 / 7 176 / 7 272 rows), and the E: package copy equals the gathered copy in Experiment/XJF-01/out/dumpv4/sp/out/safe04/; the trT3S_* columns are not used by the dumpv4 path."
+ ],
+ "todo": [
+  "Exact notebook (push staging md5 6ad5b31c797b6323120eec0cc4dd727d = kapi_runs line 1887) embeds the dev score zip; only the redacted copy is in the repo. Store the exact copy in private storage shared with the organisers (today: repo/_staging_backup/_PRIVATE_NOT_FOR_PUBLICATION/, git-ignored).",
+  "ngnnguynchn/flag2027-e2e-dev-p is mounted (frozen SAFE-04 reference tables; the code also asserts the presence of components_dev.npz, a dev-phase file: wiring, DESIGN 2.8 / G1).",
+  "USER DECISION before the repo is public: publishing the OVERLAP constant (identity linkage, DESIGN G17) inside the embedded code (CODE_B64 of original/*.redacted.ipynb and the decoded copies); declare it in docs/COMPLIANCE_NOTES.md either way.",
+  "WP-A: configs/data_map.json datasets/ngnnguynchn/flag2027-e2e-dev-p holds dev-phase files (e2edev/components_dev.npz, e2edev/ref/submission_v{9,11,12}/...) and should carry dev_data: true (DESIGN 2.8).",
+  "Private storage: copy the exact notebook(s) of this stage to FF_DATA/_private_originals/t219_dumpv4/ (runner/check_stage.py looks there and in $FF_PRIVATE/t219_dumpv4/), record the md5 there, then point original/SOURCE.json derived_from at that location; repo/_staging_backup/ must not be published.",
+  "DONE 18/11 (integration fixer r1): input replaced by datasets/ff/flag2027-t3s01-trca-p (stage t3s01_trca, from ct02s-r2ca-tables-p), mounted at the original path; data_map: t3s01-tables-p now evidence-only (t184). Was: WP-A / WP-E: configs/data_map.json classes datasets/ngnnguynchn/flag2027-t3s01-tables-p as 'wiring' with producer null ('not in the 13.54 numbers'); it enters sigma (note above). Reclassify it (intermediate / checkpoint) and give it a producer: the FLAG_167 T3S-01 runs (5 fold runs + kaggle/sat_push.sh 167g, docs/DATASETS.md:133), or a CPU stage deriving the four job tables from ct02s-r2ca-tables-p with an equality check on keys + trCA against the frozen copy (the trT3S_* columns would then be absent; unused here). Correct the data_map note and the modes.json 'wiring' justification. Until then, mode (a) rebuilds ct02s-r2ca but sigma keeps the frozen trCA of this dataset.",
+  "WP-A: the 219 output entry (03_checkpoints/sigma_source) should exclude lab/ (data_map 'exclude') or carry dev_data: true if kept whole (note 'Saved artifact')."
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": true,
+  "why": "the lab modules decoded from CODE_B64 scan the literal /kaggle/input: kaggle/build_l0_notebooks.py line 143 (LOAD cell: the run log reads 'LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json'; e2e_lib.mav_flagged uses that list to choose the rows of the trRFS fits that build U, so it enters sigma), Experiment/T3ENC-01/run.py 33-34, CLEANTUNE-01/run.py 168-182 and 850, FACELORA-03/run.py 53-54, SCALE-CC-01/run.py 32-33, DSEL-02/run.py 53-54, DSEL-03/run.py 75-76, VOICELORA-01/run.py 48-49, AUXP-01/run.py 34, IBLORA-01/run.py 30 (same modules as WP-G's e112f1sx)"
+ },
+ "inputs_replaced": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-t3s01-tables-p",
+   "by": "datasets/ff/flag2027-t3s01-trca-p",
+   "mount_kept": "datasets/ngnnguynchn/flag2027-t3s01-tables-p",
+   "type": "wiring",
+   "why": "requirement 1: the frozen dataset (FLAG_167 T3S-01 runs, not rebuildable: staging folders empty) had no producing stage, yet its trCA enters U and thus sigma. The dumpv4 path reads only the row keys and trCA (merge_t3s + FUSENET-01 report F1S = S6 + V11_T3 + ['trCA']); t3s01_trca makes exactly that from ct02s-r2ca-tables-p (gather_r2ca <- t155s), with keys and trCA identical to the frozen copy (WP-F light check 18/11, max |diff| 0.0). The trT3S_* columns, unused here, are absent. Effect on numbers: none expected. 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)"
+  }
+ ]
+}

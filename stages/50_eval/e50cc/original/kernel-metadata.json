@@ -1,0 +1,25 @@
+{
+ "id": "thanhhuyen11/flag-2027-nb-50cc-e2e-eval",
+ "title": "flag-2027-nb-50cc-e2e-eval",
+ "code_file": "flag-2027-nb-50cc-e2e-eval.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_internet": true,
+ "machine_shape": "NvidiaTeslaT4",
+ "dataset_sources": [
+  "ngnnguynchn/flag2027-raw-v4-p",
+  "ngnnguynchn/flag2027-members-p",
+  "ngnnguynchn/flag2027-eda-bundle-p",
+  "ngnnguynchn/flag2027-best-v7-p",
+  "ngnnguynchn/flag2027-lab-data-p",
+  "ngnnguynchn/flag2027-cleancomp-e2e-p",
+  "ngnnguynchn/flag2027-cleancomp-final-p",
+  "ngnnguynchn/flag2027-lid-strict-p",
+  "ngnnguynchn/flag2027-evalphase-p"
+ ],
+ "kernel_sources": [],
+ "competition_sources": [],
+ "model_sources": []
+}

@@ -1,0 +1,18 @@
+print("[cell] gather_g1 1/1: the five ct01g1 fold tables of the three t154_g1 runs -> tables/ (dataset flag2027-ct02s-g1-tables-p)", flush=True)
+# = the local step `RUNS="<3 runs>" bash kaggle/sat_push.sh 111sg` (gather_tables ct01g1, kaggle/sat_push.sh:52-66, :778) as a
+# stage, same logic as gather_r2ca. Wiring only (the B0s head of t112sf0s; no number of the 13.54 zip depends on it).
+import shutil, hashlib
+from pathlib import Path
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+fs = sorted({p.name: p for p in IN.rglob("ct01g1_fold[0-9].parquet")}.values())
+print([str(p) for p in fs], flush=True)
+import os
+if os.environ.get("FF_SMOKE") == "1":      # smoke: the t154_g1 smoke runs make one fold each; t112s* stand-ins fill the rest
+    assert fs, "no fold table"; print("SMOKE: folds missing:", sorted(set(f"ct01g1_fold{k}.parquet" for k in range(1, 6)) - {p.name for p in fs}), flush=True)
+else:
+    assert len(fs) == 5, f"{len(fs)} fold tables (5 needed)"
+(OUT / "ds/tables").mkdir(parents=True, exist_ok=True)
+for p in fs:
+    shutil.copy2(p, OUT / "ds/tables" / p.name)
+    print(p.name, hashlib.sha256(p.read_bytes()).hexdigest(), flush=True)
+# <<<FF-CELL>>>

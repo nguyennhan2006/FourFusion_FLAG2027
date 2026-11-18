@@ -1,0 +1,17 @@
+{
+ "stage": "f14_av",
+ "files": [
+  {
+   "copy": "original/flag-2027-nb-14-other-image-audio-models_executed.ipynb",
+   "source": "kaggle/output/flag-2027-nb-14-other-image-audio-models (1).ipynb",
+   "obtained_by": "copy of the executed notebook (with outputs), renamed (no space / brackets)",
+   "bytes": 139997,
+   "md5": "a7796b086b7180bead3f8e0528d549f9",
+   "sha256": "42bb20144c1ad96db5326fb9807397a86cf1097392c587ab30cd19b998e4d3c2"
+  }
+ ],
+ "run": "slug unknown (web-UI run 29/09/2026; executed notebook downloaded by the team). This run skipped MAV-Celeb ('source found: False'); the MAV-Celeb subset arrays in feats_av come from a later run of the same code with MAV-Celeb attached (inferred from the feats_av manifest 2026-09-29 09:05, which lists the external rows)",
+ "evidence": [
+  "Its 9 code cells are identical to docs/book_FLAG2027/snap/kaggle/flag-2027-nb-14-other-image-audio-models-FIXED.ipynb (snapshot 17/10/2026); kaggle/flag-2027-nb-14-other-image-audio-models-FIXED.ipynb differs only by the ImageBind URL (edited 12/11/2026)."
+ ]
+}

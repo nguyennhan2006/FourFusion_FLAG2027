@@ -1,0 +1,68 @@
+print("[cell] dp_feats_layout: inputs (outputs of stages f12_eval_feats, f10_models, r08_mav_rows)", flush=True)
+# New code (no original): on the team machine the DP scripts read these 20 arrays / tables straight from <team repo>/kaggle/output/.
+# This stage rebuilds that layout, dp_feats/{feats_v2,feats_models,feats_eval,feats_ext_full}/<file>, from the producing stages.
+import hashlib, json, os, shutil
+from pathlib import Path
+IN, OUT = Path("/kaggle/input"), Path("/kaggle/working")
+assert os.environ.get("FF_STAGE_DIR"), "FF_STAGE_DIR (this stage's folder in the repo) must be set by the runner"
+SD = Path(os.environ["FF_STAGE_DIR"]).resolve()
+SPEC = json.loads((SD / "dp_features.json").read_text(encoding="utf-8"))
+MOUNT = {k: IN / a for k, a in SPEC["inputs"].items()}           # f12 / f10 / r08 -> /kaggle/input/<artifact id>
+# Strict = stop when a file differs from the submission array. Default: strict, except in FF_MODE=train (mode (a): the producing GPU
+# stages are re-run, so small differences are expected). DP_FEATS_STRICT set explicitly (0 / 1) wins. Shape / dtype are always checked.
+STRICT = (os.environ.get("DP_FEATS_STRICT") or ("0" if os.environ.get("FF_MODE") == "train" else "1")) == "1"
+print(f"  strict (stop on a byte difference): {STRICT}", flush=True)
+for k, p in MOUNT.items():
+    assert p.is_dir(), f"input {k} = {SPEC['inputs'][k]} is not mounted at {p}"
+    print(f"  {k}: {p}", flush=True)
+
+
+def sha256(p, bs=1 << 20):
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(bs), b""):
+            h.update(b)
+    return h.hexdigest()
+# <<<FF-CELL>>>
+print("[cell] dp_feats_layout: locate the 20 files and lay them out under dp_feats/", flush=True)
+import numpy as np
+DST = OUT / "dp_feats"
+rows, differ = [], []
+for f in SPEC["files"]:
+    root = MOUNT[f["from"]]
+    hits = sorted(q for q in root.rglob(f["name"]) if q.is_file())
+    if len(hits) > 1:                                              # prefer the producing run's own folder (feats_eval / feats_models / feats_ext*)
+        pref = [q for q in hits if any(part.startswith(f["hint"]) for part in q.relative_to(root).parts[:-1])]
+        hits = pref or hits
+    assert len(hits) == 1, f"{f['name']}: {len(hits)} candidates under {root}: {[str(q) for q in hits[:5]]}"
+    src = hits[0].resolve()
+    dst = DST / f["target"]
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        os.link(src, dst)                                           # hard link when the artifact store allows it, else a copy
+    except OSError:
+        shutil.copyfile(src, dst)
+    if f.get("shape") is not None:                                  # a wrong bundle (empty lab-data placeholder, float16 copy) stops here
+        a = np.load(dst, mmap_mode="r")
+        assert list(a.shape) == f["shape"] and str(a.dtype) == f["dtype"], (
+            f"{f['target']}: shape {a.shape} dtype {a.dtype} from {hits[0]}, expected {tuple(f['shape'])} {f['dtype']} (wrong source bundle?)")
+        del a
+    h = sha256(dst)
+    same = h == f["sha256"]
+    rows.append({"target": f["target"], "source": str(hits[0].relative_to(IN)), "bytes": dst.stat().st_size, "sha256": h,
+                 "sha256_of_submission_array": f["sha256"], "identical": same})
+    if not same:
+        differ.append(f["target"])
+    print(f"  {f['target']:52s} {dst.stat().st_size:>11d} B  {'== submission array' if same else 'DIFFERS from the submission array'}", flush=True)
+# <<<FF-CELL>>>
+print("[cell] dp_feats_layout: manifest", flush=True)
+man = {"stage": "dp_feats_layout", "strict": STRICT, "n_files": len(rows), "all_identical_to_submission_arrays": not differ,
+       "differ": differ, "files": rows}
+(DST / "dp_feats_manifest.json").write_text(json.dumps(man, indent=1) + "\n", encoding="utf-8")
+if differ:
+    print(f"NOTE: {len(differ)} of {len(rows)} files differ from the arrays used for the submission (expected when the producing GPU "
+          f"stages were re-run; DP scores will then differ slightly): {differ}", flush=True)
+    if STRICT:
+        raise RuntimeError("DP_FEATS_STRICT=1 and some DP feature files differ from the submission arrays")
+else:
+    print(f"all {len(rows)} files are byte-identical to the arrays used for the submission", flush=True)

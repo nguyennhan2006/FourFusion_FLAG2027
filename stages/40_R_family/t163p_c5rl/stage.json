@@ -1,0 +1,256 @@
+{
+ "id": "t163p_c5rl",
+ "group": "40_R_family",
+ "title": "RFX c5rl artifact (RFS_MODE=P): 3-seed projector with the extra blocks f_c5s + v_rl, gender probes, ImageBind centring constants, 4-stream / 29-column fusers; copies the ORIGINAL LoRA C1",
+ "kind": "train",
+ "role_in_1354": "score",
+ "optional": false,
+ "compute": {
+  "device": "gpu",
+  "gpus": 2,
+  "minutes_original": 9,
+  "internet": true,
+  "secrets": [],
+  "gpus_note": "Kaggle accelerator NvidiaTeslaT4 = T4 x2 as in the original run (log line 'mode ... cuda True gpus 2' for 163p / 183; kernel-metadata machine_shape NvidiaTeslaT4 for 213 / 216); the code uses one device (no DataParallel), one T4 is enough"
+ },
+ "origin": {
+  "run": "ngnnguynchn/flag-2027-nb-163-rfsfxc5rl-p",
+  "exactness": "exact-package",
+  "source_file": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/19_flag-2027-nb-163-rfsfxc5rl-p.ipynb",
+  "notebook_md5": "a76d465ae780484e81f7a11d2d5289d0",
+  "notebook_sha256": "ccbf5685e000c033bdb7b10f0d47b57c350fd07ab11b24e89417a3bff7c7d6e9",
+  "kapi_runs": {
+   "line": 1551,
+   "time": "2026-11-13 11:04",
+   "notebook_md5_pushed": "14fe3550a496eb742bcc4d1085000582",
+   "is_last_push_of_kernel": true
+  },
+  "builder": "kaggle/build_flag163.py (cell PIPE lines 108-118); pushed by kaggle/rfx_chain.sh (line 11 now names lorafix1, the run attached the original LoRA)",
+  "original_notebook": "original/19_flag-2027-nb-163-rfsfxc5rl-p.redacted.ipynb",
+  "redacted": true,
+  "redactions": [
+   {
+    "cell": 2,
+    "kind": "redaction",
+    "what": "string literal of the (\"train/gender.csv\", ...) entry of the embedded-file loop"
+   }
+  ],
+  "second_source": {
+   "file": "original/staging/flag-2027-nb-163-rfsfxc5rl-p.redacted.ipynb",
+   "derived_from": "NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-163-rfsfxc5rl-p_p0tbtn2y/flag-2027-nb-163-rfsfxc5rl-p.ipynb",
+   "md5": "14fe3550a496eb742bcc4d1085000582",
+   "note": "exact push staging copy (md5 = kapi_runs); code cells identical, gives the same stage.ipy"
+  },
+  "private_exact_copy": "the exact notebook embeds the organisers' meta_file_train_set.csv (train/gender.csv blob); exact copy: E: package notebooks/1_train/19_flag-2027-nb-163-rfsfxc5rl-p.ipynb and repo/_staging_backup/kapi_flag-2027-nb-163-rfsfxc5rl-p_p0tbtn2y/ (do not publish that folder)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p"
+  },
+  {
+   "artifact": "datasets/hthlin/flag2027-aux-voice-feats-p"
+  },
+  {
+   "artifact": "datasets/quynhnhu82/flag2027-feats-ls-c5s-p"
+  },
+  {
+   "artifact": "datasets/nguynchnngn1/flag2027-feats-rfs-a-p"
+  },
+  {
+   "artifact": "datasets/phanththui/flag2027-feats-rfs-b-p"
+  },
+  {
+   "artifact": "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-screen2-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-vb-p"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-rfs-bundle-p"
+  },
+  {
+   "artifact": "datasets/onnhqunhh/flag2027-rfs-lora-p",
+   "resolve": "saved_only",
+   "use": "ORIGINAL LoRA C1 (variant-defining artifact of 13.54): always the saved copy FF_DATA/03_checkpoints/rfs_lora_c1_original (or the attached Kaggle dataset), in every mode, never a re-train of t163l_orig (see ../README.md 'LoRA C1 policy')"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ngnnguynchn/flag-2027-nb-163-rfsfxc5rl-p",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p": "rfs_art"
+  }
+ },
+ "env": {},
+ "run_params_cell0": {
+  "RFS_MODE": "P",
+  "RFS_CFG": "{\"add\": [\"f_c5s\", \"v_rl\"]}",
+  "RFS_UPLOAD": "ngnnguynchn/flag2027-rfsfxc5rl-art-p"
+ },
+ "smoke_env": {
+  "FLAG_SMOKE": "1"
+ },
+ "patches": [
+  {
+   "old": "os.environ['RFS_UPLOAD'] = 'ngnnguynchn/flag2027-rfsfxc5rl-art-p'",
+   "new": "# FF: upload disabled, the output folder becomes a runner artifact (CHANGES.md). Original: os.environ['RFS_UPLOAD'] = 'ngnnguynchn/flag2027-rfsfxc5rl-art-p'",
+   "count": 1,
+   "why": "the original run uploaded its output folder to the Kaggle dataset ngnnguynchn/flag2027-rfsfxc5rl-art-p with kagglehub; here the runner keeps it as an artifact (cell 'upload' then sees RFS_UPLOAD unset and skips)",
+   "type": "upload",
+   "effect_on_numbers": "none",
+   "cell": 0,
+   "line_in_cell": 6
+  },
+  {
+   "old": "(\"train/gender.csv\", \"FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030\"), ",
+   "new": "",
+   "count": 1,
+   "why": "the embedded copy of the organisers' meta_file_train_set.csv is not distributed with the repo (user rule 6); its entry is removed from the embedded-file loop (the literal was already replaced by a placeholder in original/*.redacted.ipynb, see SOURCE.json)",
+   "type": "redaction",
+   "effect_on_numbers": "none",
+   "cell": 2,
+   "line_in_cell": 8
+  },
+  {
+   "old": "    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\n",
+   "new": "    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\nif MODE == \"B\":   # FF redaction (CHANGES.md): train/gender.csv was an embedded copy of the organisers' meta_file_train_set.csv; the same bytes come from the raw-v4 input (only assemble.py, RFS_MODE=B, reads the file)\n    _ff_g = [q for q in sorted(Path(\"/kaggle/input\").rglob(\"meta_file_train_set.csv\")) if __import__(\"hashlib\").sha256(q.read_bytes()).hexdigest() == \"fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030\"]\n    assert _ff_g, \"the organisers' meta_file_train_set.csv (sha256 fd7991a3...) was not found under /kaggle/input (dataset ngnnguynchn/flag2027-raw-v4-p)\"\n    (CODE / \"train\" / \"gender.csv\").write_bytes(_ff_g[0].read_bytes()); print(\"FF: train/gender.csv <-\", _ff_g[0], flush=True)\n",
+   "count": 1,
+   "why": "puts back train/gender.csv in RFS_MODE=B from the organisers' file itself (sha256 asserted = the embedded copy), so assemble.py reads the same 560 bytes; in modes L / P / LAB no code reads train/gender.csv (checked in every embedded rfs_train.py version), so nothing is written",
+   "type": "redaction",
+   "effect_on_numbers": "none",
+   "cell": 2,
+   "line_in_cell": 9
+  },
+  {
+   "old": "import os, sys, json, gzip, base64, subprocess, shutil, time\n",
+   "new": "import os, sys, json, gzip, base64, subprocess, shutil, time\nos.environ[\"RFS_XDIRS\"] = \"/kaggle/input\"   # FF path (CHANGES.md): root that rfs_train.py _xload scans for the extra blocks of RFS_CFG (e.g. f_c5s, v_rl); the runner rewrites this literal to the stage's own input view (original run: RFS_XDIRS unset -> the same /kaggle/input)\n",
+   "count": 1,
+   "type": "path",
+   "effect_on_numbers": "none (the same root: the datasets the run attached = the stage's inputs)",
+   "why": "the decoded rfs_train.py looks up the extra feature blocks (RFS_CFG 'add', e.g. f_c5s / v_rl) with _xload, whose root is RFS_XDIRS or, when unset, the literal /kaggle/input (line 83 of the P / FACTOR-lab versions, line 96 of the 213 / 216 versions). Code decoded at run time is out of reach of the runner's /kaggle/input rewrite, so on Linux / Docker the lookup found nothing and on a Kaggle orchestration session it scanned every attachment of the session. Setting RFS_XDIRS in the stage text (which the runner rewrites to the stage's input view; the subprocess inherits os.environ) points it at exactly the stage's inputs on every machine; run as is on Kaggle it is the original default",
+   "cell": 2,
+   "line_in_cell": 3,
+   "added": "18/11/2026 (fixer, review of WP-F)"
+  },
+  {
+   "old": "    torch.save({\"params\": [torch.zeros(2)]}, WORK / \"lora_C1.pt\")          # smoke: lora gia (luot L that chay tren Kaggle GPU)\n",
+   "new": "    _ff_c1 = find_all(\"lora_C1.pt\")   # FF variant guard (CHANGES.md): in smoke mode too, use the mounted ORIGINAL LoRA C1 (modes P / LAB only copy this file), so no stand-in lora_C1.pt reaches the artifact\n    if _ff_c1: shutil.copy(_ff_c1[0], WORK / \"lora_C1.pt\")\n    else: torch.save({\"params\": [torch.zeros(2)]}, WORK / \"lora_C1.pt\")          # smoke: lora gia (luot L that chay tren Kaggle GPU)\n",
+   "count": 1,
+   "type": "variant",
+   "effect_on_numbers": "none (FLAG_SMOKE=1 path only; a real run never reaches this branch)",
+   "why": "with FLAG_SMOKE=1 the original code writes a stand-in lora_C1.pt ({'params': [zeros(2)]}) that modes P / LAB copy into the output (rfs_art/ or work/); the runner's variant check (configs/variant_1354.json file_checks, every lora_C1.pt of every output = b97372e3...) then stopped every smoke run with VariantError. In modes P / LAB the file is only copied (stage_release: shutil.copy + sha256 in the manifest), never loaded, so copying the mounted original C1 (always present: input resolve saved_only + variant.require_files) changes nothing else in smoke",
+   "cell": 3,
+   "line_in_cell": 22,
+   "added": "18/11/2026 (fixer, review of WP-F)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [
+  "RFS_UPLOAD"
+ ],
+ "pip_policy": "original",
+ "pip_calls": [],
+ "variant": {
+  "lora_c1": "original",
+  "require_files": [
+   {
+    "artifact": "datasets/onnhqunhh/flag2027-rfs-lora-p",
+    "file": "lora_C1.pt",
+    "sha256": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c"
+   }
+  ]
+ },
+ "forbidden_inputs": [
+  "datasets/ngnnguynchn/flag2027-rfs-lorafix1-p",
+  "datasets/ngnnguynchn/flag2027-c1fix-lora-p",
+  "datasets/ngnnguynchn/flag2027-c1fix-rfx-art-p",
+  "datasets/ngnnguynchn/flag2027-rfsc4lf-art-p",
+  "datasets/ngnnguynchn/flag2027-rf092-dev-emb-p"
+ ],
+ "post_checks": [],
+ "skip_with": [
+  "03_checkpoints/rfx_c5rl"
+ ],
+ "verify": [
+  {
+   "file": "rfs_art/lora_C1.pt",
+   "bytes": 1782355,
+   "sha256": "b97372e3504a131d0a969e478a855868095c67db4b3c0c133ef770c00e40991c",
+   "check": "exact",
+   "note": "byte copy of the attached LoRA C1 (stage_release): must be the ORIGINAL C1; holds in every mode: the input is the saved original C1 (resolve saved_only + require_files) and the code copies it byte for byte (in smoke too, patch 'variant')"
+  },
+  {
+   "file": "rfs_art/split.json",
+   "bytes": 1919,
+   "sha256": "97be1d64b930ec1581b63dbf1386ec74a2fab55a7023b0875b5a5afd8f052bc0",
+   "check": "content",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-rfsfxc5rl-art-p.zip :: split.json",
+   "note": "seed 20261103, 10 reserve + 5 x 12 persons: deterministic"
+  },
+  {
+   "file": "rfs_art/projector_Q.pt",
+   "bytes": 30810643,
+   "sha256": "17eb47ac20ddf2f01aae50b3ebbca87f3b04403f772d124d74442da848e362f2",
+   "check": "info",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-rfsfxc5rl-art-p.zip :: projector_Q.pt",
+   "note": "GPU training: a rerun is not bit-identical; the saved file is the artifact used by 13.54"
+  },
+  {
+   "file": "rfs_art/final_params.npz",
+   "bytes": 4282194,
+   "sha256": "ed76bf64ab9e3b16825ed429a8b7f021faea466e129e6bb8f1f9591d32a4d1b8",
+   "check": "info",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-rfsfxc5rl-art-p.zip :: final_params.npz",
+   "note": "gender probes, centring constants (fill_lora depends on the C1 version), age map, fusers fg (4 streams) / fn (29 columns)"
+  },
+  {
+   "file": "rfs_art/manifest_final.json",
+   "bytes": 2978,
+   "sha256": "21adffb32edd59767079d1287c9aa3d971165cab8702f266defff492c7d04736",
+   "check": "info",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-rfsfxc5rl-art-p.zip :: manifest_final.json",
+   "note": "lists the sha256 of final_params / lora_C1 / projector_Q"
+  },
+  {
+   "file": "rfs_art/fuse_report.json",
+   "bytes": 675,
+   "sha256": "75f26e60777e4f870b7b414e1a57daf96b9c84fa0da56bc7d176e969b706040b",
+   "check": "info",
+   "saved_copy": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-rfsfxc5rl-art-p.zip :: fuse_report.json",
+   "note": "OOF EER: gender t3 22.87 -> fused 21.98; no_gender 14.04 -> 13.39 (S4 1.4)"
+  }
+ ],
+ "stage_ipy_sha256": "04037b11ff42b5f6dc2d65f5ae01f1f33903e817184629e31f1379ef8591db15",
+ "stage_ipy_bytes": 62931,
+ "stage_ipy_cells": 6,
+ "rebuild": "python stages/40_R_family/_wpf_tools.py check  (code cells of origin.original_notebook, CRLF -> LF, patches in order, joined by '\\n# <<<FF-CELL>>>\\n')",
+ "notes": [
+  "Original run: ngnnguynchn/flag-2027-nb-163-rfsfxc5rl-p, GPU, 2026-11-13 04:04:58 UTC, 529 s, 'selfcheck OK ... {gender: 0.0, no_gender: 0.0}'. Saved artifact: E: package datasets/ngnnguynchn__flag2027-rfsfxc5rl-art-p.zip (sha256 12da5398b819f0ce63046e2fadf07d879b65a0065c2a64645a01afdd69fb5bfb).",
+  "Attached but not read by the c5rl code path (log): lab-data, feats-vox2b, lab-vb, feats-rfs-a/b/c; kept as in the run (trngsnam/flag2027-feats-peface01-pe0-p dropped 18/11: never read, see inputs_dropped).",
+  "The 16.18 system ran this same notebook with the fixed LoRA mounted at the old path (release/flag2027_e2e/stages.py:318-319, artifact c1fix-rfx-art-p); that substitution is NOT applied here.",
+  "manifest_final.json 'declared' text says the LoRA C1 was trained on 'cleaned VoxCeleb2 + MAV clips'; for this original C1 the real data were 210 MAV-Celeb v1 clips (key bug). Public documents must say so (C1_VARIANTS.md)."
+ ],
+ "todo": [
+  "Private storage: copy every exact notebook listed in original/SOURCE.json -> derived_from (origin: E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/19_flag-2027-nb-163-rfsfxc5rl-p.ipynb, md5 a76d465ae780484e81f7a11d2d5289d0; push-staging copies under repo/_staging_backup/) to FF_DATA/_private_originals/t163p_c5rl/ (or $FF_PRIVATE/t163p_c5rl/; runner/check_stage.py looks there), record each md5 there and point SOURCE.json derived_from at it: the exact notebooks embed the organisers' meta_file_train_set.csv, and repo/_staging_backup/ (no root ignore rule today) must not be published.",
+  "The RFS_XDIRS and smoke C1 patches are new (18/11) and have never been executed."
+ ],
+ "runner_requirements": {
+  "literal_kaggle_input": false,
+  "why": "the only literal /kaggle/input read in the decoded code is rfs_train.py _xload (line 83 / 96), redirected to the stage's input view by the RFS_XDIRS path patch of the setup cell; every other path is in the stage text (rewritten by the runner) or passed as an argument (grep of original/decoded/: flag_final_core_092.py mentions /kaggle/input in a docstring only)"
+ },
+ "inputs_dropped": [
+  {
+   "artifact": "datasets/trngsnam/flag2027-feats-peface01-pe0-p",
+   "type": "wiring",
+   "why": "attached in the original run but never read: rfs_train._xload (decoded rfs_train.py:83) selects .npy files by exact name, and only the blocks requested by the stage are loaded (RFS_CFG {\"add\": [\"f_c5s\", \"v_rl\"]}); this dataset holds only *_peL*.npy (block f_pel, not requested), bn42_clean.json, facelora_state.pt and train_log.json (13 members, listing of package E datasets/trngsnam__flag2027-feats-peface01-pe0-p.zip), and no cell of the stage looks these names up. Same reasoning and same drop as WP-H for t163p_fvb / t189_b2 (which run the same _xload). It has no producing stage (configs/data_map.json class wiring, producer null), so keeping it would leave a requirement-1 gap for nothing. Not dropped in t183_p1 / t183_p2: their lab arms pel / ALL / ALLlo / ALLhi do request f_pel. Dropping it changes no number; original/kernel-metadata.json keeps the attachment as evidence. 18/11/2026 (integration fixer r1, INTEGRATION_r1 M7 / B3)"
+  }
+ ]
+}

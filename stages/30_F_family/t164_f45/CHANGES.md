@@ -1,0 +1,9 @@
+# CHANGES: t164_f45 (exact-pulled; `release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f45/`)
+
+none. The code cells are verbatim (stage.ipy sha256 = release/flag2027_e2e/code/t164_f45.ipy, checked 2026-11-18).
+
+Runner-level only (not a change of this stage's code): the runner replaces the strings /kaggle/input and /kaggle/working by the stage's own input view and working folder, and prints a `[cell] <stage> k/n` line before each cell (DESIGN 2.4).
+
+Runner-level requirement (2026-11-18 fix; not a change of this stage's code): `stage.json` declares `runner_requirements.literal_kaggle_input: true`. The modules decoded from `CODE_B64` at run time (listed in `runner_requirements.why`, with file and line) are written to /kaggle/working/lab and find their inputs by scanning the LITERAL path /kaggle/input, which the string rewrite above cannot reach. With the flag, the runner points /kaggle/input at this stage's own input view on Linux (symlink for the duration of the stage; `FF_LITERAL_KAGGLE=mounted` when a container already mounts it). On Kaggle the runner cannot change /kaggle/input and only warns: run this stage in a session with exactly its inputs attached (as the original run). Without the flag a Linux / Docker run would fail the asserts (lid_strict.json, adapter arrays, feats_vox2b, CT blocks), and a Kaggle orchestrator session would let the modules pick the session's own attachments (e.g. a saved original instead of an artifact rebuilt in the session).
+
+Smoke note (2026-11-18): the verbatim env cell (cell 01, `os.environ['LAB_FOLDS'] = ...`) runs AFTER the runner has applied `smoke_env` (LAB_FOLDS=1), so a smoke run of this stage trains folds 4 and 5 (with the smoke settings L0_STEPS=10 / L0_NETS=1 of smoke_env, so it stays small), not fold 1 as the original smoke push did (that push had no env cell). Full runs are unaffected. Not patched (logic fidelity; the runner has no smoke-only patch key); recorded in `stage.json` `smoke_note`.

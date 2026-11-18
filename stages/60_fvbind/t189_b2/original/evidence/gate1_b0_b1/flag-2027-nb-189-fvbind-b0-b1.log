@@ -1,0 +1,196 @@
+[{"stream_name":"stderr","time":10.639845916,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":10.639898485,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":12.178923967,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":12.178959599,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":12.178963387,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":12.178966133,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":12.980316789,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":12.980348409,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":12.980353441,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":12.980357406,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":14.447155374,"data":"[cell] 01 run parameters (kapi --env): environment variables of this r\n"}
+,{"stream_name":"stdout","time":14.485619887,"data":"[boot] FLAG_189_fvbind | python 3.13.16 | start 2026-11-14 07:39:57\n"}
+,{"stream_name":"stdout","time":14.486586141,"data":"[cell] setup: files + deps\n"}
+,{"stream_name":"stdout","time":27.33325879,"data":"mode LAB smoke False cuda True gpus 2\n"}
+,{"stream_name":"stdout","time":27.352322748,"data":"[cell] inputs: bundle, lid, roots\n"}
+,{"stream_name":"stdout","time":754.977121305,"data":"bundle /kaggle/input/datasets/ngnnguynchn/flag2027-rfs-bundle-p | lid /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json\n"}
+,{"stream_name":"stdout","time":754.990467413,"data":"[cell] lora C1 (ImageBind-audio) + v4 lora/tuoi\n"}
+,{"stream_name":"stdout","time":754.99136495,"data":"mode P: lora tu dataset cua luot L\n"}
+,{"stream_name":"stdout","time":755.010168536,"data":"[cell] FVBIND-01: train arms + SAFE-04 streams\n"}
+,{"stream_name":"stdout","time":767.063290231,"data":"\n"}
+,{"stream_name":"stdout","time":772.398701749,"data":"\n"}
+,{"stream_name":"stdout","time":822.032330388,"data":"imagebind sha256 ok\n"}
+,{"stream_name":"stdout","time":940.82232917,"data":"  voice_rfibv.npy [=vox]: (38345, 1024), 2 file(s), finite 0.9948 (/kaggle/input/datasets/phanththui/flag2027-feats-rfs-b-p/vox)\n"}
+,{"stream_name":"stdout","time":942.859660912,"data":"  voice_rfibv.npy [=vox2b]: (47529, 1024), 2 file(s), finite 0.9735 (/kaggle/input/datasets/phanththui/flag2027-feats-rfs-b-p/vox2b)\n"}
+,{"stream_name":"stdout","time":945.143040452,"data":"  voice_rfibv.npy [=vb]: (68043, 1024), 2 file(s), finite 0.9937 (/kaggle/input/datasets/phanththui/flag2027-feats-rfs-b-p/vb)\n"}
+,{"stream_name":"stdout","time":946.082235134,"data":"  ext_v1_complete_voice_rfibv.npy [None]: (19556, 1024), 1 file(s), finite 1.0000 (/kaggle/input/datasets/nguynchnngn1/flag2027-feats-rfs-a-p)\n"}
+,{"stream_name":"stdout","time":946.665743151,"data":"  ext_v2_complete_voice_rfibv.npy [None]: (20715, 1024), 1 file(s), finite 1.0000 (/kaggle/input/datasets/nguynchnngn1/flag2027-feats-rfs-a-p)\n"}
+,{"stream_name":"stdout","time":947.515930302,"data":"  voice_rfibv_train.npy [None]: (6485, 1024), 1 file(s), finite 1.0000 (/kaggle/input/datasets/nguynchnngn1/flag2027-feats-rfs-a-p)\n"}
+,{"stream_name":"stdout","time":948.492680968,"data":"  v_ibv vox  : coverage 0.9948, identity EER 26.56 (bundle v_sam 3.50)\n"}
+,{"stream_name":"stdout","time":949.548533547,"data":"  v_ibv vox2b: coverage 0.9735, identity EER 29.21 (bundle v_sam 4.16)\n"}
+,{"stream_name":"stdout","time":951.009966402,"data":"  v_ibv vb   : coverage 0.9937, identity EER 22.12 (bundle v_sam 6.41)\n"}
+,{"stream_name":"stdout","time":952.154637983,"data":"  v_ibv mav  : coverage 1.0000, identity EER 31.47 (bundle v_sam 5.45)\n"}
+,{"stream_name":"stdout","time":952.370068842,"data":"  v_ibv v4   : coverage 1.0000, identity EER 16.72\n"}
+,{"stream_name":"stdout","time":954.595980262,"data":"SAFE-04 tables ['ct01r2_fold1.parquet', 'ct01r2_fold2.parquet', 'ct01r2_fold3.parquet', 'ct01r2_fold4.parquet', 'ct01r2_fold5.parquet']; eval rows: v4 6485, MAV 10418\n"}
+,{"stream_name":"stdout","time":955.8552296,"data":"pool sach: giong 176935/194188, mat 150251/150251\n"}
+,{"stream_name":"stdout","time":1385.344214068,"data":"train clips: 52750 of 52750 selected rows found in the cache (18925 persons); found / selected by source {'vox': '16161/16161', 'vox2b': '0/0', 'vb': '36589/36589'}\n"}
+,{"stream_name":"stdout","time":1386.315999503,"data":"  fbank 0/52750 [1s]\n"}
+,{"stream_name":"stdout","time":1414.27304482,"data":"  fbank 5000/52750 [29s]\n"}
+,{"stream_name":"stdout","time":1442.169127125,"data":"  fbank 10000/52750 [57s]\n"}
+,{"stream_name":"stdout","time":1469.948337809,"data":"  fbank 15000/52750 [85s]\n"}
+,{"stream_name":"stdout","time":1498.232039221,"data":"  fbank 20000/52750 [113s]\n"}
+,{"stream_name":"stdout","time":1526.568781061,"data":"  fbank 25000/52750 [141s]\n"}
+,{"stream_name":"stdout","time":1555.044828594,"data":"  fbank 30000/52750 [170s]\n"}
+,{"stream_name":"stdout","time":1583.665696948,"data":"  fbank 35000/52750 [198s]\n"}
+,{"stream_name":"stdout","time":1612.028365007,"data":"  fbank 40000/52750 [227s]\n"}
+,{"stream_name":"stdout","time":1640.429263298,"data":"  fbank 45000/52750 [255s]\n"}
+,{"stream_name":"stdout","time":1668.604794902,"data":"  fbank 50000/52750 [283s]\n"}
+,{"stream_name":"stdout","time":1684.2568573,"data":"fbanks (52750, 3, 1, 128, 204) (7.7 GB) [299s]\n"}
+,{"stream_name":"stdout","time":1684.257679511,"data":"== arm B0 {'B': 64, 'chunks': 3, 'steps': 1200, 'warm': 60, 'anchor': 'ibf'}\n"}
+,{"stream_name":"stdout","time":1731.065802529,"data":"  52750 clips with an anchor, 18925 persons, anchor dim 1024\n"}
+,{"stream_name":"stdout","time":1742.692117956,"data":"    16/31\n"}
+,{"stream_name":"stdout","time":1743.045395785,"data":"  wiring (LoRA = 0 vs stored v_ibv, 32 rows): cos mean 1.00000 min 1.00000\n"}
+,{"stream_name":"stdout","time":1745.819916013,"data":"  lora step 0/1200 loss 2.6082 skipped 0 [2s]\n"}
+,{"stream_name":"stdout","time":1919.810262154,"data":"  lora step 100/1200 loss 2.2425 skipped 0 [176s]\n"}
+,{"stream_name":"stdout","time":2109.456008373,"data":"  lora step 200/1200 loss 1.9499 skipped 0 [366s]\n"}
+,{"stream_name":"stdout","time":2303.008436713,"data":"  lora step 300/1200 loss 2.1101 skipped 0 [560s]\n"}
+,{"stream_name":"stdout","time":2496.783778675,"data":"  lora step 400/1200 loss 1.7888 skipped 0 [753s]\n"}
+,{"stream_name":"stdout","time":2691.007387782,"data":"  lora step 500/1200 loss 2.1080 skipped 0 [948s]\n"}
+,{"stream_name":"stdout","time":2889.765394906,"data":"  lora step 600/1200 loss 2.0361 skipped 0 [1146s]\n"}
+,{"stream_name":"stdout","time":3088.545711086,"data":"  lora step 700/1200 loss 1.8084 skipped 0 [1345s]\n"}
+,{"stream_name":"stdout","time":3287.409690038,"data":"  lora step 800/1200 loss 1.5908 skipped 0 [1544s]\n"}
+,{"stream_name":"stdout","time":3486.219788054,"data":"  lora step 900/1200 loss 1.8843 skipped 0 [1743s]\n"}
+,{"stream_name":"stdout","time":3684.463432574,"data":"  lora step 1000/1200 loss 1.8554 skipped 0 [1941s]\n"}
+,{"stream_name":"stdout","time":3883.171829245,"data":"  lora step 1100/1200 loss 1.9808 skipped 0 [2140s]\n"}
+,{"stream_name":"stdout","time":4079.876514017,"data":"  lora step 1199/1200 loss 2.0637 skipped 0 [2336s]\n"}
+,{"stream_name":"stdout","time":4442.913951601,"data":"    16/4029\n"}
+,{"stream_name":"stdout","time":4465.224603436,"data":"    816/4029\n"}
+,{"stream_name":"stdout","time":4486.089969832,"data":"    1616/4029\n"}
+,{"stream_name":"stdout","time":4506.444040694,"data":"    2416/4029\n"}
+,{"stream_name":"stdout","time":4526.009297754,"data":"    3216/4029\n"}
+,{"stream_name":"stdout","time":4545.47304415,"data":"    4016/4029\n"}
+,{"stream_name":"stdout","time":5055.18403999,"data":"    16/5279\n"}
+,{"stream_name":"stdout","time":5087.247676627,"data":"    816/5279\n"}
+,{"stream_name":"stdout","time":5121.632525336,"data":"    1616/5279\n"}
+,{"stream_name":"stdout","time":5155.356978008,"data":"    2416/5279\n"}
+,{"stream_name":"stdout","time":5189.130240998,"data":"    3216/5279\n"}
+,{"stream_name":"stdout","time":5219.977319501,"data":"    4016/5279\n"}
+,{"stream_name":"stdout","time":5255.993868316,"data":"    4816/5279\n"}
+,{"stream_name":"stdout","time":5276.269875695,"data":"  fold 1 en_ext g        : n 1410 finite 0.400 EER 39.72\n"}
+,{"stream_name":"stdout","time":5276.270772571,"data":"  fold 1 en_ext ng       : n 1410 finite 0.400 EER 30.50\n"}
+,{"stream_name":"stdout","time":5276.272072617,"data":"  fold 1 urdu   g        : n 596 finite 1.000 EER 39.93\n"}
+,{"stream_name":"stdout","time":5276.273294574,"data":"  fold 1 urdu   ng       : n 596 finite 1.000 EER 31.21\n"}
+,{"stream_name":"stdout","time":5276.275026726,"data":"  fold 1 v4     g        : n 1304 finite 1.000 EER 40.11\n"}
+,{"stream_name":"stdout","time":5276.276319395,"data":"  fold 1 v4     ng       : n 1304 finite 1.000 EER 27.76\n"}
+,{"stream_name":"stdout","time":5276.373431209,"data":"  fold 2 en_ext g        : n 1430 finite 0.497 EER 42.25\n"}
+,{"stream_name":"stdout","time":5276.374311963,"data":"  fold 2 en_ext ng       : n 1430 finite 0.497 EER 29.86\n"}
+,{"stream_name":"stdout","time":5276.37551886,"data":"  fold 2 urdu   g        : n 720 finite 1.000 EER 40.28\n"}
+,{"stream_name":"stdout","time":5276.376635728,"data":"  fold 2 urdu   ng       : n 720 finite 1.000 EER 28.06\n"}
+,{"stream_name":"stdout","time":5276.378178423,"data":"  fold 2 v4     g        : n 1338 finite 1.000 EER 37.52\n"}
+,{"stream_name":"stdout","time":5276.379530329,"data":"  fold 2 v4     ng       : n 1338 finite 1.000 EER 26.76\n"}
+,{"stream_name":"stdout","time":5276.477484074,"data":"  fold 3 en_ext g        : n 1440 finite 0.500 EER 38.61\n"}
+,{"stream_name":"stdout","time":5276.478657763,"data":"  fold 3 en_ext ng       : n 1440 finite 0.500 EER 28.33\n"}
+,{"stream_name":"stdout","time":5276.479731713,"data":"  fold 3 urdu   g        : n 710 finite 1.000 EER 42.54\n"}
+,{"stream_name":"stdout","time":5276.481004097,"data":"  fold 3 urdu   ng       : n 710 finite 1.000 EER 28.31\n"}
+,{"stream_name":"stdout","time":5276.482488388,"data":"  fold 3 v4     g        : n 1300 finite 1.000 EER 42.15\n"}
+,{"stream_name":"stdout","time":5276.483824809,"data":"  fold 3 v4     ng       : n 1300 finite 1.000 EER 28.85\n"}
+,{"stream_name":"stdout","time":5276.577773916,"data":"  fold 4 en_ext g        : n 1426 finite 0.431 EER 43.49\n"}
+,{"stream_name":"stdout","time":5276.578695134,"data":"  fold 4 en_ext ng       : n 1426 finite 0.431 EER 31.76\n"}
+,{"stream_name":"stdout","time":5276.579985609,"data":"  fold 4 urdu   g        : n 624 finite 1.000 EER 43.11\n"}
+,{"stream_name":"stdout","time":5276.58117007,"data":"  fold 4 urdu   ng       : n 624 finite 1.000 EER 33.17\n"}
+,{"stream_name":"stdout","time":5276.583229977,"data":"  fold 4 v4     g        : n 1230 finite 1.000 EER 40.57\n"}
+,{"stream_name":"stdout","time":5276.58444545,"data":"  fold 4 v4     ng       : n 1230 finite 1.000 EER 28.54\n"}
+,{"stream_name":"stdout","time":5276.6800892,"data":"  fold 5 en_ext g        : n 1368 finite 0.412 EER 41.84\n"}
+,{"stream_name":"stdout","time":5276.681029405,"data":"  fold 5 en_ext ng       : n 1368 finite 0.412 EER 29.08\n"}
+,{"stream_name":"stdout","time":5276.682270064,"data":"  fold 5 urdu   g        : n 576 finite 1.000 EER 40.62\n"}
+,{"stream_name":"stdout","time":5276.683419128,"data":"  fold 5 urdu   ng       : n 576 finite 1.000 EER 27.26\n"}
+,{"stream_name":"stdout","time":5276.685153177,"data":"  fold 5 v4     g        : n 1276 finite 1.000 EER 37.54\n"}
+,{"stream_name":"stdout","time":5276.68730856,"data":"  fold 5 v4     ng       : n 1276 finite 1.000 EER 26.65\n"}
+,{"stream_name":"stdout","time":5276.68813076,"data":"arm B0 done [3592s]\n"}
+,{"stream_name":"stdout","time":5276.745331429,"data":"== arm B1 {'B': 2048, 'chunks': 1, 'steps': 600, 'warm': 30, 'anchor': 'ibf'}\n"}
+,{"stream_name":"stdout","time":5309.278657073,"data":"  52750 clips with an anchor, 18925 persons, anchor dim 1024\n"}
+,{"stream_name":"stdout","time":5309.877518562,"data":"    16/31\n"}
+,{"stream_name":"stdout","time":5310.242229063,"data":"  wiring (LoRA = 0 vs stored v_ibv, 32 rows): cos mean 1.00000 min 1.00000\n"}
+,{"stream_name":"stdout","time":5347.932721804,"data":"  big step 0/600 loss 6.1152 skipped 0 [29s, last 28.8s]\n"}
+,{"stream_name":"stdout","time":5627.434392851,"data":"  time rule: 28.0 s/step \u003c= 30 s -\u003e keep 600 steps\n"}
+,{"stream_name":"stdout","time":6046.652477533,"data":"  big step 25/600 loss 5.8563 skipped 0 [728s, last 27.9s]\n"}
+,{"stream_name":"stdout","time":6744.024549958,"data":"  big step 50/600 loss 5.6531 skipped 0 [1425s, last 27.8s]\n"}
+,{"stream_name":"stdout","time":7440.35025399,"data":"  big step 75/600 loss 5.5534 skipped 0 [2121s, last 27.8s]\n"}
+,{"stream_name":"stdout","time":8137.455003077,"data":"  big step 100/600 loss 5.4553 skipped 0 [2818s, last 28.0s]\n"}
+,{"stream_name":"stdout","time":8834.572785397,"data":"  big step 125/600 loss 5.3968 skipped 0 [3515s, last 27.9s]\n"}
+,{"stream_name":"stdout","time":9531.609662421,"data":"  big step 150/600 loss 5.3269 skipped 0 [4213s, last 27.9s]\n"}
+,{"stream_name":"stdout","time":10228.530020268,"data":"  big step 175/600 loss 5.2666 skipped 0 [4909s, last 27.9s]\n"}
+,{"stream_name":"stdout","time":10925.29889565,"data":"  big step 200/600 loss 5.2660 skipped 0 [5606s, last 27.9s]\n"}
+,{"stream_name":"stdout","time":11621.312722164,"data":"  big step 225/600 loss 5.2220 skipped 0 [6302s, last 27.3s]\n"}
+,{"stream_name":"stdout","time":12301.374753866,"data":"  big step 250/600 loss 5.1405 skipped 0 [6982s, last 27.2s]\n"}
+,{"stream_name":"stdout","time":12982.086985811,"data":"  big step 275/600 loss 5.1967 skipped 0 [7663s, last 27.2s]\n"}
+,{"stream_name":"stdout","time":13661.825029586,"data":"  big step 300/600 loss 5.1002 skipped 0 [8343s, last 27.1s]\n"}
+,{"stream_name":"stdout","time":14341.524022769,"data":"  big step 325/600 loss 5.1230 skipped 0 [9022s, last 27.1s]\n"}
+,{"stream_name":"stdout","time":15022.120352683,"data":"  big step 350/600 loss 5.1072 skipped 0 [9703s, last 27.3s]\n"}
+,{"stream_name":"stdout","time":15701.338643285,"data":"  big step 375/600 loss 5.0923 skipped 0 [10382s, last 27.2s]\n"}
+,{"stream_name":"stdout","time":16381.935295565,"data":"  big step 400/600 loss 5.1014 skipped 0 [11063s, last 27.1s]\n"}
+,{"stream_name":"stdout","time":17060.34913613,"data":"  big step 425/600 loss 5.0145 skipped 0 [11741s, last 27.1s]\n"}
+,{"stream_name":"stdout","time":17740.966584824,"data":"  big step 450/600 loss 4.9919 skipped 0 [12422s, last 27.1s]\n"}
+,{"stream_name":"stdout","time":18420.763758504,"data":"  big step 475/600 loss 5.0316 skipped 0 [13102s, last 27.0s]\n"}
+,{"stream_name":"stdout","time":19100.478614874,"data":"  big step 500/600 loss 5.0550 skipped 0 [13781s, last 27.1s]\n"}
+,{"stream_name":"stdout","time":19779.141843916,"data":"  big step 525/600 loss 5.0402 skipped 0 [14460s, last 27.0s]\n"}
+,{"stream_name":"stdout","time":20457.720712393,"data":"  big step 550/600 loss 4.9885 skipped 0 [15139s, last 27.3s]\n"}
+,{"stream_name":"stdout","time":21136.975476578,"data":"  big step 575/600 loss 4.9553 skipped 0 [15818s, last 27.1s]\n"}
+,{"stream_name":"stdout","time":21789.430755652,"data":"  big step 599/600 loss 5.0278 skipped 0 [16470s, last 27.4s]\n"}
+,{"stream_name":"stdout","time":22017.019093118,"data":"    16/4029\n"}
+,{"stream_name":"stdout","time":22038.375925001,"data":"    816/4029\n"}
+,{"stream_name":"stdout","time":22058.517895141,"data":"    1616/4029\n"}
+,{"stream_name":"stdout","time":22078.567279448,"data":"    2416/4029\n"}
+,{"stream_name":"stdout","time":22098.041609585,"data":"    3216/4029\n"}
+,{"stream_name":"stdout","time":22117.473081975,"data":"    4016/4029\n"}
+,{"stream_name":"stdout","time":22313.937960681,"data":"    16/5279\n"}
+,{"stream_name":"stdout","time":22344.565622439,"data":"    816/5279\n"}
+,{"stream_name":"stdout","time":22377.36084864,"data":"    1616/5279\n"}
+,{"stream_name":"stdout","time":22410.03822336,"data":"    2416/5279\n"}
+,{"stream_name":"stdout","time":22443.261458199,"data":"    3216/5279\n"}
+,{"stream_name":"stdout","time":22473.637422827,"data":"    4016/5279\n"}
+,{"stream_name":"stdout","time":22508.995596247,"data":"    4816/5279\n"}
+,{"stream_name":"stdout","time":22528.99584969,"data":"  fold 1 en_ext g        : n 1410 finite 0.400 EER 38.48\n"}
+,{"stream_name":"stdout","time":22528.996559029,"data":"  fold 1 en_ext ng       : n 1410 finite 0.400 EER 30.14\n"}
+,{"stream_name":"stdout","time":22528.998281034,"data":"  fold 1 urdu   g        : n 596 finite 1.000 EER 39.26\n"}
+,{"stream_name":"stdout","time":22528.999718692,"data":"  fold 1 urdu   ng       : n 596 finite 1.000 EER 31.38\n"}
+,{"stream_name":"stdout","time":22529.00135564,"data":"  fold 1 v4     g        : n 1304 finite 1.000 EER 40.18\n"}
+,{"stream_name":"stdout","time":22529.003048292,"data":"  fold 1 v4     ng       : n 1304 finite 1.000 EER 27.61\n"}
+,{"stream_name":"stdout","time":22529.105635058,"data":"  fold 2 en_ext g        : n 1430 finite 0.497 EER 43.52\n"}
+,{"stream_name":"stdout","time":22529.10695594,"data":"  fold 2 en_ext ng       : n 1430 finite 0.497 EER 29.72\n"}
+,{"stream_name":"stdout","time":22529.107925501,"data":"  fold 2 urdu   g        : n 720 finite 1.000 EER 40.69\n"}
+,{"stream_name":"stdout","time":22529.109569068,"data":"  fold 2 urdu   ng       : n 720 finite 1.000 EER 27.50\n"}
+,{"stream_name":"stdout","time":22529.111020584,"data":"  fold 2 v4     g        : n 1338 finite 1.000 EER 36.55\n"}
+,{"stream_name":"stdout","time":22529.112284533,"data":"  fold 2 v4     ng       : n 1338 finite 1.000 EER 26.61\n"}
+,{"stream_name":"stdout","time":22529.207752961,"data":"  fold 3 en_ext g        : n 1440 finite 0.500 EER 37.08\n"}
+,{"stream_name":"stdout","time":22529.207792554,"data":"  fold 3 en_ext ng       : n 1440 finite 0.500 EER 27.50\n"}
+,{"stream_name":"stdout","time":22529.209045884,"data":"  fold 3 urdu   g        : n 710 finite 1.000 EER 43.38\n"}
+,{"stream_name":"stdout","time":22529.210390464,"data":"  fold 3 urdu   ng       : n 710 finite 1.000 EER 28.59\n"}
+,{"stream_name":"stdout","time":22529.211890575,"data":"  fold 3 v4     g        : n 1300 finite 1.000 EER 39.46\n"}
+,{"stream_name":"stdout","time":22529.213483825,"data":"  fold 3 v4     ng       : n 1300 finite 1.000 EER 28.69\n"}
+,{"stream_name":"stdout","time":22529.305100289,"data":"  fold 4 en_ext g        : n 1426 finite 0.431 EER 43.00\n"}
+,{"stream_name":"stdout","time":22529.305128033,"data":"  fold 4 en_ext ng       : n 1426 finite 0.431 EER 30.94\n"}
+,{"stream_name":"stdout","time":22529.306411581,"data":"  fold 4 urdu   g        : n 624 finite 1.000 EER 42.15\n"}
+,{"stream_name":"stdout","time":22529.307758296,"data":"  fold 4 urdu   ng       : n 624 finite 1.000 EER 33.49\n"}
+,{"stream_name":"stdout","time":22529.309368822,"data":"  fold 4 v4     g        : n 1230 finite 1.000 EER 38.37\n"}
+,{"stream_name":"stdout","time":22529.311061824,"data":"  fold 4 v4     ng       : n 1230 finite 1.000 EER 28.54\n"}
+,{"stream_name":"stdout","time":22529.401946998,"data":"  fold 5 en_ext g        : n 1368 finite 0.412 EER 40.78\n"}
+,{"stream_name":"stdout","time":22529.402875565,"data":"  fold 5 en_ext ng       : n 1368 finite 0.412 EER 28.90\n"}
+,{"stream_name":"stdout","time":22529.404066957,"data":"  fold 5 urdu   g        : n 576 finite 1.000 EER 41.15\n"}
+,{"stream_name":"stdout","time":22529.405583532,"data":"  fold 5 urdu   ng       : n 576 finite 1.000 EER 26.74\n"}
+,{"stream_name":"stdout","time":22529.407319546,"data":"  fold 5 v4     g        : n 1276 finite 1.000 EER 36.91\n"}
+,{"stream_name":"stdout","time":22529.408879103,"data":"  fold 5 v4     ng       : n 1276 finite 1.000 EER 25.86\n"}
+,{"stream_name":"stdout","time":22529.409737195,"data":"arm B1 done [17253s]\n"}
+,{"stream_name":"stdout","time":22529.629735319,"data":"FVBIND done ['B0', 'B1'] [21603s]: ['fvbB0_emb.npz', 'fvbB0_fold1.parquet', 'fvbB0_fold2.parquet', 'fvbB0_fold3.parquet', 'fvbB0_fold4.parquet', 'fvbB0_fold5.parquet', 'fvbB0_state.pt', 'fvbB1_emb.npz', 'fvbB1_fold1.parquet', 'fvbB1_fold2.parquet', 'fvbB1_fold3.parquet', 'fvbB1_fold4.parquet', 'fvbB1_fold5.parquet', 'fvbB1_state.pt', 'fvbC1ref_fold1.parquet', 'fvbC1ref_fold2.parquet', 'fvbC1ref_fold3.parquet', 'fvbC1ref_fold4.parquet', 'fvbC1ref_fold5.parquet', 'fvb_summary_B0_B1.json']\n"}
+,{"stream_name":"stdout","time":22543.988782375,"data":"FVBIND done [21624s]: ['fvbB0_emb.npz', 'fvbB0_fold1.parquet', 'fvbB0_fold2.parquet', 'fvbB0_fold3.parquet', 'fvbB0_fold4.parquet', 'fvbB0_fold5.parquet', 'fvbB0_state.pt', 'fvbB1_emb.npz', 'fvbB1_fold1.parquet', 'fvbB1_fold2.parquet', 'fvbB1_fold3.parquet', 'fvbB1_fold4.parquet', 'fvbB1_fold5.parquet', 'fvbB1_state.pt', 'fvbC1ref_fold1.parquet', 'fvbC1ref_fold2.parquet', 'fvbC1ref_fold3.parquet', 'fvbC1ref_fold4.parquet', 'fvbC1ref_fold5.parquet', 'fvb_summary_B0_B1.json']\n"}
+,{"stream_name":"stdout","time":22544.013942495,"data":"[cell] upload\n"}
+,{"stream_name":"stdout","time":22544.014812022,"data":"ALL CELLS OK\n"}
+,{"stream_name":"stderr","time":22549.144552008,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":22549.144585794,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":22549.701930919,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":22549.701959796,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":22552.990983771,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":22553.090389303,"data":"[NbConvertApp] Writing 93392 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":22555.565799711,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":22556.796678575,"data":"[NbConvertApp] Writing 407647 bytes to __results__.html\n"}
+]

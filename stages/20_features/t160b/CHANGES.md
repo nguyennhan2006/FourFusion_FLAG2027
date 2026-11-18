@@ -1,0 +1,25 @@
+# CHANGES: stage `t160b`
+
+Original code: E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/09_flag-2027-nb-160b-whv3.ipynb (exact-package). Stage code: `stage.ipy`. Change types follow DESIGN.md §2.5.
+Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/working` string at the stage's own input view and working directory (runner/ffcore.py, as release/flag2027_e2e/orch.py `_stage_code`); that is not a code change.
+
+## Code changes
+
+| # | where | type | old -> new (full text in stage.json) | why | effect on numbers |
+|---|---|---|---|---|---|
+| 1 | cell 1, line 4 | `upload` | `os.environ['WH_UPLOAD'] = 'thanhhuyen11/flag2027-feats-whv3-b-p'` -> `# FF: no upload to a Kaggle dataset (the output becomes an artifact).…` | the original run uploaded its output to a Kaggle dataset; here the output is a pipeline artifact (as release/flag2027_e2e/stages.py noup) | none |
+| 2 | cell 2, line 20 | `dev-exclusion` | `SPLIT_FILTER = None            # e.g. ["no_gender/English"]; None = e…` -> `SPLIT_FILTER = ["train"]      # FF dev-exclusion: organiser train lis…` | no dev list is indexed or encoded (DESIGN §2.8; as TRAIN_ONLY of release/flag2027_e2e/stages.py:151); lanes b / c also index the 4 dev lists (durations + index_<list>.txt copies) although they encode no organiser split (WH_MODE != 'mav' sets ENCODERS = []); release/flag2027_e2e/stages.py patched lane a only | none on the train / MAV-Celeb / auxiliary arrays (each split is encoded on its own); the dev arrays and dev index files are no longer written |
+| 3 | cell 2, line 21 | `dev-exclusion` | `ZIP_PREFIXES = ("train_set", "dev_set", "eval", "test")             #…` -> `ZIP_PREFIXES = ("train_set", "eval", "test")                        #…` | with zipped raw data the original unpacked dev_set.zip too (then SPLIT_FILTER dropped it); now the dev archive is never read | none |
+| 4 | cell 6, line 193 | `url` | `https://dl.fbaipublicfiles.com/imagebind/imagebind_huge.pth` -> `https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade…` | Meta's link to imagebind_huge.pth is dead since 12/11/2026; same file (sha256 d6f6c22b...2157) on a pinned Hugging Face mirror, as release/flag2027_e2e/stages.py GLOBAL_PATCHES | none (same file) |
+
+## Other differences from the original run (inputs, wiring, environment)
+
+- **dev-exclusion**: Lanes b / c: the TRAIN patch is an addition to the release patches (release patched lane a only); the auxiliary arrays are unchanged (the aux cell never reads S).
+- **dev-exclusion**: ZIP_PREFIXES patch is an addition to the release patches (all lanes).
+- **dev-exclusion** (environment, no code change): stage.json env pins `FLAG_SPLITS=train`. The original code lets FLAG_SPLITS override the patched SPLIT_FILTER in a smoke / local run; the runner applies the stage env after the caller's environment, so no outside value can turn dev extraction back on. Same value as the patched default: effect on numbers none.
+- **dev-exclusion** (input view, pending runner support): the raw-v4 input asks the runner not to mount `dev_set.zip` / `dev_set` (stage.json inputs[].exclude). Today runner/ffcore.py build_vin applies only the configs/data_map.json exclude, so the archive is still visible; the code never unpacks or reads it (ZIP_PREFIXES / train-only index). With raw-v4 mounted unpacked (a hand-attached Kaggle dataset), find_splits still reads the dev list files (pd.read_csv of the list and an existence check of its media) before SPLIT_FILTER drops them; no dev clip or image is decoded or encoded. Mount raw-v4 as the zipped organiser release (FF_DATA/00_raw/btc_mavceleb_v4).
+
+## Run checks (stage.json post_checks / verify; fixer 18/11/2026)
+
+- verify strict (fatal when missing): 3 auxiliary-source files (list in stage.json).
+- Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).

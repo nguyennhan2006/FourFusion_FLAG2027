@@ -1,0 +1,53 @@
+{
+ "copied_from": {
+  "Experiment/DSEL-01/make_groups.py": "untracked",
+  "Experiment/SCALE-CC-01/make_groups.py": "untracked"
+ },
+ "original_outputs": {
+  "Experiment/DSEL-01/vox2_groups.json": "4f44f5cee3f9a3ae1109962158c07dcb0101a2a3bdd7c99cf27ed787c7a35cc6 (no line end)",
+  "Experiment/SCALE-CC-01/vox2b_groups.json": "7beb7ce7f67de74bcc753e1d8f2be10560b105d74dbcbf220c493d65d27fc742 (CRLF)",
+  "Experiment/SCALE-CC-01/vox2_gender.json": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089 (CRLF)",
+  "Experiment/SCALE-CC-01/vox2_meta.csv": "9a4f437fcf78b8030e597941703ab82a4d1af314f6eba3952afafe8a3664bd1b (input)"
+ },
+ "stage": "l_groups",
+ "files": [
+  {
+   "path": "original/DSEL-01_make_groups.py",
+   "bytes": 1878,
+   "md5": "9262c5fd4b8b5fd22fcd2efe92657fee",
+   "sha256": "c75e5104da1a7e6edf444adda0df098f3f13a94a2ce7dbab3b9d443e08667f0b"
+  },
+  {
+   "path": "original/SCALE-CC-01_make_groups.py",
+   "bytes": 2354,
+   "md5": "803aaac544e8ad8b81a45bf3988a1f45",
+   "sha256": "a6f0cf6a9031cc06857b6e11c513c840835aa2861cb8eeddf2ec9716d94b4a3c"
+  }
+ ],
+ "stage_files": [
+  {
+   "path": "cells/00_groups.py",
+   "bytes": 4069,
+   "md5": "138036bea9a0200aaa5021cdfcf0b8f3",
+   "sha256": "55bc517ec0d0068b2b00bd26a9c7dd1bdf2cf268f266d6365d2e30ef4a50d196"
+  },
+  {
+   "path": "dsel01_make_groups.py",
+   "bytes": 2425,
+   "md5": "8d6a7ec65d4b59dea9c998ced0eff739",
+   "sha256": "6d24feeb253237231efa1f18130921eb819b3f92e1e16313bbec2d93f3afe728"
+  },
+  {
+   "path": "expected.json",
+   "bytes": 358,
+   "md5": "c0a0164c620efa075bcf95d6be92c5e7",
+   "sha256": "1e59f3fa07ef9cb01a2a69fcc4b4021cb5417074b2be0a135ef08f35017e96f0"
+  },
+  {
+   "path": "scalecc01_make_groups.py",
+   "bytes": 3168,
+   "md5": "581db6c0673a74421bcc06bcf43f75a9",
+   "sha256": "0172104fb0a504fdf0444c0afb38fc3ef96dec1b4a906e0dfb6eb60a412ae068"
+  }
+ ]
+}

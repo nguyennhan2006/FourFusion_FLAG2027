@@ -1,0 +1,125 @@
+{
+ "id": "l_groups",
+ "group": "13_lid",
+ "title": "Evidence: language groups (DSEL-01, SCALE-CC-01) and genders of the VoxCeleb2 speakers",
+ "kind": "data",
+ "role_in_1354": "evidence",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": []
+ },
+ "origin": {
+  "run": "team machine, 11/10/2026 (DSEL-01) and 12/10/2026 (SCALE-CC-01)",
+  "exactness": "local-script",
+  "source_file": "Experiment/DSEL-01/make_groups.py + Experiment/SCALE-CC-01/make_groups.py",
+  "notebook_md5": null,
+  "builder": null,
+  "script_md5": {
+   "DSEL-01": "9262c5fd4b8b5fd22fcd2efe92657fee",
+   "SCALE-CC-01": "803aaac544e8ad8b81a45bf3988a1f45"
+  }
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/nguynlcnhtho/flag-2027-nb-42"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
+  },
+  {
+   "artifact": "raw/voxceleb2_vox2_meta",
+   "note": "VoxCeleb2 official vox2_meta.csv (ProgramComputer/voxceleb vox2/vox2_meta.csv; team copy Experiment/SCALE-CC-01/vox2_meta.csv)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/l_groups",
+  "exports": {},
+  "kernel_layout": {
+   "groups/vox2_groups.json": "FLAG_37 speakers -> [group, language, share]",
+   "groups/vox2b_groups.json": "FLAG_53 new speakers",
+   "groups/vox2_gender.json": "VoxCeleb2 id -> m / f",
+   "groups/l_groups_check.json": "comparison with the files the system used"
+  }
+ },
+ "env": {},
+ "smoke_env": {
+  "FF_SMOKE": "1"
+ },
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {},
+ "skip_with": [
+  "02_intermediate/vox2_groups"
+ ],
+ "skip_with_note": "= Experiment/DSEL-01/vox2_groups.json + Experiment/SCALE-CC-01/{vox2b_groups,vox2_gender}.json",
+ "verify": [
+  {
+   "file": "groups/vox2_groups.json",
+   "sha256_crlf": "4f44f5cee3f9a3ae1109962158c07dcb0101a2a3bdd7c99cf27ed787c7a35cc6"
+  },
+  {
+   "file": "groups/vox2b_groups.json",
+   "sha256_crlf": "7beb7ce7f67de74bcc753e1d8f2be10560b105d74dbcbf220c493d65d27fc742"
+  },
+  {
+   "file": "groups/vox2_gender.json",
+   "sha256_crlf": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089"
+  }
+ ],
+ "todo": [
+  "WP-A / WP-K: register raw/voxceleb2_vox2_meta -> FF_DATA/01_collected/voxceleb2_meta/vox2_meta.csv (159 126 bytes, sha256 9a4f437fcf78b8030e597941703ab82a4d1af314f6eba3952afafe8a3664bd1b); its HF source ProgramComputer/voxceleb now answers 403 without accepted terms",
+  "the chain does not read these files from this stage: later notebooks carry their own copies (embedded code bundles); this stage documents how they were made"
+ ],
+ "notes": [
+  "value_counts() decides ties of the majority language; a pandas version that orders ties differently would change the group of a tied speaker. The check reports it (FF_ALLOW_MISMATCH=1 keeps the output)."
+ ],
+ "changes_summary": [
+  "path: dsel01_make_groups.py (copy of Experiment/DSEL-01/make_groups.py): LD and the output folder from FF_VOX2LID / FF_OUT (defaults = original paths)",
+  "path: scalecc01_make_groups.py (copy of Experiment/SCALE-CC-01/make_groups.py): DSEL-01 script, FLAG_53 folder, FLAG_42 labels, vox2_meta.csv and output folder from FF_DSEL01_SCRIPT / FF_FLAG53_DIR / FF_FLAG42_LABELS / FF_VOX2_META / FF_OUT",
+  "new: cells/00_groups.py: new: run both scripts, compare the outputs with the original files (line ends normalised to CRLF: the originals were written on Windows)",
+  "new: guard made mode-aware (guard_policy in stage.json, read by the cell): mismatch -> warn in FF_MODE=train or with FF_ALLOW_MISMATCH=1 / FF_SMOKE=1, fail otherwise (fixer pass 18/11)"
+ ],
+ "build": {
+  "base": null,
+  "sequence": [
+   {
+    "new": "cells/00_groups.py"
+   }
+  ],
+  "recipe": "ff-stage-ipy/1",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "cell_filter": "orig = index of the cell in the original notebook's nb['cells'] list (markdown cells counted; the cell must be a non-empty code cell), CRLF->LF; new: cells/*.py (each opens with print(\"[cell] ...\", flush=True))",
+  "cells": [
+   {
+    "new": "cells/00_groups.py",
+    "title": "l_groups: language groups (DSEL-01, SCALE-CC-01) and genders of the VoxCeleb2 speakers"
+   }
+  ],
+  "n_cells": 1,
+  "stage_ipy_sha256": "acc91e6e36fceca4722f5ef87cc5394d63fd4df76cf65bcb4b95699f00b284ba"
+ },
+ "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)",
+ "guard_policy": {
+  "check": "groups/{vox2_groups,vox2b_groups,vox2_gender}.json sha256 (CRLF form) == the files the system used",
+  "on_mismatch": {
+   "train": "warn",
+   "infer": "fail",
+   "assemble": "fail"
+  },
+  "when_FF_MODE_unset": "fail",
+  "overrides": {
+   "FF_ALLOW_MISMATCH=1": "warn in any mode",
+   "FF_SMOKE=1": "warn (smoke data)"
+  },
+  "read_by": "the stage's own cell (FF_STAGE_DIR/stage.json; FF_MODE is set by the runner)",
+  "why": "same policy as l_dqual_g3 / l_lid_audit / l_lid_strict: the FLAG_42 input comes from a GPU run that is not bit-identical when re-run"
+ },
+ "env_doc": {
+  "FF_ALLOW_MISMATCH": "1 = a mismatch only warns, in any FF_MODE (the check file records it). Not needed in FF_MODE=train, where guard_policy already warns."
+ }
+}

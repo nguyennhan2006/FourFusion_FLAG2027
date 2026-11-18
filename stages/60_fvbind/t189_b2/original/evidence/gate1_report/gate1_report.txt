@@ -1,0 +1,28 @@
+FVBIND-01 gate 1: arms ['B0', 'B1', 'B2', 'C1ref', 'IB0'], files 30
+EER (mean of folds), finite share in brackets:
+cell   en_ext g  en_ext ng  urdu g  urdu ng   v4 g  v4 ng
+arm                                                      
+B0        41.18      29.91   41.30    29.60  39.58  27.71
+B1        40.57      29.44   41.33    29.54  38.30  27.46
+B2        38.91      27.89   40.06    28.13  36.94  26.51
+C1ref       NaN        NaN     NaN      NaN  40.81  31.01
+IB0       39.39      29.76   41.47    30.58  38.04  29.77
+cell   en_ext g  en_ext ng  urdu g  urdu ng  v4 g  v4 ng
+arm                                                     
+B0        0.448      0.448     1.0      1.0   1.0    1.0
+B1        0.448      0.448     1.0      1.0   1.0    1.0
+B2        0.448      0.448     1.0      1.0   1.0    1.0
+C1ref       NaN        NaN     NaN      NaN   1.0    1.0
+IB0       0.448      0.448     1.0      1.0   1.0    1.0
+g-mean per fold (cells ['en_ext g', 'urdu g', 'v4 g']):
+arm      B0     B1     B2  C1ref    IB0
+fold                                   
+1     39.92  39.31  37.95  39.65  38.80
+2     40.02  40.25  38.51  39.16  40.17
+3     41.10  39.98  39.84  42.62  40.05
+4     42.39  41.17  39.51  42.52  40.79
+5     40.00  39.61  37.39  40.13  38.36
+  B1 - B0 on g-mean: +0.62 (folds +0.61, -0.24, +1.13, +1.22, +0.39; wins 4/5)  GATE 1: FAIL
+  B2 - B0 on g-mean: +2.05 (folds +1.97, +1.51, +1.26, +2.88, +2.61; wins 5/5)  GATE 1: PASS
+  C1ref - B0 on g-mean: -1.24 (folds +0.46, -1.64, -0.46, -1.95, -2.59; wins 1/5)  [reference]
+  IB0 - B0 on g-mean: +1.05 (folds +1.12, -0.16, +1.05, +1.60, +1.65; wins 4/5)  [reference]

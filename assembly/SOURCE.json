@@ -1,0 +1,36 @@
+{
+ "folder": "assembly",
+ "what": "mode (c): rebuild the submitted zip byte for byte from stored per-pair scores",
+ "files": {
+  "rebuild_final.py": {
+   "exactness": "local-script, verbatim (no change)",
+   "copied_from": "release/factor_enfuse/rebuild_final.py (team repo, untracked)",
+   "identical_to": "<team archive>/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/rebuild_final.py (team package)",
+   "sha256": "0878da7f24dc91ce345c7a455cb98880258ba8c022fe733b47387fb76753a1b9",
+   "md5": "659da47422dcdcdd1941b19feeb61e14",
+   "source_sha256": "0878da7f24dc91ce345c7a455cb98880258ba8c022fe733b47387fb76753a1b9",
+   "package_sha256": "0878da7f24dc91ce345c7a455cb98880258ba8c022fe733b47387fb76753a1b9",
+   "evidence": "<team archive>/FLAG2027_submit/FACTOR_ENFUSE_c5rl/rebuild/rebuild_report.txt (14/11): all four members of posteval_FACTOR_ENFUSE_c5rl.zip identical"
+  },
+  "assemble_exact.py": {
+   "exactness": "new",
+   "sha256": "93390a23768a60031f914e6e1b68cee75b4d4f6d20fd86a5a60075040b251b70"
+  },
+  "expected.json": {
+   "exactness": "new (reference values measured 18/11 on the team's copies)",
+   "sha256": "a8d0d1564bad8a982d0ff80a418db8ab1cba5150de3902e08ed0c26f8b24dcfe"
+  },
+  "README.md": {
+   "exactness": "new",
+   "sha256": "e71adb92611009a0979f87a8b9c37cbd5620f4a7a898aead2f2f4072ec45960b"
+  },
+  "inputs/README.md": {
+   "exactness": "new",
+   "sha256": "3ecf07f608371758efc73d359e55397291db172258cfa7e4ca6ec5eb964568d3"
+  }
+ },
+ "calls": [
+  "../stages/70_dp/dp_sigma/dp_sigma.py",
+  "../stages/80_final/final_blend/blend.py"
+ ]
+}
