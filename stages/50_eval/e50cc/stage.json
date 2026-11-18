@@ -50,13 +50,6 @@
    "use": "train-side arrays: ImageBind faces of the face-gender model (23 018 faces), XALL train arrays, ages"
   },
   {
-   "artifact": "datasets/ngnnguynchn/flag2027-best-v7-p",
-   "mount": "datasets/ngnnguynchn/flag2027-best-v7-p",
-   "use": "old s007_xall.pt (overridden by XALL_PREFER=cleancomp) + MAV-Celeb AdaFace arrays (feed only rel / relg, 0 under NOREL); ALSO holds dev-phase score files best_v7/submission_REL2_E0_B3/{gender,no_gender}/sub_score_v4_{English_heard,Bangla_unheard}.txt, mounted but never read (no reference in stage.ipy); frozen wiring dataset (DESIGN G18)",
-   "wiring_g18": true,
-   "dev_data": true
-  },
-  {
    "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p",
    "mount": "datasets/ngnnguynchn/flag2027-lab-data-p",
    "use": "data of the v11 T3 head job (manifest version asserted equal to the EDA bundle's)"
@@ -236,6 +229,14 @@
    "bytes": 5663,
    "stage_ipy_line": 4240,
    "use": "v12 English fuser; FUS['v12_english'] -> SY.v12_scores -> d['v12']"
+  }
+ ],
+ "inputs_dropped": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-best-v7-p",
+   "type": "wiring",
+   "why": "attached in the original run for s007_xall.pt and the MAV-Celeb AdaFace arrays. XALL_PREFER=cleancomp makes input_dir() take s007_xall.pt from datasets/ngnnguynchn/flag2027-cleancomp-final-p (stage t164f); the AdaFace arrays ext_v{1,2}_complete_face_adaface.npy are byte-identical (sha256 d160e51b... / 0844ca81...) to the f10_models outputs that datasets/ngnnguynchn/flag2027-lab-data-p already mounts (lab/kaggle/output/feats_models/), and under NOREL they are only row-counted (relational bridge skipped). Its dev-phase score files were never read. No producing stage exists.",
+   "added": "19/11/2026 (requirement-1 closure)"
   }
  ]
 }

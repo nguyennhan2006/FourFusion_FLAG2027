@@ -58,18 +58,13 @@
    "requirement1_gaps": [
     "datasets/ff-frozen/flag2027-e2e-dev-p (= frozen datasets/ngnnguynchn/flag2027-e2e-dev-p, default_saved; safe04_lab can rebuild it with FF_FORCE=safe04_lab)",
     "datasets/ff-frozen/flag2027-e2e-dev-wiring-p (dev-phase wiring members of the frozen SAFE-04 bundle; input of safe04_lab)",
-    "datasets/ngnnguynchn/flag2027-cc5-oof-p (wiring: F family / e112f*)",
-    "datasets/ngnnguynchn/flag2027-dsel02-oof-p (wiring: F family / e112f*)",
-    "datasets/ngnnguynchn/flag2027-facelora03-tables-p (wiring: F family / e112f* / t219)",
-    "datasets/ngnnguynchn/flag2027-lab-avfull-p (wiring: F family / e112f*)",
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p (only e112f0sx, F0 English: not in the 13.54 zip)",
     "datasets/ngnnguynchn/flag2027-members-p (wiring: e50cc)",
-    "datasets/ngnnguynchn/flag2027-best-v7-p (wiring: e50cc)",
-    "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p (wiring: t219_dumpv4, t184_report)",
     "datasets/trngsnam/flag2027-feats-peface01-pe0-p (evidence only since 18/11: t183_p1 / t183_p2, whose arms request f_pel; dropped from t163p_c5rl, t213_p*, t216_p3, t163p_fvb, t189_b2 as never read)",
     "datasets/ngnnguynchn/flag2027-t3s01-tables-p (evidence only since 18/11: t184_report; t219_dumpv4 reads datasets/ff/flag2027-t3s01-trca-p made by t3s01_trca from ct02s-r2ca-tables-p)",
     "11 data files embedded in stage code (configs/data_map.json class 'embedded'; 7 without producer: STACK-02/eligible.json, CLEANTUNE-01/ct_round2.json (hand-written configuration), VBSEL-01/vox2_sa_speakers.json, and the four frozen v9 / v11 / v12 fuser JSONs of e50cc, which feed only d['v9'] / d['v11'] / d['v12'])"
    ],
-   "requirement1_gaps_updated": "18/11/2026 (integration fixer r1, INTEGRATION_r1 B3 / M7 / M8)",
+   "requirement1_gaps_updated": "19/11/2026 (requirement-1 closure): cc5-oof, dsel02-oof, facelora03-tables, feats-scout-wsvrdn, best-v7 dropped as never read",
    "full_rebuild_from_raw": {
     "env": {
      "FF_MODE": "train",
@@ -178,11 +173,7 @@
     "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
     "datasets/onnhqunhh/flag2027-lora-frames-p",
     "datasets/ngnnguynchn/flag2027-ext-meta-p",
-    "datasets/ngnnguynchn/flag2027-best-v7-p",
     "datasets/ngnnguynchn/flag2027-members-p",
-    "datasets/ngnnguynchn/flag2027-cc5-oof-p",
-    "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
-    "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
     "datasets/ngnnguynchn/flag2027-lab-avfull-p",
     "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p",
     "datasets/hthlin/flag2027-aux-voice-feats-p",
@@ -199,7 +190,7 @@
    "estimate": "about 12 GPU-hours (16 + 21 + 240 + 221 + 31 + 162 + 34 min; the MAV part of e47rs, about 3.5 h, does not enter the zip) + about 1 CPU-hour",
    "expectation": "Spearman >= 0.9999 per file against the submitted zip (the T2 test of release/flag2027_e2e reached >= 0.99999, max |diff| <= 0.06), not byte-identical",
    "expected_stages_note": "DESIGN 5.2 list + raw_btc, the check of the organisers' v4 files that the runner schedules before the first stage reading them (stage.json outputs.verifies, request of WP-B); raw_mavceleb_check (WP-B, 18/11) is scheduled the same way: it verifies datasets/chnnhnnguyn/external-data-mavceleb before the first stage reading it",
-   "required_intermediate_note": "members-p, best-v7-p, cc5-oof-p, dsel02-oof-p, facelora03-tables-p and lab-avfull-p are requirement-1 exceptions (wiring, no producing stage); mode (b) on Kaggle: e50cc, e112f0sx, e112f1sx (literal /kaggle/input) each need their own session with exactly their inputs attached (runner/README.md)"
+   "required_intermediate_note": "members-p (e50cc, v9 / v12 members) and lab-avfull-p (e112f0sx, F0 English) are the remaining requirement-1 exceptions of this mode (wiring, no producing stage); cc5-oof, dsel02-oof, facelora03-tables and best-v7 are no longer inputs (19/11/2026 (requirement-1 closure))"
   },
   "assemble": {
    "title": "(c) byte-exact assembly from the saved per-pair scores",

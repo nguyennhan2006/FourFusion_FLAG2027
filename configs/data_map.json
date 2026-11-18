@@ -525,7 +525,7 @@
    "e_package": "datasets/ngnnguynchn__flag2027-cc5-oof-p.zip",
    "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: FLAG_57 / T3RECIPE-02 (DESIGN G18)",
    "origin_run": "FLAG_57 / T3RECIPE-02 (CC5 OOF tables)",
-   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 6766081fe11978cc...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+   "unused": "no stage consumes it since 19/11/2026 (requirement-1 closure): dropped from every consumer as never read (stage.json inputs_dropped)"
   },
   "datasets/ngnnguynchn/flag2027-dsel02-oof-p": {
    "path": "02_intermediate/_wiring/flag2027-dsel02-oof-p",
@@ -536,7 +536,7 @@
    "e_package": "datasets/ngnnguynchn__flag2027-dsel02-oof-p.zip",
    "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: FLAG_58 / DSEL-02 (DESIGN G18)",
    "origin_run": "FLAG_58 / DSEL-02 (OOF tables)",
-   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 3849c9924d2f40db...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+   "unused": "no stage consumes it since 19/11/2026 (requirement-1 closure): dropped from every consumer as never read (stage.json inputs_dropped)"
   },
   "datasets/ngnnguynchn/flag2027-facelora03-tables-p": {
    "path": "02_intermediate/_wiring/flag2027-facelora03-tables-p",
@@ -547,7 +547,7 @@
    "e_package": "datasets/ngnnguynchn__flag2027-facelora03-tables-p.zip",
    "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: FLAG_86 / 86b (DESIGN G18)",
    "origin_run": "FLAG_86 / 86b (FACELORA-03 tables)",
-   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 8ab8e33d81317125...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+   "unused": "no stage consumes it since 19/11/2026 (requirement-1 closure): dropped from every consumer as never read (stage.json inputs_dropped)"
   },
   "datasets/ngnnguynchn/flag2027-lab-avfull-p": {
    "path": "02_intermediate/_wiring/flag2027-lab-avfull-p",
@@ -558,7 +558,7 @@
    "e_package": "datasets/ngnnguynchn__flag2027-lab-avfull-p.zip",
    "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: package labavfull/ (DESIGN G18)",
    "origin_run": "team package labavfull/ (lab AV tables)",
-   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 b5febc059547e3c0...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+   "requirement1_gap": "since 19/11/2026 (requirement-1 closure) consumed only by e112f0sx, whose F0 English zip path reads the AudioCLIP arrays (EN-T3-01 table_en); F0 English reaches f1s_eval.zip but not the 13.54 zip (ENFUSE reads its English pairs only for the pair-id check). Producer outside the graph: team FLAG_32 run 2 (Experiment/CAFUSE-EN/flag-2027-nb-32.ipynb, AudioCLIP on MAV-Celeb v1 / v2). The other eleven consumers no longer need it (OPTIONAL_DIRS patch)"
   },
   "datasets/ngnnguynchn/flag2027-members-p": {
    "path": "02_intermediate/_wiring/flag2027-members-p",
@@ -580,7 +580,7 @@
    "e_package": "datasets/ngnnguynchn__flag2027-best-v7-p.zip",
    "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: old BEST/v7_safe package (DESIGN G18)",
    "origin_run": "old BEST/v7_safe package",
-   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 9bac62044510eff7...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+   "unused": "no stage consumes it since 19/11/2026 (requirement-1 closure): dropped from every consumer as never read (stage.json inputs_dropped)"
   },
   "datasets/ngnnguynchn/flag2027-t3s01-tables-p": {
    "path": "02_intermediate/_wiring/flag2027-t3s01-tables-p",
@@ -602,7 +602,7 @@
    "e_package": "datasets/ngnnguynchn__flag2027-feats-scout-wsvrdn-p.zip",
    "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: scout features (DESIGN G18)",
    "origin_run": "scout features (WavLM / SimAM / VoxResNet / DINO scout run)",
-   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 badbcb545b7fcced...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+   "unused": "no stage consumes it since 19/11/2026 (requirement-1 closure): dropped from every consumer as never read (stage.json inputs_dropped)"
   },
   "datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p": {
    "path": "02_intermediate/_wiring/flag2027-ct02s-g1-tables-p",

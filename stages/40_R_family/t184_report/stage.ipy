@@ -110,7 +110,7 @@ CODE_MD5 = {
  "lab_entry.py": "969ad42a47449a3a239cd9323a455f5a"
 }
 DATA_DIRS = ["kaggle/output/feats_av", "kaggle/output/feats_eval", "kaggle/output/feats_models", "Experiment/T3ENC-01/feats_t3enc", "Experiment/T3ENC-01/feats_vox2t3", "Experiment/T3ENC-01/feats_vox2lid", "Experiment/VOX2-01/feats_vox2"]
-OPTIONAL_DIRS = {"Experiment/SCALE-VB/feats_vb": ["SCALE-VB", "VBSEL-01", "T3RECIPE-01", "T3REPRO-01", "T3RECIPE-02", "DSEL-02", "CCOPT-01"], "kaggle/output/feats_e6144": ["ENBASE-01"], "Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}
+OPTIONAL_DIRS = {"Experiment/SCALE-VB/feats_vb": ["SCALE-VB", "VBSEL-01", "T3RECIPE-01", "T3REPRO-01", "T3RECIPE-02", "DSEL-02", "CCOPT-01"], "kaggle/output/feats_e6144": ["ENBASE-01"], "Experiment/CAFUSE-EN/feats_av_full": []}
 with zipfile.ZipFile(io.BytesIO(base64.b64decode(CODE_B64))) as z:
     for f in z.namelist():
         b = z.read(f); assert hashlib.md5(b).hexdigest() == CODE_MD5[f], f
@@ -207,7 +207,7 @@ def standin(tag, arms, seed):
     for s in range(1, 6):
         f = SP / "out/safe04" / f"{tag}_fold{s}.parquet"
         if not f.exists():
-            d = pd.read_parquet(SP / "out/safe04" / f"facelora03_B3_fold{s}.parquet")
+            d = pd.read_parquet(SP / "out/safe04" / f"streams_fold{s}.parquet")[["fold", "data", "protocol", "y", "fi", "vi", "XALL_deep0"]].rename(columns={"XALL_deep0": "trB3"})
             rng = np.random.RandomState(100 * seed + s)
             for a in arms:
                 d[f"tr{a}"] = d["trB3"].values + 0.05 * rng.randn(len(d))
@@ -234,7 +234,7 @@ if SMOKE and miss:                                                 # smoke only:
     import numpy as np
     for n in [n for n in miss if n.startswith(tuple(f"rfx{a}lab" for a in ARMS[:15]))]:
         a, s = n[3:].split("lab_fold")[0], int(n[-9])
-        d = pd.read_parquet(SP / "out/safe04" / f"facelora03_B3_fold{s}.parquet"); rng = np.random.RandomState(s + len(a))
+        d = pd.read_parquet(SP / "out/safe04" / f"streams_fold{s}.parquet")[["fold", "data", "protocol", "y", "fi", "vi", "XALL_deep0"]].rename(columns={"XALL_deep0": "trB3"}); rng = np.random.RandomState(s + len(a))
         o = d[["fold", "data", "protocol", "y", "fi", "vi"]].copy()
         for c in ("t3", "nf", "nv", "ib", "age", "gender_agree"):
             o[f"rfx{a}_{c}"] = d["trB3"].values + 0.3 * rng.randn(len(d))

@@ -189,7 +189,7 @@ def standin(tag, arms, seed):
     for s in range(1, 6):
         f = SP / "out/safe04" / f"{tag}_fold{s}.parquet"
         if not f.exists():
-            d = pd.read_parquet(SP / "out/safe04" / f"facelora03_B3_fold{s}.parquet")
+            d = pd.read_parquet(SP / "out/safe04" / f"streams_fold{s}.parquet")[["fold", "data", "protocol", "y", "fi", "vi", "XALL_deep0"]].rename(columns={"XALL_deep0": "trB3"})
             rng = np.random.RandomState(100 * seed + s)
             for a in arms:
                 d[f"tr{a}"] = d["trB3"].values + 0.05 * rng.randn(len(d))

@@ -137,19 +137,10 @@
    "artifact": "datasets/hthlin/flag2027-aux-voice-feats-p"
   },
   {
-   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p"
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p"
-  },
-  {
    "artifact": "datasets/ngnnguynchn/flag2027-e2e-dev-p"
   },
   {
    "artifact": "datasets/ngnnguynchn/flag2027-eda-bundle-p"
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p"
   },
   {
    "artifact": "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p"
@@ -165,9 +156,6 @@
   },
   {
    "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p"
   },
   {
    "artifact": "datasets/ngnnguynchn/flag2027-lab-data-p"
@@ -191,7 +179,28 @@
   "LID_STRICT": "1",
   "CT_R2_ONLY": "CA"
  },
- "patches": [],
+ "patches": [
+  {
+   "old": "pd.read_parquet(SP / \"out/safe04\" / f\"facelora03_B3_fold{s}.parquet\")",
+   "new": "pd.read_parquet(SP / \"out/safe04\" / f\"streams_fold{s}.parquet\")[[\"fold\", \"data\", \"protocol\", \"y\", \"fi\", \"vi\", \"XALL_deep0\"]].rename(columns={\"XALL_deep0\": \"trB3\"})",
+   "count": 1,
+   "type": "smoke",
+   "why": "smoke only (FL3Z_SMOKE / FLAG_SMOKE): the stand-in tables were noisy copies of FACELORA-03's B3 tables (datasets/ngnnguynchn/flag2027-facelora03-tables-p, no producing stage). They now start from the SAFE-04 streams table of the same fold (frozen bundle / stage safe04_lab, already in SP/out/safe04): same 7 406 rows and the same key columns fold, data, protocol, y, fi, vi (checked on fold 1 against the team copies, 19/11); XALL_deep0 plays the role of trB3, whose columns the stand-in drops anyway",
+   "effect_on_numbers": "none in real runs (smoke stand-ins only)",
+   "cell": 6,
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "old": "\"Experiment/CAFUSE-EN/feats_av_full\": [\"CLEANTUNE-01\"]}",
+   "new": "\"Experiment/CAFUSE-EN/feats_av_full\": []}",
+   "count": 1,
+   "type": "wiring",
+   "why": "the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here",
+   "effect_on_numbers": "none (the folder is never opened by this stage's commands)",
+   "cell": 2,
+   "added": "19/11/2026 (requirement-1 closure)"
+  }
+ ],
  "drop_cells": [],
  "neutralize_upload": [],
  "pip_policy": "original",
@@ -253,5 +262,31 @@
  },
  "identity_linkage": "kaggle/build_l0_notebooks.py (embedded, md5 e2f63ea92aa5) line 92 OVERLAP = {\"v1_complete:shaukat_tarin\", \"v2_complete:id0073\"} (MAV-Celeb persons matched to v4 persons, SET-07) and line 153 PERSONS = sorted(set(VMETA.p) - OVERLAP): these two MAV-Celeb identities are left out of every MAV-Celeb row set of the F1s' family (the same file is loaded by Experiment/BEST/v7_safe safe_lib.OVERLAP in t164f). It is an identity link between two sources; disclosure belongs in docs/COMPLIANCE_NOTES.md (DESIGN G17, WP-K); the user's decision on it is still open.",
  "smoke_note": "the verbatim env cell sets LAB_FOLDS='5' after smoke_env LAB_FOLDS=1; FL3Z_SMOKE then keeps [5]: the smoke runs fold 5, not fold 1 as the original smoke push (harmless).",
- "licence": "VoxBlink-derived (CC BY-NC-SA 4.0, no redistribution): trained with VoxBlink speakers/frames and/or holding VoxBlink features; private FF_DATA only, never in git. The fold heads train with VoxBlink speakers (VOICELORA-01 rows); the fold tables hold scores only."
+ "licence": "VoxBlink-derived (CC BY-NC-SA 4.0, no redistribution): trained with VoxBlink speakers/frames and/or holding VoxBlink features; private FF_DATA only, never in git. The fold heads train with VoxBlink speakers (VOICELORA-01 rows); the fold tables hold scores only.",
+ "inputs_dropped": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+   "type": "wiring",
+   "why": "attached in the original run but never read by this stage: its tables (t3recipe02_fold*.parquet) are read only by DSEL-02/run.py with_cc5() and DSEL-03/run.py attach(), which are reached only from the DSEL-02 / DSEL-03 / SCALE-CC-01 / AUXP-01 report commands; this stage runs CLEANTUNE-01 / FACTOR-01 / FUSENET-01 commands, which never call them, and no cell checks the dataset's presence. No producing stage exists (old run FLAG_57).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+   "type": "wiring",
+   "why": "attached in the original run but never read by this stage: its tables (dsel02_fold*.parquet) are read only by DSEL-02/run.py and DSEL-03/run.py report paths, which this stage's commands never call; no presence check. No producing stage exists (old run FLAG_58).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+   "type": "wiring",
+   "why": "attached in the original run; real runs only copy facelora03_B3_fold*.parquet into SP/out/safe04 (no assert) and nothing reads the copies: the only reader is the smoke stand-in (FL3Z_SMOKE / FLAG_SMOKE), which now takes the key columns of the SAFE-04 streams tables instead (patch of the same date). No producing stage exists (old runs FLAG_86 / 86b).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+   "type": "wiring",
+   "why": "attached in the original run only to satisfy the lab presence check OPTIONAL_DIRS['Experiment/CAFUSE-EN/feats_av_full'] = ['CLEANTUNE-01']; its content (AudioCLIP arrays) is read only by EN-T3-01 table_en() via CLEANTUNE-01 fit_en_clean(), called from the zip command when F0_ZIP is unset, i.e. only in e112f0sx (F0 English). The presence check is made optional by the patch of the same date. No producing stage exists (team package labavfull/, FLAG_32 run 2).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  }
+ ]
 }

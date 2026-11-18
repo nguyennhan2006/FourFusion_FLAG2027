@@ -50,22 +50,10 @@
    "artifact": "datasets/ngnnguynchn/flag2027-e2e-dev-p"
   },
   {
-   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p"
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p"
-  },
-  {
    "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p"
   },
   {
    "artifact": "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p"
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p"
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p"
   },
   {
    "artifact": "datasets/quynhnhu82/flag2027-feats-ls-c5s-p"
@@ -81,9 +69,6 @@
   },
   {
    "artifact": "datasets/ngnnguynchn/flag2027-lid-strict-p"
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p"
   },
   {
    "artifact": "datasets/ff/flag2027-t3s01-trca-p",
@@ -130,6 +115,26 @@
    "cell": 11,
    "line_in_cell": 13,
    "side_effect": "the rest of the 'RFSTUNE-01 report' cell (one print) and the whole 'summary' cell now run; in the original run they never ran because this cell died. The summary cell rewrites e2e_out/progress.json with five more keys (gpu, torch, lab_data, e2e, finished), so this stage's progress.json differs from the saved one (Experiment/XJF-01/out/dumpv4/e2e_out/progress.json, sha256 f28b4783..., keys code_md5 / done / exp / files / seconds / split; listed in original/OUTPUTS.sha256). No number changes; only the xjfdump_* files are read downstream (WP-I dp_sigma reads xjfdump_v4.parquet) (recorded by the fixer 18/11)"
+  },
+  {
+   "old": "pd.read_parquet(SP / \"out/safe04\" / f\"facelora03_B3_fold{s}.parquet\")",
+   "new": "pd.read_parquet(SP / \"out/safe04\" / f\"streams_fold{s}.parquet\")[[\"fold\", \"data\", \"protocol\", \"y\", \"fi\", \"vi\", \"XALL_deep0\"]].rename(columns={\"XALL_deep0\": \"trB3\"})",
+   "count": 2,
+   "type": "smoke",
+   "why": "smoke only (FL3Z_SMOKE / FLAG_SMOKE): the stand-in tables were noisy copies of FACELORA-03's B3 tables (datasets/ngnnguynchn/flag2027-facelora03-tables-p, no producing stage). They now start from the SAFE-04 streams table of the same fold (frozen bundle / stage safe04_lab, already in SP/out/safe04): same 7 406 rows and the same key columns fold, data, protocol, y, fi, vi (checked on fold 1 against the team copies, 19/11); XALL_deep0 plays the role of trB3, whose columns the stand-in drops anyway",
+   "effect_on_numbers": "none in real runs (smoke stand-ins only)",
+   "cell": 5,
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "old": "\"Experiment/CAFUSE-EN/feats_av_full\": [\"CLEANTUNE-01\"]}",
+   "new": "\"Experiment/CAFUSE-EN/feats_av_full\": []}",
+   "count": 1,
+   "type": "wiring",
+   "why": "the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here",
+   "effect_on_numbers": "none (the folder is never opened by this stage's commands)",
+   "cell": 2,
+   "added": "19/11/2026 (requirement-1 closure)"
   }
  ],
  "drop_cells": [],
@@ -200,6 +205,38 @@
    "mount_kept": "datasets/ngnnguynchn/flag2027-t3s01-tables-p",
    "type": "wiring",
    "why": "requirement 1: the frozen dataset (FLAG_167 T3S-01 runs, not rebuildable: staging folders empty) had no producing stage, yet its trCA enters U and thus sigma. The dumpv4 path reads only the row keys and trCA (merge_t3s + FUSENET-01 report F1S = S6 + V11_T3 + ['trCA']); t3s01_trca makes exactly that from ct02s-r2ca-tables-p (gather_r2ca <- t155s), with keys and trCA identical to the frozen copy (WP-F light check 18/11, max |diff| 0.0). The trT3S_* columns, unused here, are absent. Effect on numbers: none expected. 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)"
+  }
+ ],
+ "inputs_dropped": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+   "type": "wiring",
+   "why": "attached in the original run but never read by this stage: its tables (t3recipe02_fold*.parquet) are read only by DSEL-02/run.py with_cc5() and DSEL-03/run.py attach(), which are reached only from the DSEL-02 / DSEL-03 / SCALE-CC-01 / AUXP-01 report commands; this stage runs CLEANTUNE-01 / FACTOR-01 / FUSENET-01 commands, which never call them, and no cell checks the dataset's presence. No producing stage exists (old run FLAG_57).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+   "type": "wiring",
+   "why": "attached in the original run but never read by this stage: its tables (dsel02_fold*.parquet) are read only by DSEL-02/run.py and DSEL-03/run.py report paths, which this stage's commands never call; no presence check. No producing stage exists (old run FLAG_58).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+   "type": "wiring",
+   "why": "attached in the original run; real runs only copy facelora03_B3_fold*.parquet into SP/out/safe04 (no assert) and nothing reads the copies: the only reader is the smoke stand-in (FL3Z_SMOKE / FLAG_SMOKE), which now takes the key columns of the SAFE-04 streams tables instead (patch of the same date). No producing stage exists (old runs FLAG_86 / 86b).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+   "type": "wiring",
+   "why": "attached in the original run only to satisfy the lab presence check OPTIONAL_DIRS['Experiment/CAFUSE-EN/feats_av_full'] = ['CLEANTUNE-01']; its content (AudioCLIP arrays) is read only by EN-T3-01 table_en() via CLEANTUNE-01 fit_en_clean(), called from the zip command when F0_ZIP is unset, i.e. only in e112f0sx (F0 English). The presence check is made optional by the patch of the same date. No producing stage exists (team package labavfull/, FLAG_32 run 2).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p",
+   "type": "wiring",
+   "why": "attached in the original run but never opened by this stage: CLEANTUNE-01 _scout_mav() / _scout_test() are called only when training rows are built (mav_extra) or test lists are scored (final / final_t3s); the FACTOR-01 / FUSENET-01 report commands of this stage only call merge_t3s, _lr, _nested_design and stack02. No producing stage exists.",
+   "added": "19/11/2026 (requirement-1 closure)"
   }
  ]
 }

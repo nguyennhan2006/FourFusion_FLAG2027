@@ -139,13 +139,13 @@ The requirement-1 exceptions (consumed artifacts without a producing stage) are 
 | `scores/xjf_r10_trsig_submitted` | score | `05_scores/xjf_r10_trsig.zip` | - | yes | `xjf_r10_trsig.zip` `b4354eaf988b2b4e…` |  |
 | `datasets/ff-frozen/flag2027-e2e-dev-p` | wiring | `02_intermediate/e2e_dev_frozen` | - | yes |  | safe04_compare, safe04_lab_core |
 | `datasets/ff-frozen/flag2027-e2e-dev-wiring-p` | wiring | `02_intermediate/_wiring/e2e_dev_wiring` | - | yes | `e2edev/components_dev.npz` `b8da75dc9f44df07…` | safe04_lab |
-| `datasets/ngnnguynchn/flag2027-best-v7-p` | wiring | `02_intermediate/_wiring/flag2027-best-v7-p` | - | yes | `9bac62044510eff7…` | e50cc |
-| `datasets/ngnnguynchn/flag2027-cc5-oof-p` | wiring | `02_intermediate/_wiring/flag2027-cc5-oof-p` | - | yes | `6766081fe11978cc…` | e112f0sx, e112f1sx, t112sf0s, t112sf1s, t154_g1_f12, t154_g1_f34 … |
+| `datasets/ngnnguynchn/flag2027-best-v7-p` | wiring | `02_intermediate/_wiring/flag2027-best-v7-p` | - | yes | `9bac62044510eff7…` |  |
+| `datasets/ngnnguynchn/flag2027-cc5-oof-p` | wiring | `02_intermediate/_wiring/flag2027-cc5-oof-p` | - | yes | `6766081fe11978cc…` |  |
 | `datasets/ngnnguynchn/flag2027-ct02s-g1-tables-p` | wiring | `02_intermediate/_wiring/flag2027-ct02s-g1-tables-p` | gather_g1 | yes | `8d09a3af0c25e96c…` | e112f0sx, t112sf0s |
-| `datasets/ngnnguynchn/flag2027-dsel02-oof-p` | wiring | `02_intermediate/_wiring/flag2027-dsel02-oof-p` | - | yes | `3849c9924d2f40db…` | e112f0sx, e112f1sx, t112sf0s, t112sf1s, t154_g1_f12, t154_g1_f34 … |
-| `datasets/ngnnguynchn/flag2027-facelora03-tables-p` | wiring | `02_intermediate/_wiring/flag2027-facelora03-tables-p` | - | yes | `8ab8e33d81317125…` | e112f0sx, e112f1sx, t112sf0s, t112sf1s, t154_g1_f12, t154_g1_f34 … |
-| `datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p` | wiring | `02_intermediate/_wiring/flag2027-feats-scout-wsvrdn-p` | - | yes | `badbcb545b7fcced…` | t184_report, t219_dumpv4 |
-| `datasets/ngnnguynchn/flag2027-lab-avfull-p` | wiring | `02_intermediate/_wiring/flag2027-lab-avfull-p` | - | yes | `b5febc059547e3c0…` | e112f0sx, e112f1sx, t112sf0s, t112sf1s, t154_g1_f12, t154_g1_f34 … |
+| `datasets/ngnnguynchn/flag2027-dsel02-oof-p` | wiring | `02_intermediate/_wiring/flag2027-dsel02-oof-p` | - | yes | `3849c9924d2f40db…` |  |
+| `datasets/ngnnguynchn/flag2027-facelora03-tables-p` | wiring | `02_intermediate/_wiring/flag2027-facelora03-tables-p` | - | yes | `8ab8e33d81317125…` |  |
+| `datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p` | wiring | `02_intermediate/_wiring/flag2027-feats-scout-wsvrdn-p` | - | yes | `badbcb545b7fcced…` |  |
+| `datasets/ngnnguynchn/flag2027-lab-avfull-p` | wiring | `02_intermediate/_wiring/flag2027-lab-avfull-p` | - | yes | `b5febc059547e3c0…` | e112f0sx |
 | `datasets/ngnnguynchn/flag2027-members-p` | wiring | `02_intermediate/_wiring/flag2027-members-p` | - | yes | `cba6a339c7b91d8e…` | e50cc |
 | `datasets/ngnnguynchn/flag2027-t3s01-tables-p` | wiring | `02_intermediate/_wiring/flag2027-t3s01-tables-p` | - | yes | `bf9a8d1dcb7b0810…` | t184_report |
 | `datasets/trngsnam/flag2027-feats-peface01-pe0-p` | wiring | `02_intermediate/_wiring/flag2027-feats-peface01-pe0-p` | - | yes | `3c147dfb1ea265e9…` | t183_p1, t183_p2 |

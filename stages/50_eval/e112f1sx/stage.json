@@ -49,38 +49,14 @@
    "use": "EDA bundle: train-side arrays of v4 train + MAV-Celeb v1 / v2 (FLAG_08 / 10 / 12)"
   },
   {
-   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p",
-   "mount": "datasets/ngnnguynchn/flag2027-cc5-oof-p",
-   "use": "wiring dataset (old out-of-fold tables required by the lab code)",
-   "wiring_g18": true
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
-   "mount": "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
-   "use": "wiring dataset",
-   "wiring_g18": true
-  },
-  {
    "artifact": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
    "mount": "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
    "use": "VoxCeleb2 FLAG_53 rows / arrays"
   },
   {
-   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
-   "mount": "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
-   "use": "FACELORA-03 B3 tables (smoke stand-ins; wiring)",
-   "wiring_g18": true
-  },
-  {
    "artifact": "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
    "mount": "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
    "use": "5 out-of-fold tables ct01r2_fold*.parquet (column trCA) of stage gather_r2ca: rows of the fuser refit"
-  },
-  {
-   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p",
-   "mount": "datasets/ngnnguynchn/flag2027-lab-avfull-p",
-   "use": "wiring dataset (full AudioCLIP / LanguageBind arrays)",
-   "wiring_g18": true
   },
   {
    "artifact": "datasets/dnq1209/flag2027-feats-tap01-voice-p",
@@ -165,7 +141,28 @@
  "smoke_env": {
   "FL3Z_SMOKE": "1"
  },
- "patches": [],
+ "patches": [
+  {
+   "old": "pd.read_parquet(SP / \"out/safe04\" / f\"facelora03_B3_fold{s}.parquet\")",
+   "new": "pd.read_parquet(SP / \"out/safe04\" / f\"streams_fold{s}.parquet\")[[\"fold\", \"data\", \"protocol\", \"y\", \"fi\", \"vi\", \"XALL_deep0\"]].rename(columns={\"XALL_deep0\": \"trB3\"})",
+   "count": 1,
+   "type": "smoke",
+   "why": "smoke only (FL3Z_SMOKE / FLAG_SMOKE): the stand-in tables were noisy copies of FACELORA-03's B3 tables (datasets/ngnnguynchn/flag2027-facelora03-tables-p, no producing stage). They now start from the SAFE-04 streams table of the same fold (frozen bundle / stage safe04_lab, already in SP/out/safe04): same 7 406 rows and the same key columns fold, data, protocol, y, fi, vi (checked on fold 1 against the team copies, 19/11); XALL_deep0 plays the role of trB3, whose columns the stand-in drops anyway",
+   "effect_on_numbers": "none in real runs (smoke stand-ins only)",
+   "cell": 4,
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "old": "\"Experiment/CAFUSE-EN/feats_av_full\": [\"CLEANTUNE-01\"]}",
+   "new": "\"Experiment/CAFUSE-EN/feats_av_full\": []}",
+   "count": 1,
+   "type": "wiring",
+   "why": "the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here",
+   "effect_on_numbers": "none (the folder is never opened by this stage's commands)",
+   "cell": 2,
+   "added": "19/11/2026 (requirement-1 closure)"
+  }
+ ],
  "drop_cells": [],
  "neutralize_upload": [],
  "pip_policy": "original",
@@ -252,5 +249,31 @@
   "kaggle": "separate session with exactly these inputs",
   "kaggle_strict": true
  },
- "dev_data": "E2E_SPLIT = 'eval' (code cell 01): the dev branch (R11 reference zip next to the saved models, the dev score zip of CLEANTUNE-01/run.py:635) is never taken; the dev zips that sit inside evalu-f0s-p / evalu-f1s-p are attached but not read (DESIGN 2.8)."
+ "dev_data": "E2E_SPLIT = 'eval' (code cell 01): the dev branch (R11 reference zip next to the saved models, the dev score zip of CLEANTUNE-01/run.py:635) is never taken; the dev zips that sit inside evalu-f0s-p / evalu-f1s-p are attached but not read (DESIGN 2.8).",
+ "inputs_dropped": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-cc5-oof-p",
+   "type": "wiring",
+   "why": "attached in the original run but never read by this stage: its tables (t3recipe02_fold*.parquet) are read only by DSEL-02/run.py with_cc5() and DSEL-03/run.py attach(), which are reached only from the DSEL-02 / DSEL-03 / SCALE-CC-01 / AUXP-01 report commands; this stage runs CLEANTUNE-01 / FACTOR-01 / FUSENET-01 commands, which never call them, and no cell checks the dataset's presence. No producing stage exists (old run FLAG_57).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-dsel02-oof-p",
+   "type": "wiring",
+   "why": "attached in the original run but never read by this stage: its tables (dsel02_fold*.parquet) are read only by DSEL-02/run.py and DSEL-03/run.py report paths, which this stage's commands never call; no presence check. No producing stage exists (old run FLAG_58).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-facelora03-tables-p",
+   "type": "wiring",
+   "why": "attached in the original run; real runs only copy facelora03_B3_fold*.parquet into SP/out/safe04 (no assert) and nothing reads the copies: the only reader is the smoke stand-in (FL3Z_SMOKE / FLAG_SMOKE), which now takes the key columns of the SAFE-04 streams tables instead (patch of the same date). No producing stage exists (old runs FLAG_86 / 86b).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-lab-avfull-p",
+   "type": "wiring",
+   "why": "attached in the original run only to satisfy the lab presence check OPTIONAL_DIRS['Experiment/CAFUSE-EN/feats_av_full'] = ['CLEANTUNE-01']; its content (AudioCLIP arrays) is read only by EN-T3-01 table_en() via CLEANTUNE-01 fit_en_clean(), called from the zip command when F0_ZIP is unset, i.e. only in e112f0sx (F0 English). The presence check is made optional by the patch of the same date. No producing stage exists (team package labavfull/, FLAG_32 run 2).",
+   "added": "19/11/2026 (requirement-1 closure)"
+  }
+ ]
 }

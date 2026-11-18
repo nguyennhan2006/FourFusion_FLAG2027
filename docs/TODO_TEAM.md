@@ -19,9 +19,11 @@ outside git, and checks that need a GPU run.
 
 ## 2. Decisions recorded as exceptions (accept or close)
 
-- Requirement 1 ("every intermediate has a producing stage"): eight wiring datasets and seven embedded data files have no producer
-  (`docs/VERIFICATION.md` §4). None of them changes a number of 13.54 except the frozen SAFE-04 tables and the three embedded files
-  that shape row sets. Closing them needs the G18 wiring patches (drop presence / row-count checks) and one run to prove them.
+- Requirement 1 ("every intermediate has a producing stage"): on 19/11 five wiring datasets were removed from every consumer as
+  never read, and the presence check of a sixth (`lab-avfull`) was made optional where its content is not read. Left, none in the
+  13.54 numbers: `lab-avfull` in `e112f0sx` (F0 English), `members` in `e50cc` (retired v9 / v12), the dev-split wiring of
+  `safe04_lab`, two evidence-only datasets, and the configuration file `ct_round2.json` (recipe choice of FLAG_110r), see
+  `docs/VERIFICATION.md` §4. The 19/11 changes are proven by `check_stage.py` only; the first non-smoke run will exercise them.
 - The original LoRA C1 is always taken saved (`docs/VARIANTS.md`); a C1 re-learned by `t163l_orig` is evidence only.
 
 ## 3. Checks planned after 20/11
