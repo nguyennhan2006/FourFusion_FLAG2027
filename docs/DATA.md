@@ -1,7 +1,7 @@
 # Data
 
 No data is stored in this repository. Every input lives under one data root, `FF_DATA`, whose layout is the layout of the team's
-Google Drive folder `FourFusion_FLAG2027_data/` (shared only with the organisers' e-mail, because it holds the organisers' data and
+Google Drive folder [`FourFusion_FLAG2027_data/`](https://drive.google.com/drive/folders/12vkaLCAfi48XFIdFapYrmYjIld5mtfHV) (shared only with the organisers' e-mail, because it holds the organisers' data and
 VoxBlink material). `configs/data_map.json` maps every artifact id of the original Kaggle runs (`datasets/<owner>/<slug>`,
 `notebooks/<owner>/<slug>`) to a folder of `FF_DATA`; the runner builds each stage's virtual `/kaggle/input` from it, so the verbatim
 code reads the paths it read on Kaggle.
