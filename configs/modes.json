@@ -81,8 +81,7 @@
      "datasets/onnhqunhh/flag2027-rfs-lora-p": "the ORIGINAL LoRA C1 (lora_C1.pt b97372e3...) defines the 13.54 variant; every consumer has resolve: saved_only. t163l_orig (force_only) can retrain it as a check, but its GPU output has other bytes and is never mounted by the chain",
      "requirement1_gaps": "the wiring datasets / frozen SAFE-04 members / embedded files listed above have no producing stage and stay frozen (class wiring / embedded)"
     },
-    "plan_check": "18/11/2026, `ffrun.py plan --mode train --assume-saved` with this env: 71 stages, about 133 h by the original runs, no blocked input; with optional_force: 79 stages, about 157 h. Without FF_FORCE, FF_USE_SAVED=none blocks t155s_f12 (the frozen SAFE-04 tables have a force_only producer)",
-    "not_run": "never run end to end"
+    "plan_check": "18/11/2026, `ffrun.py plan --mode train --assume-saved` with this env: 71 stages, about 133 h by the original runs, no blocked input; with optional_force: 79 stages, about 157 h. Without FF_FORCE, FF_USE_SAVED=none blocks t155s_f12 (the frozen SAFE-04 tables have a force_only producer)"
    }
   },
   "infer": {

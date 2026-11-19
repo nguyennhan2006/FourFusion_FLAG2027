@@ -60,10 +60,6 @@
    "check": "VoxCeleb2 4 852 ids / 454 G3 fails, VoxBlink 15 175 / 1 388, sorted-list sha256 = expected.json"
   }
  ],
- "todo": [
-  "G3 of VoxCeleb2 covers only the 4 852 FLAG_37 speakers (after drop42); the 1 235 FLAG_53 'new' speakers never went through G3 (as in the original)",
-  "13.54: the stored FLAG_41 / FLAG_42 / FLAG_46 outputs give the exact G3 lists (re-extracted arrays could move a speaker across the 5 % quantile); with re-run inputs the guard warns (FF_MODE=train) or fails (guard_policy)"
- ],
  "notes": [
   "Exactness check without shipping data: expected.json holds the counts and the sha256 of the sorted speaker lists (all ids and G3 fails) per source, computed 18/11 from Experiment/DQUAL-01/persons.parquet; the script fails on a mismatch unless FF_ALLOW_MISMATCH=1 (cell) / --allow-mismatch.",
   "13.54 policy for the Bengali-speech filter (machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict; data_map default_saved requested from WP-A): the exact list f4065711... is rebuilt only from the STORED outputs of FLAG_42 (l42_vox2_lid), FLAG_150 (l150_whisper), FLAG_152 (l152_mms), FLAG_41 (f41_t3enc_vox2) and the collected FLAG_53 / FLAG_46 data. In FF_MODE=infer / assemble a mismatch fails; in FF_MODE=train (inputs possibly re-run on GPU, not bit-identical) it warns and the run continues as a recipe-level rebuild with the new list; FF_ALLOW_MISMATCH=1 forces the warning in any mode."

@@ -61,9 +61,8 @@
    "note": "fatal in FF_MODE=assemble, informational otherwise; zip sha256 of the original eb58ba77..."
   }
  ],
- "todo": [],
  "notes": [
-  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)",
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files)",
   "Not in the default target: final_verify does not depend on it.",
   "BEST4 = cell-by-cell composition chosen from measured Evaluation scores (make_probes.py KNOWN / BEST_NOW), against question 11 of the organisers' FAQ; it fixed the gender/Bangla file that the 13.54 zip keeps. See the a_fvbind note, stages/60_fvbind/README.md and docs/COMPLIANCE_NOTES.md. 16.72 is the mean of the four measured cell EERs (13.78 + 11.97 + 22.12 + 18.99) / 4."
  ]

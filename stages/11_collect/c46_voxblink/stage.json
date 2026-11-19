@@ -139,7 +139,7 @@
   {
    "repo": "adollahamini1998/VoxBlink-Video-clean-8-{0..7}",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": false,
    "what": "unofficial crawl of VoxBlink-clean YouTube shorts (8 repos, one per part); CC BY-NC-SA 4.0, no redistribution",
@@ -148,7 +148,7 @@
   {
    "repo": "adollahamini1998/ScriptsForVoxBlinkResources",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": false,
    "what": "official VoxBlink annotations: meta/spk2lan, spk2loc, spk2gender, utt2dur, data/utt_clean.txt, timestamp.tar.gz",
@@ -157,11 +157,11 @@
   {
    "repo": "adollahamini1998/VoxBlinkProgressVideos",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": false,
    "what": "crawl progress files progress/download_progress_clean_8_{0..7}.json (video -> shard map)",
-   "license": "not recorded (crawl progress files of the unofficial mirror; todo, WP-K LICENSES.md); treated as VoxBlink: private"
+   "license": "not recorded (crawl progress files of the unofficial mirror); treated as VoxBlink: private"
   }
  ],
  "models": [
@@ -172,10 +172,6 @@
  ],
  "run_policy": "Selection is deterministic given the mirror state (md5 order of videos, longest clean utterances) but the unofficial mirror keeps changing (progress map, orphan shards), so the 13.54 chain ALWAYS uses the collected output. 33 videos failed in session 2; session-1 failures are not recorded (68 439 jobs with a member offset -> 68 041 faces overall). VoxBlink is CC BY-NC-SA 4.0: output private, never redistributed.",
  "private": true,
- "todo": [
-  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
-  "Original account / slug unknown (2 sessions before push logging); id notebooks/ff/c46_voxblink used. Session 1's executed notebook and log are not kept: its outputs (selection / timestamps / shard listing CSVs and 473/705 shard parts) were resumed by session 2, so the selection code is presumed, not verified, to be what produced the collected rows (origin.exactness_note); WP-K: repeat this caveat in docs/VERIFICATION.md."
- ],
  "notes": [
   "Output = feats_vb/ (results_flag46.zip layout): face_meta.csv, voice_meta.csv, selection.csv, timestamps.csv, shard_listing.csv, face_{farl16,clipL}.npy, voice_{sam100p,sam100f}.npy, voice_lid_probs.npy, lid_summary.json, lid_labels.json, feats_manifest.json, parts/ (705 npz).",
   "Downstream: b_lab_vb (WP-D), c_frames_index (selection / timestamps / shard_listing / face_meta), l_lid_strict and l_dqual_g3 (WP-B: voice_lid_probs.npy, arrays).",

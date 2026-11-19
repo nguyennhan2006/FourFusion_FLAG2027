@@ -49,9 +49,7 @@ and why the numbers cannot depend on it. The exact notebooks (sha256 in `stage.j
 private storage only; with them, anyone can check the redaction (`redact_dev_refs.py <stage> <exact> --check <redacted>`).
 Some inputs that are mounted but never read also hold dev-phase score files: `flag2027-best-v7-p` (for `e50cc`) and `evalu-f0s-p` /
 `evalu-f1s-p` (for the 112 stages). Each `stage.json` declares them under `dev_data` and declares what each run output holds under
-`outputs.contains` (dev data, VoxBlink-derived arrays or weights). In the staging tree, two copies of the pushed `e50cc` notebook under
-`_staging_backup/` still embed the dev zips and are not git-ignored. They must be moved before any commit (`e50cc/stage.json` todo[0]),
-and the staging scan of the selfcheck fails until they are.
+`outputs.contains` (dev data, VoxBlink-derived arrays or weights).
 
 **13.54 variant.** `e163i` mounts `datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p`, whose `lora_C1.pt` is the ORIGINAL ImageBind-audio
 LoRA C1 (sha256 `b97372e3504a131d…`), and never the C1-fix artifacts of system 16.18 (`stage.json` `variant`). The sha256 pins

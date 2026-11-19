@@ -51,9 +51,6 @@
    "check": "ok == true (train_set.zip, meta_file_train_set.csv sha256; train_set.zip members)"
   }
  ],
- "todo": [
-  "WP-A: register datasets/ngnnguynchn/flag2027-raw-v4-p -> FF_DATA/00_raw/btc_mavceleb_v4/ (train_set.zip, meta_file_train_set.csv; dev_set.zip optional) as raw data; the runner should schedule raw_btc before the first stage that reads it (no artifact edge)"
- ],
  "notes": [
   "The stage has no artifact output the chain consumes: raw data is always taken from FF_DATA (DESIGN §2.4); raw_btc only checks it.",
   "dev_set.zip is reported if present and never required: no stage of the 13.54 chain reads dev data (DESIGN §2.8)."

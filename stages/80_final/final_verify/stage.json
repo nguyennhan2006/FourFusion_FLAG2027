@@ -56,10 +56,6 @@
    "rule": "mode assemble: all four members byte-identical (strict); modes train / infer: Spearman >= 0.9999 per file vs the submitted zip when it is available (FF_REFERENCE_ZIP or FF_DATA/05_scores/xjf_r10_trsig.zip), reported"
   }
  ],
- "todo": [
-  "the submitted zip xjf_r10_trsig.zip is not copied into the repo (Q-D: public / private undecided); place it at FF_DATA/05_scores/xjf_r10_trsig.zip or set FF_REFERENCE_ZIP for the Spearman comparison",
-  "WP-A: add a data_map entry for the submitted zip (class score, path 05_scores/xjf_r10_trsig.zip, private). It cannot be declared as an input of this stage yet: it has no producer, so the runner would not treat it as a soft input and would block final_verify when the optional reference zip is absent; declare it once the runner supports optional inputs"
- ],
  "env_spec": "docker/requirements-dp-local.txt (team CPU machine: Python 3.14.0, torch 2.12.1+cpu, numpy 2.3.5, pandas 3.0.5, insightface 2.0, onnxruntime 1.31.1, speechbrain 1.1.2; S8 E3)",
  "env_overrides": {
   "FF_FINAL_ZIP": "path of the zip to verify",

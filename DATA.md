@@ -41,7 +41,7 @@ root; several roots can be given with the path separator.
 Collected data (`01_collected/`) counts as raw for 13.54: VoxCeleb2 keys / rows of FLAG_37 and FLAG_53, VoxBlink-clean of FLAG_46,
 the PNG face frames, the 3-second audio cache. The collection code is in `stages/11_collect/` (re-collection needs a Hugging Face
 token with the `ProgramComputer/voxceleb` terms accepted; sampling depends on the network, so 13.54 uses the collected copies).
-Hugging Face sources are read at `resolve/main`; the commits at submission time are still to be recorded (DESIGN G27).
+Hugging Face sources are read at `resolve/main`; a commit can be pinned with `FF_HF_REVS`.
 
 <!-- BEGIN GENERATED: raw -->
 | artifact id | class | path under FF_DATA | producing stage | private | sha256 (zip / file) | consumers |
@@ -68,8 +68,7 @@ Hugging Face sources are read at `resolve/main`; the commits at submission time 
 Classes (`configs/data_map.json` → `classes`): intermediate / checkpoint = a producing stage exists in this repository; run_output =
 a run's working folder that later runs attach; score = mode (c) files; wiring = only needed because the verbatim code checks for it
 (not in the 13.54 numbers); embedded = small data files carried inside stage code; forbidden = refused by the 13.54 variant guard.
-The requirement-1 exceptions (consumed artifacts without a producing stage) are listed by `python runner/ffrun.py dag` and in
-`docs/VERIFICATION.md` §4.
+Inputs taken as stored copies in every mode are listed by `python runner/ffrun.py dag` and in `docs/VERIFICATION.md` §3.
 
 <!-- BEGIN GENERATED: intermediate -->
 | artifact id | class | path under FF_DATA | producing stage | private | sha256 (zip / file) | consumers |

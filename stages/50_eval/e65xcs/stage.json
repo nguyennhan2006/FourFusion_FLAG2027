@@ -188,9 +188,6 @@
   "ships_with_repo": false,
   "note": "provenance only: release/flag2027_e2e/code/<stage>.ipy is a team file that is not part of the published repository (e50cc.ipy embeds the dev score zips); equal_to_code_of_exact_notebook_with_patches uses only the patches without \"in_release\": false"
  },
- "todo": [
-  "WP-A data_map: set voxblink: true on notebooks/thanhhuyen11/flag-2027-nb-65xcs-c5sx-eval (outputs.contains: vb_face_clipC5.npy and facelora_state.pt copied from the adapter dataset); optionally add exclude [dev_set.zip] to the raw-v4 entry (patch no_dev_zip already keeps the dev archive closed)."
- ],
  "notes": [
   "Mount layout: this run saw its datasets at /kaggle/input/<slug> (old Kaggle layout; log lines of flag2027-evalphase-p, external-data-mavceleb and flag2027-raw-v4-p), so every dataset input has mount = <slug> (assumed for the six datasets the log does not print). The code scans /kaggle/input recursively, so the layout should not matter; it is kept as in the run.",
   "stage.ipy is byte-identical to release/flag2027_e2e/code/e65xcs.ipy (no change).",

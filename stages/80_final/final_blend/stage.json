@@ -78,12 +78,6 @@
    "zip_sha256_informational": "b4354eaf988b2b4ea8c4e1c3fa44d7bcf631ea5cb3cd635ab2965021fe82e507"
   }
  ],
- "todo": [
-  "input kernels of the base zips are assumed to be notebooks/ff/a_factor (WP-G) and notebooks/ff/a_fvbind (WP-H) holding posteval_FACTOR_ENFUSE_c5rl.zip / posteval_FVBIND_ENFUSE_fvb.zip (DESIGN 2.1, 4.8, 4.9); adjust if those packages chose other ids or names (or set DP_FACTOR_ZIP / DP_FVBIND_ZIP)",
-  "WP-K docs/COMPLIANCE_NOTES.md must carry the compliance disclosure of the DP (Different Profile) branch (text in this stage's CHANGES.md, section 'Compliance disclosure'): held-out-person EER of the branch alone 25.67 (no_gender) / 34.64 (gender); the English Evaluation gain most likely comes from recordings of the English Evaluation file that are also in MAV-Celeb v1/v2 (team study DPSTUDY-01: gain only when the same video / recording is in training; not checked by identity matching, which the rules forbid); a held-out-person test of the fusion made the system worse (0/5 folds); the organisers have not been asked yet (question drafted 16/11, unsent); submission order: xjf_r10.zip (constants 5.8 / 2.9 read off the test-score scale, not allowed) was scored 13.54 on 16/11 10:31 (CodaBench 1054532) before xjf_r10_trsig.zip (constants from held-out train persons) was built at 11:08 and submitted at 12:02 (1054704)",
-  "WP-K docs/COMPLIANCE_NOTES.md: blend.py (verbatim, line 43) prints a label-free Spearman / mean / sd line per English Evaluation file; it feeds no value. The disallowed constants 5.8 / 2.9 of run 9 were read off this kind of printout; the new DP code no longer prints Evaluation score statistics",
-  "WP-A configs/data_map.json: notebooks/ff/dp_score and scores/1354_inputs -> private: true until decision Q-D"
- ],
  "script_patches": {
   "blend.py": [
    {

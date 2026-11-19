@@ -104,9 +104,6 @@
  "models": [],
  "run_policy": "Pure re-packaging (no network); deterministic given its inputs. Private (VoxBlink frames).",
  "private": true,
- "todo": [
-  "Byte-for-byte rebuild of the published dataset is not possible through the runner (the FLAG_65-b checkpoint has no producer and is not mounted); the stage output is the 723-file layout."
- ],
  "notes": [
   "The frame zips are renamed *.zipdata (stem kept) so Kaggle does not unpack them; FLAG_153b/c read both names.",
   "No skip_with: the runner serves skip_with as a saved copy of the stage's KERNEL output, and no such copy exists (the FF_DATA/01_collected folders hold the exported datasets, which configs/data_map.json maps by their own ids). The stage is skipped by default because collect stages run only when forced.",

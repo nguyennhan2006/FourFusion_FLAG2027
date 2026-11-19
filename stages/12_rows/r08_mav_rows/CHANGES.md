@@ -22,7 +22,6 @@ Origin: exact-executed-copy (`_from_download/flag-2027-nb-5-external-identities.
 - extract_external of the executed flag_extract.py has no clip limit and no crop (signature: frames_per_video=8, max_padded_sec=240, max_bs=32, face_bs=64); the meta tables depend only on file names / sizes, so they must come out byte-identical on Linux.
 - Kept as in the run: `!pip -q install -U "speechbrain>=1.1.1"` (pip_policy original), the unpinned yangwang825/ecapa-tdnn-vox2 download, the Drive fallback code (never reached when the dataset is attached).
 - Runner metadata (no code change): `skip_with` lists only `02_intermediate/feats_ext_full` (the runner takes the first existing skip_with folder as the kernel output; `ext_meta` holds only the four meta tables and is the data_map path of the export); top-level `scratch: [_vggface, _ecapa_btc]` keeps the downloaded model files out of the collected output (they were only under `outputs.scratch`, which the runner does not read).
-- Todo: record the sha256 of `vgg_face_dag.py` after a first successful download and add the file to `tools/fetch_models.py` next to the .pth (WP-A).
 
 ## How stage.ipy is built
 

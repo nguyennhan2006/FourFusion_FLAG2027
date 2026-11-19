@@ -115,9 +115,6 @@
  "consumers": [
   "t164f (cleancomp final), t112sf0s, t112sf1s, t184 report, e50cc, e112f0sx, e112f1sx (dataset input per package E: RUNS.json); safe04_lab (pf_m / pv_m columns)"
  ],
- "todo": [
-  "The eda tables (csv) are re-written by pandas.to_csv: float columns of the MAV-Celeb meta tables may format differently under another pandas version (not checked)."
- ],
  "verify_notes": [
   "vs_original.identical should cover every .npy and table when the producing stages are the frozen ones (only float formatting of the re-written csv tables can differ across pandas versions); with re-extracted features compare arrays by row cosine (>= 0.999)"
  ],

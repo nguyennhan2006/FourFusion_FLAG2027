@@ -115,10 +115,6 @@
    "rule": "bit equality shown only on the team machine (S8 K6); elsewhere report max |dz| and Spearman"
   }
  ],
- "todo": [
-  "G5: no tower checkpoint exists yet. Run this stage once on the team machine (CPU ~12 min), check that out/xjf_scores.npz has the arrays_sha256 above, then upload out/dp_towers.pt (+ out/xjf_scores.npz, out/consts.json) to FF_DATA/03_checkpoints/dp_towers/out/",
-  "WP-K docs/COMPLIANCE_NOTES.md must carry the compliance disclosure of the DP (Different Profile) branch (text in this stage's CHANGES.md, section 'Compliance disclosure'): held-out-person EER of the branch alone 25.67 (no_gender) / 34.64 (gender); the English Evaluation gain most likely comes from recordings of the English Evaluation file that are also in MAV-Celeb v1/v2 (team study DPSTUDY-01: gain only when the same video / recording is in training; not checked by identity matching, which the rules forbid); a held-out-person test of the fusion made the system worse (0/5 folds); the organisers have not been asked yet (question drafted 16/11, unsent); submission order: xjf_r10.zip (constants 5.8 / 2.9 read off the test-score scale, not allowed) was scored 13.54 on 16/11 10:31 (CodaBench 1054532) before xjf_r10_trsig.zip (constants from held-out train persons) was built at 11:08 and submitted at 12:02 (1054704)"
- ],
  "script_patches": {
   "xjf.py": [
    {

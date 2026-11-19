@@ -126,7 +126,6 @@
  "consumers": [
   "locnguyentruongan/flag-2027-nb-112s-f1s (t112sf1s), phantrnhuyntrn/flag-2027-nb-183-factor-p1 / p2, -184-factor-report, ngnnguynchn/flag-2027-nb-163-rfsfxc5rl-p (t163p_c5rl): dataset input per package E: notebooks/RUNS.json"
  ],
- "todo": [],
  "verify_notes": [
   "train + ext v1 / v2 arrays (voice_rn293_*, voice_ecapa1024_*) must match the frozen dataset's (row cosine >= 0.999); the frozen dataset (21 files) also holds 4 dev lists x 2 arrays + 4 dev index files that this stage no longer writes"
  ],
@@ -192,7 +191,7 @@
    "*_gender_Bangla.npy",
    "index_*gender_*.txt"
   ],
-  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; FF_NO_DEV=1 hides them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list)",
   "files": [
    "index_gender_Bangla.txt",
    "index_gender_English.txt",
@@ -211,6 +210,6 @@
  },
  "notes": [
   "RESOLVED in the consumer by WP-E (stages/30_F_family/t112sf1s, 18/11/2026 22:53; checked by the WP-D fixer): its default FF_TRAIN_ONLY=1 runs the experiment through lab/ff_train_only_entry.py, which makes e2e_lib.components() return {}, so T3RECIPE-01 final() trains and saves ct01r2_final_models.pt and never calls e2e_lib.t3_split / CLEANTUNE-01 patch_test_cat4; the `zip` command (dev zip) is skipped. No dev array of this dataset is read in the default route, so the train-only output of this stage is enough. Residual (WP-E's documented FF_TRAIN_ONLY=0 = executed behaviour): it needs the frozen copy with the dev arrays mounted INSTEAD of this stage's output; with both mounted, CLEANTUNE-01 _find('voice_rn293_train.npy') takes the first rglob hit, so the folder holding the dev index files is not guaranteed.",
-  "Closed 18/11/2026 (fixer): 'only one producer of feats-screen2-p'. stages/50_eval/e47rs/stage.json has outputs.exports = {} (its kernel output holds the Evaluation-list arrays), so f47b_screen2 is the only stage that exports datasets/ngnnguynchn/flag2027-feats-screen2-p. The producer_preference entry in configs/pipeline_1354.json (infer / assemble -> e47rs) and the data_map note 'also produced (same 21 files) by e47rs' are wrong (handoff WP-A, repo_map/build/WP-D.md H5)."
+  "stages/50_eval/e47rs/stage.json has outputs.exports = {} (its kernel output holds the Evaluation-list arrays), so f47b_screen2 is the only stage that exports datasets/ngnnguynchn/flag2027-feats-screen2-p."
  ]
 }

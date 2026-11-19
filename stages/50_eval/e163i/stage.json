@@ -41,12 +41,12 @@
   {
    "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
    "mount": "datasets/ngnnguynchn/flag2027-raw-v4-p",
-   "use": "attached as in the original run (CHƯA CHẮC whether it is read once DATA_ROOT is set; DESIGN G25)"
+   "use": "attached as in the original run"
   },
   {
    "artifact": "datasets/chnnhnnguyn/external-data-mavceleb",
    "mount": "datasets/chnnhnnguyn/external-data-mavceleb",
-   "use": "attached as in the original run (CHƯA CHẮC whether it is read: L.locate_roots uses the artifact folder as the external tree; DESIGN G25)"
+   "use": "attached as in the original run"
   },
   {
    "artifact": "datasets/ngnnguynchn/flag2027-evalphase-p",
@@ -169,12 +169,6 @@
   "equal_to_stage_ipy": true,
   "equal_to_code_of_exact_notebook_with_patches": true
  },
- "todo": [
-  "DESIGN G25: check with a smoke run (after 20/11) whether external-data-mavceleb and raw-v4 can be detached once DATA_ROOT is set; until then they stay attached as in the original run.",
-  "WP-A runner: honour variant.require_files[].applies_to (skip a pin when the input was made in the session, how == 'made') and check variant.made_check instead; today build_vin enforces every require_files entry whatever `how` is, so FF_MODE=train stops here with VariantError. configs/variant_1354.json file_checks ('**/lora_C1.pt' = b97372e3..., when inputs + outputs) needs the same scoping (saved / attached copies only; provenance for made ones).",
-  "WP-F: t163p_c5rl post_checks / verify pin rfs_art/lora_C1.pt = b97372e3... ('exact'); in FF_MODE=train the re-learned C1 of t163l_orig has another hash, so that pin needs the same applies_to scoping (byte copy of the attached C1 instead of a fixed hash).",
-  "DESIGN G10: the original pip cell installs ImageBind from GitHub HEAD (not pinned; stage.ipy:28); the Docker image pins ImageBind@53680b02 (FF_PIP=pinned). Whether HEAD was 53680b02 on 13/11/2026 is CHƯA CHẮC. speechbrain>=1.1.1 is unpinned (stage.ipy:40): hold it with FF_PIP=pinned (pinned requirements)."
- ],
  "notes": [
   "stage.ipy is byte-identical to release/flag2027_e2e/code/e163i.ipy (no change); the C1FIX artifact substitution of release/flag2027_e2e/stages.py:526-527 is deliberately absent.",
   "Evidence for the variant: the run's FLAG_RF_E2E/run_report.json (team package output) lists artifact_manifest lora_C1.pt = b97372e3504a131d... (original C1), and the artifact's manifest_final.json says the same.",

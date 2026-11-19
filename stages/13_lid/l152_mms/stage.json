@@ -64,10 +64,6 @@
    "check": "40 271 rows; 2 528 flagged files (report only)"
   }
  ],
- "todo": [
-  "facebook/mms-lid-4017 fetched unpinned (MMS_MODEL env can point at a local snapshot)",
-  "13.54: consumers need the STORED output of this stage for the exact filter list (a rerun is not bit-identical: GPU; drop42 / lid_strict.json could change). Machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict (FF_MODE=train warns, infer fails). WP-A: data_map default_saved: true for this artifact so FF_MODE=train keeps the stored copy and a rebuild needs FF_FORCE=l152_mms"
- ],
  "notes": [
   "Role 'wiring': the MMS votes do not enter lid_strict.json (only the Whisper votes do), but lid_audit_run.py merges mms.parquet 1:1 with mav.parquet and asserts equal row counts."
  ],

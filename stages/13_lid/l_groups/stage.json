@@ -71,10 +71,6 @@
    "sha256_crlf": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089"
   }
  ],
- "todo": [
-  "WP-A / WP-K: register raw/voxceleb2_vox2_meta -> FF_DATA/01_collected/voxceleb2_meta/vox2_meta.csv (159 126 bytes, sha256 9a4f437fcf78b8030e597941703ab82a4d1af314f6eba3952afafe8a3664bd1b); its HF source ProgramComputer/voxceleb now answers 403 without accepted terms",
-  "the chain does not read these files from this stage: later notebooks carry their own copies (embedded code bundles); this stage documents how they were made"
- ],
  "notes": [
   "value_counts() decides ties of the majority language; a pandas version that orders ties differently would change the group of a tied speaker. The check reports it (FF_ALLOW_MISMATCH=1 keeps the output)."
  ],

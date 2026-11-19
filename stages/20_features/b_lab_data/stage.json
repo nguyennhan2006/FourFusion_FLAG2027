@@ -110,9 +110,6 @@
  "consumers": [
   "t153b, t153c, t160a/b/c, t162a/b/c, t164f, t112sf0s, t112sf1s, t183 / t184, t163p_c5rl, e65xbs, e65xcs, e50cc, e112f0sx, e112f1sx, f63w_aux_voice, f103c_tap01 (dataset input per package E: RUNS.json and kapi_runs.jsonl)"
  ],
- "todo": [
-  "Input ids notebooks/ff/l42_vox2_lid (WP-B) and datasets/ngnnguynchn/flag2027-vox2-keys (WP-C) follow DESIGN §3.2; the stages producing them must use the same ids."
- ],
  "verify_notes": [
   "with the frozen inputs every file except lab/lab_manifest.json (its 'created' stamp) must be byte-identical to expected_members.json; with re-extracted features compare arrays by row cosine (>= 0.999)"
  ],

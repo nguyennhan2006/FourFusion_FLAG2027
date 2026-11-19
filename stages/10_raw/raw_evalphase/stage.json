@@ -57,11 +57,6 @@
    "check": "zip sha256 a70762a3... only informative (zipfile.writestr stamps the build time)"
   }
  ],
- "todo": [
-  "WP-A: datasets/ngnnguynchn/flag2027-evalphase-p must resolve to the EXTRACTED view (evaluation_phase/... at the root, as Kaggle served it), not to a folder holding evaluation_phase.zip / eval_set.zip: notebooks of the Evaluation path scan their inputs and may unpack any zip whose name starts with 'eval'",
-  "WP-A / WP-I: stages that read eval_set.zip itself (dp_extract_eval, dp_train) should take it from notebooks/ff/raw_evalphase (or FF_DATA/00_raw/btc_evaluation/eval_set.zip), not from the dataset view",
-  "WP-A: register the raw artifact id raw/btc_evaluation_original -> FF_DATA/00_raw/btc_evaluation/ (evaluation_phase.zip)"
- ],
  "notes": [
   "The original command was `python -I Experiment/EVALPATH-U/build_evalphase.py <btc zip> <out zip>` (usage line of the script).",
   "Member content is deterministic; the zip bytes are not (writestr uses the current time, and the deflate stream may depend on the zlib version). Hence the member-by-member check.",

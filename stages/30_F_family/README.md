@@ -15,7 +15,7 @@ tables and excluded downstream.
 |---|---|---|---|---|---|
 | 1 | `t153b` | LoRA adapter B3s on CLIP ViT-L/14 + `clipB3` of every train / auxiliary face row | executed notebook, package E (exact-package) | wiring | GPU T4 x2, 494 |
 | 2 | `t153c` | LoRA adapter C5s + `clipC5` of every train / auxiliary face row | exact-package | score | GPU T4 x2, 712 |
-| 3 | `safe04_lab` | rebuild every SAFE-04 reference table of the e2e-dev bundle (level full) from lab-data + eda-bundle | new (original lab scripts in `code/`) | optional (default: frozen bundle; `FF_FORCE=safe04_lab`) | GPU, several hours (unverified) |
+| 3 | `safe04_lab` | rebuild every SAFE-04 reference table of the e2e-dev bundle (level full) from lab-data + eda-bundle | new (original lab scripts in `code/`) | optional (default: frozen bundle; `FF_FORCE=safe04_lab`) | GPU, several hours (estimate) |
 | 3b | `safe04_lab_core` | partial rebuild (keys, pf_m / pv_m, stack02_rows, fold_persons) spliced into the frozen tables | new | evidence | CPU |
 | 4 | `safe04_compare` | rebuilt (level full) vs frozen tables | new | evidence | CPU |
 | 5 | `t164_f123`, `t164_f45` | CLEANCOMP-01: XALL bridge + v11 T3 head per fold (LID_STRICT=1) | executed notebook pulled from Kaggle (exact-pulled) | score | GPU, 16 / 12 |
@@ -28,7 +28,7 @@ tables and excluded downstream.
 | 12 | `t112sf1s` | final CA head `ct01r2_final_models.pt` (10 seeds) | exact-package | score | GPU T4 x2, 154 |
 
 Each stage folder holds `stage.json` (inputs / outputs as original Kaggle artifact ids, flags, smoke settings, saved-artifact
-fallback `skip_with`, reference sha256 in `verify`, `todo`), `stage.ipy` (the cells that run, separated by `# <<<FF-CELL>>>`),
+fallback `skip_with`, reference sha256 in `verify`), `stage.ipy` (the cells that run, separated by `# <<<FF-CELL>>>`),
 `CHANGES.md` (every difference from the original, with the reason and the effect on numbers) and `original/` (`SOURCE.json` with md5 /
 sha256 of every source; the executed notebook, its log and Kaggle `kernel-metadata.json` where available).
 
@@ -61,7 +61,7 @@ Each `stage.json` `dev_usage` gives the details.
 **Identity linkage (to disclose).** Every stage that loads the embedded `kaggle/build_l0_notebooks.py` (t164*, t155s × 3, t112s*, g1 × 3,
 and the lab code of safe04_lab) removes two MAV-Celeb identities matched to v4 persons: `OVERLAP = {"v1_complete:shaukat_tarin",
 "v2_complete:id0073"}` (line 92; SET-07), `PERSONS = sorted(set(VMETA.p) - OVERLAP)` (line 153). This is a link between two sources;
-`stage.json` `identity_linkage` records it for `docs/COMPLIANCE_NOTES.md` (DESIGN G17); the decision on it is open.
+`stage.json` `identity_linkage` records it and `docs/COMPLIANCE_NOTES.md` §4 discloses it.
 
 **Licence.** Outputs of t153b / t153c (adapters trained on VoxBlink frames, `vb_face_clip*.npy`), of t112sf0s / t112sf1s (heads trained
 with 13 471 VoxBlink speakers) and the training inputs of t155s are VoxBlink-derived (CC BY-NC-SA 4.0, no redistribution): private

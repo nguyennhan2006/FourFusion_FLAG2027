@@ -118,12 +118,6 @@
    "check": "shapes (19556,192) (7580,4096) (20715,192) (8953,4096); GPU output, sha256 of the team copy only for reference (expected.json)"
   }
  ],
- "todo": [
-  "owner of the original run unknown: `kaggle kernels pull <owner>/flag-2027-nb-5-external-identities` would confirm the notebook (the repo copy is a mid-run download: cell 4 'status: running', its log stops at the start of v2_complete)",
-  "pin yangwang825/ecapa-tdnn-vox2 (fetched unpinned by speechbrain at run time; team cache revision c605f571..., embedding_model.ckpt sha256 a9c25a7b62e68b1ad75831cda9b4c5e5e21672580c9a11cb369db7e1f2250bbf) and speechbrain (the cell runs pip install -U 'speechbrain>=1.1.1')",
-  "WP-A: data_map for notebooks/ff/r08_mav_rows (saved copy layout, see outputs.saved_copy)",
-  "record the sha256 of vgg_face_dag.py (from a first successful download in WORKDIR/_vggface) in cells/01_vgg_preseed.py VGG_PY_SHA256 and in tools/fetch_models.py (WP-A: add the file next to the .pth)"
- ],
  "notes": [
   "Source of truth: the executed notebook downloaded from Kaggle (papermill metadata, run start 2026-09-26T09:45:39Z; the attached MAV folder was /kaggle/input/datasets/chnnhnnguyn/external-data-mavceleb/mavceleb_v1_complete-001/v1, branch 'using attached').",
   "DESIGN N1 says this copy equals `git show 8544b3b:kaggle/FLAG_08_external.ipynb`: checked 18/11, it does not (code cells 2, 4, 8 and markdown 0 differ from 8544b3b; cells 2 and 4 differ from a89a071). The executed copy is used as is.",
@@ -137,7 +131,7 @@
   "dev-exclusion: original cells 6, 8, 10: dropped (drop_cells): identity-overlap analysis on v4 train + dev features, internal ablation training, dev scores",
   "new: new cells/00_guard.py (before cell 4): asserts: POSIX, no MAV zip under /kaggle/input, exactly the v1 / v2 extracted roots, no /v1/ or /v2/ above the mount",
   "new: new cells/99_verify.py (after cell 4): sha256 of the four meta tables + speaker table, array shapes; fails unless FF_R08_ALLOW_MISMATCH=1",
-  "url: new cells/01_vgg_preseed.py (before cell 4): copies vgg_face_dag.pth (sha256 f070b241... checked) from $FLAG_CACHE or FF_DATA/06_pretrained/{cache/flag/vgg_face_dag.pth, rfs_models/vgg_face.pt, vgg_face_dag/vgg_face_dag.pth} into WORKDIR/_vggface; vgg_face_dag.py only once its sha256 is recorded (not yet), otherwise the original download runs",
+  "url: new cells/01_vgg_preseed.py (before cell 4): copies vgg_face_dag.pth (sha256 f070b241... checked) from $FLAG_CACHE or FF_DATA/06_pretrained/{cache/flag/vgg_face_dag.pth, rfs_models/vgg_face.pt, vgg_face_dag/vgg_face_dag.pth} into WORKDIR/_vggface; vgg_face_dag.py is downloaded by the original code",
   "new: new cells/02_smoke_subset.py (before cell 4): only with FF_SMOKE=1, patches flag_extract.find_attached_source / open_archive to process the first 2 speakers x 2 videos per language; no effect otherwise",
   "wiring: inputs: three of the four original attached datasets dropped (only the dropped cells 6, 8, 10 read them); see notes"
  ],

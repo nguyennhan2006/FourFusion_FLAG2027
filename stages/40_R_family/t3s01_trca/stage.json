@@ -56,8 +56,5 @@
   "Consumer: t219_dumpv4 mounts the export at the original mount path datasets/ngnnguynchn/flag2027-t3s01-tables-p, so its verbatim code (gather cell: rglob ct01r2?*_fold[1-5].parquet, faces farl / clip / b3s / c5s) is unchanged.",
   "Not identical to the frozen dataset: the 24 trT3S_<face>_<voice> branch columns (sim, r293, ecapa, cat4, wsv, rdn) are absent. No stage of this repository can make them (FLAG_167 notebooks lost); they are not read by the dumpv4 path. t184_report (evidence) keeps the frozen dataset (resolve: saved_only).",
   "sigma: U = F1s|oof + R|oof uses trCA only from these tables, so the sigma of dp_sigma is unchanged when trCA is identical (checked by the post check when the frozen copy is present)."
- ],
- "todo": [
-  "Run once on CPU (seconds) with the frozen t3s01-tables-p under FF_DATA so that the equality post check runs; then run t219_dumpv4 on the export and compare xjfdump_v4.parquet (U_c0r / U_c0s / U_c0t) with 9f0a5af4... (requires the 213 / 216 outputs)."
  ]
 }

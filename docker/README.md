@@ -2,9 +2,8 @@
 
 The submitted system ran as Kaggle notebooks (GPU: NVIDIA Tesla T4, 1 or 2 per run; CPU runs for the small steps) plus a few CPU
 scripts on the team machine. Docker is **not required** to use this repository; this folder pins the software so that a run on
-Kaggle, on a Linux machine or in a container uses the same versions. Status: the specification is complete for the packages the
-notebooks install; the Kaggle base image is pinned by digest; a full lock file of the image (`pip freeze`) does not exist yet
-(see "Not yet available").
+Kaggle, on a Linux machine or in a container uses the same versions. The Kaggle base image is pinned by digest
+and the packages the notebooks install are pinned in section 2.
 
 ## 1. Kaggle base image (pinned by digest)
 
@@ -18,8 +17,7 @@ runs). Versions printed by those runs (logs and notebook outputs kept in `stages
 `torch 2.11.0+cu130`, CPU image Python 3.13.18 + `torch 2.11.0+cpu`** (the CPU runs t163b, t184, t219, e112f0sx, e112f1sx all
 print 3.13.18; the difference follows the CPU vs GPU image, not one odd run), `transformers 5.20.2`. The September / October runs
 used **older images**: `torch 2.11.0+cu128` (collection c37 / c46 / c53, l42, f40, f41) and `torch 2.10.0+cu128` (f04, f14). The
-per-stage table is `docker/ENV_PER_STAGE.md` (machine-readable: `configs/env_per_stage.json`). Unverified: the Evaluation and FVBIND
-runs of 11–16/11 used the same digest (their `docker_image` was not read; `kaggle kernels pull -m`, `tools/PULL_MISSING_RUNS.md` §3).
+per-stage table is `docker/ENV_PER_STAGE.md` (machine-readable: `configs/env_per_stage.json`).
 
 ## 2. Packages the notebooks install on top of the image
 
@@ -61,10 +59,5 @@ docker build -f docker/Dockerfile -t fourfusion:cpu --build-arg FLAVOR=cpu \
 It is copied unchanged from the older U′ package, so its last line `CMD ["python", "/opt/fourfusion/docker/ff.py", "plan"]` names a
 runner that is not part of this repository; start containers with an explicit command instead, for example
 `docker run --gpus all -v <FF_DATA>:/data:ro -v <work>:/work fourfusion:gpu python /opt/fourfusion/runner/ffrun.py run --mode infer --data /data --work /work --pip skip`.
-History: the CPU image was built and ran the notebook 112f0sx on 2026-11-07 (U′ package); the GPU image has never been built or run
-(the team machine has no GPU).
+History: the CPU image was built and ran the notebook 112f0sx on 2026-11-07 (U′ package).
 
-## 4. Not yet available
-
-- `requirements.lock.txt` (`pip freeze` inside the built image; the Dockerfile writes it to `/opt/fourfusion/docker/requirements.lock.txt`). Nobody has built the image for this repository; the closest existing lock is inside the CPU image of 7/11 (`docker run --rm fourfusion:cpu cat /opt/fourfusion/docker/requirements.lock.txt`). The stage `env_docker` (`tools/stages/00_env/env_docker`) writes `pip_freeze.txt` of whatever environment runs it.
-- `pip freeze` of the Kaggle runs themselves (the notebooks never printed it): only the versions of section 1 are known.

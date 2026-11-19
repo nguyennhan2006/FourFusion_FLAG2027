@@ -79,11 +79,6 @@
    "sha256": "f4065711e01e6284d70b213fedec2823e7b942ca3c470e8b2b896670c5ed3fad"
   }
  ],
- "todo": [
-  "removed_speakers.csv is not identical to the team copy: merge.py merges an existing file's old VoxLingua columns (first version of 3/11 10:30), which a fresh run does not have; the chain never reads this file",
-  "WP-E: the t153b / t153c notes should say they ran on lid-strict-p version 1 (vox2 / vb identical to version 2)",
-  "WP-A: configs/data_map.json default_saved: true (with a note) for notebooks/nguynlcnhtho/flag-2027-nb-42, notebooks/duongphihoang/flag-2027-nb-150-lidwhisper, notebooks/phantrnanna/flag-2027-nb-152-mmslid, notebooks/ff/f41_t3enc_vox2 (or simply datasets/ngnnguynchn/flag2027-lid-strict-p), so FF_MODE=train uses the stored copies and rebuilding them needs FF_FORCE; document FF_ALLOW_MISMATCH under modes.json 'train' and in the README; WP-K: DESIGN 5.1 / docs/VERIFICATION.md: 'lid_strict.json identical in mode (a)' holds only with the stored LID inputs, otherwise the guard warns"
- ],
  "notes": [
   "Inputs actually read: stored VoxLingua probabilities + voice_meta + lid_summary of FLAG_42 (VoxCeleb2 FLAG_37 clips), FLAG_53 (flag2027-feats-vox2b-p, feats_vox2b/) and FLAG_46 (VoxBlink, feats_vb/ from results_flag46.zip: flag2027-lab-vb-p lacks voice_lid_probs.npy), labels of FLAG_42; lid_whisper.json of FLAG_150; mav_w.json of LID-AUDIT-01; G3 of l_dqual_g3.",
   "Consumers find the file by name (rglob 'lid_strict.json', T3ENC-01 strict_drop) and check counts == list lengths; they apply it with LID_STRICT=1 (+ BN42=1 for the face adapters).",

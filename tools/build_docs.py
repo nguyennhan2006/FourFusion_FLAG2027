@@ -68,8 +68,8 @@ def data_table(A, C, classes):
 
 
 def checkpoint_table(A, C, S):
-    rows = ["| artifact id | path under FF_DATA | producing stage (kind, device, minutes of the original run) | files with sha256 | used by | status |",
-            "|---|---|---|---|---|---|"]
+    rows = ["| artifact id | path under FF_DATA | producing stage (kind, device, minutes of the original run) | files with sha256 | used by |",
+            "|---|---|---|---|---|"]
     for a, e in sorted(A.items()):
         if e.get("class") != "checkpoint":
             continue
@@ -81,9 +81,8 @@ def checkpoint_table(A, C, S):
         fs = "; ".join(f"`{k}` {short(v)}" for k, v in sorted(fl.items())[:3]) if isinstance(fl, dict) else ""
         if not fs and e.get("zip_sha256"):
             fs = f"zip {short(e['zip_sha256'])}"
-        status = e.get("status") or ("saved copy expected on Drive" if e.get("path") else "made in the session")
         rows.append(f"| `{a}` | {('`' + e['path'] + '`') if e.get('path') else '-'} | {esc(prod)} | {esc(fs)} | "
-                    f"{esc(', '.join(sorted(C.get(a, []))))} | {esc(status)[:160]} |")
+                    f"{esc(', '.join(sorted(C.get(a, []))))} |")
     return "\n".join(rows)
 
 

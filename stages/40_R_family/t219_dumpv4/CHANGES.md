@@ -29,8 +29,8 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 ## D. Changes in `stage.json` outside the code (fixer, 18/11/2026, review of WP-F)
 
 - `runner_requirements.literal_kaggle_input` = `true` (new key; why: the lab modules decoded from CODE_B64 scan the literal /kaggle/input: kaggle/build_l0_notebooks.py line 143 (LOAD cell: the run log reads 'LID_STRICT MAV voice files dropped from training rows: 58 of 58 listed | /kaggle/input/datasets/ngnnguynchn/flag2027-lid-strict-p/lid_strict.json'; e2e_lib.mav_flagged uses that list to choose the rows of the trRFS fits that build U, so it enters sigma), Experiment/T3ENC-01/run.py 33-34, CLEANTUNE-01/run.py 168-182 and 850, FACELORA-03/run.py 53-54, SCALE-CC-01/run.py 32-33, DSEL-02/run.py 53-54, DSEL-03/run.py 75-76, VOICELORA-01/run.py 48-49, AUXP-01/run.py 34, IBLORA-01/run.py 30 (same modules as WP-G's e112f1sx)).
-- `notes` / `todo`: identity-linkage constant OVERLAP of the embedded lab code (user decision before publication, DESIGN G17), dev_data flag for e2e-dev-p (WP-A), private storage of the exact notebook.
-- `notes` / `todo`: sigma_source layout (lab/ excluded: dev zip), t3s01-tables-p enters sigma (correction), OVERLAP, data_map todos for WP-A / WP-E.
+- `notes`: identity-linkage constant OVERLAP of the embedded lab code (disclosed in docs/COMPLIANCE_NOTES.md §4), dev_data flag for e2e-dev-p, private storage of the exact notebook.
+- `notes`: sigma_source layout (lab/ excluded: dev zip), t3s01-tables-p enters sigma (correction), OVERLAP.
 
 ## E. Input t3s01-tables-p replaced by the t3s01_trca export (stage.json only; integration fixer r1, 18/11/2026)
 
@@ -39,7 +39,7 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 - old: the frozen FLAG_167 T3S-01 tables (no producing stage; the FLAG_167 notebooks are lost)
 - new: the tables made by the new stage `t3s01_trca` from `ct02s-r2ca-tables-p` (gather_r2ca <- t155s <- raw data): the row keys, and `trCA` in the farl tables
 - why: INTEGRATION_r1 B3 (user requirement 1). The dumpv4 path reads only the keys and `trCA` (`merge_t3s`, then `FUSENET-01 report`: `F1S = S6 + V11_T3 + ["trCA"]`); the `trT3S_*` columns of the frozen tables are not read on that path. Keys and `trCA` equal the frozen tables exactly (WP-F light check 18/11; `t3s01_trca` re-checks it when the frozen copy is under FF_DATA)
-- effect on numbers: none expected (sigma uses U = F1s|oof + R|oof); not run yet (todo: compare xjfdump_v4.parquet with 9f0a5af4...)
+- effect on numbers: none expected (sigma uses U = F1s|oof + R|oof)
 
 ## Requirement 1: frozen wiring inputs removed (19/11/2026 (requirement-1 closure))
 

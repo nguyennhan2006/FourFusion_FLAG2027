@@ -26,7 +26,7 @@ none
 ## D. Changes in `stage.json` outside the code (fixer, 18/11/2026, review of WP-F)
 
 - `runner_requirements.literal_kaggle_input` = `true` (new key; why: the lab modules decoded from CODE_B64 scan the literal /kaggle/input: kaggle/build_l0_notebooks.py line 143 (LOAD cell, lid_strict.json fallback), Experiment/T3ENC-01/run.py lines 33-34 (lid_strict.json), CLEANTUNE-01/run.py lines 168-182 and 850 (_find / _find_all), FACELORA-03/run.py 53-54, SCALE-CC-01/run.py 32-33, DSEL-02/run.py 53-54, DSEL-03/run.py 75-76, VOICELORA-01/run.py 48-49, AUXP-01/run.py 34, IBLORA-01/run.py 30 (same modules as WP-G's e112f1sx)).
-- `notes` / `todo`: identity-linkage constant OVERLAP of the embedded lab code (user decision before publication, DESIGN G17), dev_data flag for e2e-dev-p (WP-A), private storage of the exact notebook.
+- `notes`: identity-linkage constant OVERLAP of the embedded lab code (disclosed in docs/COMPLIANCE_NOTES.md §4), dev_data flag for e2e-dev-p, private storage of the exact notebook.
 
 ## E. Frozen t3s01-tables-p kept as saved only (stage.json only; integration fixer r1, 18/11/2026)
 

@@ -45,8 +45,7 @@ guard (`configs/variant_1354.json` file_checks, DESIGN 2.7). Rules:
    re-train is accepted on its post_checks: `ff_lora_drycheck.json` (210 clips / 70 persons / all `mav:v1`, before training) and
    `ff_lora_meta.json` (48 params, 1 200 steps, batch 64, 210 clips, 70 persons, 0 skipped, read from the new file; the values of the saved
    file were read from its pickle on 18/11). Its output is not substituted into the 13.54 chain: the consumers keep `resolve: saved_only`.
-   Open for WP-A: `configs/variant_1354.json` file_checks reject the re-trained export before the post_checks run (exemption requested in
-   `t163l_orig/stage.json -> variant.outputs_file_checks`).
+   The variant guard (`configs/variant_1354.json` file_checks) refuses the re-trained export, so it never replaces the saved C1.
 3. post_checks are JSON checks only (the runner reads every post_check file as JSON); the hash checks live in `verify` and
    `variant.require_files`. `_wpf_tools.py check` enforces rules 1-3.
 4. In smoke runs (`FLAG_SMOKE=1`) the original code wrote a stand-in `lora_C1.pt` that modes P / LAB copy into the output; a `variant` patch
@@ -69,12 +68,12 @@ the stage's input view, on Kaggle run them in a session with exactly their input
 The original runs saw `ngnnguynchn/flag2027-raw-v4-p` extracted by Kaggle (`train_set/train_set/train_English.txt` next to `faces/`,
 `voices/`; `train_set/features/*/*.csv`). `FF_DATA/00_raw/btc_mavceleb_v4/` keeps the organisers' files packed. A `path` patch (cell
 'inputs') unpacks `train_set.zip` only, beside itself in the stage's own input view, when `train_English.txt` is absent; `dev_set.zip`
-stays packed and is never opened. With an extracted train-only view mounted (Kaggle, or a future WP-B export) the block does nothing.
+stays packed and is never opened. With an extracted train-only view mounted (as on Kaggle) the block does nothing.
 
 ## Files of a stage
 
 ```
-<stage>/stage.json        metadata (DESIGN 2.2): origin, inputs (artifact ids of the original run), outputs, patches, verify, post_checks, todo
+<stage>/stage.json        metadata (DESIGN 2.2): origin, inputs (artifact ids of the original run), outputs, patches, verify, post_checks
 <stage>/stage.ipy         code run by the runner: original code cells + patches, separated by "\n# <<<FF-CELL>>>\n"
 <stage>/CHANGES.md        every change versus the exact notebook, with reason and effect on numbers
 <stage>/original/         *.redacted.ipynb (rebuild source), the run log (E: package), kernel-metadata.json (push staging), OUTPUTS.sha256,
@@ -168,30 +167,3 @@ post_checks; `runner_requirements` stated) and scans every file for key-like str
 
 `configs/data_map.json` carries the matching `private` / `voxblink` flags; licences in `LICENSES.md` (WP-K). Nothing listed here is in the repo.
 
-## Open items
-
-- `t163l_orig`: the dry check and the folder sort have never run (no compute in this workflow); the first run must print
-  `FF lora dry check: OK`. The ImageBind code is pip-installed from GitHub HEAD as in the run; the Docker pin `53680b02...` is not proven
-  equal to HEAD of 2026-11-03.
-- `t213_p1`, `t213_p2`, `t216_p3`: run outputs survive only as the copies gathered by `t219_dumpv4`
-  (`Experiment/XJF-01/out/dumpv4/sp/out/safe04/rfr{c0r,c0s,c0t}lab_fold*.parquet`); lay them out under `FF_DATA/04_run_outputs/<slug>/rfs_art/`
-  or download the kernel outputs if Kaggle still has them. Run times were not logged.
-- `t184_report`, `t219_dumpv4`: exact notebooks only in private storage (dev zip inside).
-- Private storage of every exact original (staging copies of 163p, 183 p1 / p2, 184, 213 p1 / p2, 216, 219; the E: package already holds
-  notebooks 14-19): copy to `FF_DATA/_private_originals/<stage id>/` (or `$FF_PRIVATE/<stage id>/`; `runner/check_stage.py` looks there),
-  record each md5, point `original/SOURCE.json -> derived_from` at it. Until then the only exact copies of 213 / 216 are in
-  `repo/_staging_backup/` (and volatile Temp).
-- `repo/_staging_backup/` holds organisers' data (the `train/gender.csv` blob in the FLAG_163-family notebooks) and has no root ignore
-  rule (only its `_PRIVATE_NOT_FOR_PUBLICATION/` is ignored): WP-A / WP-K must add `/_staging_backup/` to a root `.gitignore` or move
-  the folder to private storage before `repo/` becomes the main branch (outside WP-F's write scope).
-- WP-A: exempt the outputs of a forced `t163l_orig` from the variant file_checks; optionally `default_saved: true` on the C1 dataset
-  (needed by WP-H's C1 consumers in mode (a) unless they also use `resolve: saved_only`).
-- WP-A / WP-E: producer + class for `t3s01-tables-p` (above); `dev_data: true` on `e2e-dev-p`; exclude `lab/` (dev zip) from the saved
-  `sigma_source` (`t219_dumpv4/stage.json` notes).
-- User decision before publication: the identity-linkage constant `OVERLAP` = {`v1_complete:shaukat_tarin`, `v2_complete:id0073`} in
-  the embedded lab code of `t184_report` / `t219_dumpv4` (`kaggle/build_l0_notebooks.py` lines 92, 1309; DESIGN G17; WP-B
-  `12_rows/r07_overlap`; `docs/COMPLIANCE_NOTES.md`).
-- New code of the fixer pass never executed (no compute in this workflow): RFS_XDIRS and smoke-C1 patches, the raw-v4 unpack, the
-  ImageBind sha256 check and `ff_lora_meta.json` of `t163l_orig`.
-- `t219_dumpv4`, `t184_report` mount the frozen `e2e-dev` dataset, which also holds dev-phase components whose presence the original code
-  asserts (wiring, DESIGN 2.8 / G18).

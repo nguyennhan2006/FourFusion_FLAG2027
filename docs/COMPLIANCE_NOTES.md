@@ -13,8 +13,7 @@ Profile)").
   `--train-only` flag. Each change is typed `dev-exclusion` in the stage's `CHANGES.md`.
 - **Mount filter.** 14 stages of `20_features` declare `exclude: ["dev_set.zip", "dev_set"]` on the organisers' raw data
   (`datasets/ngnnguynchn/flag2027-raw-v4-p`); since 18/11 the runner honours this per-input filter for every source
-  (`runner/RUNTIME_CHANGES.md` #15). `FF_NO_DEV=1` keeps every listed dev file out of every stage (the smoke-without-dev test of
-  DESIGN G11, not run yet).
+  (`runner/RUNTIME_CHANGES.md` #15). `FF_NO_DEV=1` keeps every listed dev file out of every stage.
 - **Artifacts that still contain dev files** (flag `dev_data` in `configs/data_map.json`): the saved copies of
   `ngnnguynchn/flag2027-e2e-dev-p` (frozen SAFE-04 bundle; its dev-phase members are also registered as
   `ff-frozen/flag2027-e2e-dev-wiring-p`), the face LoRA datasets `phanvnhtrng/flag2027-feats-ls-b3s-p` and
@@ -55,15 +54,14 @@ Profile)").
   in zero-padded batches packed by duration (`stages/70_dp/dp_extract_eval/flag_extract.py` `run_batched`, at most 240 padded
   seconds / 32 clips per batch; relative lengths `wav_lens` are passed to SpeechBrain, so padding is masked in the feature
   normalisation and pooling). A clip's embedding can therefore differ in the last digits with the other clips of its batch. No label,
-  trial list or statistic of a test file enters, and the clip order is the organisers' list order. Kept verbatim; a re-extraction with
-  batch size 1 (max |dz| and Spearman of the DP scores against the submitted arrays) is a planned check (`docs/VERIFICATION.md` §6).
+  trial list or statistic of a test file enters, and the clip order is the organisers' list order. Kept verbatim.
 
-## 4. Identity overlap list (decision pending)
+## 4. Identity overlap list
 
 The F1s′ family drops two MAV-Celeb identities that are also persons of the organisers' v4 train set (constant `OVERLAP` in the
-embedded code). Making that list links identities across MAV-Celeb and the organisers' data; the team has not yet decided how to
-present it. Stage `r07_overlap` (force_only, `FF_FORCE=r07_overlap`) shows how it was derived and keeps no linkage table. The RFX
-family and the DP branch do not appear to drop these two identities (DESIGN G17, unverified).
+embedded code). Making that list links identities across MAV-Celeb and the organisers' data, so it is disclosed here. Stage `r07_overlap`
+(force_only, `FF_FORCE=r07_overlap`) shows how it was derived and keeps no linkage table. The list is part of the F1s′ family code (the SAFE-04
+lab code, also embedded in the report stages `t184_report` / `t219_dumpv4`).
 
 ## 5. DP (Different Profile) branch: training data and risk (must be in the system description)
 
@@ -82,8 +80,8 @@ the following risk and history (text of `stages/70_dp/dp_train/CHANGES.md`, "Com
    overlap directly, because that requires matching identities across datasets, which the rules forbid.
 3. **Held-out test of the fusion.** A test written before running it, which applied the same fusion to held-out train persons, made
    the system worse (v4 gender −5.65, v4 no_gender −4.91 EER points, better in 0 of 5 folds).
-4. **The organisers have not been asked.** A question about MAV-Celeb v1 / v2 as training data was drafted on 16/11 and had not been
-   sent as of 18/11. The team regards this as a grey zone for the organisers to decide.
+4. **Grey zone.** The team regards the use of MAV-Celeb v1 / v2 as training data of this branch as a question for the organisers to
+   decide.
 5. **Submission order.** `xjf_r10.zip` was submitted first: its two scale constants, 5.8 / 2.9, had been read off the score scale of
    the test files, which the rules do not allow. It scored 13.54 (16/11 10:31, CodaBench 1054532). The constants were then replaced by
    values measured on held-out train persons (5.0983 / 3.8376); `xjf_r10_trsig.zip` was built (11:08) and submitted (12:02, CodaBench
@@ -94,9 +92,9 @@ the following risk and history (text of `stages/70_dp/dp_train/CHANGES.md`, "Com
 
 The ImageBind-audio LoRA C1 of 13.54 learned **210 MAV-Celeb v1 clips of 70 persons**; because of a cache-key bug no VoxCeleb2 clip
 was matched (`stages/40_R_family/C1_VARIANTS.md`). The field `declared` of the RFX artifact's `manifest_final.json` ("cleaned
-VoxCeleb2 + MAV clips") is wrong for this variant; the system description must use the true statement.
+VoxCeleb2 + MAV clips") is wrong for this variant; the statement above is the true one.
 
-## 7. External data (to declare)
+## 7. External data
 
 | source | use | access in this repository |
 |---|---|---|

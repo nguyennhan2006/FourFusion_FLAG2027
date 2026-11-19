@@ -214,12 +214,6 @@
   "The run attached the ORIGINAL LoRA C1 (kernel-metadata.json; DESIGN N4), although kaggle/sat_push.sh now lists lorafix1 in LABDS; the embedded rfs_train.py (LAB mode) has an opt-in RFS_LORA_FIX switch that is off by default and is not used in LAB mode.",
   "Consumer: t219_dumpv4 (kernel input; it globs rfr*lab_fold[1-5].parquet anywhere under its inputs)."
  ],
- "todo": [
-  "Run output kept only as the copies that t219 gathered: Experiment/XJF-01/out/dumpv4/sp/out/safe04/rfrc0rlab_fold1..5.parquet (sha256 above). For skip_with, place them under FF_DATA/04_run_outputs/flag-2027-nb-213-seedrep-p1/rfs_art/ (any sub-folder works, t219 uses rglob) or download the kernel output if Kaggle still has it (tools/PULL_MISSING_RUNS.md).",
-  "minutes_original unknown (no log was downloaded); the FACTOR-01 lab parts with 7-8 arms took 43-50 min, one arm should take a few minutes.",
-  "Private storage: copy every exact notebook listed in original/SOURCE.json -> derived_from (origin: NOP_BTC_2026-11-20/repo/_staging_backup/kapi_flag-2027-nb-213-seedrep-p1_61811_n4/flag-2027-nb-213-seedrep-p1.ipynb, md5 f8528ee4010fbffc97af216e5ea101ef; push-staging copies under repo/_staging_backup/) to FF_DATA/_private_originals/t213_p1/ (or $FF_PRIVATE/t213_p1/; runner/check_stage.py looks there), record each md5 there and point SOURCE.json derived_from at it: the exact notebooks embed the organisers' meta_file_train_set.csv, and repo/_staging_backup/ (no root ignore rule today) must not be published.",
-  "The RFS_XDIRS and smoke C1 patches are new (18/11) and have never been executed."
- ],
  "runner_requirements": {
   "literal_kaggle_input": false,
   "why": "the only literal /kaggle/input read in the decoded code is rfs_train.py _xload (line 83 / 96), redirected to the stage's input view by the RFS_XDIRS path patch of the setup cell; every other path is in the stage text (rewritten by the runner) or passed as an argument (grep of original/decoded/: flag_final_core_092.py mentions /kaggle/input in a docstring only)"

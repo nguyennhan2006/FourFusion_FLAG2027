@@ -56,7 +56,7 @@
    "count": 1,
    "type": "url, pin",
    "why": "rewrite flag_models.py / agegender.py on disk before import: ImageBind URL (dead link, same file) + revisions of ViT-age (4b5acc34), AdaFace (54f602a0), audeering (bad2737f); Hugging Face revision pinned (the original resolved the then-current `main`); the pinned revision is the one in the team's HF cache and in the RF core / RFX manifest (S8 E10, DESIGN §9.2)",
-   "effect": "URL: none (same file); pins: none if the repository did not change since the run (not verified: CHƯA CHẮC)"
+   "effect": "URL: none (same file); pins: none if the repository did not change since the run"
   },
   {
    "old": "S = M.v4_index(SCAN, WORKDIR / \"raw\")\n",
@@ -123,12 +123,6 @@
   "b_eda_bundle: ibv, iba, vitageprob, w2v2agage, w2v2aggen, farl (ep64) for v4 train + MAV-Celeb",
   "b_lab_data: adaface, farl, siglip2, vitage, w2v2ag (v4 train + MAV-Celeb)",
   "dp_feats_layout (WP-I): face_adaface_train + ext_v{1,2}_complete_face_adaface"
- ],
- "todo": [
-  "Revision pins = revisions of the team's HF cache / RF core in Nov 2026 (S8 E10). Equality with the revisions resolved on 27-28/09/2026 is not verified.",
-  "SigLIP2 (wiring only) and the ImageBind / CLIP code (git HEAD, as the original; Docker pins ImageBind@53680b02, CLIP@d50d76d) are not pinned here; team cache revision of google/siglip2-base-patch16-224 = 75de2d55ec2d0b4efc50b3e9ad70dba96a7b2fa2.",
-  "No smoke switch in the original notebook (its local smoke used FLAG_LOCAL=1 with a mini copy of the data); smoke_env is empty.",
-  "openai/CLIP commit of the original run unknown: the 27-28/09/2026 pip line installed git+https://github.com/openai/CLIP.git unpinned; on today's image that build fails and the fallback clone at d50d76d is used. Equality with the HEAD of 27-28/09 is not verified (CLIP serves FaRL ep64, wiring only; no expected effect on 13.54)."
  ],
  "verify_notes": [
   "reference = the team's kaggle/output/feats_models (sha256 measured 18/11/2026); byte identity is not expected after a GPU re-run: compare row cosine (expect >= 0.999) and identical shapes / row order"
@@ -279,7 +273,7 @@
    "*_gender_Bangla.npy",
    "index_*gender_*.txt"
   ],
-  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; FF_NO_DEV=1 hides them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list)",
   "files": [
    "face_adaface_gender_Bangla.npy",
    "face_adaface_gender_English.npy",

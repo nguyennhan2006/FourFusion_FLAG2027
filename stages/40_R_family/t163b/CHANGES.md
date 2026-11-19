@@ -53,4 +53,4 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 ## D. Changes in `stage.json` outside the code (fixer, 18/11/2026, review of WP-F)
 
 - `runner_requirements.literal_kaggle_input` = `false` (new key; why: mode B: assemble.py receives every path as an argument (--rfs_a ... --rawv4 --gender_csv); the decoded assemble.py / rfs_train.py (98aa07ae) contain no /kaggle path (grep); all lookups are in the stage text, which the runner rewrites).
-- `notes` / `todo`: raw-v4 unpack (patch 'path' above) replaces the requirement 'raw-v4 mount laid out as on Kaggle'.
+- `notes`: raw-v4 unpack (patch 'path' above) replaces the requirement 'raw-v4 mount laid out as on Kaggle'.

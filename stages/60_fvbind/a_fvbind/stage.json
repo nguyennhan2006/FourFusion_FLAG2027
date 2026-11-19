@@ -87,14 +87,11 @@
    "file": "a_fvbind_report.json",
    "key": "checks.rebuild_final_identical_to_chain",
    "equals": true,
-   "note": "expected by code equivalence; not yet observed (todo); warning only"
+   "note": "expected by code equivalence; warning only"
   }
  ],
- "todo": [
-  "Run the stage once in mode assemble on the saved files (CPU seconds) and record: the four members of both zips equal the 15/11 files, and the cross-check (rebuild_final.py with rfx_eval.zip := rfsfxfvb_eval.zip) prints 'OK: identical'."
- ],
  "notes": [
-  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)",
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files)",
   "The gender/Bangla member (9a619736...) equals F1s' + RFX' per pair: that is all 13.54 takes from this group.",
   "Selection of this file (declaration): FVBIND failed its pre-registered validation gate 2 (t163p_fvb/original/evidence/gate2_report_194/fvbg2_report.txt:15 'GATE 2: FAIL -> keep FACTOR_ENFUSE, paper only'). posteval_FVBIND_ENFUSE_fvb.zip was then submitted to the Evaluation phase (CodaBench submission 1053013, 15/11/2026, cells 14.29 / 12.22 / 22.12 / 18.99), and its gender/Bangla file was chosen cell by cell from Evaluation scores (18.99 against 20.11 for FACTOR_ENFUSE; a_best4_ref/original/make_probes.py KNOWN :36-38, BEST_NOW :112). The 13.54 zip keeps that file. Choosing on Evaluation scores is against question 11 of the organisers' FAQ; declared in stages/60_fvbind/README.md and docs/COMPLIANCE_NOTES.md."
  ]

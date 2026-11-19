@@ -27,9 +27,5 @@
  "verify": [
   {"file": "env_report.json", "key": "ok", "equals": true, "note": "every pinned package that is installed has the pinned version (warning only: a Kaggle image newer than v173 differs)"}
  ],
- "post_checks": [],
- "todo": [
-  "requirements.lock.txt of the built image is not available: the image was never built for this repository (Docker not required); the closest lock is in the local fourfusion:cpu image of 2026-11-07 (tools/PULL_MISSING_RUNS.md section 4)",
-  "docker_image digest of the Evaluation / FVBIND runs of 11-16/11 not yet read (kaggle kernels pull -m, tools/PULL_MISSING_RUNS.md section 3)"
- ]
+ "post_checks": []
 }

@@ -91,11 +91,6 @@
    "rule": "information (equal only on the team machine / libraries)"
   }
  ],
- "todo": [
-  "the DP pretrained models are not yet in FF_DATA/06_pretrained (G14): without them the stage downloads the pinned versions (internet); WP-A fetch_models.py (group 'dp') stores buffalo_l, the AdaFace HF snapshot @54f602a0 and spkrec-ecapa-voxceleb @0f99f2d0",
-  "WP-A: pretrained/models is read directly from FF_DATA and not declared as an input, because declaring it would block this stage when 06_pretrained is absent (models_fetch has no stage.json yet, and the runner has no optional inputs). Declare {\"artifact\": \"pretrained/models\"} once models_fetch is runnable or optional inputs exist, so that 'ffrun.py plan' schedules it",
-  "DONE 19/11/2026 (integration fixer r2, M4): disclosed in docs/COMPLIANCE_NOTES.md §3 and the batch-size-1 check listed in docs/VERIFICATION.md §6. Was: WP-K docs/COMPLIANCE_NOTES.md: the ECAPA voice features of the Evaluation clips are computed in zero-padded batches packed by duration (flag_extract.run_batched, max 240 padded seconds / 32 clips), so a clip's embedding varies numerically with the other test clips of its batch (no label or test statistic enters). Kept verbatim; see CHANGES.md 'Not changed'. Optional check after 20/11: re-extract with max_bs=1 and report max |dz| and Spearman of z_DP against the submission arrays"
- ],
  "script_patches": {
   "extract_eval.py": [
    {

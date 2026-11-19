@@ -141,7 +141,7 @@
   {
    "repo": "adollahamini1998/VoxBlink-Video-clean-8-{0..7}",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": false,
    "what": "unofficial crawl of VoxBlink-clean YouTube shorts (8 repos, one per part); CC BY-NC-SA 4.0, no redistribution",
@@ -150,11 +150,11 @@
   {
    "repo": "ProgramComputer/voxceleb",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": true,
    "what": "VoxCeleb2 face tracks: vox2/vox2_mp4_{2..6}.zip (FLAG_37), official split archives vox2/vox2_dev_mp4_parta[a-i], vox2_dev_aac_parta[a-h], vox2_test_{mp4,aac}.zip, vox2/vox2_meta.csv",
-   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded (todo, WP-K LICENSES.md)"
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded"
   }
  ],
  "models": [
@@ -162,11 +162,6 @@
  ],
  "run_policy": "Frames are re-cut exactly like FLAG_46 / FLAG_53 (same frame, same 1.3x loose crop) from the collected index; the 13.54 chain uses the collected frames (skip_with). VoxBlink: private.",
  "private": true,
- "todo": [
-  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
-  "ProgramComputer/voxceleb is gated (auto-approved terms; 403 with the team token on 18/11, team run log, internal provenance): a re-collection needs HF_TOKEN of an account that accepted the terms. 13.54 itself never needs it (collected data are the raw input).",
-  "Optional: pull the run log of onnhqunhh/flag-2027-nb-63-frames (kaggle kernels output, *.log)."
- ],
  "notes": [
   "Reads only frames-index (vb/selection, timestamps, shard_listing, face_meta of FLAG_46; vox2b/listing_{dev,test}_mp4.parquet + face_meta of FLAG_53).",
   "No skip_with: the runner serves skip_with as a saved copy of the stage's KERNEL output, and no such copy exists (the FF_DATA/01_collected folders hold the exported datasets, which configs/data_map.json maps by their own ids). The stage is skipped by default because collect stages run only when forced.",

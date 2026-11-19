@@ -147,7 +147,7 @@
   {
    "repo": "adollahamini1998/VoxBlink-Video-clean-8-{0..7}",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": false,
    "what": "unofficial crawl of VoxBlink-clean YouTube shorts (8 repos, one per part); CC BY-NC-SA 4.0, no redistribution",
@@ -156,11 +156,11 @@
   {
    "repo": "gaunernst/voxceleb2-dev-wds",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": false,
    "what": "VoxCeleb2 dev audio (AAC m4a) as 779 WebDataset tars",
-   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); licence text of this mirror's card not recorded (todo, WP-K LICENSES.md)"
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); licence text of this mirror's card not recorded"
   }
  ],
  "models": [
@@ -168,10 +168,6 @@
  ],
  "run_policy": "13.54 ALWAYS uses the collected cache (skip_with): its key layout (bare `video` id, not spk/video) is exactly what makes the ORIGINAL LoRA C1 of RFS see only 210 MAV clips (no VoxCeleb2), so a 're-fixed' cache would change the 13.54 variant. 936 VoxCeleb2 clips are missing (85 351 wanted): the 117 VoxCeleb2 test speakers of FLAG_53 have audio only in vox2_test_aac.zip, which this notebook does not read (counts checked 18/11, G22).",
  "private": true,
- "todo": [
-  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
-  "Team-internal and optional, never an organiser step: the pushed notebook duongphihoang/flag-2027-nb-63v-audio-cache could confirm the _up difference, but every notebook pushed with kapi --secret (51 pushes on 17 accounts) stores the team HF token in clear text on Kaggle. Revoke / rotate that token before any of these notebooks is shared, made public or pulled; tools/PULL_MISSING_RUNS.md (WP-A / WP-K) must require redaction."
- ],
  "notes": [
   "Upload: the code uploads only when AUDIO_UPLOAD is set; the runner unsets it (neutralize_upload), so no code change.",
   "Old per-source LID rule (drop42 / drop53 / dropvb from each lid_summary.json); the strict list (lid_strict.json) is applied later by the consumers (t160b/c, t162b/c, t163l, t189).",

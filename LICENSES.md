@@ -56,7 +56,7 @@ SimAM-ResNet100, the audeering age / gender model).
 | `mms_lid_4017` | lid | facebook/mms-lid-4017 | CC BY-NC 4.0 | MMS-LID audit of the MAV voice files (FLAG_152, report input) |
 <!-- END GENERATED: models -->
 
-Runtime downloads that are still not pinned by revision in the verbatim code (the runner seeds the caches from `FF_DATA/06_pretrained`
+Runtime downloads that the verbatim code does not pin by revision (the runner seeds the caches from `FF_DATA/06_pretrained`
 when `FF_MODELS` is set, which pins them in practice): the ImageBind code (`pip install git+…/ImageBind`, HEAD; pinned to commit
 `53680b02d7e37b19b124fa37bae4b6c98c38f5be` only with `FF_PIP=pinned`), `speechbrain>=1.1.1`, the organisers-space ECAPA
-`yangwang825/ecapa-tdnn-vox2`, VoxLingua107, MMS-LID-4017 and Whisper in the LID stages (`docs/VERIFICATION.md` §5).
+`yangwang825/ecapa-tdnn-vox2`, VoxLingua107, MMS-LID-4017 and Whisper in the LID stages (`docs/VERIFICATION.md` §4).

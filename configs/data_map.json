@@ -417,9 +417,6 @@
    "private": true,
    "voxblink": true,
    "status": "not downloaded",
-   "todo": [
-    "kernel output of the first FLAG_103c run (input of f103c_tap01 r2); download or keep using the saved feats-tap01-voice-p"
-   ],
    "unused": "no stage consumes it: f103c_tap01 recomputes the arrays of the first FLAG_103c run (stages/20_features/f103c_tap01/CHANGES.md)"
   },
   "datasets/tranthuytien2511/flag2027-feats-whv3-a-p": {

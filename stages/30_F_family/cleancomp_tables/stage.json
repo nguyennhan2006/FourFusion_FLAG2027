@@ -76,9 +76,6 @@
   }
  ],
  "dev_usage": "Copies the dev wiring files of the e2e-dev input (components_dev.npz, fusers/, ref/, e2e_manifest.json) unchanged; does not run build_dev.py (dev lists).",
- "todo": [
-  "WP-A: data_map dev_data true on datasets/ngnnguynchn/flag2027-e2e-dev-p and datasets/ff-frozen/flag2027-e2e-dev-p (components_dev.npz, ref/ dev zips) - already true on cleancomp-e2e-p"
- ],
  "stage_ipy": {
   "file": "stage.ipy",
   "sha256": "c9fe51f87e62d7d60a63b8784ba02961f10af6f067550195edad6aa4ff1f8e79",

@@ -222,15 +222,8 @@
    "_doc": "documentation only; the runner does not read this key"
   }
  ],
- "todo": [
-  "Output of thanhhuyen11/flag-2027-nb-192-fvbx3 (fvbx_out/: bundle part about 0.5 GB + eval/) is only on Kaggle: `kaggle kernels output thanhhuyen11/flag-2027-nb-192-fvbx3 -p <dir>`, keep private (VoxBlink-derived rows), record sha256, store as FF_DATA/04_run_outputs/flag-2027-nb-192-fvbx3/; do not delete the notebook (DESIGN G4, S6 K2).",
-  "Kaggle log of the run not on the team machine (pull it with the output).",
-  "ImageBind code commit at run time unknown (pinned to 53680b02d7e37b19b124fa37bae4b6c98c38f5be); docker image digest unknown.",
-  "FVB_ONLY=eval path untested end to end (DESIGN G23).",
-  "DONE 19/11/2026 (integration fixer r2): raw-v4 Kaggle view: see the raw-v4 input (needed for voice_fvb_train.npy and the wiring check); produced by no stage yet (WP-A / WP-B). -> fixed by the 'path' patch that unpacks train_set.zip in the input view (INTEGRATION_r2 B1)."
- ],
  "notes": [
-  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)"
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files)"
  ],
  "runner_requirements": {
   "literal_kaggle_input": false,

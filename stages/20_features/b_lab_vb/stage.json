@@ -92,9 +92,6 @@
  "consumers": [
   "t153b, t153c, t160a/b/c, t162a/b/c, t112sf0s, t112sf1s, t183 / t184, t163p_c5rl, e65xbs, e65xcs, e112f0sx, e112f1sx, f63w_aux_voice, f103c_tap01"
  ],
- "todo": [
-  "Input id notebooks/ff/c46_voxblink (WP-C) follows DESIGN §3.2."
- ],
  "verify_notes": [
   "with the frozen input every file except labvb/lab_manifest.json must be byte-identical to expected_members.json"
  ],

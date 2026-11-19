@@ -86,9 +86,6 @@
   }
  ],
  "dev_usage": "none",
- "todo": [
-  "WP-A: data_map run_output entries for the three kernels this stage reads, like the 155s ones: notebooks/nguynthanhnhnn/flag-2027-nb-154-ct02-g1-f12, notebooks/hdonqu/flag-2027-nb-154-ct02-g1-f34, notebooks/thanhtruc02/flag-2027-nb-154-ct02-g1-f5 -> 04_run_outputs/<slug> (producers t154_g1_f12 / _f34 / _f5, status 'not downloaded', dev_data / voxblink flags as for the 155s run-output entries)"
- ],
  "default_policy": "default for 13.54: the frozen dataset",
  "stage_ipy": {
   "file": "stage.ipy",

@@ -60,12 +60,6 @@
    "rule": "when dp_train wrote its own xjf_scores.npz from the same DP Evaluation features (dp_train_check.json -> eval_feats_sha256 equal), z must be bit-identical to it: the stage stops otherwise (DP_ALLOW_INPUT_MISMATCH=1 to go on); with other features (stored checkpoint) differences are reported"
   }
  ],
- "todo": [
-  "needs out/dp_towers.pt of dp_train, which does not exist until dp_train is run once (G5); the stage stops with that message when the dp_train artifact has no dp_towers.pt",
-  "mode (c) through the runner: the ORIGINAL xjf_scores.npz (sha256 686c1188... or 6a039faf...) is this stage's saved output, at FF_DATA/05_scores/dp/ (data_map) or flat FF_DATA/05_scores/xjf_scores.npz (skip_with); final_blend also reads the flat file itself in FF_MODE=assemble",
-  "WP-A configs/data_map.json notebooks/ff/dp_train: drop alt path 05_scores/dp_train (no mode needs it; mode (c) reads dp_score) and list out/dp_towers.pt as the defining file, so that a folder holding only the original xjf_scores.npz / consts.json is not taken as the saved checkpoint (the runner would then skip dp_train in mode (b) and this stage would stop)",
-  "WP-A configs/data_map.json notebooks/ff/dp_score and scores/1354_inputs: private: true until decision Q-D (the score files carry the organisers' Evaluation pair ids); assembly/inputs/README.md says the same"
- ],
  "env_spec": "docker/requirements-dp-local.txt (team CPU machine: Python 3.14.0, torch 2.12.1+cpu, numpy 2.3.5, pandas 3.0.5, insightface 2.0, onnxruntime 1.31.1, speechbrain 1.1.2; S8 E3)",
  "env_overrides": {
   "DP_TOWERS": "path of dp_towers.pt",

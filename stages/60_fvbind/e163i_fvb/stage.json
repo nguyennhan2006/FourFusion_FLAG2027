@@ -140,13 +140,8 @@
    "_doc": "documentation only; the runner does not read this key"
   }
  ],
- "todo": [
-  "Docker image digest of the run not recorded (Python 3.13.16); `kaggle kernels pull -m thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval`.",
-  "Only FLAG_RF_E2E/submission.zip and the log are on the team machine (Experiment/FVBIND-01/out/eval163i/); embeddings.npz and run_report.json of the run are not.",
-  "speechbrain>=1.1.1 and the pip installs of the setup cell are unpinned in the notebook (environment pinning: docker/requirements, FF_PIP=pinned)."
- ],
  "notes": [
-  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)",
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files)",
   "Same core (3cad7b8a...) and same notebook family as stage e163i of group 50 (FACTOR_ENFUSE); differs by the artifact, the extra kernel FLAG_192 and the v_fvb branch of the XTRA cell."
  ]
 }

@@ -238,10 +238,6 @@
   "The 16.18 system ran this same notebook with the fixed LoRA mounted at the old path (release/flag2027_e2e/stages.py:318-319, artifact c1fix-rfx-art-p); that substitution is NOT applied here.",
   "manifest_final.json 'declared' text says the LoRA C1 was trained on 'cleaned VoxCeleb2 + MAV clips'; for this original C1 the real data were 210 MAV-Celeb v1 clips (key bug). Public documents must say so (C1_VARIANTS.md)."
  ],
- "todo": [
-  "Private storage: copy every exact notebook listed in original/SOURCE.json -> derived_from (origin: E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/19_flag-2027-nb-163-rfsfxc5rl-p.ipynb, md5 a76d465ae780484e81f7a11d2d5289d0; push-staging copies under repo/_staging_backup/) to FF_DATA/_private_originals/t163p_c5rl/ (or $FF_PRIVATE/t163p_c5rl/; runner/check_stage.py looks there), record each md5 there and point SOURCE.json derived_from at it: the exact notebooks embed the organisers' meta_file_train_set.csv, and repo/_staging_backup/ (no root ignore rule today) must not be published.",
-  "The RFS_XDIRS and smoke C1 patches are new (18/11) and have never been executed."
- ],
  "runner_requirements": {
   "literal_kaggle_input": false,
   "why": "the only literal /kaggle/input read in the decoded code is rfs_train.py _xload (line 83 / 96), redirected to the stage's input view by the RFS_XDIRS path patch of the setup cell; every other path is in the stage text (rewritten by the runner) or passed as an argument (grep of original/decoded/: flag_final_core_092.py mentions /kaggle/input in a docstring only)"

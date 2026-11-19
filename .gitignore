@@ -39,3 +39,6 @@ assembly/inputs/*
 *.env
 kaggle.json
 **/.kaggle/
+
+# system diagram shown in README.md
+!docs/figures/system_diagram.png

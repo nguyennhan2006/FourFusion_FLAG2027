@@ -93,9 +93,6 @@
  "consumers": [
   "b_lab_data: face_farl16 / face_clipL / voice_sam100p / voice_sam100f of v4 train + MAV-Celeb (T3 head v11, CA head, FaRL anchor of B2)"
  ],
- "todo": [
-  "Local smoke only (FLAG_LOCAL=1 + FLAG_SMOKE_ROWS); no Kaggle smoke switch."
- ],
  "verify_notes": [
   "train 6 485 rows; ext v1 7 580 faces / 19 556 voices, v2 8 953 / 20 715 (manifest 2026-10-07 16:01); compare with the lab-data copies Experiment/T3ENC-01/feats_t3enc/* (row cosine >= 0.999)"
  ],
@@ -185,7 +182,7 @@
    "*_gender_Bangla.npy",
    "index_*gender_*.txt"
   ],
-  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; FF_NO_DEV=1 hides them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list)",
   "files": [
    "face_clipL_gender_Bangla.npy",
    "face_clipL_gender_English.npy",

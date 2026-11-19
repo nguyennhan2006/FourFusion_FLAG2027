@@ -353,7 +353,6 @@ class Stage:
         self.verify = list(d.get("verify") or [])
         self.post_checks = list(d.get("post_checks") or [])
         self.scratch = list(d.get("scratch") or [])
-        self.todo = d.get("todo") or []
         self.origin = d.get("origin") or {}
         code = d.get("code", "stage.ipy")
         self.code_name = code if isinstance(code, str) else ((code or {}).get("stage_ipy") or "stage.ipy")
@@ -1945,12 +1944,12 @@ print("[ff] stage %%s: all %%d cells OK" %% (stage, n), flush=True)
             self.log(f"  {sid:20s} {self.S[sid].kind:8s} {r.get('status', '-'):17s} {str(r.get('minutes', '')):>7} min  outputs {outs}")
 
     def stages_markdown(self):
-        rows = ["| # | stage | group | kind | role | device | min (orig.) | origin | run | stage.json | todo |", "|---|---|---|---|---|---|---|---|---|---|---|"]
+        rows = ["| # | stage | group | kind | role | device | min (orig.) | origin | run | stage.json |", "|---|---|---|---|---|---|---|---|---|---|"]
         ids = [s for s in self.order_ref if s in self.S] + sorted(s for s in self.S if s not in self.order_ref)
         for i, sid in enumerate(ids, 1):
             st = self.S[sid]
             o = st.origin
             rows.append(f"| {i} | `{sid}` | {st.group} | {st.kind} | {st.role} | {'GPU' if st.gpu else 'CPU'}{' x' + str(st.gpus) if st.gpus and st.gpus > 1 else ''} | "
                         f"{st.minutes:.0f} | {o.get('exactness', '-')} | {('`' + o['run'] + '`') if o.get('run') else '-'} | "
-                        f"{'yes' if not st.skeleton else '**missing**'} | {len(st.todo) if isinstance(st.todo, list) else (1 if st.todo else 0)} |")
+                        f"{'yes' if not st.skeleton else '**missing**'} |")
         return "\n".join(rows) + "\n"

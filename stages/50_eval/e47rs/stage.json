@@ -211,9 +211,6 @@
   "ships_with_repo": false,
   "note": "provenance only: release/flag2027_e2e/code/<stage>.ipy is a team file that is not part of the published repository (e50cc.ipy embeds the dev score zips); equal_to_code_of_exact_notebook_with_patches uses only the patches without \"in_release\": false"
  },
- "todo": [
-  "WP-A configs/pipeline_1354.json: producer_preference for datasets/ngnnguynchn/flag2027-feats-screen2-p still names e47rs for infer / assemble, but this stage exports nothing (alt_export is informational; producer of record f47b_screen2): remove the entry or make it {default: f47b_screen2}. WP-K: note the deviation from DESIGN 4.8 (e47rs no longer exports feats-screen2-p). Optionally WP-A: exclude [dev_set.zip] on the raw-v4 entry."
- ],
  "notes": [
   "stage.ipy is byte-identical to release/flag2027_e2e/code/e47rs.ipy (no change).",
   "release/flag2027_e2e/stages.py:100 exported feats_screen2/ as datasets/ngnnguynchn/flag2027-feats-screen2-p (same 21 files as the FLAG_47b dataset, cos 1.000000). Not declared as an export here: in this repository that dataset is produced by stage f47b_screen2 (20_features), the run the RFX training actually read; one producer per artifact. See alt_export.",

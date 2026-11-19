@@ -168,9 +168,6 @@
   "The embedded train/gender.csv (= organisers' meta_file_train_set.csv) is read only here (assemble.py --gender_csv): the redaction patch copies the organisers' file from the raw-v4 mount and checks its sha256, so the bundle gets the same gender labels.",
   "Requires the raw-v4 mount laid out as on Kaggle (train_set extracted: train_English.txt, faces/, voices/, features/*.csv) plus meta_file_train_set.csv; nothing of dev_set is read (assemble.py reads train_English.txt and the train feature CSVs only). (fixer 18/11: when FF_DATA holds the organisers' train_set.zip packed, the 'path' patch on cell 2 unpacks train_set.zip only, inside the stage's input view; dev_set.zip stays packed)"
  ],
- "todo": [
-  "WP-B / WP-A (optional): an extracted train-only view of raw-v4 (train_set/ unpacked + meta_file_train_set.csv, no dev_set) would make the unpack block a no-op; until then the block unpacks train_set.zip (1.43 GB, 13 122 members) at every run of this stage and of t163l_orig. Never executed (18/11)."
- ],
  "runner_requirements": {
   "literal_kaggle_input": false,
   "why": "mode B: assemble.py receives every path as an argument (--rfs_a ... --rawv4 --gender_csv); the decoded assemble.py / rfs_train.py (98aa07ae) contain no /kaggle path (grep); all lookups are in the stage text, which the runner rewrites"

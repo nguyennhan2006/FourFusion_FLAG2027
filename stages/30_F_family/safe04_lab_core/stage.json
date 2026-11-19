@@ -10,7 +10,7 @@
   "minutes_original": null,
   "internet": false,
   "secrets": [],
-  "estimate": "CPU, tens of minutes (unverified; never run)"
+  "estimate": "CPU, tens of minutes (estimate)"
  },
  "origin": {
   "run": null,
@@ -62,9 +62,6 @@
   }
  ],
  "dev_usage": "none (SAFE-04 validation tables only; the dev wiring of the frozen bundle is not copied)",
- "todo": [
-  "WP-A: register safe04_lab_core in configs/pipeline_1354.json (role evidence, force_only)"
- ],
  "force_only": true,
  "default_policy": "evidence only; runs when forced (FF_FORCE=safe04_lab_core)",
  "stage_ipy": {

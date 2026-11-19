@@ -37,14 +37,14 @@ This file did not enter the 13.54 zip through our pre-registered validation rule
 
 | id | what | original Kaggle run (exactness) | device, time of the run | output artifact | saved copy |
 |---|---|---|---|---|---|
-| `t189_b2` | train the B2 voice block (584 steps, 2 048 persons per step, GradCache) | `thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0` (exact-staging, md5 `4a5e4194…`) | T4, about 6.3 h | `fvb_out/fvbB2_state.pt` (`d691a449…`), `fvbB2_emb.npz` (`bf6d03a3…`) | on the team machine; to upload as `FF_DATA/03_checkpoints/fvbind_b2/` |
-| `t192_fvbx` | extract `v_fvb` for every bundle voice row, the v4 train voices and the four Evaluation lists | `thanhhuyen11/flag-2027-nb-192-fvbx3` (exact-staging, md5 `ba933cde…`) | T4, about 2.7 h | `fvbx_out/` | **only on Kaggle** (todo) |
-| `t163p_fvb` | train RFX′ (projector, 3 seeds; probes; fusers), `RFS_MODE=P`, `add [f_c5s, v_rl, v_fvb]` | `thanhhuyen11/flag-2027-nb-163-rfsfxfvb-p` (exact-staging, md5 `308d8715…`) | T4, 10 min | dataset `thanhhuyen11/flag2027-rfsfxfvb-art-p` | **only on Kaggle** (todo) |
-| `e163i_fvb` | score the four Evaluation lists with RFX′ from the original media | `thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval` (exact-staging, md5 `35435111…`) | T4, 34 min | `FLAG_RF_E2E/submission.zip` = `rfsfxfvb_eval.zip` (`45044189…`) | on the team machine |
-| `a_fvbind` | zips U (F1s′ + RFX′) and ENFUSE; one-step cross-check | local scripts (byte-exact copies in `a_fvbind/tree/`) | CPU, seconds | `posteval_FVBIND_U_fvb.zip` (`b61c84ed…`), `posteval_FVBIND_ENFUSE_fvb.zip` (`bb0e0175…`) | on the team machine |
-| `a_best4_ref` | optional reference BEST4 (16.72); not an input of the final zip | new minimal assembler | CPU, seconds | `fourfusion_BEST4_v1.zip` (`eb58ba77…`) | on the team machine |
+| `t189_b2` | train the B2 voice block (584 steps, 2 048 persons per step, GradCache) | `thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0` (exact-staging, md5 `4a5e4194…`) | T4, about 6.3 h | `fvb_out/fvbB2_state.pt` (`d691a449…`), `fvbB2_emb.npz` (`bf6d03a3…`) | `FF_DATA/03_checkpoints/fvbind_b2/` |
+| `t192_fvbx` | extract `v_fvb` for every bundle voice row, the v4 train voices and the four Evaluation lists | `thanhhuyen11/flag-2027-nb-192-fvbx3` (exact-staging, md5 `ba933cde…`) | T4, about 2.7 h | `fvbx_out/` | `FF_DATA/04_run_outputs/flag-2027-nb-192-fvbx3/` |
+| `t163p_fvb` | train RFX′ (projector, 3 seeds; probes; fusers), `RFS_MODE=P`, `add [f_c5s, v_rl, v_fvb]` | `thanhhuyen11/flag-2027-nb-163-rfsfxfvb-p` (exact-staging, md5 `308d8715…`) | T4, 10 min | dataset `thanhhuyen11/flag2027-rfsfxfvb-art-p` | `FF_DATA/03_checkpoints/rfx_fvb/` |
+| `e163i_fvb` | score the four Evaluation lists with RFX′ from the original media | `thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval` (exact-staging, md5 `35435111…`) | T4, 34 min | `FLAG_RF_E2E/submission.zip` = `rfsfxfvb_eval.zip` (`45044189…`) | `FF_DATA/05_scores/` |
+| `a_fvbind` | zips U (F1s′ + RFX′) and ENFUSE; one-step cross-check | local scripts (byte-exact copies in `a_fvbind/tree/`) | CPU, seconds | `posteval_FVBIND_U_fvb.zip` (`b61c84ed…`), `posteval_FVBIND_ENFUSE_fvb.zip` (`bb0e0175…`) | rebuilt by mode (c) |
+| `a_best4_ref` | optional reference BEST4 (16.72); not an input of the final zip | new minimal assembler | CPU, seconds | `fourfusion_BEST4_v1.zip` (`eb58ba77…`) | — |
 
-Each stage folder holds `stage.json` (definition, inputs, outputs, checks, open items), `stage.ipy` (the code the runner executes: the
+Each stage folder holds `stage.json` (definition, inputs, outputs, checks, notes), `stage.ipy` (the code the runner executes: the
 original cells, cells separated by `# <<<FF-CELL>>>`), `CHANGES.md` (every change against the original code, with the reason) and
 `original/` (the notebook of the run, its `kernel-metadata.json`, the run log when available, decoded copies of the embedded code under
 `original/embedded/`, evidence runs under `original/evidence/`, and `SOURCE.json` with md5 / sha256 and the `kaggle/kapi_runs.jsonl` line).
@@ -67,8 +67,7 @@ original cells, cells separated by `# <<<FF-CELL>>>`), `CHANGES.md` (every chang
   must never be attached. Today's push scripts of the team (`kaggle/sat_push.sh` cases 189 / 192 / 193, `kaggle/rfx_chain.sh`) point to
   the fixed C1 and are not used here.
 - In mode (a) the stages must consume the **saved** original C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`): a re-trained C1 has
-  other bytes and is refused by the variant guard of the runner (open item for the runner configuration: mark the dataset
-  `default_saved`).
+  other bytes and is refused by the variant guard of the runner (every consumer resolves it `saved_only`).
 - `NOREL`, `LID_STRICT`, `BN42` are not read by these notebooks: the Bengali-voice filter acts through the content of `lid_strict.json`
   and through the audio cache, both built upstream (group 13, group 11).
 
@@ -101,11 +100,3 @@ VoxBlink audio (36 589 of the 52 750 training clips) and its stored constants μ
 Licences of the pretrained models: ImageBind-huge (weights and code) is CC BY-NC 4.0, so every model derived from it (the B2 voice
 block, the LoRA C1 of the `ib` stream, the RFX′ artifact) is for non-commercial use only.
 
-## Open items
-
-See the `todo` list of each `stage.json`. In short: the output of `thanhhuyen11/flag-2027-nb-192-fvbx3` and the dataset
-`thanhhuyen11/flag2027-rfsfxfvb-art-p` must be downloaded from Kaggle before mode (b) can run without re-training; the ImageBind code
-commit of the runs is pinned to `53680b02d7e37b19b124fa37bae4b6c98c38f5be` but was not recorded by the runs; the one-step cross-check of
-`a_fvbind` (`rebuild_final.py`) has not been executed yet. For modes (a) / (b), `t189_b2` and `t192_fvbx` need the organisers' train set in
-the extracted layout Kaggle served (`train_English.txt` next to `faces/` and `voices/`); the data folder holds only the zips and no stage
-produces that view yet.

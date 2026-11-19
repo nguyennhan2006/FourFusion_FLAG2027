@@ -56,7 +56,6 @@
    "sha256_crlf": "62919289f7ca53b4359ad20834d8c5079ba33e8490cbe8ae72a206272f20eb4a"
   }
  ],
- "todo": [],
  "notes": [
   "mav_w.json lists the files with a Whisper vote (user decision 3/11 14:30, 'Whisper votes only'); MMS / VoxLingua votes are reported only. With the stored FLAG_150 output the file is identical (the original was written on Windows: CRLF).",
   "13.54 policy for the Bengali-speech filter (machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict; data_map default_saved requested from WP-A): the exact list f4065711... is rebuilt only from the STORED outputs of FLAG_42 (l42_vox2_lid), FLAG_150 (l150_whisper), FLAG_152 (l152_mms), FLAG_41 (f41_t3enc_vox2) and the collected FLAG_53 / FLAG_46 data. In FF_MODE=infer / assemble a mismatch fails; in FF_MODE=train (inputs possibly re-run on GPU, not bit-identical) it warns and the run continues as a recipe-level rebuild with the new list; FF_ALLOW_MISMATCH=1 forces the warning in any mode."

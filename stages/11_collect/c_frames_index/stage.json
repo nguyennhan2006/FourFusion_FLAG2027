@@ -93,9 +93,6 @@
  "models": [],
  "run_policy": "Deterministic copy. Equal to the published dataset when its inputs are the collected FLAG_46 / FLAG_53 outputs.",
  "private": true,
- "todo": [
-  "Runs from collected data only when FF_DATA/01_collected/voxceleb2_flag53/feats_vox2b/ also holds listing_dev_mp4.parquet and listing_test_mp4.parquet (c53 skip_with_requires) and configs/data_map.json has a separate entry for notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid (WP-A); otherwise run it in the same run as c53_vox2b (closure)."
- ],
  "notes": [
   "Published zip kaggle/flag2027-frames-index-p.zip: 25 860 062 B, sha256 a9be8284b387c5c92ae7082f0c9b827d3bac756f992dc922a2173a72ef33f735, 7 members (vb/ dated 2026-10-10 08:03, vox2b/ 2026-10-12 12:20-12:33).",
   "No skip_with: the runner serves skip_with as a saved copy of the stage's KERNEL output, and no such copy exists (the FF_DATA/01_collected folders hold the exported datasets, which configs/data_map.json maps by their own ids). The stage is skipped by default because collect stages run only when forced."

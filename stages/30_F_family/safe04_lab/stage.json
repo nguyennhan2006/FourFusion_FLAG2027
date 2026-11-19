@@ -10,7 +10,7 @@
   "minutes_original": null,
   "internet": false,
   "secrets": [],
-  "estimate": "GPU T4, several hours (XALL / CTRL bridges, T3 arm B, BIGB-01 five arms incl. P1024, CAFUSE-EN s010B on ECAPA-6144); unverified (never run)"
+  "estimate": "GPU T4, several hours (XALL / CTRL bridges, T3 arm B, BIGB-01 five arms incl. P1024, CAFUSE-EN s010B on ECAPA-6144) (estimate)"
  },
  "origin": {
   "run": null,
@@ -78,12 +78,6 @@
   }
  ],
  "dev_usage": "Copies the four dev-wiring entries byte for byte from datasets/ff-frozen/flag2027-e2e-dev-wiring-p (components_dev.npz, e2e_manifest.json, fusers/, ref/); computes nothing from dev lists (build_e2e_dev_bundle.components() / main() are never called).",
- "todo": [
-  "WP-A: data_map entry datasets/ff-frozen/flag2027-e2e-dev-wiring-p -> 02_intermediate/_wiring/e2e_dev_wiring/ (class wiring, dev_data true, producer null; the 9 files and sha256 in dev_wiring.files); it replaces the input datasets/ff-frozen/flag2027-e2e-dev-p of this stage, which stays an input of safe04_lab_core and safe04_compare only",
-  "WP-A: pipeline_1354.json: add stage safe04_lab_core (role evidence, force_only); configs/modes.json default_saved_note: rebuild with FF_FORCE=safe04_lab only (FF_USE_SAVED=none refuses the saved copies and blocks the force_only producer: runner/ffcore.py 436-444, 619-628, 666-671)",
-  "WP-D: the artifact notebooks/ff/f12_eval_feats must contain voice_ecapa6144_train.npy (6485 x 6144) and ext_v{1,2}_complete_voice_ecapa6144.npy",
-  "never run: the October versions of the lab scripts are not preserved; the 3/11 executed versions are used (equal to the repository files, except stream_gate.py which later gained an opt-in NOREL branch); four files are untracked repository copies of unknown date (code/CODE_MANIFEST.json 'source': Experiment/CAFUSE-EN/run2.py, kaggle/build_e2e_dev_bundle.py, Experiment/STACK-02/export.py, pools.py); whether the scripts changed between 10/10 and 3/11 in a way that moves numbers is unverified (known changes are opt-in flags kept off)"
- ],
  "force_only": true,
  "default_policy": "13.54 uses the frozen bundle 02_intermediate/e2e_dev_frozen (= kaggle/flag2027-e2e-dev.zip) as the saved copy of datasets/ngnnguynchn/flag2027-e2e-dev-p; FF_FORCE=safe04_lab rebuilds it from the scripts (level full) and the rebuilt bundle then feeds cleancomp_tables, t164f, t155s, t112s* in the session",
  "code_manifest": {

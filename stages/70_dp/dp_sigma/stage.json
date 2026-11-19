@@ -52,10 +52,6 @@
    "rule": "FF_MODE=assemble: enforced by the stage itself (dp_sigma.py --strict by default, plus the table sha256 9f0a5af4...); modes train / infer: a rebuilt table may move the 4th decimal, reported (WARN); final_blend keeps the pinned XJF_SIG"
   }
  ],
- "todo": [
-  "WP-A: configs/modes.json soft_inputs_why and the runner/ffcore.py docstrings say the assembly stages read the flat FF_DATA/05_scores files themselves; since this fix that holds for dp_sigma and final_blend too (no change needed beyond naming dp_sigma in that list)",
-  "WP-A configs/data_map.json: sigma.json (notebooks/ff/dp_sigma) holds only two constants and may stay public; the source table xjfdump_v4.parquet (person ids of the organisers' train set) is private"
- ],
  "env_spec": "docker/requirements-dp-local.txt (team CPU machine: Python 3.14.0, torch 2.12.1+cpu, numpy 2.3.5, pandas 3.0.5, insightface 2.0, onnxruntime 1.31.1, speechbrain 1.1.2; S8 E3)",
  "env_overrides": {
   "DP_SIGMA_DUMP": "path of xjfdump_v4.parquet (else the FLAG_219 output mount, else the stored copies of mode (c))",

@@ -1,7 +1,7 @@
 # Run-time changes the runner applies to every stage
 
 These changes are made by `runner/ffcore.py` when a stage runs. They are not in any `stage.ipy` and so do not appear in a stage's
-own `CHANGES.md`; every stage's `CHANGES.md` (and `docs/CHANGES_FROM_ORIGINAL.md`, WP-K) should link to this file. Each change is
+own `CHANGES.md` (merged in `docs/CHANGES_FROM_ORIGINAL.md`), which lists the code changes only. Each change is
 counted and stored in the artifact's `_DONE.json` (`rewrites`, `env_defaults_exported`, `variant_lineage`, `pip`).
 
 | # | change | where | type (DESIGN 2.5) | effect on numbers |

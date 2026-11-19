@@ -27,10 +27,5 @@
  "verify": [
   {"file": "06_pretrained/SOURCES.json", "note": "per-model 'verified' flags (true = SHA-256 equal to the value measured on 2026-11-18; null = no reference hash, recorded at fetch time)"}
  ],
- "post_checks": [],
- "todo": [
-  "SHA-256 not known for: whisper_large_v3 (revision 06f233fe pinned; files recorded at fetch time), farl_ep64, siglip2_base, mms_lid_4017 (revision not recorded by the run) - wiring / LID-only models except Whisper",
-  "the HF repos MCplayer/voxblink2_samresnet100_ft and Wespeaker/wespeaker-voxceleb-resnet221-LM were read at revision 'main' by the original code: pinned by file SHA-256 only",
-  "FF_DATA/06_pretrained is not populated yet (needs network; ~15 GB for the default groups)"
- ]
+ "post_checks": []
 }

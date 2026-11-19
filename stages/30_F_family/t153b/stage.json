@@ -196,12 +196,6 @@
   }
  ],
  "dev_usage": "Train-only by default (patches 2-3, type dev-exclusion, as WP-D's f47b_screen2): SPLIT_FILTER = [\"train\"] and dev_set.zip is never unpacked, so the adapter embeds the v4 train list, MAV-Celeb v1 / v2 and the VoxCeleb2 / VoxBlink rows only. The executed run (SPLIT_FILTER = None) also embedded the four dev lists (log: gender/Bangla 1468, no_gender/Bangla 1406, gender/English 982, no_gender/English 1008 rows); those arrays were read only by the dev scoring of t112sf0s / t112sf1s, which is now skipped by default (their FF_TRAIN_ONLY dev-exclusion). The Evaluation-list arrays come from e65xbs / e65xcs, which copy only the non-dev files of this artifact (stages/50_eval/e65xbs/stage.ipy line 7009 skips face_clipB3_(no_)gender_*). To get the executed behaviour, revert patches 2-3 (FF_TRAIN_ONLY=0 in t112s* then needs these dev-list arrays and dev_set.zip).",
- "todo": [
-  "WP-A: pin ftfy and regex (cell 03, unpinned `!pip -q install ftfy regex`) in the environment specification; versions of the Kaggle image digest not recorded here",
-  "first smoke run: confirm the unpack_zips() route on FF_DATA's train_set.zip gives the split 'train' with 6485 rows (expect_log)",
-  "WP-F / WP-H: their consumers of this artifact must not read face_<arr>_<dev list>.npy (checked here: e65xbs / e65xcs skip them; rfs_train.py XBLK reads the train / ext / vb arrays only)",
-  "WP-A: data_map datasets/phanvnhtrng/flag2027-feats-ls-b3s-p: dev_data true for the SAVED original copy (it holds face_<arr>_<dev list>.npy); the train-only rebuild has no dev file; voxblink true (adapter trained on VoxBlink frames, vb_face_* arrays); configs/data_map.json note of datasets/ngnnguynchn/flag2027-raw-v4-p: since the 2026-11-18 fix no WP-E stage reads dev_set.zip by default (t153b / t153c train-only; t112s* score no dev list unless FF_TRAIN_ONLY=0)"
- ],
  "flags": {
   "set_by_the_notebook_env_cell": {
    "FL3_UPLOAD": "phanvnhtrng/flag2027-feats-ls-b3s-p (neutralised)",
@@ -220,5 +214,5 @@
   "cell_separator": "\\n# <<<FF-CELL>>>\\n"
  },
  "licence": "VoxBlink-derived (CC BY-NC-SA 4.0, no redistribution): trained with VoxBlink speakers/frames and/or holding VoxBlink features; private FF_DATA only, never in git. The exports hold vb_face_clip*.npy (VoxBlink face features) and an adapter trained on VoxBlink frames.",
- "pip_note": "cell 03 runs `!pip -q install ftfy regex` without versions (pip_policy original): the packages come from PyPI at run time unless the environment specification pins them; WP-A: add ftfy and regex with the versions of the pinned Kaggle image digest to the requirements (versions not recorded by the original run: todo)."
+ "pip_note": "cell 03 runs `!pip -q install ftfy regex` without versions (pip_policy original): the packages come from PyPI at run time unless the environment specification pins them; the original run did not record their versions."
 }

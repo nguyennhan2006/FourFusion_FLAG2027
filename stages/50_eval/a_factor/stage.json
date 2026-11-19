@@ -150,11 +150,6 @@
   "tree/Experiment/E2E/e2e_lib.py": "a609cebb35be09b3d6fa7edbb2ced1e9652bd5fe8c4174ee938388393ac19def",
   "tree/release/factor_enfuse/rebuild_final.py": "0878da7f24dc91ce345c7a455cb98880258ba8c022fe733b47387fb76753a1b9"
  },
- "todo": [
-  "WP-A runner: FF_STAGE_DIR must point at this folder (the cell reads tree/ from it); in FF_MODE=assemble mount FF_DATA/05_scores (or assembly/inputs) or set FF_DATA so that the cell finds the six flat-named files.",
-  "WP-I final_blend: read posteval_FACTOR_ENFUSE_c5rl.zip from the top level of artifact notebooks/ff/a_factor (members listed in verify).",
-  "Line endings: tree/Experiment/XTEAM-03/run.py and tree/Experiment/E2E/e2e_lib.py are CRLF in the source repository and kept so (tree_sha256). stages/50_eval/.gitattributes ('* -text', added 18/11) disables end-of-line conversion for this group (the committing machine has core.autocrlf=true); a repository-root .gitattributes is still advisable (WP-A / WP-K)."
- ],
  "notes": [
   "New code (stage.ipy, five cells, each opening with print(\"[cell] ...\")); the scripts it runs are byte copies (tree/).",
   "Requires bash (Linux, Kaggle, Docker); make_eval_zip.sh uses set -euo pipefail, tee /dev/stderr, sha256sum.",

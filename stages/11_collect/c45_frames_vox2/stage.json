@@ -126,11 +126,11 @@
   {
    "repo": "ProgramComputer/voxceleb",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": true,
    "what": "VoxCeleb2 face tracks: vox2/vox2_mp4_{2..6}.zip (FLAG_37), official split archives vox2/vox2_dev_mp4_parta[a-i], vox2_dev_aac_parta[a-h], vox2_test_{mp4,aac}.zip, vox2/vox2_meta.csv",
-   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded (todo, WP-K LICENSES.md)"
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded"
   }
  ],
  "models": [
@@ -139,11 +139,6 @@
  "run_policy": "Sampling is not deterministic (broken tar streams / failed range reads are skipped, spares fill in): a re-collection gives other rows than the arrays every later stage was trained on, so the 13.54 chain ALWAYS uses the collected data (skip_with). The frames themselves are deterministic for a given track, but the gated mirror may refuse access.",
  "private": true,
  "private_why": "VoxCeleb2 face PNGs plus copies of organiser TRAIN files (index_train.txt, meta_file_train_set.csv) in feats_facelora/",
- "todo": [
-  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
-  "ProgramComputer/voxceleb is gated (auto-approved terms; 403 with the team token on 18/11, team run log, internal provenance): a re-collection needs HF_TOKEN of an account that accepted the terms. 13.54 itself never needs it (collected data are the raw input).",
-  "Optional: pull onnhqunhh/flag-2027-nb-45-facelora-farl (kaggle kernels pull -m) to keep its log; its notebook must have md5 a0558cc9… (= original/ here)."
- ],
  "notes": [
   "Kept cells: setup (1), install (2), FLAG_12 data cell (3, needed for SCAN), and the frame part of the training cell (4). Dropped cells: audio helpers, T3 encoder helpers, adapted encoder, MAV loop, VoxCeleb2 embedding, manifest.",
   "The organiser train_set.zip is unpacked into /kaggle/working/raw by the verbatim data cell; 'scratch': ['raw'] keeps it out of the artifact (orch._collect skips scratch names).",

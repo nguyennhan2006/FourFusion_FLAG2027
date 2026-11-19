@@ -177,11 +177,11 @@
   {
    "repo": "ProgramComputer/voxceleb",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": true,
    "what": "VoxCeleb2 face tracks: vox2/vox2_mp4_{2..6}.zip (FLAG_37), official split archives vox2/vox2_dev_mp4_parta[a-i], vox2_dev_aac_parta[a-h], vox2_test_{mp4,aac}.zip, vox2/vox2_meta.csv",
-   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded (todo, WP-K LICENSES.md)"
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded"
   }
  ],
  "models": [
@@ -193,13 +193,6 @@
  "run_policy": "Sampling is not deterministic (broken tar streams / failed range reads are skipped, spares fill in): a re-collection gives other rows than the arrays every later stage was trained on, so the 13.54 chain ALWAYS uses the collected data (skip_with). FLAG_53 picks NV + 4 spare voice candidates per speaker (68 733 candidates -> 47 529 clips kept) and lost 18 face reads.",
  "private": true,
  "private_why": "VoxCeleb2-derived features; aligned with configs/data_map.json (feats-vox2b-p private)",
- "todo": [
-  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
-  "ProgramComputer/voxceleb is gated (auto-approved terms; 403 with the team token on 18/11, team run log, internal provenance): a re-collection needs HF_TOKEN of an account that accepted the terms. 13.54 itself never needs it (collected data are the raw input).",
-  "The run log in original/ is the only execution record of part 0 (the executed notebook was never pulled; md5 of the pushed notebook = the repo file, so the code is exact). original/ keeps the log cut after part 0 (first 267 lines + the closing ']'); the full log's size / sha256 and its source are in original/SOURCE.json.",
-  "WP-A (configs/data_map.json): (1) files{} of datasets/ngnnguynchn/flag2027-feats-vox2b-p should list the two listing parquets above next to the 9 published files; (2) add a SEPARATE entry for notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid (class collected, producer c53_vox2b, path 01_collected/voxceleb2_flag53) so c_frames_index can run under the default FF_USE_SAVED=collected. Not an alias: an alias would give the kernel and the export the same FF_WORK/art folder, and collect() would delete the kernel output when it writes the export.",
-  "Compliance decision pending (repo-wide, WP-J / WP-K / user): original/flag-2027-nb-53-scaleid.ipynb must stay byte-exact (md5 ef507453… = pushed notebook) and its dropped cell 9 (CODE_B64, 24 lab files) contains kaggle/build_l0_notebooks.py with the constant OVERLAP (two MAV-Celeb v1/v2 identity labels linked to persons of the organisers' v4 set: an identity linkage that is still an open user decision; the labels are deliberately not repeated here). If it must not be public, move the notebook to $FF_PRIVATE/c53_vox2b/ or FF_DATA/_private_originals/c53_vox2b/ (runner/check_stage.py finds it there) or declare it in docs/COMPLIANCE_NOTES.md; src/ (WP-J) carries the same file."
- ],
  "notes": [
   "'dev' in E2E_SPLIT is the SAFE-04 lab mode name of the FLAG_53 notebook (cell 7 extracts only when SPLIT == 'dev'), not the organiser dev set; no organiser data is read by part 0.",
   "Kernel output also holds feats_vox2b/listing_{dev,test}_{mp4,aac}.parquet (remote zip central directories) and parts_*/: c_frames_index takes listing_{dev,test}_mp4.parquet + face_meta.csv from here.",

@@ -50,7 +50,6 @@
    "check": "listings A and B: every table sha256 = ext-meta-p (all_match true)"
   }
  ],
- "todo": [],
  "notes": [
   "DESIGN gives the builder kaggle/build_raw_notebook.py:68-240 (cell EXTRAW): that cell also runs both encoders and needs the FLAG_12 helper cells; the row tables do not depend on the encoders, so only the listing and table code is reused.",
   "check_rows.py sha256 is recorded in original/SOURCE.json (stage_files); the full builder is kept in original/ for reading."

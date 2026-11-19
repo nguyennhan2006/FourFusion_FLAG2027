@@ -25,7 +25,7 @@
 
 - Internet downloads of cell 06 / cell 03 (FaRL ep16 GitHub release, ModelScope WeSpeaker zips, `pip install git+https://github.com/openai/CLIP.git@d50d76d...`,
   HF `openai/clip-vit-large-patch14@32bd642`): kept verbatim (`compute.internet = true`); offline route in `stage.json` `flags.offline_option`.
-- `!pip -q install ftfy regex` (cell 03) is unpinned in the executed notebook and kept verbatim (`pip_policy: original`); the versions must come from the environment specification (WP-A todo; `stage.json` `pip_note`).
+- `!pip -q install ftfy regex` (cell 03) is unpinned in the executed notebook and kept verbatim (`pip_policy: original`); the versions must come from the environment specification (`stage.json` `pip_note`).
 - Licence: the exports hold VoxBlink face features (`vb_face_clipC5.npy`) and an adapter trained on VoxBlink frames (CC BY-NC-SA 4.0): private FF_DATA only, never in git (`stage.json` `licence`).
 
 ## 5. Runner

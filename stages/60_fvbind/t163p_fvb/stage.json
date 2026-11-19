@@ -43,7 +43,7 @@
   },
   {
    "artifact": "datasets/onnhqunhh/flag2027-rfs-lora-p",
-   "use": "ORIGINAL LoRA C1: lora_C1.pt is copied byte for byte into the artifact (stage_release, rfs_train.py) and drives the ib stream at Evaluation; v4_extra.npz gives v_lora of the v4 rows for the ib stream and the fill constants Mode (a) (FF_MODE=train) must consume the SAVED original C1 (FF_DATA/03_checkpoints/rfs_lora_c1_original): a re-trained C1 (stage t163l_orig, GPU, not deterministic) has other bytes and is refused by the variant guard (configs/variant_1354.json file_checks); configs/data_map.json needs \"default_saved\": true for this dataset (todo, WP-A).",
+   "use": "ORIGINAL LoRA C1: lora_C1.pt is copied byte for byte into the artifact (stage_release, rfs_train.py) and drives the ib stream at Evaluation; v4_extra.npz gives v_lora of the v4 rows for the ib stream and the fill constants Mode (a) (FF_MODE=train) must consume the SAVED original C1 (FF_DATA/03_checkpoints/rfs_lora_c1_original): a re-trained C1 (stage t163l_orig, GPU, not deterministic) has other bytes and is refused by the variant guard (configs/variant_1354.json file_checks).",
    "resolve": "saved_only",
    "resolve_why": "variant-defining ORIGINAL LoRA C1 (b97372e3...): always the saved copy FF_DATA/03_checkpoints/rfs_lora_c1_original, as in the WP-F consumers (t163p_c5rl, t183_p*, t213_p*, t216_p3); a C1 retrained in the same session (FF_FORCE=t163l_orig) is never mounted here, so RFX and RFX' always share one C1 (18/11/2026 (integration fixer r1, INTEGRATION_r1 M1 / M2))"
   },
@@ -208,21 +208,15 @@
   },
   {
    "file": "rfs_art/final_params.npz",
-   "note": "presence only; sha256 of the saved artifact not known yet (todo)"
+   "note": "presence only"
   },
   {
    "file": "rfs_art/projector_Q.pt",
-   "note": "presence only; sha256 of the saved artifact not known yet (todo)"
+   "note": "presence only"
   }
  ],
- "todo": [
-  "Artifact thanhhuyen11/flag2027-rfsfxfvb-art-p is only on Kaggle (private): `kaggle datasets download thanhhuyen11/flag2027-rfsfxfvb-art-p`; record sha256 of final_params.npz, projector_Q.pt, lora_C1.pt, manifest_final.json; check lora_C1.pt = b97372e3504a131d... and manifest 'add' has v_fvb 1280; store as FF_DATA/03_checkpoints/rfx_fvb/ (DESIGN G4, S6 K3).",
-  "Kaggle log of the run not on the team machine.",
-  "Mode (b) needs this artifact (e163i_fvb); until it is downloaded, mode (b) must re-train it (FF_FORCE=t163p_fvb, about 10 GPU minutes, after t192_fvbx) and will not be byte-identical.",
-  "DONE 18/11 (integration fixer r1): data_map marks datasets/onnhqunhh/flag2027-rfs-lora-p default_saved (WP-A) and this stage's input has resolve: saved_only (as WP-F), so every mode mounts the saved original C1. Was: Mode (a): configs/data_map.json must mark datasets/onnhqunhh/flag2027-rfs-lora-p default_saved (WP-A); the C1 copied into rfs_art/ must be the original bytes."
- ],
  "notes": [
-  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)",
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files)",
   "The embedded rfs_train.py 88ffccc9... differs from the 189 copy e222166a... only by XBLK 'v_fvb' and the opt-in WHY-01 'samevid' key (unset here); differs from today's Experiment/RFS-01/train/rfs_train.py (2f79b004...) by later opt-in keys."
  ],
  "runner_requirements": {

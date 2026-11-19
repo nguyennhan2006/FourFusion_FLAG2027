@@ -15,7 +15,7 @@
   "note": "original 7/10/2026 10:48-15:51 (log); HF_TOKEN optional for the public wds tars, needed for the gated ProgramComputer/voxceleb zips (403 with the team token on 18/11/2026)"
  },
  "origin": {
-  "run": "slug unknown; docs/DATASETS.md:112 names nguynlcnhtho/flag-2027-nb-41 as 'output gốc' (CHƯA CHẮC that it is this 7/10 run)",
+  "run": "slug unknown; docs/DATASETS.md:112 names nguynlcnhtho/flag-2027-nb-41 as 'original output' (not confirmed that it is this 7/10 run)",
   "exactness": "exact-executed-copy",
   "source_file": "Experiment/T3ENC-01/flag-2027-nb-41.ipynb",
   "notebook_md5": "3abd94d18d4293f2eb34011dcc28141f",
@@ -73,11 +73,6 @@
  },
  "consumers": [
   "b_lab_data: VoxCeleb2 rows of the T3 head v11 and of the CA head's auxiliary source `vox`; FaRL anchor of B2"
- ],
- "todo": [
-  "ProgramComputer/voxceleb returns 403 with the team token (18/11/2026): accept the dataset terms on the HF account whose token is given as HF_TOKEN.",
-  "HF dataset revisions not pinned (G27).",
-  "OPEN, owners WP-A / WP-B (not WP-D files): a re-extracted f41 output must not feed l_dqual_g3 / l_lid_strict; a 5 % quantile cut on non-deterministic GPU output can move a speaker across G3 and change lid_strict.json (f4065711...), i.e. which voices the Bengali rule drops. Needed: configs/data_map.json notebooks/ff/f41_t3enc_vox2 \"default_saved\": true with the saved copy 02_intermediate/feats_vox2t3 (= the team's Experiment/T3ENC-01/feats_vox2t3: 4 arrays, face_meta.csv, voice_meta.csv, feats_manifest.json, 5 listing csv), or l_dqual_g3's input with \"resolve\": \"saved_only\"; plus a strict sha256 check in l_lid_strict. A forced re-run of this stage stays a verification step (row cosine >= 0.999; post_checks fail on any lost key). repo_map/build/WP-D.md H4."
  ],
  "verify_notes": [
   "29 251 face rows and 38 345 voice rows in the FLAG_37 key order, coverage 1.0 (manifest); compare with Experiment/T3ENC-01/feats_vox2t3/* (row cosine >= 0.999)"

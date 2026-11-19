@@ -51,10 +51,6 @@
    "check": "flagged == ['v1_complete:shaukat_tarin', 'v2_complete:id0073']"
   }
  ],
- "todo": [
-  "user / WP-K: the list links identities across MAV-Celeb and the organisers' v4 train set (team decision pending; see docs/COMPLIANCE_NOTES.md). It is applied only in the F1s' family; no match of shaukat|id0073|OVERLAP was found in the RFS family code (Experiment/RFS-01/train, kaggle/build_flag16{0,2,3}.py) or the DP branch code (Experiment/XJF-01/xjf.py; internal name, see docs/NAMING.md): unverified",
-  "WP-K: docs/COMPLIANCE_NOTES.md should record the pending decision and that this stage is force_only (FF_FORCE=r07_overlap) and keeps no linkage table"
- ],
  "notes": [
   "R07_WITH_DEV=1 reruns the original rule (reads dev feature csv files and lists from dev_set.zip); not used for the 13.54 reproduction.",
   "The original overlap.csv is not copied into the repo and the stage keeps no such table: it pairs each MAV person with its nearest v4 train identity (a linkage table).",

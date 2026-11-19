@@ -136,12 +136,6 @@
  "consumers": [
   "t112sf1s / t155s (CAT4 auxiliary rows, CLEANTUNE-01/run.py aux_extra), RFX training (v_rl auxiliary rows)"
  ],
- "todo": [
-  "Hugging Face sources read at resolve/main (VoxCeleb2 wds tars, VoxBlink shards): revisions not pinned (G27).",
-  "The exact pushed notebook cannot be md5-verified (secret cell); a `kaggle kernels pull hthlin/flag-2027-nb-63w-aux-voice` would show the body (tools/PULL_MISSING_RUNS.md).",
-  "The pushed notebook almost certainly carried a `kapi --env` cell that kaggle/kapi.py does not log (cmd_push inserts smoke_cell(envs, '# run parameters (kapi --env) ...') but the kapi_runs.jsonl line holds only time, account, kernel, source, notebook_md5, gpu, smoke, secrets, datasets, kernels, ok). Evidence: the code reads VFEAT_UPLOAD only from the environment and the output dataset hthlin/flag2027-aux-voice-feats-p exists (created 16/10 17:55 UTC at the end of the run, made private afterwards: docs/RUNS.md:615, docs/DATASETS.md:72). Other environment knobs the code reads (AUDIO_TIME_LIMIT_H (default 10.5), AUDIO_THREADS, AUDIO_TAR_THREADS, AUDIO_SMOKE_*) may have been set in the same cell; this stage assumes their defaults. Unverified: re-applying the kapi transform with or without such a cell does not give the pushed md5 5a9d3bc9c869 locally. Pull the run (tools/PULL_MISSING_RUNS.md) to read the cell. Compare only the cells other than the secret / env cells.",
-  "Handoff WP-A: add hthlin/flag-2027-nb-63w-aux-voice to tools/PULL_MISSING_RUNS.md for the env cell."
- ],
  "verify_notes": [
   "vfeat_manifest.json: complete = true (coverage >= 0.97 for every source) and the wiring check (SimAM on the re-fetched audio vs the stored arrays, cos >= 0.99) passes; compare arrays with the frozen dataset (row cosine >= 0.999)"
  ],

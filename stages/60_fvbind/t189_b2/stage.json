@@ -43,7 +43,7 @@
   },
   {
    "artifact": "datasets/onnhqunhh/flag2027-rfs-lora-p",
-   "use": "ORIGINAL LoRA C1 + v4_extra.npz: copied into work/ by the inputs cell (asserted present); B2 never reads lora_C1.pt; v4_extra.npz gives V4['v_lora'] for the reference tables fvbC1ref_fold*.parquet only Mode (a) (FF_MODE=train) must consume the SAVED original C1 (FF_DATA/03_checkpoints/rfs_lora_c1_original): a re-trained C1 (stage t163l_orig, GPU, not deterministic) has other bytes and is refused by the variant guard (configs/variant_1354.json file_checks); configs/data_map.json needs \"default_saved\": true for this dataset (todo, WP-A).",
+   "use": "ORIGINAL LoRA C1 + v4_extra.npz: copied into work/ by the inputs cell (asserted present); B2 never reads lora_C1.pt; v4_extra.npz gives V4['v_lora'] for the reference tables fvbC1ref_fold*.parquet only Mode (a) (FF_MODE=train) must consume the SAVED original C1 (FF_DATA/03_checkpoints/rfs_lora_c1_original): a re-trained C1 (stage t163l_orig, GPU, not deterministic) has other bytes and is refused by the variant guard (configs/variant_1354.json file_checks).",
    "resolve": "saved_only",
    "resolve_why": "variant-defining ORIGINAL LoRA C1 (b97372e3...): always the saved copy FF_DATA/03_checkpoints/rfs_lora_c1_original, as in the WP-F consumers (t163p_c5rl, t183_p*, t213_p*, t216_p3); a C1 retrained in the same session (FF_FORCE=t163l_orig) is never mounted here, so RFX and RFX' always share one C1 (18/11/2026 (integration fixer r1, INTEGRATION_r1 M1 / M2))"
   },
@@ -220,17 +220,8 @@
    "_doc": "documentation only; the runner does not read this key (runner/README.md lists the verify keys it evaluates)"
   }
  ],
- "todo": [
-  "The ImageBind code commit used on 14/11 is unknown (pip -q output not logged); pinned to 53680b02d7e37b19b124fa37bae4b6c98c38f5be (patch). Confirm with the wiring check of a re-run, or read the docker image / pip freeze of the run (kaggle kernels pull -m thanhhuyen11/flag-2027-nb-189-fvbind-b2-ib0).",
-  "Docker image digest of the run not recorded (log: Python 3.13.16); read it with kaggle kernels pull -m.",
-  "Upload the saved artifact to FF_DATA/03_checkpoints/fvbind_b2/fvb_out/ from Experiment/FVBIND-01/out/fvbx_in/b2/fvb_out/ (has fvbB2_state.pt, the full fvbB2_emb.npz and the B2 gate-1 tables; lacks fvbIB0_*, fvbC1ref_* and fvb_summary_B2_IB0.json: download the full kernel output if wanted; do not delete the Kaggle notebook).",
-  "Gate-1 MAV streams cover MAV v1 only (log 'en_ext ... finite 0.400'): the cell takes the first v1 / v2 folder as the MAV root; this does not touch the B2 weights or 13.54; a runner may resolve v2 first (directory order) and give other gate-1 tables.",
-  "The scoring part of fvbind.py needs the SAFE-04 table dataset even when only the state is wanted (S6 K12); kept verbatim.",
-  "DONE 19/11/2026 (integration fixer r2): raw-v4 Kaggle view: the stage needs the extracted train set (see the raw-v4 input); a WP-B stage or a WP-A data_map 'extract' rule must produce it and register it as datasets/ngnnguynchn/flag2027-raw-v4-p (train only, no dev_set), else modes (a) and (b) stop at 'thieu raw-v4'. -> fixed by the 'path' patch that unpacks train_set.zip in the input view (INTEGRATION_r2 B1).",
-  "DONE 18/11 (integration fixer r1): data_map marks datasets/onnhqunhh/flag2027-rfs-lora-p default_saved (WP-A) and this stage's input has resolve: saved_only (as WP-F), so every mode mounts the saved original C1. Was: Mode (a): configs/data_map.json must mark datasets/onnhqunhh/flag2027-rfs-lora-p default_saved (WP-A), so that train mode consumes the saved original C1 instead of re-training it (a re-trained C1 fails the variant guard)."
- ],
  "notes": [
-  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files, todo)",
+  "schema: DESIGN.md section 2.2 (+ informative keys: code, notes, flags_as_run, outputs.files)",
   "Not on the byte-exact path: 13.54 is rebuilt byte-exactly from the saved scores (mode c); this stage documents and re-runs how the B2 weights were made."
  ],
  "runner_requirements": {

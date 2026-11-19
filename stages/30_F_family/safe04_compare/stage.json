@@ -48,9 +48,6 @@
   }
  ],
  "dev_usage": "none (the compared tables are SAFE-04 validation tables; the dev wiring files are not opened)",
- "todo": [
-  "WP-A: data_map entry datasets/ff-frozen/flag2027-e2e-dev-p -> 02_intermediate/e2e_dev_frozen/ (the whole frozen bundle; input of safe04_compare and safe04_lab_core only, never of the producer safe04_lab)"
- ],
  "stage_ipy": {
   "file": "stage.ipy",
   "sha256": "d4e46c17a6115fc0c17699f670527c00b8f4c786fe2c0fdb48a46ea2a88adb10",

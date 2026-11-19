@@ -86,7 +86,6 @@
   }
  ],
  "dev_usage": "none",
- "todo": [],
  "default_policy": "",
  "stage_ipy": {
   "file": "stage.ipy",

@@ -128,10 +128,6 @@
  "consumers": [
   "none in the 13.54 chain (reference only; b_eda_bundle and the DP use the identical arrays of f12_eval_feats)"
  ],
- "todo": [
-  "Models are not pinned here (speechbrain/spkrec-ecapa-voxceleb, buffalo_l, SSL models: inside the embedded module); acceptable for an optional reference stage.",
-  "No smoke switch in the original notebook."
- ],
  "post_checks": [
   {
    "file": "feats/feats_manifest.json",

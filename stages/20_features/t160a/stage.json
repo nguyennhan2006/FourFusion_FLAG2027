@@ -139,9 +139,6 @@
  "consumers": [
   "t163b (RFS bundle, Experiment/RFS-01/train/assemble.py; reads no dev file)"
  ],
- "todo": [
-  "The Kaggle image digest of the 3/11 runs is not recorded (G15)."
- ],
  "verify_notes": [
   "compare with the frozen dataset (row cosine >= 0.999; same NaN pattern of the lane); dev arrays / dev index files of the frozen dataset are not written by this stage"
  ],
@@ -195,7 +192,7 @@
    "*_gender_Bangla.npy",
    "index_*gender_*.txt"
   ],
-  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; prune them from the FF_DATA copy or hide them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list) (handoff WP-A, repo_map/build/WP-D.md H6), and flag the entry dev_data until then",
+  "note": "a skip_with / data_map saved copy holds these organiser dev-list members, which this stage no longer writes; FF_NO_DEV=1 hides them at mount time (configs/data_map.json 'dev_files' + FF_NO_DEV=1 in runner/ffcore.py build_vin take exactly this 'files' list)",
   "files": [
    "index_gender_Bangla.txt",
    "index_gender_English.txt",

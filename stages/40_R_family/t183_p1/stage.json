@@ -187,10 +187,6 @@
   "Evidence only (choice of c5rl on SAFE-04 validation, FACTOR-01 gate 13/11 10:04); no byte of the 13.54 zip comes from here. Arms of part 1: a0, c5, farl, pel, rl, sf, ibv, c5x (every other arm of ARMS5); tables rfx<arm>lab_fold1..5.parquet.",
   "Full output list with sha256 (41 files of rfs_art/ + work/): original/OUTPUTS.sha256 (lines of the E: package MANIFEST.sha256)."
  ],
- "todo": [
-  "Private storage: copy every exact notebook listed in original/SOURCE.json -> derived_from (origin: E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/16_flag-2027-nb-183-factor-p1.ipynb, md5 1d1968c13e48ed57d725727b2d7f938a; push-staging copies under repo/_staging_backup/) to FF_DATA/_private_originals/t183_p1/ (or $FF_PRIVATE/t183_p1/; runner/check_stage.py looks there), record each md5 there and point SOURCE.json derived_from at it: the exact notebooks embed the organisers' meta_file_train_set.csv, and repo/_staging_backup/ (no root ignore rule today) must not be published.",
-  "The RFS_XDIRS and smoke C1 patches are new (18/11) and have never been executed."
- ],
  "runner_requirements": {
   "literal_kaggle_input": false,
   "why": "the only literal /kaggle/input read in the decoded code is rfs_train.py _xload (line 83 / 96), redirected to the stage's input view by the RFS_XDIRS path patch of the setup cell; every other path is in the stage text (rewritten by the runner) or passed as an argument (grep of original/decoded/: flag_final_core_092.py mentions /kaggle/input in a docstring only)"

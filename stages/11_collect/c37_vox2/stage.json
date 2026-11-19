@@ -124,20 +124,20 @@
   {
    "repo": "gaunernst/voxceleb2-dev-wds",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": false,
    "what": "VoxCeleb2 dev audio (AAC m4a) as 779 WebDataset tars",
-   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); licence text of this mirror's card not recorded (todo, WP-K LICENSES.md)"
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); licence text of this mirror's card not recorded"
   },
   {
    "repo": "ProgramComputer/voxceleb",
    "revision_at_run": "main (unpinned)",
-   "revision": "TODO (G27: commit at submission date, then FF_HF_REVS)",
+   "revision": "main (a commit can be pinned with FF_HF_REVS)",
    "type": "hf-dataset",
    "gated": true,
    "what": "VoxCeleb2 face tracks: vox2/vox2_mp4_{2..6}.zip (FLAG_37), official split archives vox2/vox2_dev_mp4_parta[a-i], vox2_dev_aac_parta[a-h], vox2_test_{mp4,aac}.zip, vox2/vox2_meta.csv",
-   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded (todo, WP-K LICENSES.md)"
+   "license": "VoxCeleb2: CC BY 4.0 (copyright of the videos stays with their owners); gated mirror with auto-approved terms whose text was not recorded"
   }
  ],
  "models": [
@@ -152,12 +152,6 @@
  "run_policy": "Sampling is not deterministic (broken tar streams / failed range reads are skipped, spares fill in): a re-collection gives other rows than the arrays every later stage was trained on, so the 13.54 chain ALWAYS uses the collected data (skip_with). 11 face range reads failed in the original run (feats_manifest.json 'broken').",
  "private": true,
  "private_why": "VoxCeleb2-derived keys and features; aligned with configs/data_map.json (vox2-keys private) and the private FF_DATA share",
- "todo": [
-  "G27: record the commit of every HF data repo listed in external_sources at the submission date (DATA.md) and pass them as FF_HF_REVS='{\"<repo id>\": \"<commit>\", ...}' (the VoxBlink mirror needs the 8 part repos adollahamini1998/VoxBlink-Video-clean-8-0 ... -7 listed one by one). Unset = main = the original behaviour.",
-  "ProgramComputer/voxceleb is gated (auto-approved terms; 403 with the team token on 18/11, team run log, internal provenance): a re-collection needs HF_TOKEN of an account that accepted the terms. 13.54 itself never needs it (collected data are the raw input).",
-  "Original account / slug unknown (forked notebook, pushed by hand before kapi logging); the id rule for runs with an unknown slug: notebooks/ff/c37_vox2 used. The 4 datasetVersion ids in the notebook metadata (19835728, 20013233, 20060374, 20374888) were attached but the code reads /kaggle/input only to resume from an earlier feats_vox2 output.",
-  "The original dataset flag2027-vox2-keys also held a hand-written README.md (309 B); the only copy of the dataset is kaggle_upload/flag2027-vox2-keys/ (README.md, face_meta.csv, voice_meta.csv) on the team machine: WP-A should point the data_map entry at it (source for FF_DATA/01_collected/voxceleb2_flag37_keys). The export carries only the two csv files."
- ],
  "notes": [
   "Inert settings of the FLAG_12 cell copied into cell 1 (SPLIT_FILTER, EXT_SOURCES, ZIP_PREFIXES, ONLY_UNDER) are never read by this notebook: no organiser or dev data is touched.",
   "Downstream: l42_vox2_lid, f41_t3enc_vox2 (via flag2027-vox2-keys), b_lab_data (packs feats_vox2/{face,voice}_meta.csv), c53 (reads the keys through lab-data), c45 / c63v (through lab-data).",

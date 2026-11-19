@@ -66,11 +66,6 @@
    "note": "only with the stored output; a rerun is compared by ff_l42_compare.json (report only)"
   }
  ],
- "todo": [
-  "pull nguynlcnhtho/flag-2027-nb-42 (`kaggle kernels pull -m`) to confirm the notebook and replace original/ if it differs",
-  "the VoxLingua107 model was fetched unpinned; the run used commit 0253049ae131d6a4be1c4f0d8b0ff483a0f8c8e9 (Kaggle's __huggingface_repos__.json in the output) -> WP-A fetch_models",
-  "13.54: consumers need the STORED output of this stage for the exact filter list (a rerun is not bit-identical: GPU; 779 tars streamed over the network, a tar failing 4 retries is skipped; drop42 / lid_strict.json could change). Machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict (FF_MODE=train warns, infer fails). WP-A: data_map default_saved: true for this artifact so FF_MODE=train keeps the stored copy and a rebuild needs FF_FORCE=l42_vox2_lid"
- ],
  "notes": [
   "The FLAG_42 cell finds the key lists with IN.rglob('face_meta.csv') / ('voice_meta.csv') and takes the first hit: mount only flag2027-vox2-keys (or the FLAG_37 output), nothing else with such files.",
   "Rule in the notebook = the OLD rule (top-1 bn or p(bn) >= 0.2); the strict rule (bn + as) is applied later by merge.py (stage l_lid_strict) on the stored probabilities.",

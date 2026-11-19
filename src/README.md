@@ -94,7 +94,7 @@ Some builders cannot run from src/ alone by design: `kaggle/build_flag163.py` em
 a dev-set score zip, and `kaggle/build_e2e_v11.py` embeds dev reference zips and four learned fuser files (frozen inputs
 embedded in the executed `e50cc` notebook; no producing stage in this repository). `release/factor_enfuse/make_package.py`
 and `release/flag2027_e2e/pull_runs.py` import the excluded `kaggle/kapi.py` at top level and cannot run, not even with
-`--help`; use `kaggle kernels pull` as described in `tools/PULL_MISSING_RUNS.md`.
+`--help`; use `kaggle kernels pull`.
 
 ## What is not here
 

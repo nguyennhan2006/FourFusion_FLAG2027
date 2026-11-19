@@ -185,7 +185,7 @@
  ],
  "variant": {
   "lora_c1": "original",
-  "outputs_file_checks": "exempt (todo WP-A): the export rfs_lora/lora_C1.pt of a forced re-train differs from b97372e3 by construction; accept it on the post_checks instead of configs/variant_1354.json file_checks"
+  "outputs_file_checks": "the export rfs_lora/lora_C1.pt of a forced re-train differs from b97372e3 by construction; the variant guard (configs/variant_1354.json file_checks) refuses it, so it never replaces the saved C1"
  },
  "forbidden_inputs": [
   "datasets/ngnnguynchn/flag2027-rfs-lorafix1-p",
@@ -263,13 +263,6 @@
   "Bundle input (wiring, fixer 18/11): the repo's t163l_orig reads the bundle made by t163b (FLAG_163 B version 5, assemble.py b46dd180, v4.npz f_xf 4 096 columns); the original L run (pushed 2026-11-04 00:37, kapi_runs line 1315) read the earlier bundle of B version 4 (assemble.py 432bdbf9, embedded in the L notebook, keeps the 4 097 / 193-column CSV cut); B was re-pushed at 02:10 (line 1327). The two assemble.py differ only in lines 71-74 (rd() column cut of the v4 CSVs, i.e. v4.npz f_xf / v_xv). Mode L reads ext.npz (lora_data, face_by_person; same code and inputs in both versions), V4 v_path (v_lora) and the presence of f_age (present in both, so the age branch is not taken): no effect on lora_C1.pt or v4_extra.npz.",
   "Runner smoke (FF_SMOKE=1) of this stage is a real-data mini run (smoke_env RFS_LORA_STEPS=3, RFS_LORA_BATCH=4, RFS_LORA_CAP=16; FLAG_SMOKE is not set): ImageBind is downloaded and hash-checked, the dry check runs on the full data, v_lora is computed for the 6 485 v4 wavs. Its post_check ff_lora_meta.json fails by construction (3 steps), which is not fatal in smoke.",
   "LoRA C1 policy (fixer 18/11, ../README.md): force_only; consumers read the saved original with resolve saved_only."
- ],
- "todo": [
-  "The dry check and the folder sort are new (18/11) and have never been executed (no compute allowed in this workflow): the first real run must print 'FF lora dry check: OK'.",
-  "pip line kept as run: 'pip -q install --no-deps git+https://github.com/facebookresearch/ImageBind' installs the repository HEAD; the Docker image pins ImageBind@53680b02d7e37b19b124fa37bae4b6c98c38f5be. Whether that commit equals HEAD on 2026-11-03 is not verified (S8).",
-  "WP-A: a forced run of this stage re-trains lora_C1.pt, which configs/variant_1354.json file_checks (outputs) rejects with VariantError before the post_checks run; exempt this stage's outputs (stage.json variant.outputs_file_checks) and accept it on the post_checks.",
-  "WP-A: data_map datasets/onnhqunhh/flag2027-rfs-lora-p could carry default_saved: true (variant-defining). WP-F's consumers do not need it (resolve saved_only), but WP-H's t163p_fvb / t189_b2 / t192_fvbx do in mode (a): with this stage force_only and the checkpoint class not saved in FF_USE_SAVED=collected they are otherwise blocked (or they adopt resolve saved_only as WP-F did).",
-  "The ImageBind sha256 check, the metadata file and the train_set.zip unpack block are new (18/11) and have never been executed."
  ],
  "runner_requirements": {
   "literal_kaggle_input": false,

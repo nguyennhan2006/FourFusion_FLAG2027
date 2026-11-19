@@ -82,10 +82,6 @@
    "check": "58 Whisper-flagged files (report only)"
   }
  ],
- "todo": [
-  "Whisper-large-v3 and facebook-style models were fetched unpinned at run time (2/11/2026); to pin, set WL_MODEL to a local snapshot (e.g. openai/whisper-large-v3@06f233fe06e710322aca913c1bc4249a0d71fce1 under FF_DATA/06_pretrained) - unverified that revision equals the one of 2/11",
-  "13.54: consumers need the STORED output of this stage for the exact filter list (a rerun is not bit-identical: GPU; drop42 / lid_strict.json could change). Machine-readable: guard_policy of l_dqual_g3 / l_lid_audit / l_lid_strict (FF_MODE=train warns, infer fails). WP-A: data_map default_saved: true for this artifact so FF_MODE=train keeps the stored copy and a rebuild needs FF_FORCE=l150_whisper"
- ],
  "notes": [
   "Package notebook = `kaggle kernels pull` of the run with the secret value redacted by release/factor_enfuse/make_package.py (cell 0 now holds only a comment); HF_TOKEN is read from the environment if set (public models: optional).",
   "The notebook embeds the 'risk speaker' order (VoxCeleb2 / VoxBlink speaker ids, read from the stored VoxLingua probabilities when the notebook was built): ids only, no media.",
