@@ -4,7 +4,7 @@ English, per trial:  zip value = ours / SIG[protocol] - r * z_XJF      (the zip 
   ours  = value of posteval_FACTOR_ENFUSE_c5rl.zip (F1s' through the Bangla fuser + RFX, sum of two -logits)
   z_XJF = (cos - mean) / sd, mean / sd from the out-of-fold FLAG train trials (xjf.py)
   SIG   = fixed constants (scale of our English score), r = fixed weight; nothing is computed from the test file here.
-Zips: zips/xjf_r05.zip, xjf_r10.zip (recommended, equal weight as in the sub99b report), xjf_r20.zip."""
+Zips: zips/xjf_r05.zip, xjf_r10.zip (recommended, equal weight as in the teammate's report), xjf_r20.zip."""
 import json, os, sys, zipfile
 from pathlib import Path
 import numpy as np

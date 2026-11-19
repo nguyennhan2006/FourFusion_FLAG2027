@@ -1,7 +1,7 @@
 {
  "id": "c46_voxblink",
  "group": "11_collect",
- "title": "VoxBlink-clean identities of FLAG_46 (Bengali / Bangladesh speakers removed before download; 15 175 speakers, 68 041 faces, 68 043 voices) + Track-3 encoders + VoxLingua107",
+ "title": "VoxBlink-clean identities of FLAG_46 (Bengali / Bangladesh speakers removed before download; 15 175 speakers, 68 041 faces, 68 043 voices) + FaRL / CLIP-L / SimAM-ResNet100 encoders + VoxLingua107",
  "kind": "collect",
  "role_in_1354": "score",
  "modes": {

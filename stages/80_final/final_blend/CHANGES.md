@@ -60,3 +60,7 @@ The full text is in `stages/70_dp/dp_train/CHANGES.md`, section "Compliance disc
 
 - **History of the constants.** The first zip of this recipe, `xjf_r10.zip`, used 5.8 / 2.9, read off the score scale of the test files (not allowed; the comment on line 26 of `blend.py` says so). It was submitted and scored 13.54 (16/11 10:31, CodaBench 1054532) before the constants were replaced by 5.0983 / 3.8376, measured on held-out train persons, and before `xjf_r10_trsig.zip` was built (11:08) and submitted (12:02, CodaBench 1054704). Patch BL5 makes sure the old constants can no longer be used silently.
 - **Diagnostic printout.** `blend.py` line 43 (verbatim) prints, for each English Evaluation file, the Spearman correlation between the base score and z_DP and the mean / standard deviation of z_DP. The printout uses no label and feeds no value, so it is kept verbatim. It is disclosed because the disallowed 5.8 / 2.9 came from score statistics of the test files, the kind of number this line prints. New code in the DP stages no longer prints score statistics of the test files.
+
+## Comment edit (19/11/2026)
+
+- `blend.py` line 7: the docstring now says the recipe came from a teammate's report; it no longer names that report's internal branch label. Comment only: no code line changed, no effect on the numbers. `original/` keeps the byte-exact text.

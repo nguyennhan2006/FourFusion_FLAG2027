@@ -50,3 +50,7 @@ To be carried into `docs/COMPLIANCE_NOTES.md` (WP-K) and into the system descrip
 ## To do
 
 - **G5.** The tower checkpoint does not exist yet. Run this stage once on the team machine (about 12 min on CPU) and check that `dp_train_check.json` says `all_identical: true`. Then upload `out/dp_towers.pt`, `out/xjf_scores.npz` and `out/consts.json` to `FF_DATA/03_checkpoints/dp_towers/out/`.
+
+## Comment edit (19/11/2026)
+
+- `xjf.py` lines 1–2: the docstring now says the recipe came from a teammate's report; it no longer names that report's internal branch label. Comment only: no code line changed, no effect on the numbers. `original/` keeps the byte-exact text.

@@ -33,9 +33,11 @@ files.
 - **Pair-contrastive family** (internal name RFX). A linear projector maps concatenated face and voice embeddings into one space
   (symmetric InfoNCE, 3 seeds), plus side streams (ImageBind cosine with the audio adapter C1, gender probes, age match); one fuser for the
   gender files and one for the no-gender files → logit ℓ_R. For the gender/Bangla file the variant RFX′ adds the trained voice block B2 → ℓ_R′.
-- **DP (Different Profile) branch**, English files only. Two towers on frozen recognition embeddings (face: VGG-Face, AdaFace, ArcFace;
-  voice: two ECAPA-TDNN) trained with a symmetric InfoNCE loss, 10 seeds averaged → cosine c_DP, standardised with μ_DP / σ_DP
-  measured on held-out training trials.
+- **DP (Different Profile) branch**, English files only. A small MLP projector per modality (linear 256, batch norm, ReLU, dropout 0.7,
+  linear 128) maps concatenated frozen recognition embeddings (face: VGG-Face, AdaFace, ArcFace; voice: organisers' ECAPA, SpeechBrain
+  ECAPA and its pooled statistics) into one space (symmetric InfoNCE with a learnable temperature, same-identity negatives masked, FLAG
+  training identities + MAV-Celeb v1/v2, 10 seeds) → mean cosine c_DP, standardised per protocol with μ_DP / σ_DP from out-of-fold
+  training trials.
 - **Per-file rule** (chosen by the file's language and protocol, given by the organisers). Each file stores −s (lower = same person):
 
 | file | score s |

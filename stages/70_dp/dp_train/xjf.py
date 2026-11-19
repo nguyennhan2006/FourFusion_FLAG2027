@@ -1,5 +1,5 @@
-"""XJF-01 step 2: small in-domain two-tower model on recognition-grade frozen encoders (recipe of the Track 3 report sub99b,
-branch XJ-U), trained on OUR feature files: FLAG train (70 persons, 6 485 pairs) + MAV-Celeb v1 / v2 (154 persons).
+"""XJF-01 step 2: small in-domain two-tower model on recognition-grade frozen encoders (idea from a teammate's report),
+trained on OUR feature files: FLAG train (70 persons, 6 485 pairs) + MAV-Celeb v1 / v2 (154 persons).
     python Experiment/XJF-01/xjf.py            -> out/xjf_scores.npz, out/report.txt
 Faces  [organiser VGGFace fc7 4096 (sqrt + L2) | AdaFace IR-101 512 | ArcFace buffalo_l 512], each block L2, concat / sqrt(3)
 Voices [organiser ECAPA 192 | speechbrain ECAPA 192 | its 6144-d pooled statistics], each block L2, concat / sqrt(3)
