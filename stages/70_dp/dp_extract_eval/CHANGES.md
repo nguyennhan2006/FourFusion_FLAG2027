@@ -58,5 +58,6 @@ Feature definitions, face alignment, model calls, batching, file names and row o
 
 - A fresh Kaggle session has no `onnxruntime`, `insightface` or `speechbrain`; the package check stopped the stage there (Kaggle check
   run `dngxunqun/ff1354-chk-b1b-4b6be30`). New: unless `FF_PIP=skip`, the missing packages of the check list are installed at the
-  versions of `docker/requirements-dp-local.txt` (`insightface==2.0` with `--no-deps`, as on the team machine), then checked again.
+  versions of `docker/requirements-dp-local.txt` (`insightface==2.0` with `--no-deps`, as on the team machine), then checked again;
+  `stage.json` `pip_policy` is now `original`, because with `skip` the runner replaces pip by its no-op shim.
   Nothing changes where the packages are already present (team machine, Docker image).

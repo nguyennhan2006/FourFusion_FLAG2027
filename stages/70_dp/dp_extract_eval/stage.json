@@ -69,7 +69,7 @@
  "patches": [],
  "drop_cells": [],
  "neutralize_upload": [],
- "pip_policy": "skip",
+ "pip_policy": "original",
  "variant": {
   "pinned_models": "models.json (buffalo_l onnx sha256, AdaFace @54f602a0, spkrec-ecapa-voxceleb @0f99f2d0)"
  },
@@ -193,5 +193,5 @@
  "reads_undeclared": [
   "FF_DATA/<entry>/06_pretrained: optional local copies of the three DP models (found by sha256 / HF cache folder name); without them the pinned versions are downloaded (models.json)"
  ],
- "python_packages_checked": "cell 1 stops with the list of missing packages (insightface, onnxruntime, speechbrain, omegaconf, huggingface_hub, ...) and points to docker/requirements-dp-local.txt / docker/requirements-kaggle-pinned.txt; pip_policy stays 'skip' (the runner has no per-stage requirement subset)"
+ "python_packages_checked": "cell 1 installs the missing packages of its check list at the versions of docker/requirements-dp-local.txt (insightface==2.0 with --no-deps) unless FF_PIP=skip, then checks again and stops with the list if any is still missing; pip_policy 'original' so that the runner does not replace pip by its no-op shim (19/11/2026)"
 }
