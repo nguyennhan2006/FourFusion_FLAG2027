@@ -153,6 +153,15 @@ NEED = {"numpy": "numpy", "pandas": "pandas", "torch": "torch", "torchaudio": "t
         "cv2": "opencv-python", "PIL": "pillow", "onnxruntime": "onnxruntime==1.31.1", "insightface": "insightface==2.0 (--no-deps)",
         "speechbrain": "speechbrain==1.1.2", "yaml": "PyYAML", "omegaconf": "omegaconf==2.4.0", "huggingface_hub": "huggingface_hub==1.33.0"}
 missing = [pip for mod, pip in NEED.items() if importlib.util.find_spec(mod) is None]
+if missing and os.environ.get("FF_PIP", "original") != "skip":       # 19/11/2026: a fresh Kaggle session lacks some of them (CHANGES.md)
+    req = [p.split(" ")[0] for p in missing]
+    nodeps = [p for p in req if p.startswith("insightface")]       # as on the team machine: insightface without its dependencies
+    for args in ([r for r in req if r not in nodeps], nodeps):
+        if args:
+            print("  pip install", ("--no-deps " if args is nodeps else "") + " ".join(args), flush=True)
+            subprocess.run([sys.executable, "-m", "pip", "install", "-q", *(["--no-deps"] if args is nodeps else []), *args], check=True)
+    importlib.invalidate_caches()
+    missing = [pip for mod, pip in NEED.items() if importlib.util.find_spec(mod) is None]
 assert not missing, (f"missing Python packages {missing}: install them at the pinned versions, e.g. pip install -r docker/requirements-dp-local.txt (team CPU machine) or the DP lines of docker/requirements-kaggle-pinned.txt (insightface with --no-deps; onnxruntime instead of onnxruntime-gpu on CPU)")
 print("  packages OK:", sorted(NEED), flush=True)
 

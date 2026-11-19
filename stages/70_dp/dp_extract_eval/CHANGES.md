@@ -53,3 +53,10 @@ Every default path stays the original one: a patched script started from its ori
 Feature definitions, face alignment, model calls, batching, file names and row order are those of the original scripts and modules.
 
 **Batch padding (disclosed, kept verbatim).** The ECAPA voice embeddings of the Evaluation clips are computed in batches packed by duration (`flag_extract.run_batched` → `pack_batches`, at most 240 padded seconds and 32 clips per batch; `extract_eval.py` lines 89–90). Each batch is zero-padded to its longest clip and passed with relative lengths (`Ecapa.__call__`, `flag_extract.py` lines 165–178). The embedding of one clip can therefore vary in the last digits with the lengths of the other test clips in its batch, through convolution context at the padded end and the pooling. No label and no statistic of the test files enters, but strictly a pair's DP score is not a function of that pair alone (rule level 0). The 13.54 features were made this way (`original/extract.log`). The code is kept verbatim for fidelity; the point goes into `docs/COMPLIANCE_NOTES.md` (WP-K). Optional check after 20/11: re-extract with `max_bs=1` and report max |Δz| and the Spearman correlation of z_DP against the submission arrays.
+
+## Missing packages installed at the pinned versions (19/11/2026)
+
+- A fresh Kaggle session has no `onnxruntime`, `insightface` or `speechbrain`; the package check stopped the stage there (Kaggle check
+  run `dngxunqun/ff1354-chk-b1b-4b6be30`). New: unless `FF_PIP=skip`, the missing packages of the check list are installed at the
+  versions of `docker/requirements-dp-local.txt` (`insightface==2.0` with `--no-deps`, as on the team machine), then checked again.
+  Nothing changes where the packages are already present (team machine, Docker image).
