@@ -19,6 +19,8 @@ TRAIN_MEMBERS = {                                     # members of train_set.zip
     "train_set/features/voices/train_English_voices.csv": "be650b98adeaff8c5fb1c3978e6b60fd51b4782147af1b917926c685bd962925",
 }
 TRAIN_ENTRIES, TRAIN_PAIRS, TRAIN_SPEAKERS = 13122, 6485, 70
+TRAIN_FILES = 12973                                   # file entries of train_set.zip (TRAIN_ENTRIES counts the 149 directories too)
+UNPACKED = IN / "train_set"                           # Kaggle layout: an uploaded zip is unpacked into a folder of the same name
 
 
 def sha256_file(p):
@@ -40,6 +42,9 @@ def find(name):
 rep, bad = {"checked": time.strftime("%Y-%m-%d %H:%M:%S"), "smoke": SMOKE, "files": {}}, []
 for name, (size, digest, required) in EXPECTED.items():
     p = find(name)
+    if p is None and name == "train_set.zip" and UNPACKED.is_dir():
+        rep["files"][name] = "unpacked by Kaggle into train_set/ (file count and members checked below)"
+        continue
     if p is None:
         rep["files"][name] = "absent" + ("" if required else " (optional: the 13.54 chain never reads dev data)")
         if required:
@@ -69,6 +74,19 @@ if tz is not None:
     if not ok:
         bad.append(f"train_set.zip content: {rep['train_set_zip']}")
     print("train_set.zip:", rep["train_set_zip"], flush=True)
+elif UNPACKED.is_dir():                               # the same checks on the unpacked members (path = train_set/<zip member>)
+    files = [p for p in UNPACKED.rglob("*") if p.is_file()]
+    mem = {m: sha256_file(UNPACKED / m) for m in TRAIN_MEMBERS if (UNPACKED / m).is_file()}
+    tl = UNPACKED / "train_set/train_set/train_English.txt"
+    pairs = [l for l in tl.read_text(encoding="utf-8").splitlines() if l.strip()] if tl.is_file() else []
+    rep["train_set_unpacked"] = {"files": len(files), "files_ok": len(files) == TRAIN_FILES,
+                                 "members": {m: (mem.get(m), mem.get(m) == d) for m, d in TRAIN_MEMBERS.items()},
+                                 "pairs": len(pairs), "speakers": len({l.split()[4] for l in pairs})}
+    ok = (rep["train_set_unpacked"]["files_ok"] and all(v[1] for v in rep["train_set_unpacked"]["members"].values())
+          and rep["train_set_unpacked"]["pairs"] == TRAIN_PAIRS and rep["train_set_unpacked"]["speakers"] == TRAIN_SPEAKERS)
+    if not ok:
+        bad.append(f"train_set (unpacked) content: {rep['train_set_unpacked']}")
+    print("train_set (unpacked):", rep["train_set_unpacked"], flush=True)
 
 rep["ok"] = not bad
 rep["problems"] = bad
