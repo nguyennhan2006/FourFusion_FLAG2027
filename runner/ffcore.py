@@ -584,14 +584,13 @@ class Runner:
 
     def find_saved(self, aid):
         req = list((self.entry(aid) or {}).get("required_files") or [])     # names that must exist in a saved folder (top level)
+        skip = set((self.entry(aid) or {}).get("exclude") or []) | RUNNER_MARKERS
         for p in self.saved_candidates(aid):
             if p.is_dir():
                 if (p.parent.name == "art" or "/art/" in p.as_posix()) and (p / "_DONE.json").exists() and not self._done_ok(p):
                     continue
-                try:
-                    next(p.iterdir())
-                except StopIteration:
-                    continue                                         # empty folder = not there
+                if not any(c.name not in skip for c in p.iterdir()):
+                    continue                                         # empty, or only excluded names (e.g. zips/ of MAV-Celeb) = not there
                 if req and not all((p / f).exists() for f in req):
                     self.log(f"  [saved] {aid}: {p} lacks {[f for f in req if not (p / f).exists()]} (data_map required_files): not used")
                     continue

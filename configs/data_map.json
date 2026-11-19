@@ -89,7 +89,11 @@
     "mavceleb_v1_complete-001.zip": "2082a9ee5f7d3634f687d682e98cd223606a5b01debc90c3e7ab566a9f86512b",
     "mavceleb_v2_complete-002.zip": "daff513527d7cea698243594a18795cab6d47aea64d64c3c74035154abd6246c"
    },
-   "files_measured": "sha256sum by WP-B (stages/10_raw/raw_mavceleb cells/00_locate.py), 2026-11-18; mavceleb_v1_train-004.zip is not needed"
+   "files_measured": "sha256sum by WP-B (stages/10_raw/raw_mavceleb cells/00_locate.py), 2026-11-18; mavceleb_v1_train-004.zip is not needed",
+   "alt_paths": [
+    "00_raw/mavceleb_v1_v2/zips"
+   ],
+   "alt_paths_why": "layout of the uploaded Drive folder (batch 1, 19/11/2026): the zips sit in zips/ inside the extracted-dataset folder, which data_map excludes there"
   },
   "datasets/chnnhnnguyn/external-data-mavceleb": {
    "path": "00_raw/mavceleb_v1_v2",

@@ -14,12 +14,14 @@ FF_DATA/                                   # = Drive "FourFusion_FLAG2027_data/"
 │   ├── btc_mavceleb_v4/                   # organisers: train_set.zip, meta_file_train_set.csv (+ dev_set.zip, never read by the chain)
 │   ├── btc_evaluation/                    # organisers: evaluation_phase.zip ; eval_set.zip (built by stage raw_evalphase)
 │   ├── mavceleb_v1_v2/                    # MAV-Celeb v1 / v2 extracted with the exact Kaggle layout mavceleb_v1_complete-001/v1/..., mavceleb_v2_complete-002/v2/...
-│   └── mavceleb_v1_v2_zips/               # the two original zips (input of stage raw_mavceleb; a SIBLING folder on purpose)
+│   └── mavceleb_v1_v2_zips/               # the two original zips (input of stage raw_mavceleb; a SIBLING folder on purpose;
+│                                          #   the Drive keeps them in mavceleb_v1_v2/zips/, also accepted: raw_mavceleb extracts them)
 ├── 01_collected/                          # data the team collected from public Hugging Face sources (VoxBlink: private)
 ├── 02_intermediate/<name>/                # one folder per intermediate dataset; _wiring/<slug>/ for datasets the code only checks for
 ├── 03_checkpoints/<name>/                 # learned weights / tables (CHECKPOINTS.md)
 ├── 04_run_outputs/<run slug>/             # /kaggle/working of runs that later runs attach as kernel input
 ├── 05_scores/                             # the ten per-pair score files of mode (c) (assembly/inputs/README.md)
+├── datasets/<owner>__<slug>.zip           # a Kaggle dataset kept as its download zip (read directly, unpacked once into FF_WORK)
 └── 06_pretrained/                         # public pretrained models + SOURCES.json (python tools/fetch_models.py --dest FF_DATA/06_pretrained)
 ```
 
@@ -169,3 +171,11 @@ Inputs taken as stored copies in every mode are listed by `python runner/ffrun.p
 The Drive folder needs about 70–80 GB (DESIGN G24). Private material (VoxBlink and everything derived from it, the organisers'
 data, run outputs that hold dev files) is shared only with the organisers' e-mail; the `private` column above says which artifacts.
 `python tools/drive_manifest.py` writes `MANIFEST.sha256` for a populated `FF_DATA`.
+
+The Drive was filled in batches that merge into the one folder: batch 1 = `00_raw/` (MAV-Celeb v1 / v2 zips), `01_collected/`,
+`02_intermediate/feats_vox2lid/`; batches 2–3 = `03_checkpoints/`, `04_run_outputs/`, `05_scores/`, `02_intermediate/dp_features/` and
+nine checkpoint datasets under `datasets/`; batch 4 = ten intermediate / wiring datasets under `datasets/` (lab data, RFS bundle,
+LID lists, g1 tables, ...) and `02_intermediate/feats_vox2t3/`. Each batch has its own `MANIFEST.sha256`. The organisers' own files
+(`00_raw/btc_mavceleb_v4/`, `00_raw/btc_evaluation/evaluation_phase.zip`) are not uploaded: put them at those paths. With them,
+`python runner/ffrun.py plan --mode infer|train|assemble` over the Drive folder blocks on nothing (checked 19/11/2026,
+`docs/VERIFICATION.md` §1).

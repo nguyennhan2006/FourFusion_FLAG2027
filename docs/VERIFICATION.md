@@ -10,6 +10,10 @@
   variant error, no skeleton difference; section LINEAGE: the 73 stages the zip depends on, 0 gaps.
 - `python runner/ffrun.py plan --assume-saved`: infer 19 stages (= `configs/modes.json`), assemble 5, train 58 (default) / 74
   (the mode (a) command of the README) / 82 (with the collect stages); none blocked.
+- `python runner/ffrun.py plan` with `FF_DATA` = the uploaded Drive folder (local copy of batches 1, 2–3 and 4): assemble 5
+  stages, infer 18, train 57; the only missing inputs are the organisers' `00_raw/btc_mavceleb_v4/` and
+  `00_raw/btc_evaluation/evaluation_phase.zip`, which are not uploaded. Every file of the 13 checkpoint artifacts and all 19
+  dataset zips under `datasets/` match their sha256 in `configs/data_map.json`; batches 2–3 match their `MANIFEST.sha256` (183 files).
 - `python runner/selftest.py`: 8/8 cases; `python tools/build_docs.py --check`: generated docs up to date.
 - Every `.py` parses, every `.json` loads; a secret scan of the tree finds no high-severity item.
 
