@@ -8,7 +8,7 @@ ids of the original Kaggle runs, and verbatim code. This file is the mapping.
 
 | public name | internal name (team repository) | where the internal name still appears |
 |---|---|---|
-| DP (Different Profile) branch | XJF, XJF-01 | `Experiment/XJF-01/...` paths in provenance and in `src/`; script names `xjf.py`, `blend.py` of `Experiment/XJF-01/`; files `xjf_scores.npz`, `xjfdump_v4.parquet`, `xjf_r10_trsig.zip` (the submitted file name); environment variables `XJF_SIG`, `XJF_BASE`; column / function names inside verbatim code |
+| DP (Different Profile) branch | XJF, XJF-01 | `Experiment/XJF-01/...` paths in provenance; script names `xjf.py`, `blend.py` of `Experiment/XJF-01/`; files `xjf_scores.npz`, `xjfdump_v4.parquet`, `xjf_r10_trsig.zip` (the submitted file name); environment variables `XJF_SIG`, `XJF_BASE`; column / function names inside verbatim code |
 | DP scale constants sigma = 5.0983 (no_gender) / 3.8376 (gender) | `XJF_SIG="5.0983,3.8376"` | `stages/80_final/final_blend`, `configs/variant_1354.json` |
 | DP scores (z of the two English files) | `xjf_scores.npz` (`z_*`, `cos_*`, `ids_*`) | `stages/70_dp/*`, `assembly/` |
 | sigma source table (U on held-out v4 train trials) | `xjfdump_v4.parquet` (FUSENET-01 `dumpv4`) | `stages/40_R_family/t219_dumpv4`, `stages/70_dp/dp_sigma` |

@@ -14,16 +14,13 @@ changes. "DP" = the English branch DP (Different Profile); its internal name XJF
 | `t163b` | ngnnguynchn/flag-2027-nb-163-rfs-b | exact-package | data / score | CPU, 4 min | `datasets/ngnnguynchn/flag2027-rfs-bundle-p` | 02_intermediate/rfs_bundle | 5 |
 | `t163l_orig` | onnhqunhh/flag-2027-nb-163-rfs-l | exact-package | train / score | GPU T4 x2, 66 min; **force_only** | `datasets/onnhqunhh/flag2027-rfs-lora-p` (ORIGINAL LoRA C1) | 03_checkpoints/rfs_lora_c1_original | 9 |
 | `t163p_c5rl` | ngnnguynchn/flag-2027-nb-163-rfsfxc5rl-p | exact-package | train / score | GPU T4 x2 (1 used), 9 min | `datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p` (RFX c5rl) | 03_checkpoints/rfx_c5rl | 5 |
-| `t183_p1` | phantrnhuyntrn/flag-2027-nb-183-factor-p1 | exact-package | train / evidence (optional) | GPU T4 x2 (1 used), 43 min | kernel output (tables `rfx*lab_fold*`) | 04_run_outputs/flag-2027-nb-183-factor-p1 | 4 |
-| `t183_p2` | phantrnhuyntrn/flag-2027-nb-183-factor-p2 | exact-package | train / evidence (optional) | GPU T4 x2 (1 used), 50 min | kernel output | 04_run_outputs/flag-2027-nb-183-factor-p2 | 4 |
-| `t184_report` | phantrnhuyntrn/flag-2027-nb-184-factor-report | exact-package | train / evidence (optional) | CPU, 5 min | `e2e_out/factor_report.txt` (c5rl chosen on validation) | 04_run_outputs/flag-2027-nb-184-factor-report | 0 |
 | `t213_p1` | phantrnhuyntrn/flag-2027-nb-213-seedrep-p1 | exact-staging | train / score | GPU T4 x2 (1 used), not logged | tables `rfrc0rlab_fold1..5` (c5rl, seeds 4-6) | 04_run_outputs/flag-2027-nb-213-seedrep-p1 | 4 |
 | `t213_p2` | phantrnhuyntrn/flag-2027-nb-213-seedrep-p2 | exact-staging | train / score | GPU T4 x2 (1 used), not logged | tables `rfrc0slab_fold1..5` (seeds 7-9) | 04_run_outputs/flag-2027-nb-213-seedrep-p2 | 4 |
 | `t216_p3` | phantrnhuyntrn/flag-2027-nb-216-seedrep3 | exact-staging | train / score | GPU T4 x2 (1 used), not logged | tables `rfrc0tlab_fold1..5` (seeds 10-12) | 04_run_outputs/flag-2027-nb-216-seedrep3 | 4 |
 | `t219_dumpv4` | phantrnhuyntrn/flag-2027-nb-219-fusenet-dumpv4 | exact-staging | train / score | CPU, 2 min | `sp/out/safe04/xjfdump_v4.parquet` (sha256 `9f0a5af4...`) | 03_checkpoints/sigma_source | 1 |
 
 Order: `t163b` -> `t163l_orig` (saved file, see 'LoRA C1 policy') -> `t163p_c5rl` (-> `e163i` in 50_eval); `t163b` + `t163l_orig` -> `t213_p1`, `t213_p2`, `t216_p3` -> `t219_dumpv4`
-(-> `dp_sigma` in 70_dp, sigma = 5.0983 / 3.8376); `t163b` + `t163l_orig` -> `t183_p1`, `t183_p2` -> `t184_report` (evidence only).
+(-> `dp_sigma` in 70_dp, sigma = 5.0983 / 3.8376).
 `t163b` and `onnhqunhh/flag2027-rfs-lora-p` are also inputs of the FVBIND stages (60_fvbind).
 
 Role in the four files of the zip: RFX c5rl gives the R logit of `no_gender/...Bangla_unheard.txt` and of the two English files (through
@@ -35,7 +32,7 @@ The 13.54 variant is defined by one file: the ORIGINAL `lora_C1.pt` (sha256 `b97
 `FF_DATA/03_checkpoints/rfs_lora_c1_original/`). A GPU re-train of the same recipe is not byte-identical, so it could never pass the 13.54
 guard (`configs/variant_1354.json` file_checks, DESIGN 2.7). Rules:
 
-1. The six consumers (`t163p_c5rl`, `t183_p1`, `t183_p2`, `t213_p1`, `t213_p2`, `t216_p3`) mount the C1 with `"resolve": "saved_only"`: in
+1. The four consumers (`t163p_c5rl`, `t213_p1`, `t213_p2`, `t216_p3`) mount the C1 with `"resolve": "saved_only"`: in
    every mode (a) / (b) / (c) and in smoke runs they take the saved file (or the attached Kaggle dataset), never a re-train; when it is
    missing the runner reports `saved copy required (resolve: saved_only): put it at FF_DATA/03_checkpoints/rfs_lora_c1_original`.
    `variant.require_files` checks `lora_C1.pt` = `b97372e3...` on that input before the stage runs, and the `verify` entry (check `exact`)
@@ -59,7 +56,7 @@ runs mounted the original C1 and keep the same guard.
 Every stage states `runner_requirements.literal_kaggle_input` with a reason. P / LAB stages: the only literal `/kaggle/input` read of the
 decoded `rfs_train.py` is `_xload` (extra blocks `f_c5s`, `v_rl`, ...); a `path` patch sets `RFS_XDIRS` to `/kaggle/input` in the stage text,
 which the runner rewrites to the stage's own input view, so they run on any OS (`false`). `t163b`, `t163l_orig`: every path is an argument
-(`false`). `t184_report`, `t219_dumpv4`: the lab modules decoded from `CODE_B64` scan `/kaggle/input` in about ten places (LOAD cell
+(`false`). `t219_dumpv4`: the lab modules decoded from `CODE_B64` scan `/kaggle/input` in about ten places (LOAD cell
 `lid_strict.json` fallback, CLEANTUNE-01 `_find`, T3ENC-01, ...): `true`, as WP-G's `e112f1sx`; on Linux the runner points `/kaggle/input` at
 the stage's input view, on Kaggle run them in a session with exactly their inputs attached.
 
@@ -124,7 +121,6 @@ post_checks; `runner_requirements` stated) and scans every file for key-like str
 | file | sha256 (first 16) | bytes | used by | note |
 |---|---|---|---|---|
 | `train/rfs_train.py` | `98aa07ae529c0afc` | 31 635 (489 lines, CRLF) | `t163b`, `t163l_orig` | L run: `lora_data()` line 406, VoxCeleb2 cache-key bug kept |
-| `train/rfs_train.py` | `2e700a31c9171657` | 50 690 (743 lines) | `t183_p1`, `t183_p2` | FACTOR-01 lab |
 | `train/rfs_train.py` | `ab65b842f48a0179` | 56 041 (816 lines) | `t163p_c5rl` | P run: split 375, oof 474, proj 500, fuse 612, release 636, selfcheck 659 |
 | `train/rfs_train.py` | `e31a25e18e5a6b3d` | 69 269 (1 002 lines) | `t213_p1`, `t213_p2` | lab; `RFS_LORA_FIX` opt-in, off, not used in LAB mode |
 | `train/rfs_train.py` | `e3e9440277f00da0` | 69 409 (1 003 lines) | `t216_p3` | = 213 version + one line (`self.last_streams`, FUSEARCH-03) |
@@ -147,13 +143,13 @@ post_checks; `runner_requirements` stated) and scans every file for key-like str
   `feats-vox2b`, `feats-tap01-voice`, `eda-bundle` (lab / report stages, some attached but not read).
 - 30_F_family: `quynhnhu82/flag2027-feats-ls-c5s-p` (block `f_c5s`), `ngnnguynchn/flag2027-ct02s-r2ca-tables-p` (SAFE-04 pair tables of the
   lab stages), `phanvnhtrng/flag2027-feats-ls-b3s-p`, the frozen `ngnnguynchn/flag2027-e2e-dev-p` and the wiring datasets `cc5-oof`,
-  `dsel02-oof`, `facelora03-tables`, `lab-avfull`, `feats-scout-wsvrdn`, `trngsnam/flag2027-feats-peface01-pe0-p` (the last one only for
-  t183_p1 / t183_p2 since 18/11: dropped from t163p_c5rl, t213_p*, t216_p3 as never read, integration fixer r1).
+  `dsel02-oof`, `facelora03-tables`, `lab-avfull`, `feats-scout-wsvrdn` (`trngsnam/flag2027-feats-peface01-pe0-p` was dropped from t163p_c5rl, t213_p*, t216_p3 as
+  never read, integration fixer r1, 18/11).
 - `ngnnguynchn/flag2027-t3s01-tables-p` (T3S-01, FLAG_167) is **not** wiring for sigma: its four job tables give `ct01r2_fold<s>`
   (row keys + `trCA`), from which `t219_dumpv4` builds the F1s' out-of-fold score inside U. Since 18/11 (integration fixer r1) t219
   mounts `datasets/ff/flag2027-t3s01-trca-p` instead, made by the new stage `t3s01_trca` from `ct02s-r2ca-tables-p` (keys + trCA, identical
   to the frozen copy by WP-F's light check; the unused `trT3S_*` columns are absent), at the original mount path. The frozen dataset is
-  kept only for `t184_report` (evidence, `resolve: saved_only`).
+  read by no stage (only as the optional reference of the equality check in `t3s01_trca`).
 
 ## Licences and privacy of what this group mounts and exports
 

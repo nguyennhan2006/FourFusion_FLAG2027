@@ -17,7 +17,7 @@
   "exactness": "new",
   "source_file": null,
   "original_procedure": "October 2026, local CPU (scratch C:/Users/ASUS/AppData/Local/Temp/claude/.../969f2c71-.../scratchpad, deleted 1/11): python Experiment/SAFE-04/lab_streams.py; FOLDS=1,2,3,4,5 python rel_sweep2.py / rel_sweep5.py; VOX_LID=... T3_ARMS=B python Experiment/T3ENC-01/run.py; BIGB-01 on Kaggle (FLAG_48 lab, lab_entry.py); FOLDS=... python Experiment/CAFUSE-EN/run2.py; python Experiment/STACK-02/export.py; VOX_LID=... python kaggle/build_e2e_dev_bundle.py -> kaggle/flag2027-e2e-dev.zip (10/10/2026 21:00, sha256 0257b1fe2be4f2fde704c9662b845a4531d1ab8787eeb6c44e917d79014d130e)",
-  "code": "code/ (verbatim copies, CODE_MANIFEST.json) + two new helpers code/Experiment/SAFE-04/ff_core_streams.py, ff_derive_stack02.py",
+  "code": "code/ (verbatim copies, CODE_MANIFEST.json) + one new helper code/Experiment/SAFE-04/ff_derive_stack02.py",
   "builder": null
  },
  "inputs": [
@@ -42,9 +42,7 @@
    "datasets/ngnnguynchn/flag2027-e2e-dev-p": "e2e_dev_rebuilt"
   }
  },
- "env": {
-  "FF_SAFE04_LEVEL": "full"
- },
+ "env": {},
  "smoke_env": {
   "FF_SAFE04_FOLDS": "1"
  },
@@ -59,16 +57,6 @@
   "02_intermediate/e2e_dev_frozen"
  ],
  "verify": [
-  {
-   "stage": "safe04_compare",
-   "hard": [
-    "37 110 pairs",
-    "pair keys identical",
-    "stack02_rows identical",
-    "fold_persons.json identical"
-   ],
-   "reported": "max |diff| / Pearson of every numeric column"
-  },
   {
    "frozen_reference": {
     "kaggle/flag2027-e2e-dev.zip": "0257b1fe2be4f2fde704c9662b845a4531d1ab8787eeb6c44e917d79014d130e",
@@ -98,7 +86,6 @@
   "kaggle/build_e2e_dev_bundle.py": "5c455f9d564f010181a23b7e067c60e7dcb655e679e17598d5687209bbbb47b6",
   "Experiment/STACK-02/export.py": "a24395d71ba42644625bdba8eec5a64cf8f76a28be348fe5f774ec79bfdb9289",
   "Experiment/STACK-02/pools.py": "ff99990d8fc6ee34ef4b758e3ef0b34e55bf13ac5adf5e81ee60da5f637242ba",
-  "Experiment/SAFE-04/ff_core_streams.py": "2f1209f2e0ce0010d126a15e83989cabe45ab22b510ef7e59b11d84b1a5e795a",
   "Experiment/SAFE-04/ff_derive_stack02.py": "96f062fb42f4ade8171a53aa31df6c44245b4f5da30f0c660fd4cc6dd5fcbafc"
  },
  "stage_ipy": {
@@ -154,8 +141,7 @@
   "dev_data": true
  },
  "levels": {
-  "full (this stage)": "every e2edev/safe04/ table from the original scripts; the output is the producer of datasets/ngnnguynchn/flag2027-e2e-dev-p",
-  "core (stage safe04_lab_core)": "PARTIAL rebuild, evidence only, never exported: keys + Extra columns, stack02_rows and fold_persons.json rebuilt; the XALL_* / CTRL_* columns of streams_fold<s> and every relonly_multi / relonly_g / t3enc01f / bigb01f / cafuse_en2 table stay frozen. Under NOREL=1 + CLEANCOMP=1 they feed no F1s' fuser input of 13.54 (cleancomp_tables replaces XALL_* / relc_fia_eb / relg_fia_eb / anP512_* / t3_relg; NOREL drops rel / relg / t3_relg); they feed the F0 English fuser (CTRL_ib / CTRL_age through EN-T3-01 table_en + cafuse_en2 in CLEANTUNE-01 fit_en_clean, the t112sf0s / e112f0sx zip step) and wiring checks (check_v11_fuser). Whether any 13.54 number uses the F0 English file is for WP-G to confirm (WP-E's reading: no, the FACTOR_ENFUSE English scores come from the Bangla fuser of F1s'). Either way a core output is partial and must not stand in for the bundle."
+  "full (this stage)": "every e2edev/safe04/ table from the original scripts; the output is the producer of datasets/ngnnguynchn/flag2027-e2e-dev-p"
  },
  "identity_linkage": "code/kaggle/build_l0_notebooks.py line 92 OVERLAP = {\"v1_complete:shaukat_tarin\", \"v2_complete:id0073\"} (MAV-Celeb persons matched to v4 persons) is part of the lab code (lab_streams imports its module globals); disclosure: docs/COMPLIANCE_NOTES.md (DESIGN G17, WP-K)"
 }

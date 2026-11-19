@@ -1,8 +1,0 @@
-{
- "registered": "2026-10-07, from the provenance table in README.md, before any STACK-02 score",
- "families": ["PE-AV", "LOCAL-ID", "CFE", "LAYER", "LOSSG", "RESADAPT", "CKPT", "ATTR", "REL-ALL", "VOX2-BR", "VOX2-AD"],
- "primary_pool": "novox2 = families without an identified VoxCeleb2-DATA dependency (VOX2-BR, VOX2-AD removed)",
- "flags": {"PE-AV": "frozen pretrained encoder; organisers named ImageBind / AudioCLIP / w2v2 explicitly, not PE-AV",
-           "VOX2-BR": "trained on VoxCeleb2 rows, audio not language-filtered: rule question 5-6 unanswered",
-           "VOX2-AD": "trained on VoxCeleb2 rows, audio not language-filtered: rule question 5-6 unanswered"}
-}

@@ -2,15 +2,16 @@
 
 ## 1. Code and graph
 
-- `python runner/check_stage.py` on all 93 stages: every `stage.ipy` rebuilds from its `original/` notebook plus the listed patches
-  (sha256 compare): 56 EXACT and 4 EXACT (recipe) for the stages copied from executed notebooks (exact-package 26, exact-pulled 5,
+- `python runner/check_stage.py` on all 87 stages: every `stage.ipy` rebuilds from its `original/` notebook plus the listed patches
+  (sha256 compare): 53 EXACT and 4 EXACT (recipe) for the stages copied from executed notebooks (exact-package 23, exact-pulled 5,
   exact-staging 8, exact-executed-copy 12, builder-regenerated 9), 14 local-script stages whose listed files match their sha256, and
-  19 new-code stages that follow the `[cell]` rule; 0 errors.
-- `python runner/ffrun.py dag --compare-skeleton`: 93 stages, no cycle, no duplicate producer, no unresolved or forbidden input, no
-  variant error, no skeleton difference.
-- `python runner/ffrun.py plan --assume-saved`: infer 19 stages (= `configs/modes.json`), assemble 5, train 58 (default) / 71
-  (`full_rebuild_from_raw`) / 79 (with the collect stages); none blocked.
-- Every `.py` parses, every `.json` loads; `python tools/secret_scan.py .` finds no high-severity item.
+  16 new-code stages that follow the `[cell]` rule; 0 errors.
+- `python runner/ffrun.py dag --compare-skeleton`: 87 stages, no cycle, no duplicate producer, no unresolved or forbidden input, no
+  variant error, no skeleton difference; section LINEAGE: the 73 stages the zip depends on, 0 gaps.
+- `python runner/ffrun.py plan --assume-saved`: infer 19 stages (= `configs/modes.json`), assemble 5, train 58 (default) / 74
+  (the mode (a) command of the README) / 82 (with the collect stages); none blocked.
+- `python runner/selftest.py`: 8/8 cases; `python tools/build_docs.py --check`: generated docs up to date.
+- Every `.py` parses, every `.json` loads; a secret scan of the tree finds no high-severity item.
 
 ## 2. Results reproduced
 
@@ -29,11 +30,10 @@ Mode (a) rebuilds the chain from raw and collected data. The following inputs ar
 
 | artifact | consumers | role |
 |---|---|---|
-| `ff-frozen/flag2027-e2e-dev-p` (frozen SAFE-04 tables) | default for the identity-classification mixer, XALL bridge, T3 head; `safe04_compare`, `safe04_lab_core` | pair keys and folds of the mixer tables; `safe04_lab` (`FF_FORCE=safe04_lab`) rebuilds them |
+| `ff-frozen/flag2027-e2e-dev-p` (frozen SAFE-04 tables) | default for the identity-classification mixer, XALL bridge, T3 head | pair keys and folds of the mixer tables; `safe04_lab` (`FF_FORCE=safe04_lab`) rebuilds them |
 | `ff-frozen/flag2027-e2e-dev-wiring-p` | `safe04_lab` | dev-phase members of the frozen bundle that the verbatim lab code checks for; not in the 13.54 numbers |
 | `lab-avfull` | `e112f0sx` | AudioCLIP features (FLAG_32) for the F0 English path; not in the 13.54 zip |
 | `members` | `e50cc` | v6 member seeds of the retired v9 / v12 English streams; not in the 13.54 numbers |
-| `trngsnam/flag2027-feats-peface01-pe0-p`, `ngnnguynchn/flag2027-t3s01-tables-p` | `t183_p1`, `t183_p2`, `t184_report` (evidence stages) | not in the 13.54 numbers |
 | original LoRA C1 (`onnhqunhh/flag2027-rfs-lora-p`) | every RFX consumer (`resolve: saved_only`) | defines the 13.54 variant (`docs/VARIANTS.md`); `t163l_orig` retrains it as a check only |
 | embedded configuration files | identity-classification family, `e50cc` | `CLEANTUNE-01/ct_round2.json` selects the CA recipe (`I = C5CAT4`, `S_A = [T, AIp]`; written by CLEANTUNE-01 `report()` from the round-1 tables of FLAG_110); `STACK-02/eligible.json` is a hand-written registration; the four v9 / v11 / v12 fuser JSONs of `e50cc` are constants of retired systems |
 

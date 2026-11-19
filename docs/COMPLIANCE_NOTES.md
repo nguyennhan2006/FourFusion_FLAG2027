@@ -61,7 +61,7 @@ Profile)").
 The F1s′ family drops two MAV-Celeb identities that are also persons of the organisers' v4 train set (constant `OVERLAP` in the
 embedded code). Making that list links identities across MAV-Celeb and the organisers' data, so it is disclosed here. Stage `r07_overlap`
 (force_only, `FF_FORCE=r07_overlap`) shows how it was derived and keeps no linkage table. The list is part of the F1s′ family code (the SAFE-04
-lab code, also embedded in the report stages `t184_report` / `t219_dumpv4`).
+lab code, also embedded in the stage `t219_dumpv4`).
 
 ## 5. DP (Different Profile) branch: training data and risk (must be in the system description)
 
@@ -111,5 +111,5 @@ AVSpeech and LRS3 are **not** used by the 13.54 chain (team rule of 28/10; the G
 
 Organisers' data (train / dev / Evaluation media and lists, the meta file), dev score zips, VoxBlink material, credentials, and the
 byte-exact Kaggle push folders that embed some of them (`_staging_backup/`, kept by the team; the `original/` folders here hold
-redacted copies checked against them). `tools/secret_scan.py` is run on the tree before publication; the root `.gitignore` refuses
+redacted copies checked against them). The tree was scanned for secrets before publication; the root `.gitignore` refuses
 data, checkpoints and the backup folder.

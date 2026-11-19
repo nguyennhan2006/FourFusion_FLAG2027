@@ -1,6 +1,6 @@
 # runner/ — how the 13.54 chain is executed
 
-`runner/ffrun.py` plans and runs the stages of `stages/` (and `tools/stages/`) from the raw data to the submitted zip. It is derived
+`runner/ffrun.py` plans and runs the stages of `stages/` from the raw data to the submitted zip. It is derived
 from the one-notebook orchestrator of the team repository (`release/flag2027_e2e/orch.py`) and extended with a data map
 (`configs/data_map.json`) so that the same code runs on a Kaggle notebook, a Linux machine or in a container.
 
@@ -57,17 +57,13 @@ seeded), `FF_PIP_SCOPE` (`all | v173`, see `docker/ENV_PER_STAGE.md`), `FF_HF_OF
 
 An artifact with no producing stage must be in `FF_DATA` (the plan says where).
 
-**Requirement 1 (start from raw data) is not met everywhere.** `python runner/ffrun.py dag` (and `plan`) print the list
-"REQUIREMENT-1 GAPS": consumed artifacts that are not raw / collected / pretrained and that no stage of this repository produces
-(the wiring datasets cc5-oof, dsel02-oof, facelora03-tables, lab-avfull, members, best-v7, feats-scout-wsvrdn; the frozen SAFE-04
-tables and their wiring members; evidence-only: peface01-pe0 for t183_p1 / p2 and the t3s01 tables for t184_report), the artifacts
-that the modes take frozen by default although a producer exists (`default_saved`: the SAFE-04 tables, the ORIGINAL LoRA C1, the
-stored LID outputs; class wiring), and eleven data files carried inside stage code (`configs/data_map.json` class `embedded`, seven
-without producer). Each entry carries `requirement1_gap` / `origin_run`. Mode (a) is therefore "from raw data except these frozen
-exceptions" (DESIGN G1, G18). Since 18/11 (integration fixer r1) sigma no longer depends on a frozen intermediate: t219_dumpv4
-reads `datasets/ff/flag2027-t3s01-trca-p`, made by stage t3s01_trca from ct02s-r2ca-tables-p. The widest rebuild is
-`FF_USE_SAVED=none FF_FORCE=raw_mavceleb,safe04_lab,f14_av,gather_g1` (configs/modes.json `full_rebuild_from_raw`; 71 stages in
-the plan, 79 with the optional collect stages).
+**Start from raw data.** `python runner/ffrun.py dag` (and `plan`) print two lists. "REQUIREMENT-1 GAPS": consumed artifacts that
+are not raw / collected / pretrained / configuration and that no stage produces (now 0). "LINEAGE OF THE 13.54 ZIP": every input of
+every stage the zip depends on (73 stages), traced back to its producer; artifacts that the modes take as saved copies by default
+although a producer exists (`default_saved`: the SAFE-04 tables, the ORIGINAL LoRA C1, the stored LID outputs) and the `force_only`
+producers count as produced (0 gaps). Inputs marked `"optional": true` are used when present and the stage runs without them. The
+widest rebuild is the mode (a) command of the top-level README (`FF_USE_SAVED=none FF_FORCE=raw_mavceleb,safe04_lab,f14_av,
+gather_g1,t163l_orig,f32_aclip_full,b_lab_avfull`; 74 stages in the plan, 82 with the optional collect stages).
 
 ## How a stage runs
 
@@ -115,8 +111,8 @@ Some stages decode code from base64 zips at run time and that code reads the lit
 (`runner_requirements.literal_kaggle_input`, e.g. e50cc, e112f0sx, e112f1sx, the F family; detected automatically for a stage that
 does not declare it); `plan` marks them `[literal /kaggle/input: declared | detected]`, `check_stage.py` reports the undeclared ones.
 An explicit `"literal_kaggle_input": false` with a non-empty `why` is honoured (integration fix 18/11, INTEGRATION_r1 M1): the stage
-owner checked that every literal use is unreachable or redirected. This is the case of the nine stages that embed `rfs_train.py`
-(t163p_c5rl, t183_p1 / p2, t213_p1 / p2, t216_p3, t163p_fvb, t189_b2, t192_fvbx): `_xload` falls back to the literal `/kaggle/input`
+owner checked that every literal use is unreachable or redirected. This is the case of the seven stages that embed `rfs_train.py`
+(t163p_c5rl, t213_p1 / p2, t216_p3, t163p_fvb, t189_b2, t192_fvbx): `_xload` falls back to the literal `/kaggle/input`
 only when `RFS_XDIRS` is empty, and each of them sets `RFS_XDIRS = "/kaggle/input"` in its stage text (rewritten to the stage's
 input view). `FF_LITERAL_HONOUR_FALSE=0` restores detection. The string rewrite cannot reach decoded code, so for the literal stages:
 on Linux the runner points `/kaggle/input` (and `/kaggle/working`) at the stage's folders with symlinks while the stage runs (needs
@@ -149,25 +145,7 @@ Every stage gets `RFS_LORA_FIX=0` (no-op for the original code). `stage.json` `v
 
 `python runner/selftest.py` exercises these rules (and the `verify` shapes) on a toy repository with the real config.
 
-## Self-checks after the review fixes (2026-11-18, evening)
+## Checks
 
-- `python runner/selftest.py`: 8/8 cases (lineage root accepted and recorded, propagation accepted, own LoRA refused, failing dry
-  check refused, non-original saved copy refused in `infer`, smoke reported only, `lora_c1` normalisation, `verify` shapes).
-- `dag --compare-skeleton` on the 92 stage.json of that time: no cycle, duplicate, unresolved or forbidden input, 0 static variant
-  errors, 0 skeleton differences; the REQUIREMENT-1 GAPS list is printed.
-- `plan --assume-saved`: `infer` = the 19 stages of `configs/modes.json`; `assemble` = the five stages; `train` = 57 stages.
-- `check_stage.py`: every exact / builder stage rebuilds; the only errors are the nine stages whose embedded code reads the literal
-  `/kaggle/input` without declaring it (owners WP-F / WP-H); embedded data files match `configs/data_map.json`.
-
-## Self-checks done when the runner was written (2026-11-18)
-
-- `python runner/ffrun.py dag --compare-skeleton`: 90 stages, no cycle, no duplicate producer, no unresolved or forbidden input.
-- `plan --assume-saved`: `infer` = the 18 stages of `configs/modes.json` (DESIGN 5.2 + `raw_btc`); `assemble` = `a_factor`,
-  `a_fvbind`, `dp_sigma`, `final_blend`, `final_verify`; `train` = 63 stages, nothing blocked.
-- `plan --mode assemble` against a scratch `FF_DATA` holding byte copies of the ten saved score files: the five stages, every input
-  resolved (Evaluation run outputs as soft inputs, `dp_score` from `05_scores/dp`, the sigma source from `03_checkpoints/sigma_source`).
-- `check_stage.py`: every exact / builder stage present at that time rebuilt byte-identically from its `original/` notebook.
-- A toy two-stage chain (scratch folder) ran end to end: input mirroring, rewrites, IPython magics, `[cell]` lines, exports,
-  downstream lookup, `verify` / `post_checks`, `FF_PIP=skip` shim, forbidden-artifact refusal; the two stages of `tools/stages/00_env`
-  ran locally (`models_fetch` in smoke = dry listing).
-- Not run: any stage of the chain itself (no Kaggle, no GPU, no training, no download).
+The current results of `check_stage.py`, `ffrun.py dag --compare-skeleton`, `ffrun.py plan`, `selftest.py` and of the reproduced
+runs are in [`docs/VERIFICATION.md`](../docs/VERIFICATION.md).

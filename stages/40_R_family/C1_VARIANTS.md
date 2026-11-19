@@ -32,7 +32,6 @@ Source of the table: repo map S4 section 1.8, re-checked on 18/11 where marked; 
 |---|---|
 | `onnhqunhh/flag2027-rfs-lora-p` | sha256 above (E: package zip `14ddbcf579e051114ad9302b6512572ee81ff26447baea4e7bdfdeb545353596`, member hashes computed 18/11) |
 | `ngnnguynchn/flag2027-rfsfxc5rl-art-p` | member `lora_C1.pt` = `b97372e3...` (E: package zip `12da5398...`, computed 18/11); `manifest_final.json` lists the same sha256 |
-| outputs of `t183_p1` / `t183_p2` (evidence) | `work/lora_C1.pt` = `b97372e3...` (E: package MANIFEST) |
 | `t213_p1`, `t213_p2`, `t216_p3` (sigma source) | their `kernel-metadata.json` attach `onnhqunhh/flag2027-rfs-lora-p` (copied in `original/`); in the repo: input `resolve: saved_only` + `require_files`, `verify` `work/lora_C1.pt` (check `exact`); sigma uses only the `t3` / `nf` / `nv` streams, so it does not depend on C1 anyway |
 | `thanhhuyen11/flag2027-rfsfxfvb-art-p` (group 60) | NOT verified here: artifact not downloaded (DESIGN G4); push staging of `t163p_fvb` attaches `onnhqunhh/flag2027-rfs-lora-p` (WP-H) |
 
@@ -60,10 +59,10 @@ in any stage of this group; every `stage.json` here lists them under `forbidden_
 
 ## How the 13.54 chain is kept on the original C1 (fixer 18/11; details in `README.md` 'LoRA C1 policy')
 
-- The six consumers (`t163p_c5rl`, `t183_p1`, `t183_p2`, `t213_p1`, `t213_p2`, `t216_p3`) mount `onnhqunhh/flag2027-rfs-lora-p` with
+- The four consumers (`t163p_c5rl`, `t213_p1`, `t213_p2`, `t216_p3`) mount `onnhqunhh/flag2027-rfs-lora-p` with
   `"resolve": "saved_only"` (the saved original, in every run mode and in smoke) and require `lora_C1.pt` = `b97372e3...` on that input
   (`variant.require_files`, checked by the runner before the stage runs). Their `verify` entry (check `exact`) compares the copy the code
-  writes (`rfs_art/lora_C1.pt`, `work/lora_C1.pt`) with the same hash. `t163b`, `t184_report` and `t219_dumpv4` do not mount a C1.
+  writes (`rfs_art/lora_C1.pt`, `work/lora_C1.pt`) with the same hash. `t163b` and `t219_dumpv4` do not mount a C1.
 - `t163l_orig` produces the C1 but is `force_only`: mode (a) keeps the saved original (a GPU re-train is not byte-identical). A forced
   re-train is accepted on `ff_lora_drycheck.json` (210 / 70 / all `mav:v1`) and `ff_lora_meta.json` (48 params, 1 200 steps, batch 64,
   210 clips, 70 persons, 0 skipped), never on the sha256, and is not used by the consumers.

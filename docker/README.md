@@ -14,7 +14,7 @@ and the packages the notebooks install are pinned in section 2.
 
 **Scope of this digest and of the pins: the November runs only** (F / R families, Evaluation, FVBIND, the t160 / t162 feature
 runs). Versions printed by those runs (logs and notebook outputs kept in `stages/*/*/original/`): **GPU image Python 3.13.16 +
-`torch 2.11.0+cu130`, CPU image Python 3.13.18 + `torch 2.11.0+cpu`** (the CPU runs t163b, t184, t219, e112f0sx, e112f1sx all
+`torch 2.11.0+cu130`, CPU image Python 3.13.18 + `torch 2.11.0+cpu`** (the CPU runs t163b, t219, e112f0sx, e112f1sx all
 print 3.13.18; the difference follows the CPU vs GPU image, not one odd run), `transformers 5.20.2`. The September / October runs
 used **older images**: `torch 2.11.0+cu128` (collection c37 / c46 / c53, l42, f40, f41) and `torch 2.10.0+cu128` (f04, f14). The
 per-stage table is `docker/ENV_PER_STAGE.md` (machine-readable: `configs/env_per_stage.json`).

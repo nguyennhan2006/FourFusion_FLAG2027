@@ -16,8 +16,6 @@ tables and excluded downstream.
 | 1 | `t153b` | LoRA adapter B3s on CLIP ViT-L/14 + `clipB3` of every train / auxiliary face row | executed notebook, package E (exact-package) | wiring | GPU T4 x2, 494 |
 | 2 | `t153c` | LoRA adapter C5s + `clipC5` of every train / auxiliary face row | exact-package | score | GPU T4 x2, 712 |
 | 3 | `safe04_lab` | rebuild every SAFE-04 reference table of the e2e-dev bundle (level full) from lab-data + eda-bundle | new (original lab scripts in `code/`) | optional (default: frozen bundle; `FF_FORCE=safe04_lab`) | GPU, several hours (estimate) |
-| 3b | `safe04_lab_core` | partial rebuild (keys, pf_m / pv_m, stack02_rows, fold_persons) spliced into the frozen tables | new | evidence | CPU |
-| 4 | `safe04_compare` | rebuilt (level full) vs frozen tables | new | evidence | CPU |
 | 5 | `t164_f123`, `t164_f45` | CLEANCOMP-01: XALL bridge + v11 T3 head per fold (LID_STRICT=1) | executed notebook pulled from Kaggle (exact-pulled) | score | GPU, 16 / 12 |
 | 6 | `cleancomp_tables` | SAFE-04 tables with the CLEANCOMP-01 columns | local script `build_tables.py` as a stage | score | CPU, 1 |
 | 7 | `t164f` | final XALL member `s007_xall.pt` + v11 T3 head | exact-package | score | GPU, 9 |
@@ -50,7 +48,7 @@ attached** (as the original runs); the runner can only warn there (`FF_LITERAL_S
 - `safe04_lab` (level full) copies the dev wiring of the frozen bundle (artifact `datasets/ff-frozen/flag2027-e2e-dev-wiring-p`:
   components_dev.npz, e2e_manifest.json, fusers/, ref/) byte for byte; `cleancomp_tables` copies the same files from the e2e-dev bundle
   into `flag2027-cleancomp-e2e-p`.
-- `t155s` × 3, `t154_g1` × 3, `t112s*`, `t164f`, `cleancomp_tables`, `safe04_compare`, `safe04_lab_core`: mount an e2e bundle that holds
+- `t155s` × 3, `t154_g1` × 3, `t112s*`, `t164f`, `cleancomp_tables`: mount an e2e bundle that holds
   those dev wiring files; the lab stages check that `components_dev.npz` exists and read `e2e_manifest.json` for its split tag; their
   fold / final jobs read only the `safe04/` tables (SAFE-04 validation pairs of train persons).
 - Redaction: five executed notebooks (t155s × 3, t112sf0s, t112sf1s) and the g1 builder output carried, inside their embedded code zip, a

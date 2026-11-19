@@ -2,9 +2,7 @@
 
 The SAFE-04 lab of October 2026 ran on the local CPU; its scratch folder was deleted on 1/11/2026, and the zip it was packed into
 (`kaggle/flag2027-e2e-dev.zip`, sha256 `0257b1fe...`) is the only copy left. This stage re-runs the ORIGINAL scripts (code/, verbatim) at
-level **full** and is the producer of `datasets/ngnnguynchn/flag2027-e2e-dev-p`. Since the 2026-11-18 fix the cheap partial rebuild
-(level core) is a separate evidence stage, `safe04_lab_core`, so that the producer takes no table from a frozen copy. What differs from
-the October procedure and why:
+level **full** and is the producer of `datasets/ngnnguynchn/flag2027-e2e-dev-p`. What differs from the October procedure and why:
 
 1. **Script versions** (type `pin`; numbers: unverified, believed none). The October file versions are not preserved. code/ holds:
    (a) the versions embedded in the executed notebooks of 3/11 (FLAG_164 / FLAG_111 runs; `code/CODE_MANIFEST.json` 'source'): every
@@ -38,13 +36,13 @@ the October procedure and why:
 6. **Dev wiring copied, never recomputed** (type `dev-exclusion`). components_dev.npz, fusers/, ref/ and e2e_manifest.json come byte
    for byte from the dev-wiring artifact (build_e2e_dev_bundle.components() reads dev features: not called). fusers/v11_bangla.json is
    used downstream only as the reference of `e2e_lib.check_v11_fuser()` (an assertion on SAFE-04 table rows). A new file
-   `e2edev/SAFE04_REBUILT.json` records level, folds, completeness, per-table provenance and the in-stage checks; the comparison with the
-   frozen tables is the job of `safe04_compare`.
+   `e2edev/SAFE04_REBUILT.json` records level, folds, completeness, per-table provenance and the in-stage checks.
 7. **Smoke** (`FF_SMOKE=1`): fold 1 only, `L0_STEPS=10`, `L0_NETS=1` (= the smoke settings of the FLAG_164 runs); the output holds the
-   tables of fold 1 only, is marked `complete: false` and skips the 37 110-pair assertion (safe04_compare reports it as PARTIAL).
+   tables of fold 1 only, is marked `complete: false` and skips the 37 110-pair assertion.
 
 Every cell of stage.ipy is new and opens with `print("[cell] ...", flush=True)`; subprocess output is streamed line by line.
-The same stage.ipy text serves `safe04_lab_core` (env `FF_SAFE04_LEVEL=core`; code read from `../safe04_lab/code`).
+The cheap partial rebuild (level core, a former evidence stage `safe04_lab_core` with the helper `ff_core_streams.py`) is removed
+from this repository (19/11/2026): no 13.54 number depends on it.
 
 ## Dev wiring optional (numbers: none) - added 19/11/2026
 

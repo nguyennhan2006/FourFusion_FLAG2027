@@ -25,7 +25,6 @@ Read on 2026-11-18 from the files kept in `stages/*/*/original/` (versions print
 | `c_frames_index` | cpu | unknown | - | - | - |
 | `r07_overlap` | cpu | unknown | - | - | - |
 | `r08_mav_rows` | gpu | unknown | - | - | - |
-| `r31_mav_rows_check` | cpu | unknown | - | - | - |
 | `l150_whisper` | gpu | unknown | - | - | - |
 | `l152_mms` | gpu | unknown | - | - | - |
 | `l42_vox2_lid` | gpu | older | - | 2.11.0+cu128 | - |
@@ -36,7 +35,6 @@ Read on 2026-11-18 from the files kept in `stages/*/*/original/` (versions print
 | `b_eda_bundle` | cpu | unknown | - | - | - |
 | `b_lab_data` | cpu | unknown | - | - | - |
 | `b_lab_vb` | cpu | unknown | - | - | - |
-| `f04_v2_ref` | gpu | older | - | 2.10.0+cu128 | - |
 | `f103c_tap01` | gpu | unknown | - | - | - |
 | `f10_models` | gpu | unknown | - | - | - |
 | `f12_eval_feats` | gpu | unknown | - | - | - |
@@ -54,9 +52,7 @@ Read on 2026-11-18 from the files kept in `stages/*/*/original/` (versions print
 | `cleancomp_tables` | cpu | unknown | - | - | - |
 | `gather_g1` | cpu | unknown | - | - | - |
 | `gather_r2ca` | cpu | unknown | - | - | - |
-| `safe04_compare` | cpu | unknown | - | - | - |
 | `safe04_lab` | gpu | unknown | - | - | - |
-| `safe04_lab_core` | cpu | unknown | - | - | - |
 | `t112sf0s` | gpu | v173 | 3.13.16 | 2.11.0+cu130 | - |
 | `t112sf1s` | gpu | v173 | 3.13.16 | 2.11.0+cu130 | - |
 | `t153b` | gpu | v173 | 3.13.16 | 2.11.0+cu130 | - |
@@ -73,9 +69,6 @@ Read on 2026-11-18 from the files kept in `stages/*/*/original/` (versions print
 | `t163b` | cpu | v173 | 3.13.18 | - | - |
 | `t163l_orig` | gpu | v173 | 3.13.16 | - | - |
 | `t163p_c5rl` | gpu | v173 | 3.13.16 | - | - |
-| `t183_p1` | gpu | v173 | 3.13.16 | - | - |
-| `t183_p2` | gpu | v173 | 3.13.16 | - | - |
-| `t184_report` | cpu | v173 | 3.13.18 | 2.11.0+cpu | - |
 | `t213_p1` | gpu | unknown | - | - | - |
 | `t213_p2` | gpu | unknown | - | - | - |
 | `t216_p3` | gpu | unknown | - | - | - |
@@ -88,7 +81,6 @@ Read on 2026-11-18 from the files kept in `stages/*/*/original/` (versions print
 | `e50cc` | gpu | v173 | 3.13.16 | 2.11.0+cu130 | - |
 | `e65xbs` | gpu | v173 | 3.13.16 | 2.11.0+cu130 | - |
 | `e65xcs` | gpu | v173 | 3.13.16 | 2.11.0+cu130 | - |
-| `a_best4_ref` | cpu | unknown | - | - | - |
 | `a_fvbind` | cpu | unknown | - | - | - |
 | `e163i_fvb` | gpu | v173 | 3.13.16 | - | - |
 | `t163p_fvb` | gpu | unknown | - | - | - |

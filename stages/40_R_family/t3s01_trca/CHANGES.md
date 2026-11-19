@@ -9,5 +9,5 @@
   fuses `F1S = S6 + V11_T3 + ["trCA"]` and RFX only; `trT3S_*` feed `reportt3s` / `final_t3s` / `_with_t3s`, which t219 does not call.
 - **Effect on numbers:** none expected for sigma (trCA identical: WP-F light check 18/11, max |diff| 0.0 on all five folds; the stage re-checks it when the
   frozen copy is present).
-- **Consumers:** `t219_dumpv4` (input `datasets/ff/flag2027-t3s01-trca-p`, mounted at `datasets/ngnnguynchn/flag2027-t3s01-tables-p`). `t184_report`
-  (evidence) keeps the frozen dataset (`resolve: saved_only`).
+- **Consumers:** `t219_dumpv4` (input `datasets/ff/flag2027-t3s01-trca-p`, mounted at `datasets/ngnnguynchn/flag2027-t3s01-tables-p`). No other stage reads the
+  frozen dataset.

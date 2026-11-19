@@ -45,7 +45,7 @@
    "artifact": "datasets/onnhqunhh/flag2027-rfs-lora-p",
    "use": "ORIGINAL LoRA C1 + v4_extra.npz: copied into work/ by the inputs cell (asserted present); B2 never reads lora_C1.pt; v4_extra.npz gives V4['v_lora'] for the reference tables fvbC1ref_fold*.parquet only Mode (a) (FF_MODE=train) must consume the SAVED original C1 (FF_DATA/03_checkpoints/rfs_lora_c1_original): a re-trained C1 (stage t163l_orig, GPU, not deterministic) has other bytes and is refused by the variant guard (configs/variant_1354.json file_checks).",
    "resolve": "saved_only",
-   "resolve_why": "variant-defining ORIGINAL LoRA C1 (b97372e3...): always the saved copy FF_DATA/03_checkpoints/rfs_lora_c1_original, as in the WP-F consumers (t163p_c5rl, t183_p*, t213_p*, t216_p3); a C1 retrained in the same session (FF_FORCE=t163l_orig) is never mounted here, so RFX and RFX' always share one C1 (18/11/2026 (integration fixer r1, INTEGRATION_r1 M1 / M2))"
+   "resolve_why": "variant-defining ORIGINAL LoRA C1 (b97372e3...): always the saved copy FF_DATA/03_checkpoints/rfs_lora_c1_original, as in the WP-F consumers (t163p_c5rl, t213_p*, t216_p3); a C1 retrained in the same session (FF_FORCE=t163l_orig) is never mounted here, so RFX and RFX' always share one C1 (18/11/2026 (integration fixer r1, INTEGRATION_r1 M1 / M2))"
   },
   {
    "artifact": "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",

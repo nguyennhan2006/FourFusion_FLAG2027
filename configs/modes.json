@@ -57,7 +57,6 @@
    "default_saved_note": "datasets/ngnnguynchn/flag2027-e2e-dev-p (frozen SAFE-04 tables), datasets/onnhqunhh/flag2027-rfs-lora-p (ORIGINAL LoRA C1) and the stored LID outputs (l42 / l150 / l152 / f41 / lid-strict-p) are used even in this mode (default_saved). Rebuild one with FF_FORCE=<producer> (safe04_lab, t163l_orig, ...). FF_USE_SAVED=none refuses the saved copies and then blocks consumers of force_only producers unless those are forced too",
    "requirement1_gaps": [
     "none in the 13.54 lineage since 19/11/2026 (`ffrun.py dag`, section LINEAGE)",
-    "outside it (evidence stages only): datasets/trngsnam/flag2027-feats-peface01-pe0-p (t183_p1 / t183_p2), datasets/ngnnguynchn/flag2027-t3s01-tables-p (t184_report), datasets/ff-frozen/flag2027-e2e-dev-p (safe04_compare, safe04_lab_core)",
     "configuration files carried in stage code: CLEANTUNE-01/ct_round2.json (recipe chosen by CLEANTUNE-01 round 1), STACK-02/eligible.json (hand-written registration); four fuser JSONs of e50cc are carried constants read by no 13.54 output (data_map not_in_1354_outputs)"
    ],
    "requirement1_gaps_updated": "19/11/2026 (13.54 lineage closure): members-p and the dev wiring optional, lab-avfull produced by f32_aclip_full + b_lab_avfull, vox2_sa_speakers.json produced by l_groups, t164f dev scoring optional",

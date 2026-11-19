@@ -7,33 +7,33 @@ makes at run time (path rewrites, upload switches, pip modes, environment) are n
 
 | # | stage | group | exactness | CHANGES.md |
 |---|---|---|---|---|
-| 1 | [`raw_btc`](#raw_btc) | 10_raw | new | [../stages/10_raw/raw_btc/CHANGES.md](../stages/10_raw/raw_btc/CHANGES.md) |
-| 2 | [`raw_evalphase`](#raw_evalphase) | 10_raw | local-script | [../stages/10_raw/raw_evalphase/CHANGES.md](../stages/10_raw/raw_evalphase/CHANGES.md) |
-| 3 | [`raw_mavceleb`](#raw_mavceleb) | 10_raw | new | [../stages/10_raw/raw_mavceleb/CHANGES.md](../stages/10_raw/raw_mavceleb/CHANGES.md) |
-| 4 | [`raw_mavceleb_check`](#raw_mavceleb_check) | 10_raw | new | [../stages/10_raw/raw_mavceleb_check/CHANGES.md](../stages/10_raw/raw_mavceleb_check/CHANGES.md) |
-| 5 | [`c37_vox2`](#c37_vox2) | 11_collect | exact-executed-copy | [../stages/11_collect/c37_vox2/CHANGES.md](../stages/11_collect/c37_vox2/CHANGES.md) |
-| 6 | [`c45_frames_vox2`](#c45_frames_vox2) | 11_collect | exact-executed-copy | [../stages/11_collect/c45_frames_vox2/CHANGES.md](../stages/11_collect/c45_frames_vox2/CHANGES.md) |
-| 7 | [`c46_voxblink`](#c46_voxblink) | 11_collect | exact-executed-copy | [../stages/11_collect/c46_voxblink/CHANGES.md](../stages/11_collect/c46_voxblink/CHANGES.md) |
-| 8 | [`c53_vox2b`](#c53_vox2b) | 11_collect | exact-executed-copy | [../stages/11_collect/c53_vox2b/CHANGES.md](../stages/11_collect/c53_vox2b/CHANGES.md) |
-| 9 | [`c63_frames`](#c63_frames) | 11_collect | exact-executed-copy | [../stages/11_collect/c63_frames/CHANGES.md](../stages/11_collect/c63_frames/CHANGES.md) |
-| 10 | [`c63v_audio_cache`](#c63v_audio_cache) | 11_collect | builder-regenerated | [../stages/11_collect/c63v_audio_cache/CHANGES.md](../stages/11_collect/c63v_audio_cache/CHANGES.md) |
-| 11 | [`c87_frames_bridge`](#c87_frames_bridge) | 11_collect | exact-executed-copy | [../stages/11_collect/c87_frames_bridge/CHANGES.md](../stages/11_collect/c87_frames_bridge/CHANGES.md) |
-| 12 | [`c_frames_index`](#c_frames_index) | 11_collect | new | [../stages/11_collect/c_frames_index/CHANGES.md](../stages/11_collect/c_frames_index/CHANGES.md) |
-| 13 | [`r07_overlap`](#r07_overlap) | 12_rows | local-script | [../stages/12_rows/r07_overlap/CHANGES.md](../stages/12_rows/r07_overlap/CHANGES.md) |
-| 14 | [`r08_mav_rows`](#r08_mav_rows) | 12_rows | exact-executed-copy | [../stages/12_rows/r08_mav_rows/CHANGES.md](../stages/12_rows/r08_mav_rows/CHANGES.md) |
-| 15 | [`r31_mav_rows_check`](#r31_mav_rows_check) | 12_rows | new | [../stages/12_rows/r31_mav_rows_check/CHANGES.md](../stages/12_rows/r31_mav_rows_check/CHANGES.md) |
-| 16 | [`l150_whisper`](#l150_whisper) | 13_lid | exact-package | [../stages/13_lid/l150_whisper/CHANGES.md](../stages/13_lid/l150_whisper/CHANGES.md) |
-| 17 | [`l152_mms`](#l152_mms) | 13_lid | exact-package | [../stages/13_lid/l152_mms/CHANGES.md](../stages/13_lid/l152_mms/CHANGES.md) |
-| 18 | [`l42_vox2_lid`](#l42_vox2_lid) | 13_lid | builder-regenerated | [../stages/13_lid/l42_vox2_lid/CHANGES.md](../stages/13_lid/l42_vox2_lid/CHANGES.md) |
-| 19 | [`l_dqual_g3`](#l_dqual_g3) | 13_lid | new | [../stages/13_lid/l_dqual_g3/CHANGES.md](../stages/13_lid/l_dqual_g3/CHANGES.md) |
-| 20 | [`l_groups`](#l_groups) | 13_lid | local-script | [../stages/13_lid/l_groups/CHANGES.md](../stages/13_lid/l_groups/CHANGES.md) |
-| 21 | [`l_lid_audit`](#l_lid_audit) | 13_lid | local-script | [../stages/13_lid/l_lid_audit/CHANGES.md](../stages/13_lid/l_lid_audit/CHANGES.md) |
-| 22 | [`l_lid_strict`](#l_lid_strict) | 13_lid | local-script | [../stages/13_lid/l_lid_strict/CHANGES.md](../stages/13_lid/l_lid_strict/CHANGES.md) |
-| 23 | [`b_eda_bundle`](#b_eda_bundle) | 20_features | local-script | [../stages/20_features/b_eda_bundle/CHANGES.md](../stages/20_features/b_eda_bundle/CHANGES.md) |
-| 24 | [`b_lab_avfull`](#b_lab_avfull) | 20_features | new | [../stages/20_features/b_lab_avfull/CHANGES.md](../stages/20_features/b_lab_avfull/CHANGES.md) |
-| 25 | [`b_lab_data`](#b_lab_data) | 20_features | local-script | [../stages/20_features/b_lab_data/CHANGES.md](../stages/20_features/b_lab_data/CHANGES.md) |
-| 26 | [`b_lab_vb`](#b_lab_vb) | 20_features | local-script | [../stages/20_features/b_lab_vb/CHANGES.md](../stages/20_features/b_lab_vb/CHANGES.md) |
-| 27 | [`f04_v2_ref`](#f04_v2_ref) | 20_features | exact-executed-copy | [../stages/20_features/f04_v2_ref/CHANGES.md](../stages/20_features/f04_v2_ref/CHANGES.md) |
+| 1 | [`env_docker`](#env_docker) | 00_env | new | [../stages/00_env/env_docker/CHANGES.md](../stages/00_env/env_docker/CHANGES.md) |
+| 2 | [`models_fetch`](#models_fetch) | 00_env | new | [../stages/00_env/models_fetch/CHANGES.md](../stages/00_env/models_fetch/CHANGES.md) |
+| 3 | [`raw_btc`](#raw_btc) | 10_raw | new | [../stages/10_raw/raw_btc/CHANGES.md](../stages/10_raw/raw_btc/CHANGES.md) |
+| 4 | [`raw_evalphase`](#raw_evalphase) | 10_raw | local-script | [../stages/10_raw/raw_evalphase/CHANGES.md](../stages/10_raw/raw_evalphase/CHANGES.md) |
+| 5 | [`raw_mavceleb`](#raw_mavceleb) | 10_raw | new | [../stages/10_raw/raw_mavceleb/CHANGES.md](../stages/10_raw/raw_mavceleb/CHANGES.md) |
+| 6 | [`raw_mavceleb_check`](#raw_mavceleb_check) | 10_raw | new | [../stages/10_raw/raw_mavceleb_check/CHANGES.md](../stages/10_raw/raw_mavceleb_check/CHANGES.md) |
+| 7 | [`c37_vox2`](#c37_vox2) | 11_collect | exact-executed-copy | [../stages/11_collect/c37_vox2/CHANGES.md](../stages/11_collect/c37_vox2/CHANGES.md) |
+| 8 | [`c45_frames_vox2`](#c45_frames_vox2) | 11_collect | exact-executed-copy | [../stages/11_collect/c45_frames_vox2/CHANGES.md](../stages/11_collect/c45_frames_vox2/CHANGES.md) |
+| 9 | [`c46_voxblink`](#c46_voxblink) | 11_collect | exact-executed-copy | [../stages/11_collect/c46_voxblink/CHANGES.md](../stages/11_collect/c46_voxblink/CHANGES.md) |
+| 10 | [`c53_vox2b`](#c53_vox2b) | 11_collect | exact-executed-copy | [../stages/11_collect/c53_vox2b/CHANGES.md](../stages/11_collect/c53_vox2b/CHANGES.md) |
+| 11 | [`c63_frames`](#c63_frames) | 11_collect | exact-executed-copy | [../stages/11_collect/c63_frames/CHANGES.md](../stages/11_collect/c63_frames/CHANGES.md) |
+| 12 | [`c63v_audio_cache`](#c63v_audio_cache) | 11_collect | builder-regenerated | [../stages/11_collect/c63v_audio_cache/CHANGES.md](../stages/11_collect/c63v_audio_cache/CHANGES.md) |
+| 13 | [`c87_frames_bridge`](#c87_frames_bridge) | 11_collect | exact-executed-copy | [../stages/11_collect/c87_frames_bridge/CHANGES.md](../stages/11_collect/c87_frames_bridge/CHANGES.md) |
+| 14 | [`c_frames_index`](#c_frames_index) | 11_collect | new | [../stages/11_collect/c_frames_index/CHANGES.md](../stages/11_collect/c_frames_index/CHANGES.md) |
+| 15 | [`r07_overlap`](#r07_overlap) | 12_rows | local-script | [../stages/12_rows/r07_overlap/CHANGES.md](../stages/12_rows/r07_overlap/CHANGES.md) |
+| 16 | [`r08_mav_rows`](#r08_mav_rows) | 12_rows | exact-executed-copy | [../stages/12_rows/r08_mav_rows/CHANGES.md](../stages/12_rows/r08_mav_rows/CHANGES.md) |
+| 17 | [`l150_whisper`](#l150_whisper) | 13_lid | exact-package | [../stages/13_lid/l150_whisper/CHANGES.md](../stages/13_lid/l150_whisper/CHANGES.md) |
+| 18 | [`l152_mms`](#l152_mms) | 13_lid | exact-package | [../stages/13_lid/l152_mms/CHANGES.md](../stages/13_lid/l152_mms/CHANGES.md) |
+| 19 | [`l42_vox2_lid`](#l42_vox2_lid) | 13_lid | builder-regenerated | [../stages/13_lid/l42_vox2_lid/CHANGES.md](../stages/13_lid/l42_vox2_lid/CHANGES.md) |
+| 20 | [`l_dqual_g3`](#l_dqual_g3) | 13_lid | new | [../stages/13_lid/l_dqual_g3/CHANGES.md](../stages/13_lid/l_dqual_g3/CHANGES.md) |
+| 21 | [`l_groups`](#l_groups) | 13_lid | local-script | [../stages/13_lid/l_groups/CHANGES.md](../stages/13_lid/l_groups/CHANGES.md) |
+| 22 | [`l_lid_audit`](#l_lid_audit) | 13_lid | local-script | [../stages/13_lid/l_lid_audit/CHANGES.md](../stages/13_lid/l_lid_audit/CHANGES.md) |
+| 23 | [`l_lid_strict`](#l_lid_strict) | 13_lid | local-script | [../stages/13_lid/l_lid_strict/CHANGES.md](../stages/13_lid/l_lid_strict/CHANGES.md) |
+| 24 | [`b_eda_bundle`](#b_eda_bundle) | 20_features | local-script | [../stages/20_features/b_eda_bundle/CHANGES.md](../stages/20_features/b_eda_bundle/CHANGES.md) |
+| 25 | [`b_lab_avfull`](#b_lab_avfull) | 20_features | new | [../stages/20_features/b_lab_avfull/CHANGES.md](../stages/20_features/b_lab_avfull/CHANGES.md) |
+| 26 | [`b_lab_data`](#b_lab_data) | 20_features | local-script | [../stages/20_features/b_lab_data/CHANGES.md](../stages/20_features/b_lab_data/CHANGES.md) |
+| 27 | [`b_lab_vb`](#b_lab_vb) | 20_features | local-script | [../stages/20_features/b_lab_vb/CHANGES.md](../stages/20_features/b_lab_vb/CHANGES.md) |
 | 28 | [`f103c_tap01`](#f103c_tap01) | 20_features | builder-regenerated | [../stages/20_features/f103c_tap01/CHANGES.md](../stages/20_features/f103c_tap01/CHANGES.md) |
 | 29 | [`f10_models`](#f10_models) | 20_features | builder-regenerated | [../stages/20_features/f10_models/CHANGES.md](../stages/20_features/f10_models/CHANGES.md) |
 | 30 | [`f12_eval_feats`](#f12_eval_feats) | 20_features | builder-regenerated | [../stages/20_features/f12_eval_feats/CHANGES.md](../stages/20_features/f12_eval_feats/CHANGES.md) |
@@ -52,56 +52,87 @@ makes at run time (path rewrites, upload switches, pip modes, environment) are n
 | 43 | [`cleancomp_tables`](#cleancomp_tables) | 30_F_family | local-script | [../stages/30_F_family/cleancomp_tables/CHANGES.md](../stages/30_F_family/cleancomp_tables/CHANGES.md) |
 | 44 | [`gather_g1`](#gather_g1) | 30_F_family | new | [../stages/30_F_family/gather_g1/CHANGES.md](../stages/30_F_family/gather_g1/CHANGES.md) |
 | 45 | [`gather_r2ca`](#gather_r2ca) | 30_F_family | new | [../stages/30_F_family/gather_r2ca/CHANGES.md](../stages/30_F_family/gather_r2ca/CHANGES.md) |
-| 46 | [`safe04_compare`](#safe04_compare) | 30_F_family | new | [../stages/30_F_family/safe04_compare/CHANGES.md](../stages/30_F_family/safe04_compare/CHANGES.md) |
-| 47 | [`safe04_lab`](#safe04_lab) | 30_F_family | new | [../stages/30_F_family/safe04_lab/CHANGES.md](../stages/30_F_family/safe04_lab/CHANGES.md) |
-| 48 | [`safe04_lab_core`](#safe04_lab_core) | 30_F_family | new | [../stages/30_F_family/safe04_lab_core/CHANGES.md](../stages/30_F_family/safe04_lab_core/CHANGES.md) |
-| 49 | [`t112sf0s`](#t112sf0s) | 30_F_family | exact-package | [../stages/30_F_family/t112sf0s/CHANGES.md](../stages/30_F_family/t112sf0s/CHANGES.md) |
-| 50 | [`t112sf1s`](#t112sf1s) | 30_F_family | exact-package | [../stages/30_F_family/t112sf1s/CHANGES.md](../stages/30_F_family/t112sf1s/CHANGES.md) |
-| 51 | [`t153b`](#t153b) | 30_F_family | exact-package | [../stages/30_F_family/t153b/CHANGES.md](../stages/30_F_family/t153b/CHANGES.md) |
-| 52 | [`t153c`](#t153c) | 30_F_family | exact-package | [../stages/30_F_family/t153c/CHANGES.md](../stages/30_F_family/t153c/CHANGES.md) |
-| 53 | [`t154_g1_f12`](#t154_g1_f12) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f12/CHANGES.md](../stages/30_F_family/t154_g1_f12/CHANGES.md) |
-| 54 | [`t154_g1_f34`](#t154_g1_f34) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f34/CHANGES.md](../stages/30_F_family/t154_g1_f34/CHANGES.md) |
-| 55 | [`t154_g1_f5`](#t154_g1_f5) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f5/CHANGES.md](../stages/30_F_family/t154_g1_f5/CHANGES.md) |
-| 56 | [`t155s_f12`](#t155s_f12) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f12/CHANGES.md](../stages/30_F_family/t155s_f12/CHANGES.md) |
-| 57 | [`t155s_f34`](#t155s_f34) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f34/CHANGES.md](../stages/30_F_family/t155s_f34/CHANGES.md) |
-| 58 | [`t155s_f5`](#t155s_f5) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f5/CHANGES.md](../stages/30_F_family/t155s_f5/CHANGES.md) |
-| 59 | [`t164_f123`](#t164_f123) | 30_F_family | exact-pulled | [../stages/30_F_family/t164_f123/CHANGES.md](../stages/30_F_family/t164_f123/CHANGES.md) |
-| 60 | [`t164_f45`](#t164_f45) | 30_F_family | exact-pulled | [../stages/30_F_family/t164_f45/CHANGES.md](../stages/30_F_family/t164_f45/CHANGES.md) |
-| 61 | [`t164f`](#t164f) | 30_F_family | exact-package | [../stages/30_F_family/t164f/CHANGES.md](../stages/30_F_family/t164f/CHANGES.md) |
-| 62 | [`t163b`](#t163b) | 40_R_family | exact-package | [../stages/40_R_family/t163b/CHANGES.md](../stages/40_R_family/t163b/CHANGES.md) |
-| 63 | [`t163l_orig`](#t163l_orig) | 40_R_family | exact-package | [../stages/40_R_family/t163l_orig/CHANGES.md](../stages/40_R_family/t163l_orig/CHANGES.md) |
-| 64 | [`t163p_c5rl`](#t163p_c5rl) | 40_R_family | exact-package | [../stages/40_R_family/t163p_c5rl/CHANGES.md](../stages/40_R_family/t163p_c5rl/CHANGES.md) |
-| 65 | [`t183_p1`](#t183_p1) | 40_R_family | exact-package | [../stages/40_R_family/t183_p1/CHANGES.md](../stages/40_R_family/t183_p1/CHANGES.md) |
-| 66 | [`t183_p2`](#t183_p2) | 40_R_family | exact-package | [../stages/40_R_family/t183_p2/CHANGES.md](../stages/40_R_family/t183_p2/CHANGES.md) |
-| 67 | [`t184_report`](#t184_report) | 40_R_family | exact-package | [../stages/40_R_family/t184_report/CHANGES.md](../stages/40_R_family/t184_report/CHANGES.md) |
-| 68 | [`t213_p1`](#t213_p1) | 40_R_family | exact-staging | [../stages/40_R_family/t213_p1/CHANGES.md](../stages/40_R_family/t213_p1/CHANGES.md) |
-| 69 | [`t213_p2`](#t213_p2) | 40_R_family | exact-staging | [../stages/40_R_family/t213_p2/CHANGES.md](../stages/40_R_family/t213_p2/CHANGES.md) |
-| 70 | [`t216_p3`](#t216_p3) | 40_R_family | exact-staging | [../stages/40_R_family/t216_p3/CHANGES.md](../stages/40_R_family/t216_p3/CHANGES.md) |
-| 71 | [`t219_dumpv4`](#t219_dumpv4) | 40_R_family | exact-staging | [../stages/40_R_family/t219_dumpv4/CHANGES.md](../stages/40_R_family/t219_dumpv4/CHANGES.md) |
-| 72 | [`t3s01_trca`](#t3s01_trca) | 40_R_family | new | [../stages/40_R_family/t3s01_trca/CHANGES.md](../stages/40_R_family/t3s01_trca/CHANGES.md) |
-| 73 | [`a_factor`](#a_factor) | 50_eval | local-script | [../stages/50_eval/a_factor/CHANGES.md](../stages/50_eval/a_factor/CHANGES.md) |
-| 74 | [`e112f0sx`](#e112f0sx) | 50_eval | exact-package | [../stages/50_eval/e112f0sx/CHANGES.md](../stages/50_eval/e112f0sx/CHANGES.md) |
-| 75 | [`e112f1sx`](#e112f1sx) | 50_eval | exact-package | [../stages/50_eval/e112f1sx/CHANGES.md](../stages/50_eval/e112f1sx/CHANGES.md) |
-| 76 | [`e163i`](#e163i) | 50_eval | exact-package | [../stages/50_eval/e163i/CHANGES.md](../stages/50_eval/e163i/CHANGES.md) |
-| 77 | [`e47rs`](#e47rs) | 50_eval | exact-package | [../stages/50_eval/e47rs/CHANGES.md](../stages/50_eval/e47rs/CHANGES.md) |
-| 78 | [`e50cc`](#e50cc) | 50_eval | exact-package | [../stages/50_eval/e50cc/CHANGES.md](../stages/50_eval/e50cc/CHANGES.md) |
-| 79 | [`e65xbs`](#e65xbs) | 50_eval | exact-package | [../stages/50_eval/e65xbs/CHANGES.md](../stages/50_eval/e65xbs/CHANGES.md) |
-| 80 | [`e65xcs`](#e65xcs) | 50_eval | exact-package | [../stages/50_eval/e65xcs/CHANGES.md](../stages/50_eval/e65xcs/CHANGES.md) |
-| 81 | [`a_best4_ref`](#a_best4_ref) | 60_fvbind | new | [../stages/60_fvbind/a_best4_ref/CHANGES.md](../stages/60_fvbind/a_best4_ref/CHANGES.md) |
-| 82 | [`a_fvbind`](#a_fvbind) | 60_fvbind | local-script | [../stages/60_fvbind/a_fvbind/CHANGES.md](../stages/60_fvbind/a_fvbind/CHANGES.md) |
-| 83 | [`e163i_fvb`](#e163i_fvb) | 60_fvbind | exact-staging | [../stages/60_fvbind/e163i_fvb/CHANGES.md](../stages/60_fvbind/e163i_fvb/CHANGES.md) |
-| 84 | [`t163p_fvb`](#t163p_fvb) | 60_fvbind | exact-staging | [../stages/60_fvbind/t163p_fvb/CHANGES.md](../stages/60_fvbind/t163p_fvb/CHANGES.md) |
-| 85 | [`t189_b2`](#t189_b2) | 60_fvbind | exact-staging | [../stages/60_fvbind/t189_b2/CHANGES.md](../stages/60_fvbind/t189_b2/CHANGES.md) |
-| 86 | [`t192_fvbx`](#t192_fvbx) | 60_fvbind | exact-staging | [../stages/60_fvbind/t192_fvbx/CHANGES.md](../stages/60_fvbind/t192_fvbx/CHANGES.md) |
-| 87 | [`dp_extract_eval`](#dp_extract_eval) | 70_dp | local-script | [../stages/70_dp/dp_extract_eval/CHANGES.md](../stages/70_dp/dp_extract_eval/CHANGES.md) |
-| 88 | [`dp_feats_layout`](#dp_feats_layout) | 70_dp | new | [../stages/70_dp/dp_feats_layout/CHANGES.md](../stages/70_dp/dp_feats_layout/CHANGES.md) |
-| 89 | [`dp_score`](#dp_score) | 70_dp | new | [../stages/70_dp/dp_score/CHANGES.md](../stages/70_dp/dp_score/CHANGES.md) |
-| 90 | [`dp_sigma`](#dp_sigma) | 70_dp | new | [../stages/70_dp/dp_sigma/CHANGES.md](../stages/70_dp/dp_sigma/CHANGES.md) |
-| 91 | [`dp_train`](#dp_train) | 70_dp | local-script | [../stages/70_dp/dp_train/CHANGES.md](../stages/70_dp/dp_train/CHANGES.md) |
-| 92 | [`final_blend`](#final_blend) | 80_final | local-script | [../stages/80_final/final_blend/CHANGES.md](../stages/80_final/final_blend/CHANGES.md) |
-| 93 | [`final_verify`](#final_verify) | 80_final | new | [../stages/80_final/final_verify/CHANGES.md](../stages/80_final/final_verify/CHANGES.md) |
-| 94 | [`env_docker`](#env_docker) | 00_env | new | [../tools/stages/00_env/env_docker/CHANGES.md](../tools/stages/00_env/env_docker/CHANGES.md) |
-| 95 | [`models_fetch`](#models_fetch) | 00_env | new | [../tools/stages/00_env/models_fetch/CHANGES.md](../tools/stages/00_env/models_fetch/CHANGES.md) |
+| 46 | [`safe04_lab`](#safe04_lab) | 30_F_family | new | [../stages/30_F_family/safe04_lab/CHANGES.md](../stages/30_F_family/safe04_lab/CHANGES.md) |
+| 47 | [`t112sf0s`](#t112sf0s) | 30_F_family | exact-package | [../stages/30_F_family/t112sf0s/CHANGES.md](../stages/30_F_family/t112sf0s/CHANGES.md) |
+| 48 | [`t112sf1s`](#t112sf1s) | 30_F_family | exact-package | [../stages/30_F_family/t112sf1s/CHANGES.md](../stages/30_F_family/t112sf1s/CHANGES.md) |
+| 49 | [`t153b`](#t153b) | 30_F_family | exact-package | [../stages/30_F_family/t153b/CHANGES.md](../stages/30_F_family/t153b/CHANGES.md) |
+| 50 | [`t153c`](#t153c) | 30_F_family | exact-package | [../stages/30_F_family/t153c/CHANGES.md](../stages/30_F_family/t153c/CHANGES.md) |
+| 51 | [`t154_g1_f12`](#t154_g1_f12) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f12/CHANGES.md](../stages/30_F_family/t154_g1_f12/CHANGES.md) |
+| 52 | [`t154_g1_f34`](#t154_g1_f34) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f34/CHANGES.md](../stages/30_F_family/t154_g1_f34/CHANGES.md) |
+| 53 | [`t154_g1_f5`](#t154_g1_f5) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f5/CHANGES.md](../stages/30_F_family/t154_g1_f5/CHANGES.md) |
+| 54 | [`t155s_f12`](#t155s_f12) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f12/CHANGES.md](../stages/30_F_family/t155s_f12/CHANGES.md) |
+| 55 | [`t155s_f34`](#t155s_f34) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f34/CHANGES.md](../stages/30_F_family/t155s_f34/CHANGES.md) |
+| 56 | [`t155s_f5`](#t155s_f5) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f5/CHANGES.md](../stages/30_F_family/t155s_f5/CHANGES.md) |
+| 57 | [`t164_f123`](#t164_f123) | 30_F_family | exact-pulled | [../stages/30_F_family/t164_f123/CHANGES.md](../stages/30_F_family/t164_f123/CHANGES.md) |
+| 58 | [`t164_f45`](#t164_f45) | 30_F_family | exact-pulled | [../stages/30_F_family/t164_f45/CHANGES.md](../stages/30_F_family/t164_f45/CHANGES.md) |
+| 59 | [`t164f`](#t164f) | 30_F_family | exact-package | [../stages/30_F_family/t164f/CHANGES.md](../stages/30_F_family/t164f/CHANGES.md) |
+| 60 | [`t163b`](#t163b) | 40_R_family | exact-package | [../stages/40_R_family/t163b/CHANGES.md](../stages/40_R_family/t163b/CHANGES.md) |
+| 61 | [`t163l_orig`](#t163l_orig) | 40_R_family | exact-package | [../stages/40_R_family/t163l_orig/CHANGES.md](../stages/40_R_family/t163l_orig/CHANGES.md) |
+| 62 | [`t163p_c5rl`](#t163p_c5rl) | 40_R_family | exact-package | [../stages/40_R_family/t163p_c5rl/CHANGES.md](../stages/40_R_family/t163p_c5rl/CHANGES.md) |
+| 63 | [`t213_p1`](#t213_p1) | 40_R_family | exact-staging | [../stages/40_R_family/t213_p1/CHANGES.md](../stages/40_R_family/t213_p1/CHANGES.md) |
+| 64 | [`t213_p2`](#t213_p2) | 40_R_family | exact-staging | [../stages/40_R_family/t213_p2/CHANGES.md](../stages/40_R_family/t213_p2/CHANGES.md) |
+| 65 | [`t216_p3`](#t216_p3) | 40_R_family | exact-staging | [../stages/40_R_family/t216_p3/CHANGES.md](../stages/40_R_family/t216_p3/CHANGES.md) |
+| 66 | [`t219_dumpv4`](#t219_dumpv4) | 40_R_family | exact-staging | [../stages/40_R_family/t219_dumpv4/CHANGES.md](../stages/40_R_family/t219_dumpv4/CHANGES.md) |
+| 67 | [`t3s01_trca`](#t3s01_trca) | 40_R_family | new | [../stages/40_R_family/t3s01_trca/CHANGES.md](../stages/40_R_family/t3s01_trca/CHANGES.md) |
+| 68 | [`a_factor`](#a_factor) | 50_eval | local-script | [../stages/50_eval/a_factor/CHANGES.md](../stages/50_eval/a_factor/CHANGES.md) |
+| 69 | [`e112f0sx`](#e112f0sx) | 50_eval | exact-package | [../stages/50_eval/e112f0sx/CHANGES.md](../stages/50_eval/e112f0sx/CHANGES.md) |
+| 70 | [`e112f1sx`](#e112f1sx) | 50_eval | exact-package | [../stages/50_eval/e112f1sx/CHANGES.md](../stages/50_eval/e112f1sx/CHANGES.md) |
+| 71 | [`e163i`](#e163i) | 50_eval | exact-package | [../stages/50_eval/e163i/CHANGES.md](../stages/50_eval/e163i/CHANGES.md) |
+| 72 | [`e47rs`](#e47rs) | 50_eval | exact-package | [../stages/50_eval/e47rs/CHANGES.md](../stages/50_eval/e47rs/CHANGES.md) |
+| 73 | [`e50cc`](#e50cc) | 50_eval | exact-package | [../stages/50_eval/e50cc/CHANGES.md](../stages/50_eval/e50cc/CHANGES.md) |
+| 74 | [`e65xbs`](#e65xbs) | 50_eval | exact-package | [../stages/50_eval/e65xbs/CHANGES.md](../stages/50_eval/e65xbs/CHANGES.md) |
+| 75 | [`e65xcs`](#e65xcs) | 50_eval | exact-package | [../stages/50_eval/e65xcs/CHANGES.md](../stages/50_eval/e65xcs/CHANGES.md) |
+| 76 | [`a_fvbind`](#a_fvbind) | 60_fvbind | local-script | [../stages/60_fvbind/a_fvbind/CHANGES.md](../stages/60_fvbind/a_fvbind/CHANGES.md) |
+| 77 | [`e163i_fvb`](#e163i_fvb) | 60_fvbind | exact-staging | [../stages/60_fvbind/e163i_fvb/CHANGES.md](../stages/60_fvbind/e163i_fvb/CHANGES.md) |
+| 78 | [`t163p_fvb`](#t163p_fvb) | 60_fvbind | exact-staging | [../stages/60_fvbind/t163p_fvb/CHANGES.md](../stages/60_fvbind/t163p_fvb/CHANGES.md) |
+| 79 | [`t189_b2`](#t189_b2) | 60_fvbind | exact-staging | [../stages/60_fvbind/t189_b2/CHANGES.md](../stages/60_fvbind/t189_b2/CHANGES.md) |
+| 80 | [`t192_fvbx`](#t192_fvbx) | 60_fvbind | exact-staging | [../stages/60_fvbind/t192_fvbx/CHANGES.md](../stages/60_fvbind/t192_fvbx/CHANGES.md) |
+| 81 | [`dp_extract_eval`](#dp_extract_eval) | 70_dp | local-script | [../stages/70_dp/dp_extract_eval/CHANGES.md](../stages/70_dp/dp_extract_eval/CHANGES.md) |
+| 82 | [`dp_feats_layout`](#dp_feats_layout) | 70_dp | new | [../stages/70_dp/dp_feats_layout/CHANGES.md](../stages/70_dp/dp_feats_layout/CHANGES.md) |
+| 83 | [`dp_score`](#dp_score) | 70_dp | new | [../stages/70_dp/dp_score/CHANGES.md](../stages/70_dp/dp_score/CHANGES.md) |
+| 84 | [`dp_sigma`](#dp_sigma) | 70_dp | new | [../stages/70_dp/dp_sigma/CHANGES.md](../stages/70_dp/dp_sigma/CHANGES.md) |
+| 85 | [`dp_train`](#dp_train) | 70_dp | local-script | [../stages/70_dp/dp_train/CHANGES.md](../stages/70_dp/dp_train/CHANGES.md) |
+| 86 | [`final_blend`](#final_blend) | 80_final | local-script | [../stages/80_final/final_blend/CHANGES.md](../stages/80_final/final_blend/CHANGES.md) |
+| 87 | [`final_verify`](#final_verify) | 80_final | new | [../stages/80_final/final_verify/CHANGES.md](../stages/80_final/final_verify/CHANGES.md) |
+
+## env_docker
+
+`stages/00_env/env_docker/CHANGES.md` (00_env, new)
+
+### env_docker: changes with respect to the original
+
+Origin: `new` (DESIGN 2.3 rank 7). There is no original run: the stage is new code. Its reference input is the Dockerfile of the
+team repository, `release/docker/Dockerfile`, copied **unchanged** to `original/Dockerfile` and to `docker/Dockerfile`
+(SHA-256 `ad84e6fea5f55541c087d85fe5de806049d2f93fe0a3a5a1530842fbbbe66eb9`, identical to `E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/docker/Dockerfile`).
+
+| # | where | old -> new | reason | effect on numbers | type |
+|---|---|---|---|---|---|
+| 1 | whole stage | DESIGN 4.0 "build the image" -> "check the environment against the pins; print the docker build commands" | advisor's decision 18/11: Docker is not required, no new Docker work; the environment specification (base image digest + pip pins) is kept | none (no stage of the chain reads its output) | `pin` |
+| 2 | `docker/Dockerfile` last line `CMD ["python", "/opt/fourfusion/docker/ff.py", "plan"]` | kept verbatim | the Dockerfile is a reference copy; `docker/ff.py` belonged to the older U′ package and is not part of this repository. Start containers with an explicit command (`docker/README.md` section 3) | none | none |
+| 3 | `docker/constraints-kaggle-v173.txt`, `docker/requirements-kaggle-pinned.txt` | new files | the Dockerfile pins written as a pip constraints file (used by `FF_PIP=pinned`) and as an installable list | none | `pin` |
+| 4 | `stage.ipy` cell 3, `original_runs` | "python 3.13.16 (GPU runs; one CPU run 3.13.18)" -> "GPU image 3.13.16, CPU image 3.13.18 (November runs; older images in Sept / Oct)", torch 2.11.0+cu128 / 2.10.0+cu128 added for the Sept / Oct runs | review 18/11: every kept CPU log prints 3.13.18 and the collection / early feature runs used older images (docker/ENV_PER_STAGE.md, configs/env_per_stage.json) | none (report text) | `pin` |
+
+The stage writes `pip_freeze.txt` (every installed distribution, read with `importlib.metadata` so that it also works when pip is
+replaced by the no-op shim of `FF_PIP=skip`) and `env_report.json`.
+
+## models_fetch
+
+`stages/00_env/models_fetch/CHANGES.md` (00_env, new)
+
+### models_fetch: changes with respect to the original
+
+Origin: `new` (DESIGN 2.3 rank 7). The reference code is `cmd_fetch_models` of `release/docker/ff.py` (team repository; file copied
+unchanged to `original/ff.py`, SHA-256 `c706b0b729b3b77961515d6e888fe9a8a567ea64dd220a821ad81bc64a06d8d2`, lines 286–306), which
+downloads ImageBind-huge from the pinned Hugging Face copy and keeps it only when its SHA-256 is Meta's. The stage runs
+`tools/fetch_models.py` (new) and streams its output line by line.
+
+| # | where | old -> new | reason | effect on numbers | type |
+|---|---|---|---|---|---|
+| 1 | model list | ImageBind only -> the full table of DESIGN 9.2 / S8 E10 (25 entries in four groups: core, dp, lid, wiring) | offline runs and a pinned record of every public model | none: same files the notebooks download (SHA-256 checked where measured) | `pin` |
+| 2 | HF downloads | the notebooks call `from_pretrained` / `snapshot_download` with the default revision `main` (ViT-age, audeering, AdaFace, CLIP-L in places, SpeechBrain) -> `tools/fetch_models.py` downloads `snapshot_download(revision=<commit>)` into `06_pretrained/cache/huggingface/hub` and then writes `models--<repo>/refs/main = <commit>`, so that the notebooks' unchanged `main` lookups resolve to the pinned commit when the runner points `HF_HUB_CACHE` at that cache. Pinned only with `FF_HF_OFFLINE=1` (HF_HUB_OFFLINE): online, huggingface_hub re-resolves `main` on the Hub and may fetch a newer commit | `main` can move; the commits are the ones the team caches hold (E: package `pretrained/cache/huggingface/hub/*/refs/main`, team machine cache) | none when the pinned commit is used (offline); online runs may differ if a repository changed after the original run | `pin` |
+| 3 | WeSpeaker ModelScope zips | the notebooks fetch them through the ModelScope tree API at run time -> the same API, then unpacked like `wespeaker_dir()` into `cache/flag/wespeaker/<stem>/` | lets `FLAG_CACHE` skip the download | none (zip SHA-256 checked: values measured on `D:/ff_models/`, 2026-11-18) | `pin` |
+| 4 | ImageBind URL | Meta's `dl.fbaipublicfiles.com` (dead since 2026-11-12) -> HF `PKU-Alignment/AnyRewardModel@40c7e2a` | dead link; same SHA-256 `d6f6c22b…2157` | none | `url` |
+| 5 | smoke mode | — -> `FF_FETCH_DRY=1` lists the table and writes `PLAN.txt` + a placeholder `SOURCES.json` | smoke test without network | none | — |
 
 ## raw_btc
 
@@ -657,29 +688,6 @@ Origin: exact-executed-copy (`_from_download/flag-2027-nb-5-external-identities.
 
 Recipe `ff-stage-ipy/1` (same convention as `release/flag2027_e2e/build_notebook.py:stage_cells`): take the cells listed in `stage.json` `build.sequence` in that order (`orig`: index of the cell in the original notebook's `nb["cells"]` list, markdown cells counted, and the referenced cell must be a non-empty code cell, as in `runner/check_stage.py`; CRLF -> LF; `new`: a file of `cells/`), apply every `patches` entry to the original cells only (each must match exactly `count` times in total), and join every cell as `cell.rstrip('\n') + '\n# <<<FF-CELL>>>\n'`. The sha256 of the result is `build.stage_ipy_sha256`. Original code cells not in the sequence are the ones matched by `drop_cells` (regex on the cell title = its `print("[cell] ...")` text or first line).
 
-## r31_mav_rows_check
-
-`stages/12_rows/r31_mav_rows_check/CHANGES.md` (12_rows, new)
-
-### CHANGES: `r31_mav_rows_check`
-
-Stage r31_mav_rows_check (12_rows): Optional: rebuild the MAV row tables without encoders (FLAG_08 listing + FLAG_31 EXTRAW listing) and compare byte for byte.
-
-Origin: new.
-
-| # | where | old -> new | why | effect on numbers | type |
-|---|---|---|---|---|---|
-| 1 | check_rows.py + cells/00_check_rows.py | new script; the listing / meta-table code is copied verbatim (ast.get_source_segment) from the executed FLAG_08 module and the EXTRAW cell | close DESIGN G21 / S1 gap 1: prove on CPU that the raw MAV release reproduces the row order of the four ext-meta tables before the GPU stage r08 | none (report only) | new |
-
-#### Notes
-
-- DESIGN gives the builder kaggle/build_raw_notebook.py:68-240 (cell EXTRAW): that cell also runs both encoders and needs the FLAG_12 helper cells; the row tables do not depend on the encoders, so only the listing and table code is reused.
-- check_rows.py sha256 is recorded in original/SOURCE.json (stage_files); the full builder is kept in original/ for reading.
-
-#### How stage.ipy is built
-
-Recipe `ff-stage-ipy/1` (same convention as `release/flag2027_e2e/build_notebook.py:stage_cells`): take the cells listed in `stage.json` `build.sequence` in that order (`orig`: index of the cell in the original notebook's `nb["cells"]` list, markdown cells counted, and the referenced cell must be a non-empty code cell, as in `runner/check_stage.py`; CRLF -> LF; `new`: a file of `cells/`), apply every `patches` entry to the original cells only (each must match exactly `count` times in total), and join every cell as `cell.rstrip('\n') + '\n# <<<FF-CELL>>>\n'`. The sha256 of the result is `build.stage_ipy_sha256`. Original code cells not in the sequence are the ones matched by `drop_cells` (regex on the cell title = its `print("[cell] ...")` text or first line).
-
 ## l150_whisper
 
 `stages/13_lid/l150_whisper/CHANGES.md` (13_lid, exact-package)
@@ -884,7 +892,7 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 
 #### Other differences from the original run (inputs, wiring, environment)
 
-- **wiring**: kaggle/output/feats_v2 (FLAG_04) is linked to the f12_eval_feats folder: the script reads only face_arcface_train.npy and voice_ecapa192_train.npy from it, which FLAG_12 wrote byte-identical (sha256 55491b54... / b3bd0a64..., team copies, 18/11/2026). FLAG_04 itself is kept as the optional stage f04_v2_ref.
+- **wiring**: kaggle/output/feats_v2 (FLAG_04) is linked to the f12_eval_feats folder: the script reads only face_arcface_train.npy and voice_ecapa192_train.npy from it, which FLAG_12 wrote byte-identical (sha256 55491b54... / b3bd0a64..., team copies, 18/11/2026). FLAG_04 itself is not needed and is not part of this repository.
 - **path**: kaggle_upload/train is rebuilt from the raw organiser data (members of train_set.zip + meta_file_train_set.csv) with CRC32 checks against the team's copies.
 - **upload**: The original zip was uploaded by hand as ngnnguynchn/flag2027-eda-bundle-p; here it is unpacked into eda_bundle_dataset/ (= the dataset content) and exported under the same artifact id.
 - **dev-exclusion** (input view, pending runner support): the raw-v4 input asks the runner not to mount `dev_set.zip` / `dev_set` (stage.json inputs[].exclude). Today runner/ffcore.py build_vin applies only the configs/data_map.json exclude, so the archive is still visible; the code never unpacks or reads it (ZIP_PREFIXES / train-only index). With raw-v4 mounted unpacked (a hand-attached Kaggle dataset), find_splits still reads the dev list files (pd.read_csv of the list and an existence check of its media) before SPLIT_FILTER drops them; no dev clip or image is decoded or encoded. Mount raw-v4 as the zipped organiser release (FF_DATA/00_raw/btc_mavceleb_v4).
@@ -1004,42 +1012,6 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - post_check (fatal): `bundle_report.json` `vs_original/missing` = []: every member of the original dataset (expected_members.json) is in the new bundle.
 - verify (warning only): `bundle_report.json` `vs_original/extra`: no member beyond the original's (warning only).
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
-
-## f04_v2_ref
-
-`stages/20_features/f04_v2_ref/CHANGES.md` (20_features, exact-executed-copy)
-
-### CHANGES: stage `f04_v2_ref`
-
-Original code: kaggle/flag-2027-04.ipynb (git blob ccde784c, commit 8544b3b) (exact-executed-copy). Stage code: `stage.ipy`. Change types follow DESIGN.md §2.5.
-Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/working` string at the stage's own input view and working directory (runner/ffcore.py, as release/flag2027_e2e/orch.py `_stage_code`); that is not a code change.
-
-#### Code changes
-
-| # | where | type | old -> new (full text in stage.json) | why | effect on numbers |
-|---|---|---|---|---|---|
-| 1 | cell 4, line 3 | `dev-exclusion` | `N_CROPS = 3                      # duration-matched crops per train u…` -> `N_CROPS = 0                      # FF dev-exclusion (CHANGES.md #1): …` | the crop step chooses crop lengths from the duration distribution of the dev Bangla clips (DESIGN §4.5: n_crops=0 is mandatory) | none on voice_ecapa192_train / voice_ecapa6144_train (the crop arrays voice_ecapa*crop_train are no longer written; no stage reads them) |
-| 2 | cell 4, line 9 | `dev-exclusion` | `root = X.media_root(IN, WORKDIR / "raw") ⏎ S = X.index_splits(root) ⏎ ` -> `# --- FF dev-exclusion (CHANGES.md #2): index ONLY the organiser trai…` | the original unpacked every input zip and indexed the 4 dev lists; now only train_English.txt, same rows / order | none on train arrays |
-| 3 | cell 5, line 2 | `dev-exclusion` | `CONS = X.check_batch_consistency(ecapa, S, n=12 if LOCAL else 24)` -> `CONS = X.check_batch_consistency(ecapa, {"no_gender/English": S["trai…` | the batched-vs-single check read 24 dev English clips; it now reads 24 train clips | none (check only) |
-| 4 | cell 6, line 3 | `path` | `given = pd.read_csv(sorted(IN.rglob("train_English_voices.csv"))[0], …` -> `given = pd.read_csv(sorted(list(IN.rglob("train_English_voices.csv"))…` | the original raw dataset was attached unpacked; with the zipped organiser data the csv only exists after unpacking (under `root`) | none |
-| 5 | cell 8, lines 1-4 | `dev-exclusion` | `SSL_COS = {} ⏎ for model_id, short in SSL: ⏎ try: ⏎ SSL_COS[short] = X.extract_ssl(S, OUT, model_id, short)` -> `class _FFTrainAsBangla(dict)` (answers S["no_gender/Bangla"] with the train list) + `X.extract_ssl(_FFTrainAsBangla(S), OUT, model_id, short)` | the embedded flag_extract.extract_ssl (sha256 75fd7ac2...) runs its 4-clip fp16 self-check on S["no_gender/Bangla"] before its per-split loop; with the train-only index (#2) that lookup raised KeyError, cell 8's try/except caught it and no SSL array was written (the original wrote voice_wavlm_train and voice_xlsr_train, (6485, 25, 1024)); same idea as #3 and as f10_models #3 | none on numbers: the SSL train arrays are produced again; the self-check (logged, ssl_fp16_cos) reads 4 train clips instead of 4 dev Bangla clips |
-
-#### Other differences from the original run (inputs, wiring, environment)
-
-- **wiring**: The two SSL encoders (wavlm-large, xls-r-300m) are kept as in the original although no stage reads them; change #5 is what keeps them running under the train-only index (before it they failed with a caught KeyError).
-- **dev-exclusion** (input view, pending runner support): the raw-v4 input asks the runner not to mount `dev_set.zip` / `dev_set` (stage.json inputs[].exclude). Today runner/ffcore.py build_vin applies only the configs/data_map.json exclude, so the archive is still visible; the code never unpacks or reads it (ZIP_PREFIXES / train-only index). With raw-v4 mounted unpacked (a hand-attached Kaggle dataset), find_splits still reads the dev list files (pd.read_csv of the list and an existence check of its media) before SPLIT_FILTER drops them; no dev clip or image is decoded or encoded. Mount raw-v4 as the zipped organiser release (FF_DATA/00_raw/btc_mavceleb_v4).
-
-#### Notes
-
-- Optional stage: run it only to show that FLAG_04 and FLAG_12 give the same train ArcFace / ECAPA arrays.
-
-#### Run checks (stage.json post_checks / verify; fixer 18/11/2026)
-
-- post_check (fatal): `feats/feats_manifest.json` `files` = {"face_arcface_detok_train.npy": [6485], "face_arcface_train.npy": [6485, 512], "voice_ecapa192_train.npy": [6485, 192], "voice_ecapa6144_train.npy": [6485, 6144]}: the ArcFace / ECAPA train arrays of the original run with their shapes (from kaggle/output/feats_v2/feats_manifest.json (created 2026-09-25 13:15)); the crop arrays (n_crops = 0) and the optional SSL arrays are not required.
-- verify (informational): `feats/face_arcface_train.npy` sha256 vs the saved copy `55491b54180e116c...`.
-- verify (informational): `feats/voice_ecapa192_train.npy` sha256 vs the saved copy `b3bd0a6430412e28...`.
-- verify (informational): `feats/voice_ecapa6144_train.npy` sha256 vs the saved copy `195490e23b3c7bbf...`.
-- verify (warning only): `feats/feats_manifest.json` `files`: optional SSL train arrays of the original run (warning only; the original catches an SSL failure).
 
 ## f103c_tap01
 
@@ -1637,18 +1609,6 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - Excerpt of the original script: `original/sat_push.sh.excerpt` (with the sha256 of the whole file).
 - **Smoke (2026-11-18, type `wiring`):** under FF_SMOKE=1 the stage accepts fewer than five tables and prints the missing folds (the t155s smoke runs make one fold each); a full run still requires exactly five. t112sf0s / t112sf1s fill missing folds with their smoke stand-ins.
 
-## safe04_compare
-
-`stages/30_F_family/safe04_compare/CHANGES.md` (30_F_family, new)
-
-### CHANGES: safe04_compare (new stage)
-
-New code only (no original). Hard checks: 37 110 pairs, identical pair keys, identical stack02_rows (fold, data, y, fp, vp), identical
-fold_persons.json; reported: max |diff|, Pearson r and NaN pattern of every numeric column. When the e2e-dev input is the frozen copy (safe04_lab
-not run in the session; no SAFE04_REBUILT.json), the stage writes `not-a-rebuild` and passes. Every cell opens with `print("[cell] ...", flush=True)`.
-
-2026-11-18 fix: a smoke rebuild of safe04_lab (fewer folds; `SAFE04_REBUILT.json` `complete: false`) is reported as `PARTIAL` (missing tables listed, hard checks reported, not enforced) instead of failing on the absent tables. The rebuilt bundle compared is the level-full output of safe04_lab; the level-core output (safe04_lab_core) is self-checked in its own stage.
-
 ## safe04_lab
 
 `stages/30_F_family/safe04_lab/CHANGES.md` (30_F_family, new)
@@ -1657,9 +1617,7 @@ not run in the session; no SAFE04_REBUILT.json), the stage writes `not-a-rebuild
 
 The SAFE-04 lab of October 2026 ran on the local CPU; its scratch folder was deleted on 1/11/2026, and the zip it was packed into
 (`kaggle/flag2027-e2e-dev.zip`, sha256 `0257b1fe...`) is the only copy left. This stage re-runs the ORIGINAL scripts (code/, verbatim) at
-level **full** and is the producer of `datasets/ngnnguynchn/flag2027-e2e-dev-p`. Since the 2026-11-18 fix the cheap partial rebuild
-(level core) is a separate evidence stage, `safe04_lab_core`, so that the producer takes no table from a frozen copy. What differs from
-the October procedure and why:
+level **full** and is the producer of `datasets/ngnnguynchn/flag2027-e2e-dev-p`. What differs from the October procedure and why:
 
 1. **Script versions** (type `pin`; numbers: unverified, believed none). The October file versions are not preserved. code/ holds:
    (a) the versions embedded in the executed notebooks of 3/11 (FLAG_164 / FLAG_111 runs; `code/CODE_MANIFEST.json` 'source'): every
@@ -1693,43 +1651,13 @@ the October procedure and why:
 6. **Dev wiring copied, never recomputed** (type `dev-exclusion`). components_dev.npz, fusers/, ref/ and e2e_manifest.json come byte
    for byte from the dev-wiring artifact (build_e2e_dev_bundle.components() reads dev features: not called). fusers/v11_bangla.json is
    used downstream only as the reference of `e2e_lib.check_v11_fuser()` (an assertion on SAFE-04 table rows). A new file
-   `e2edev/SAFE04_REBUILT.json` records level, folds, completeness, per-table provenance and the in-stage checks; the comparison with the
-   frozen tables is the job of `safe04_compare`.
+   `e2edev/SAFE04_REBUILT.json` records level, folds, completeness, per-table provenance and the in-stage checks.
 7. **Smoke** (`FF_SMOKE=1`): fold 1 only, `L0_STEPS=10`, `L0_NETS=1` (= the smoke settings of the FLAG_164 runs); the output holds the
-   tables of fold 1 only, is marked `complete: false` and skips the 37 110-pair assertion (safe04_compare reports it as PARTIAL).
+   tables of fold 1 only, is marked `complete: false` and skips the 37 110-pair assertion.
 
 Every cell of stage.ipy is new and opens with `print("[cell] ...", flush=True)`; subprocess output is streamed line by line.
-The same stage.ipy text serves `safe04_lab_core` (env `FF_SAFE04_LEVEL=core`; code read from `../safe04_lab/code`).
-
-#### Dev wiring optional (numbers: none) - added 19/11/2026
-
-- **Where:** cell 1 (input check) and cell 4 (bundle packaging) of `stage.ipy`; `safe04_lab` `stage.json` input `datasets/ff-frozen/flag2027-e2e-dev-wiring-p` gets `"optional": true` (and loses `resolve: saved_only`).
-- **Old:** level full required the dev wiring (dev-list files of the frozen bundle: `components_dev.npz`, `e2e_manifest.json`, `fusers/`, `ref/`; no producing stage) and copied it into the bundle.
-- **New:** attached, it is copied byte for byte as before; absent, the bundle gets `e2e_manifest.json` with `kind` e2e-dev, `split` dev, `files` [] and `dev_wiring` false, and no dev-list file.
-- **Why:** lineage of the 13.54 zip from raw data, and no dev data in the 13.54 chain. Readers of the bundle: the F-family training stages (bundle search accepts `safe04/` since 19/11; they read `safe04/` and the manifest's `created`), `cleancomp_tables` (copies every file), `e50cc` (copies `safe04/` from the bundle whose manifest kind is e2e-dev), `t164f` (dev scoring skipped without `components_dev.npz`).
-
-## safe04_lab_core
-
-`stages/30_F_family/safe04_lab_core/CHANGES.md` (30_F_family, new)
-
-### CHANGES: safe04_lab_core (new stage, evidence only; split from safe04_lab on 2026-11-18)
-
-New code only (no original): `stage.ipy` is the same text as `../safe04_lab/stage.ipy`, run with `FF_SAFE04_LEVEL=core`; the lab code
-is read from `../safe04_lab/code` (verbatim copies, sha256 checked against `CODE_MANIFEST.json`). See `../safe04_lab/CHANGES.md` items
-1, 3 and 4 for the script versions and the stack02_rows / fold_persons derivation.
-
-What it does: `ff_core_streams.py` imports `lab_streams.py` unchanged and calls `make_fold` + `Extra` + `trial_extra` exactly as
-`run_fold` does, without `arm_ctrl` / `L0` (keys use seeded local RandomStates and Extra its own RandomState(0) + deterministic lbfgs, so
-they do not depend on the skipped bridge training). The rebuilt keys (asserted equal to the frozen tables), the Extra columns (acl, lb,
-iba2, ibal, gen, pf_m, pv_m), stack02_rows and fold_persons.json are spliced into the `safe04/` tables of the frozen bundle
-(`datasets/ff-frozen/flag2027-e2e-dev-p`, input with `resolve: saved_only`).
-
-**This is a PARTIAL rebuild.** The XALL_* / CTRL_* columns of streams_fold and every relonly_multi / relonly_g / t3enc01f / bigb01f /
-cafuse_en2 table stay frozen. Under NOREL=1 + CLEANCOMP=1 they feed no F1s' fuser input of 13.54 (cleancomp_tables replaces XALL_* / relc_fia_eb / relg_fia_eb / anP512_* / t3_relg; NOREL drops rel / relg / t3_relg); they feed the F0 English fuser (CTRL_ib / CTRL_age through EN-T3-01 table_en + cafuse_en2 in CLEANTUNE-01 fit_en_clean, the t112sf0s / e112f0sx zip step) and wiring checks (check_v11_fuser). Whether any 13.54 number uses the F0 English file is for WP-G to confirm (WP-E's reading: no, the FACTOR_ENFUSE English scores come from the Bangla fuser of F1s'). Either way a core output is partial and must not stand in for the bundle.
-The output is evidence that the cheap part of the lab reproduces, nothing more: it goes to the kernel output `e2e_dev_core/` only, is never
-exported as `flag2027-e2e-dev-p`, and copies no dev-wiring file. Smoke (`FF_SMOKE=1`): fold 1 rebuilt, folds 2-5 frozen and marked so.
-
-Every cell opens with `print("[cell] ...", flush=True)`.
+The cheap partial rebuild (level core, a former evidence stage `safe04_lab_core` with the helper `ff_core_streams.py`) is removed
+from this repository (19/11/2026): no 13.54 number depends on it.
 
 #### Dev wiring optional (numbers: none) - added 19/11/2026
 
@@ -2565,182 +2493,8 @@ The second source `original/staging/flag-2027-nb-163-rfsfxc5rl-p.redacted.ipynb`
 - where: stage.json `inputs` (entry removed; recorded under `inputs_dropped`); no code change
 - old: attached as in the original run (only indexed by the .npy scan of `_xload`)
 - new: not attached
-- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:83) selects files by exact name for the requested blocks only (RFS_CFG {"add": ["f_c5s", "v_rl"]}); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use. Kept in t183_p1 / t183_p2 (evidence stages whose arms request `f_pel`).
+- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:83) selects files by exact name for the requested blocks only (RFS_CFG {"add": ["f_c5s", "v_rl"]}); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use.
 - effect on numbers: none
-
-## t183_p1
-
-`stages/40_R_family/t183_p1/CHANGES.md` (40_R_family, exact-package)
-
-### CHANGES: `t183_p1` (phantrnhuyntrn/flag-2027-nb-183-factor-p1)
-
-Source of `stage.ipy`: `original/16_flag-2027-nb-183-factor-p1.redacted.ipynb`, a redacted copy of the exact notebook `E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/16_flag-2027-nb-183-factor-p1.ipynb` (md5 `1d1968c13e48ed57d725727b2d7f938a`, sha256 `41c805a88727f1b828463fa1525621982dbe5c7dd82dd45abe9ea931ba106fa3`; exactness `exact-package`; kapi_runs line 1523, pushed md5 `5b46d53041e443fc55aa8684ed7d8acf`).
-Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this order (each must match exactly `count` times), cells joined by `\n# <<<FF-CELL>>>\n`; result sha256 `8e21eb653725f59d64e60fb25b34e5b2d8d525aef45e845f8848254d697a3b8e` (6 cells). Same rule as `release/flag2027_e2e/build_notebook.py` (checked: it reproduces `release/flag2027_e2e/code/t163b.ipy` byte for byte when given that package's two patches).
-
-#### A. Changes made when copying the exact notebook into `original/` (redaction)
-
-1. **notebook cell 2 (0-based, markdown counted), `("train/gender.csv", ...)` literal** - type `redaction` (organisers' data).
-   - old: gzip + base64 literal, 228 characters (sha256 of the literal `5af7e8b8d87b0d1d4aa4f59c495150e2f305b45236466f8f31930678578e372c`), decoding to 560 bytes with sha256 `fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030` = the organisers' `meta_file_train_set.csv` (70 lines `idNNN,f|m`).
-   - new: the placeholder string `FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030`.
-   - why: the repo must not carry organisers' data (user rule 6); every FLAG_163-family notebook embeds this file as `train/gender.csv`.
-   - effect on numbers: none (patches 'redaction' below remove the entry and, in `RFS_MODE=B` only, copy the same bytes from the organisers' file with a sha256 check; no other mode reads the file).
-
-The second source `original/staging/flag-2027-nb-183-factor-p1.redacted.ipynb` (exact push staging copy, md5 `5b46d53041e443fc55aa8684ed7d8acf` = kapi_runs) got the same redaction and gives the same `stage.ipy`.
-
-#### B. Patches (`stage.json` -> `patches`, applied in this order)
-
-2. **notebook cell 2 (0-based index in the notebook, markdown cells counted), line 8 of that cell** - type `redaction`.
-   - old (1 hit): `("train/gender.csv", "FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030"), `
-   - new: ``
-   - why: the embedded copy of the organisers' meta_file_train_set.csv is not distributed with the repo (user rule 6); its entry is removed from the embedded-file loop (the literal was already replaced by a placeholder in original/*.redacted.ipynb, see SOURCE.json).
-   - effect on numbers: none.
-
-3. **notebook cell 2 (0-based index in the notebook, markdown cells counted), line 9 of that cell** - type `redaction`.
-   - old (1 hit): `    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\n`
-   - new: `    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\nif MODE == "B":   # FF redaction (CHANGES.md): train/gender.csv was an embedded copy of the organisers' meta_file_train_set.csv; the same bytes come from the raw-v4 input (only assemble.py, RFS_MODE=B, reads the file)\n    _ff_g = [q for q in sorted(Path("/kaggle/input").rglob("... (843 chars)`
-   - why: puts back train/gender.csv in RFS_MODE=B from the organisers' file itself (sha256 asserted = the embedded copy), so assemble.py reads the same 560 bytes; in modes L / P / LAB no code reads train/gender.csv (checked in every embedded rfs_train.py version), so nothing is written.
-   - effect on numbers: none.
-
-4. **notebook cell 2 (0-based index in the notebook, markdown cells counted), line 3 of that cell** - type `path`.
-   - old (1 hit): `import os, sys, json, gzip, base64, subprocess, shutil, time\n`
-   - new: `import os, sys, json, gzip, base64, subprocess, shutil, time\nos.environ["RFS_XDIRS"] = "/kaggle/input"   # FF path (CHANGES.md): root that rfs_train.py _xload scans for the extra blocks of RFS_CFG (e.g. f_c5s, v_rl); the runner rewrites this literal to the stage's own input view (original run: RFS_XDIRS unset -> the same /kaggle/input)\n`
-   - why: the decoded rfs_train.py looks up the extra feature blocks (RFS_CFG 'add', e.g. f_c5s / v_rl) with _xload, whose root is RFS_XDIRS or, when unset, the literal /kaggle/input (line 83 of the P / FACTOR-lab versions, line 96 of the 213 / 216 versions). Code decoded at run time is out of reach of the runner's /kaggle/input rewrite, so on Linux / Docker the lookup found nothing and on a Kaggle orchestration session it scanned every attachment of the session. Setting RFS_XDIRS in the stage text (which the runner rewrites to the stage's input view; the subprocess inherits os.environ) points it at exactly the stage's inputs on every machine; run as is on Kaggle it is the original default.
-   - effect on numbers: none (the same root: the datasets the run attached = the stage's inputs).
-   - added: 18/11/2026 (fixer, review of WP-F).
-
-5. **notebook cell 3 (0-based index in the notebook, markdown cells counted), line 22 of that cell** - type `variant`.
-   - old (1 hit): `    torch.save({"params": [torch.zeros(2)]}, WORK / "lora_C1.pt")          # smoke: lora gia (luot L that chay tren Kaggle GPU)\n`
-   - new: `    _ff_c1 = find_all("lora_C1.pt")   # FF variant guard (CHANGES.md): in smoke mode too, use the mounted ORIGINAL LoRA C1 (modes P / LAB only copy this file), so no stand-in lora_C1.pt reaches the artifact\n    if _ff_c1: shutil.copy(_ff_c1[0], WORK / "lora_C1.pt")\n    else: torch.save({"params": [torch.zeros(2)]}, WORK / "lora_C1.pt")          # smoke: lora gia (luot L that chay tren Kaggle GPU... (403 chars)`
-   - why: with FLAG_SMOKE=1 the original code writes a stand-in lora_C1.pt ({'params': [zeros(2)]}) that modes P / LAB copy into the output (rfs_art/ or work/); the runner's variant check (configs/variant_1354.json file_checks, every lora_C1.pt of every output = b97372e3...) then stopped every smoke run with VariantError. In modes P / LAB the file is only copied (stage_release: shutil.copy + sha256 in the manifest), never loaded, so copying the mounted original C1 (always present: input resolve saved_only + variant.require_files) changes nothing else in smoke.
-   - effect on numbers: none (FLAG_SMOKE=1 path only; a real run never reaches this branch).
-   - added: 18/11/2026 (fixer, review of WP-F).
-
-#### C. Kept as in the original run (on purpose)
-
-- Inputs: exactly the datasets / kernels the run attached (`stage.json` -> `inputs`, from the run's kernel metadata), including the ones attached but not read.
-- Every other line of every cell, the embedded code (`original/decoded/`, byte-exact, CRLF kept) and the `[boot]` / `[cell]` lines that kapi inserted at push time.
-- pip calls (`pip_policy: original`).
-- The ORIGINAL LoRA C1 (`onnhqunhh/flag2027-rfs-lora-p`, `lora_C1.pt` sha256 `b97372e3...`); the substitutions to the fixed C1 made for the 16.18 system (`release/flag2027_e2e/stages.py:234-320, 526-527`) and the `lorafix1` defaults of today's scripts are NOT applied (see `../C1_VARIANTS.md`).
-
-#### D. Changes in `stage.json` outside the code (fixer, 18/11/2026, review of WP-F)
-
-- `runner_requirements.literal_kaggle_input` = `false` (new key; why: the only literal /kaggle/input read in the decoded code is rfs_train.py _xload (line 83 / 96), redirected to the stage's input view by the RFS_XDIRS path patch of the setup cell; every other path is in the stage text (rewritten by the runner) or passed as an argument (grep of original/decoded/: flag_final_core_092.py mentions /kaggle/input in a docstring only)).
-- `post_checks`: removed `{"file": "work/lora_C1.pt", "sha256": "b97372e3..."}`. The runner reads every post_check as a JSON file (runner/ffcore.py verify_stage), so this entry failed fatally on the binary torch file of every real run. The same hash stays in `verify` (check `exact`) and is now also enforced on the input (next items).
-- `inputs` -> `datasets/onnhqunhh/flag2027-rfs-lora-p`: `"resolve": "saved_only"` (runner: only a saved / attached copy counts, whatever FF_MODE / FF_USE_SAVED say; the producer t163l_orig is not scheduled for it). `variant.require_files`: `lora_C1.pt` sha256 `b97372e3...` on that input (runner build_vin, before the stage runs, smoke included). Reason: in mode (a) a re-trained C1 can never equal b97372e3 (GPU), and 13.54 is defined by the original file (DESIGN 2.7); see ../README.md 'LoRA C1 policy'.
-- `compute.gpus` 1 -> 2 (+ `gpus_note`): the runs had Kaggle T4 x2 (logs 'gpus 2', machine_shape NvidiaTeslaT4); the code uses one device, so numbers do not depend on it.
-
-## t183_p2
-
-`stages/40_R_family/t183_p2/CHANGES.md` (40_R_family, exact-package)
-
-### CHANGES: `t183_p2` (phantrnhuyntrn/flag-2027-nb-183-factor-p2)
-
-Source of `stage.ipy`: `original/17_flag-2027-nb-183-factor-p2.redacted.ipynb`, a redacted copy of the exact notebook `E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/17_flag-2027-nb-183-factor-p2.ipynb` (md5 `6c463d641d1a96e610bdc1a27c212a5b`, sha256 `89e785a72a64cdd01caa4225c24031acca1149e6a19d8e60cb5a9d4789f999b2`; exactness `exact-package`; kapi_runs line 1524, pushed md5 `65d4796fd0cee1c98a44f13589c6ce2c`).
-Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this order (each must match exactly `count` times), cells joined by `\n# <<<FF-CELL>>>\n`; result sha256 `b9481a2ee7d14ec0ad001d7571f641fc4c9ac51c9e776d70f570514fab48756f` (6 cells). Same rule as `release/flag2027_e2e/build_notebook.py` (checked: it reproduces `release/flag2027_e2e/code/t163b.ipy` byte for byte when given that package's two patches).
-
-#### A. Changes made when copying the exact notebook into `original/` (redaction)
-
-1. **notebook cell 2 (0-based, markdown counted), `("train/gender.csv", ...)` literal** - type `redaction` (organisers' data).
-   - old: gzip + base64 literal, 228 characters (sha256 of the literal `5af7e8b8d87b0d1d4aa4f59c495150e2f305b45236466f8f31930678578e372c`), decoding to 560 bytes with sha256 `fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030` = the organisers' `meta_file_train_set.csv` (70 lines `idNNN,f|m`).
-   - new: the placeholder string `FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030`.
-   - why: the repo must not carry organisers' data (user rule 6); every FLAG_163-family notebook embeds this file as `train/gender.csv`.
-   - effect on numbers: none (patches 'redaction' below remove the entry and, in `RFS_MODE=B` only, copy the same bytes from the organisers' file with a sha256 check; no other mode reads the file).
-
-The second source `original/staging/flag-2027-nb-183-factor-p2.redacted.ipynb` (exact push staging copy, md5 `65d4796fd0cee1c98a44f13589c6ce2c` = kapi_runs) got the same redaction and gives the same `stage.ipy`.
-
-#### B. Patches (`stage.json` -> `patches`, applied in this order)
-
-2. **notebook cell 2 (0-based index in the notebook, markdown cells counted), line 8 of that cell** - type `redaction`.
-   - old (1 hit): `("train/gender.csv", "FF-REDACTED:organisers-file:meta_file_train_set.csv:560-bytes:sha256=fd7991a3353b9f90b2120b8d79fdf50ebaef6438c2e128be162ffbbf6d29c030"), `
-   - new: ``
-   - why: the embedded copy of the organisers' meta_file_train_set.csv is not distributed with the repo (user rule 6); its entry is removed from the embedded-file loop (the literal was already replaced by a placeholder in original/*.redacted.ipynb, see SOURCE.json).
-   - effect on numbers: none.
-
-3. **notebook cell 2 (0-based index in the notebook, markdown cells counted), line 9 of that cell** - type `redaction`.
-   - old (1 hit): `    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\n`
-   - new: `    p = CODE / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(gzip.decompress(base64.b64decode(blob)))\nif MODE == "B":   # FF redaction (CHANGES.md): train/gender.csv was an embedded copy of the organisers' meta_file_train_set.csv; the same bytes come from the raw-v4 input (only assemble.py, RFS_MODE=B, reads the file)\n    _ff_g = [q for q in sorted(Path("/kaggle/input").rglob("... (843 chars)`
-   - why: puts back train/gender.csv in RFS_MODE=B from the organisers' file itself (sha256 asserted = the embedded copy), so assemble.py reads the same 560 bytes; in modes L / P / LAB no code reads train/gender.csv (checked in every embedded rfs_train.py version), so nothing is written.
-   - effect on numbers: none.
-
-4. **notebook cell 2 (0-based index in the notebook, markdown cells counted), line 3 of that cell** - type `path`.
-   - old (1 hit): `import os, sys, json, gzip, base64, subprocess, shutil, time\n`
-   - new: `import os, sys, json, gzip, base64, subprocess, shutil, time\nos.environ["RFS_XDIRS"] = "/kaggle/input"   # FF path (CHANGES.md): root that rfs_train.py _xload scans for the extra blocks of RFS_CFG (e.g. f_c5s, v_rl); the runner rewrites this literal to the stage's own input view (original run: RFS_XDIRS unset -> the same /kaggle/input)\n`
-   - why: the decoded rfs_train.py looks up the extra feature blocks (RFS_CFG 'add', e.g. f_c5s / v_rl) with _xload, whose root is RFS_XDIRS or, when unset, the literal /kaggle/input (line 83 of the P / FACTOR-lab versions, line 96 of the 213 / 216 versions). Code decoded at run time is out of reach of the runner's /kaggle/input rewrite, so on Linux / Docker the lookup found nothing and on a Kaggle orchestration session it scanned every attachment of the session. Setting RFS_XDIRS in the stage text (which the runner rewrites to the stage's input view; the subprocess inherits os.environ) points it at exactly the stage's inputs on every machine; run as is on Kaggle it is the original default.
-   - effect on numbers: none (the same root: the datasets the run attached = the stage's inputs).
-   - added: 18/11/2026 (fixer, review of WP-F).
-
-5. **notebook cell 3 (0-based index in the notebook, markdown cells counted), line 22 of that cell** - type `variant`.
-   - old (1 hit): `    torch.save({"params": [torch.zeros(2)]}, WORK / "lora_C1.pt")          # smoke: lora gia (luot L that chay tren Kaggle GPU)\n`
-   - new: `    _ff_c1 = find_all("lora_C1.pt")   # FF variant guard (CHANGES.md): in smoke mode too, use the mounted ORIGINAL LoRA C1 (modes P / LAB only copy this file), so no stand-in lora_C1.pt reaches the artifact\n    if _ff_c1: shutil.copy(_ff_c1[0], WORK / "lora_C1.pt")\n    else: torch.save({"params": [torch.zeros(2)]}, WORK / "lora_C1.pt")          # smoke: lora gia (luot L that chay tren Kaggle GPU... (403 chars)`
-   - why: with FLAG_SMOKE=1 the original code writes a stand-in lora_C1.pt ({'params': [zeros(2)]}) that modes P / LAB copy into the output (rfs_art/ or work/); the runner's variant check (configs/variant_1354.json file_checks, every lora_C1.pt of every output = b97372e3...) then stopped every smoke run with VariantError. In modes P / LAB the file is only copied (stage_release: shutil.copy + sha256 in the manifest), never loaded, so copying the mounted original C1 (always present: input resolve saved_only + variant.require_files) changes nothing else in smoke.
-   - effect on numbers: none (FLAG_SMOKE=1 path only; a real run never reaches this branch).
-   - added: 18/11/2026 (fixer, review of WP-F).
-
-#### C. Kept as in the original run (on purpose)
-
-- Inputs: exactly the datasets / kernels the run attached (`stage.json` -> `inputs`, from the run's kernel metadata), including the ones attached but not read.
-- Every other line of every cell, the embedded code (`original/decoded/`, byte-exact, CRLF kept) and the `[boot]` / `[cell]` lines that kapi inserted at push time.
-- pip calls (`pip_policy: original`).
-- The ORIGINAL LoRA C1 (`onnhqunhh/flag2027-rfs-lora-p`, `lora_C1.pt` sha256 `b97372e3...`); the substitutions to the fixed C1 made for the 16.18 system (`release/flag2027_e2e/stages.py:234-320, 526-527`) and the `lorafix1` defaults of today's scripts are NOT applied (see `../C1_VARIANTS.md`).
-
-#### D. Changes in `stage.json` outside the code (fixer, 18/11/2026, review of WP-F)
-
-- `runner_requirements.literal_kaggle_input` = `false` (new key; why: the only literal /kaggle/input read in the decoded code is rfs_train.py _xload (line 83 / 96), redirected to the stage's input view by the RFS_XDIRS path patch of the setup cell; every other path is in the stage text (rewritten by the runner) or passed as an argument (grep of original/decoded/: flag_final_core_092.py mentions /kaggle/input in a docstring only)).
-- `post_checks`: removed `{"file": "work/lora_C1.pt", "sha256": "b97372e3..."}`. The runner reads every post_check as a JSON file (runner/ffcore.py verify_stage), so this entry failed fatally on the binary torch file of every real run. The same hash stays in `verify` (check `exact`) and is now also enforced on the input (next items).
-- `inputs` -> `datasets/onnhqunhh/flag2027-rfs-lora-p`: `"resolve": "saved_only"` (runner: only a saved / attached copy counts, whatever FF_MODE / FF_USE_SAVED say; the producer t163l_orig is not scheduled for it). `variant.require_files`: `lora_C1.pt` sha256 `b97372e3...` on that input (runner build_vin, before the stage runs, smoke included). Reason: in mode (a) a re-trained C1 can never equal b97372e3 (GPU), and 13.54 is defined by the original file (DESIGN 2.7); see ../README.md 'LoRA C1 policy'.
-- `compute.gpus` 1 -> 2 (+ `gpus_note`): the runs had Kaggle T4 x2 (logs 'gpus 2', machine_shape NvidiaTeslaT4); the code uses one device, so numbers do not depend on it.
-
-## t184_report
-
-`stages/40_R_family/t184_report/CHANGES.md` (40_R_family, exact-package)
-
-### CHANGES: `t184_report` (phantrnhuyntrn/flag-2027-nb-184-factor-report)
-
-Source of `stage.ipy`: `original/18_flag-2027-nb-184-factor-report.redacted.ipynb`, a redacted copy of the exact notebook `E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/notebooks/1_train/18_flag-2027-nb-184-factor-report.ipynb` (md5 `c7b54a775ce9c57bd7b16285931339f2`, sha256 `b92faf9a9fc01682b21e78e75efabc98abaca0071fecb5f2ce650b41aad39cf6`; exactness `exact-package`; kapi_runs line 1549, pushed md5 `3bcb7ce1495f194756b9314ce32da588`).
-Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this order (each must match exactly `count` times), cells joined by `\n# <<<FF-CELL>>>\n`; result sha256 `7689f728a007dece7e20a410b87f42eda7f37188088ff37b2a62e7125cae40e0` (9 cells). Same rule as `release/flag2027_e2e/build_notebook.py` (checked: it reproduces `release/flag2027_e2e/code/t163b.ipy` byte for byte when given that package's two patches).
-
-#### A. Changes made when copying the exact notebook into `original/` (redaction)
-
-1. **notebook cell 4 (0-based, markdown counted), `CODE_B64` literal** - type `dev-exclusion`.
-   - old: base64 of the code zip (366708 characters, zip sha256 `225a250aa6b3ec356aca63b6eab471c7e0797fd6c1eba58ace15f459ce848dff`) with the member `Experiment/CLEAN-EN-01/submission_clean_en01_dev.zip` (91043 bytes, sha256 `b4b216c2eaaf7cbfb3441a1d5800ff1ccc538ea3d7ad8a51496aafa19aa0657d`, md5 `ae902d1c7e87783bf88e345b459e39f2`).
-   - new: the same zip without that member; every other member is copied byte for byte (local records kept, central directory re-written; zip sha256 `604f650d74fda24c36d41092a180b088796bc4cd6d4330b8571d6d2bfe2dec17`, literal 288260 characters).
-   - why: dev-phase score zip; the repo must not carry dev data (user rule 6, DESIGN 9.4).
-   - effect on numbers: none: the cell checks the md5 of each member that is present; the only reader of that file is CLEANTUNE-01 `zip_ct()` (dev zip comparison), which this stage never calls; `CODE_MD5` / `EXP_CODE` still name its md5 and are only printed / compared for resume.
-
-The second source `original/staging/flag-2027-nb-184-factor-report.redacted.ipynb` (exact push staging copy, md5 `3bcb7ce1495f194756b9314ce32da588` = kapi_runs) got the same redaction and gives the same `stage.ipy`.
-
-#### B. Patches (`stage.json` -> `patches`, applied in this order)
-
-none
-
-#### C. Kept as in the original run (on purpose)
-
-- Inputs: exactly the datasets / kernels the run attached (`stage.json` -> `inputs`, from the run's kernel metadata), including the ones attached but not read.
-- Every other line of every cell, the embedded code (`original/decoded/`, byte-exact, CRLF kept) and the `[boot]` / `[cell]` lines that kapi inserted at push time.
-- pip calls (`pip_policy: original`).
-
-#### D. Changes in `stage.json` outside the code (fixer, 18/11/2026, review of WP-F)
-
-- `runner_requirements.literal_kaggle_input` = `true` (new key; why: the lab modules decoded from CODE_B64 scan the literal /kaggle/input: kaggle/build_l0_notebooks.py line 143 (LOAD cell, lid_strict.json fallback), Experiment/T3ENC-01/run.py lines 33-34 (lid_strict.json), CLEANTUNE-01/run.py lines 168-182 and 850 (_find / _find_all), FACELORA-03/run.py 53-54, SCALE-CC-01/run.py 32-33, DSEL-02/run.py 53-54, DSEL-03/run.py 75-76, VOICELORA-01/run.py 48-49, AUXP-01/run.py 34, IBLORA-01/run.py 30 (same modules as WP-G's e112f1sx)).
-- `notes`: identity-linkage constant OVERLAP of the embedded lab code (disclosed in docs/COMPLIANCE_NOTES.md §4), dev_data flag for e2e-dev-p, private storage of the exact notebook.
-
-#### E. Frozen t3s01-tables-p kept as saved only (stage.json only; integration fixer r1, 18/11/2026)
-
-- type: `variant` (resolution rule only)
-- where: stage.json input `datasets/ngnnguynchn/flag2027-t3s01-tables-p`: `"resolve": "saved_only"`
-- why: since 18/11 the only producer-like stage for these tables (`t3s01_trca`, for t219_dumpv4) makes keys + trCA only, under its own id; this evidence stage keeps the frozen tables with their `trT3S_*` columns. Documented requirement-1 exception (evidence, not in the 13.54 numbers)
-- effect on numbers: none
-
-#### Requirement 1: frozen wiring inputs removed (19/11/2026 (requirement-1 closure))
-
-- input `datasets/ngnnguynchn/flag2027-cc5-oof-p` dropped (stage.json `inputs_dropped`): attached in the original run but never read by this stage: its tables (t3recipe02_fold*.parquet) are read only by DSEL-02/run.py with_cc5() and DSEL-03/run.py attach(), which are reached only from the DSEL-02 / DSEL-03 / SCALE-CC-01 / AUXP-01 report commands; this stage runs CLEANTUNE-01 / FACTOR-01 / FUSENET-01 commands, which never call them, and no cell checks the dataset's presence. No producing stage exists (old run FLAG_57).
-- input `datasets/ngnnguynchn/flag2027-dsel02-oof-p` dropped (stage.json `inputs_dropped`): attached in the original run but never read by this stage: its tables (dsel02_fold*.parquet) are read only by DSEL-02/run.py and DSEL-03/run.py report paths, which this stage's commands never call; no presence check. No producing stage exists (old run FLAG_58).
-- input `datasets/ngnnguynchn/flag2027-facelora03-tables-p` dropped (stage.json `inputs_dropped`): attached in the original run; real runs only copy facelora03_B3_fold*.parquet into SP/out/safe04 (no assert) and nothing reads the copies: the only reader is the smoke stand-in (FL3Z_SMOKE / FLAG_SMOKE), which now takes the key columns of the SAFE-04 streams tables instead (patch of the same date). No producing stage exists (old runs FLAG_86 / 86b).
-- input `datasets/ngnnguynchn/flag2027-lab-avfull-p` dropped (stage.json `inputs_dropped`): attached in the original run only to satisfy the lab presence check OPTIONAL_DIRS['Experiment/CAFUSE-EN/feats_av_full'] = ['CLEANTUNE-01']; its content (AudioCLIP arrays) is read only by EN-T3-01 table_en() via CLEANTUNE-01 fit_en_clean(), called from the zip command when F0_ZIP is unset, i.e. only in e112f0sx (F0 English). The presence check is made optional by the patch of the same date. No producing stage exists (team package labavfull/, FLAG_32 run 2).
-- input `datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p` dropped (stage.json `inputs_dropped`): attached in the original run but never opened by this stage: CLEANTUNE-01 _scout_mav() / _scout_test() are called only when training rows are built (mav_extra) or test lists are scored (final / final_t3s); the FACTOR-01 / FUSENET-01 report commands of this stage only call merge_t3s, _lr, _nested_design and stack02. No producing stage exists.
-- patch (smoke): `pd.read_parquet(SP / "out/safe04" / f"facelora03_B3_fold{s}.parquet")` -> `pd.read_parquet(SP / "out/safe04" / f"streams_fold{s}.parquet")[["fold", "data", "protocol", "y", "fi", "vi", "XALL_deep0"]].rename(columns={"XALL_deep0": "trB3"})`. Why: smoke only (FL3Z_SMOKE / FLAG_SMOKE): the stand-in tables were noisy copies of FACELORA-03's B3 tables (datasets/ngnnguynchn/flag2027-facelora03-tables-p, no producing stage). They now start from the SAFE-04 streams table of the same fold (frozen bundle / stage safe04_lab, already in SP/out/safe04): same 7 406 rows and the same key columns fold, data, protocol, y, fi, vi (checked on fold 1 against the team copies, 19/11); XALL_deep0 plays the role of trB3, whose columns the stand-in drops anyway. Effect on numbers: none in real runs (smoke stand-ins only)
-- patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
-- evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
 ## t213_p1
 
@@ -2808,7 +2562,7 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 - where: stage.json `inputs` (entry removed; recorded under `inputs_dropped`); no code change
 - old: attached as in the original run (only indexed by the .npy scan of `_xload`)
 - new: not attached
-- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:96) selects files by exact name for the requested blocks only (ARMS c0r / c0s = add [f_c5s, v_rl], seeds 4-9); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use. Kept in t183_p1 / t183_p2 (evidence stages whose arms request `f_pel`).
+- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:96) selects files by exact name for the requested blocks only (ARMS c0r / c0s = add [f_c5s, v_rl], seeds 4-9); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use.
 - effect on numbers: none
 
 ## t213_p2
@@ -2877,7 +2631,7 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 - where: stage.json `inputs` (entry removed; recorded under `inputs_dropped`); no code change
 - old: attached as in the original run (only indexed by the .npy scan of `_xload`)
 - new: not attached
-- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:96) selects files by exact name for the requested blocks only (ARMS c0r / c0s = add [f_c5s, v_rl], seeds 4-9); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use. Kept in t183_p1 / t183_p2 (evidence stages whose arms request `f_pel`).
+- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:96) selects files by exact name for the requested blocks only (ARMS c0r / c0s = add [f_c5s, v_rl], seeds 4-9); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use.
 - effect on numbers: none
 
 ## t216_p3
@@ -2946,7 +2700,7 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 - where: stage.json `inputs` (entry removed; recorded under `inputs_dropped`); no code change
 - old: attached as in the original run (only indexed by the .npy scan of `_xload`)
 - new: not attached
-- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:96) selects files by exact name for the requested blocks only (ARMS c0t = add [f_c5s, v_rl], seeds 10-12); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use. Kept in t183_p1 / t183_p2 (evidence stages whose arms request `f_pel`).
+- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:96) selects files by exact name for the requested blocks only (ARMS c0t = add [f_c5s, v_rl], seeds 10-12); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use.
 - effect on numbers: none
 
 ## t219_dumpv4
@@ -3029,8 +2783,8 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
   fuses `F1S = S6 + V11_T3 + ["trCA"]` and RFX only; `trT3S_*` feed `reportt3s` / `final_t3s` / `_with_t3s`, which t219 does not call.
 - **Effect on numbers:** none expected for sigma (trCA identical: WP-F light check 18/11, max |diff| 0.0 on all five folds; the stage re-checks it when the
   frozen copy is present).
-- **Consumers:** `t219_dumpv4` (input `datasets/ff/flag2027-t3s01-trca-p`, mounted at `datasets/ngnnguynchn/flag2027-t3s01-tables-p`). `t184_report`
-  (evidence) keeps the frozen dataset (`resolve: saved_only`).
+- **Consumers:** `t219_dumpv4` (input `datasets/ff/flag2027-t3s01-trca-p`, mounted at `datasets/ngnnguynchn/flag2027-t3s01-tables-p`). No other stage reads the
+  frozen dataset.
 
 ## a_factor
 
@@ -3332,38 +3086,6 @@ team-package copy in `original/` has the same code cells.
 | dev data | `ONLY_UNDER = 'evaluation_phase'` (code cell 01): dev lists are not read; with change 1, `dev_set.zip` is never opened | none |
 | output content | the output folder holds every file copied from the adapter dataset (code cell 10), including the VoxBlink face array `vb_face_clip*.npy` and `facelora_state.pt` (adapter learned with VoxBlink frames): declared in `stage.json` `outputs.contains` (`voxblink: true`); the run output is private storage only. WP-A: set `voxblink: true` on this run-output entry of `configs/data_map.json`. | none |
 
-## a_best4_ref
-
-`stages/60_fvbind/a_best4_ref/CHANGES.md` (60_fvbind, new)
-
-### CHANGES: a_best4_ref
-
-Kind new: a minimal assembler replacing `python Experiment/EVALPROBE-01/make_probes.py final`.
-
-Every change against the code of the original run (fields: type, where, old, new, why, effect on numbers). The runner also maps `/kaggle/input` and `/kaggle/working` to the stage's own folders and prints a `[cell]` line before every cell; neither touches the code below.
-
-#### 1. make_probes.py replaced by its BEST_NOW path only
-
-- type: `wiring`
-- where: stage.ipy (whole)
-- old: make_probes.py final: loads about 25 zips of POOL at import, then write_zip(BEST_NOW)
-- new: the same load / vec / write_zip code on the two zips BEST_NOW uses (FACTOR_ENFUSE, FVBIND_ENFUSE)
-- why: the other 23 zips are not needed and some are not part of the 13.54 chain (the 13.54 zip reads the two ENFUSE zips directly; BEST4 is only a reference)
-- effect on numbers: none (members re-printed %.8f from %.8f sources: byte-identical, checked against the 15/11 member sha256)
-
-#### 2. saved zips also searched in <repo>/assembly/inputs; comment corrected
-
-- type: `path`
-- where: stage.ipy cell 1, function find(); header comment
-- old: <FF_DATA root>/05_scores and the stage's input view; comment '16.72 = sum of four measured cells'
-- new: <repo>/assembly/inputs added (from FF_STAGE_DIR, DESIGN 5.3); comment '16.72 = mean of the four measured cell EERs' ((13.78 + 11.97 + 22.12 + 18.99) / 4 = 16.715, make_probes.py KNOWN :36-38)
-- why: same search order as a_fvbind; the old comment stated the arithmetic wrongly
-- effect on numbers: none
-
-#### Not changed (deliberately)
-
-- Pair order of FACTOR_ENFUSE and %.8f printing (make_probes.py write_zip).
-
 ## a_fvbind
 
 `stages/60_fvbind/a_fvbind/CHANGES.md` (60_fvbind, local-script)
@@ -3546,7 +3268,7 @@ Every change against the code of the original run (fields: type, where, old, new
 - type: `variant`
 - where: stage.json input `datasets/onnhqunhh/flag2027-rfs-lora-p`: `"resolve": "saved_only"` (no code change)
 - old: the input followed configs/data_map.json `default_saved`; with `FF_FORCE=t163l_orig` the runner preferred the C1 retrained in the same session, so RFX' (this chain) could get a different C1 than RFX (WP-F stages use `saved_only`)
-- new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t183_p*, t213_p*, t216_p3
+- new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t213_p*, t216_p3
 - why: INTEGRATION_r1 M2 (one C1 for both Bangla files of 13.54)
 - effect on numbers: none for the 13.54 chain (the original run attached this very dataset)
 
@@ -3624,7 +3346,7 @@ Every change against the code of the original run (fields: type, where, old, new
 - type: `variant`
 - where: stage.json input `datasets/onnhqunhh/flag2027-rfs-lora-p`: `"resolve": "saved_only"` (no code change)
 - old: the input followed configs/data_map.json `default_saved`; with `FF_FORCE=t163l_orig` the runner preferred the C1 retrained in the same session, so RFX' (this chain) could get a different C1 than RFX (WP-F stages use `saved_only`)
-- new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t183_p*, t213_p*, t216_p3
+- new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t213_p*, t216_p3
 - why: INTEGRATION_r1 M2 (one C1 for both Bangla files of 13.54)
 - effect on numbers: none for the 13.54 chain (the original run attached this very dataset)
 
@@ -3705,7 +3427,7 @@ Every change against the code of the original run (fields: type, where, old, new
 - type: `variant`
 - where: stage.json input `datasets/onnhqunhh/flag2027-rfs-lora-p`: `"resolve": "saved_only"` (no code change)
 - old: the input followed configs/data_map.json `default_saved`; with `FF_FORCE=t163l_orig` the runner preferred the C1 retrained in the same session, so RFX' (this chain) could get a different C1 than RFX (WP-F stages use `saved_only`)
-- new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t183_p*, t213_p*, t216_p3
+- new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t213_p*, t216_p3
 - why: INTEGRATION_r1 M2 (one C1 for both Bangla files of 13.54)
 - effect on numbers: none for the 13.54 chain (the original run attached this very dataset)
 
@@ -4050,42 +3772,3 @@ Origin: `new`. In the original work the zip was checked by hand: member sha256 v
 
 - The submitted zip is not copied into the repository while Q-D (public or private) is open. Place it at `FF_DATA/05_scores/xjf_r10_trsig.zip`, or set `FF_REFERENCE_ZIP`, to get the Spearman comparison.
 - That reference zip is read straight from `FF_DATA/<entry>/05_scores/` and is not declared as an input (`stage.json` → `reads_undeclared`). Declaring it now would block the stage when the optional zip is absent: the file has no producing stage, so the runner does not treat it as a soft input. WP-A: add a data_map entry (class `score`, path `05_scores/xjf_r10_trsig.zip`, private) and declare the input once the runner supports optional inputs.
-
-## env_docker
-
-`tools/stages/00_env/env_docker/CHANGES.md` (00_env, new)
-
-### env_docker: changes with respect to the original
-
-Origin: `new` (DESIGN 2.3 rank 7). There is no original run: the stage is new code. Its reference input is the Dockerfile of the
-team repository, `release/docker/Dockerfile`, copied **unchanged** to `original/Dockerfile` and to `docker/Dockerfile`
-(SHA-256 `ad84e6fea5f55541c087d85fe5de806049d2f93fe0a3a5a1530842fbbbe66eb9`, identical to `E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/docker/Dockerfile`).
-
-| # | where | old -> new | reason | effect on numbers | type |
-|---|---|---|---|---|---|
-| 1 | whole stage | DESIGN 4.0 "build the image" -> "check the environment against the pins; print the docker build commands" | advisor's decision 18/11: Docker is not required, no new Docker work; the environment specification (base image digest + pip pins) is kept | none (no stage of the chain reads its output) | `pin` |
-| 2 | `docker/Dockerfile` last line `CMD ["python", "/opt/fourfusion/docker/ff.py", "plan"]` | kept verbatim | the Dockerfile is a reference copy; `docker/ff.py` belonged to the older U′ package and is not part of this repository. Start containers with an explicit command (`docker/README.md` section 3) | none | none |
-| 3 | `docker/constraints-kaggle-v173.txt`, `docker/requirements-kaggle-pinned.txt` | new files | the Dockerfile pins written as a pip constraints file (used by `FF_PIP=pinned`) and as an installable list | none | `pin` |
-| 4 | `stage.ipy` cell 3, `original_runs` | "python 3.13.16 (GPU runs; one CPU run 3.13.18)" -> "GPU image 3.13.16, CPU image 3.13.18 (November runs; older images in Sept / Oct)", torch 2.11.0+cu128 / 2.10.0+cu128 added for the Sept / Oct runs | review 18/11: every kept CPU log prints 3.13.18 and the collection / early feature runs used older images (docker/ENV_PER_STAGE.md, configs/env_per_stage.json) | none (report text) | `pin` |
-
-The stage writes `pip_freeze.txt` (every installed distribution, read with `importlib.metadata` so that it also works when pip is
-replaced by the no-op shim of `FF_PIP=skip`) and `env_report.json`.
-
-## models_fetch
-
-`tools/stages/00_env/models_fetch/CHANGES.md` (00_env, new)
-
-### models_fetch: changes with respect to the original
-
-Origin: `new` (DESIGN 2.3 rank 7). The reference code is `cmd_fetch_models` of `release/docker/ff.py` (team repository; file copied
-unchanged to `original/ff.py`, SHA-256 `c706b0b729b3b77961515d6e888fe9a8a567ea64dd220a821ad81bc64a06d8d2`, lines 286–306), which
-downloads ImageBind-huge from the pinned Hugging Face copy and keeps it only when its SHA-256 is Meta's. The stage runs
-`tools/fetch_models.py` (new) and streams its output line by line.
-
-| # | where | old -> new | reason | effect on numbers | type |
-|---|---|---|---|---|---|
-| 1 | model list | ImageBind only -> the full table of DESIGN 9.2 / S8 E10 (25 entries in four groups: core, dp, lid, wiring) | offline runs and a pinned record of every public model | none: same files the notebooks download (SHA-256 checked where measured) | `pin` |
-| 2 | HF downloads | the notebooks call `from_pretrained` / `snapshot_download` with the default revision `main` (ViT-age, audeering, AdaFace, CLIP-L in places, SpeechBrain) -> `tools/fetch_models.py` downloads `snapshot_download(revision=<commit>)` into `06_pretrained/cache/huggingface/hub` and then writes `models--<repo>/refs/main = <commit>`, so that the notebooks' unchanged `main` lookups resolve to the pinned commit when the runner points `HF_HUB_CACHE` at that cache. Pinned only with `FF_HF_OFFLINE=1` (HF_HUB_OFFLINE): online, huggingface_hub re-resolves `main` on the Hub and may fetch a newer commit | `main` can move; the commits are the ones the team caches hold (E: package `pretrained/cache/huggingface/hub/*/refs/main`, team machine cache) | none when the pinned commit is used (offline); online runs may differ if a repository changed after the original run | `pin` |
-| 3 | WeSpeaker ModelScope zips | the notebooks fetch them through the ModelScope tree API at run time -> the same API, then unpacked like `wespeaker_dir()` into `cache/flag/wespeaker/<stem>/` | lets `FLAG_CACHE` skip the download | none (zip SHA-256 checked: values measured on `D:/ff_models/`, 2026-11-18) | `pin` |
-| 4 | ImageBind URL | Meta's `dl.fbaipublicfiles.com` (dead since 2026-11-12) -> HF `PKU-Alignment/AnyRewardModel@40c7e2a` | dead link; same SHA-256 `d6f6c22b…2157` | none | `url` |
-| 5 | smoke mode | — -> `FF_FETCH_DRY=1` lists the table and writes `PLAN.txt` + a placeholder `SOURCES.json` | smoke test without network | none | — |

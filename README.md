@@ -12,8 +12,9 @@ the same person (MAV-Celeb v4). This repository rebuilds the displayed Evaluatio
 **Team FourFusion**, University of Information Technology, VNU-HCM: Nguyen Chon Nhan, Dang Minh Nhien, Vu Nguyen Anh Dung, Nguyen
 Huu Bao Loc; advisor Nguyen Duy Tam Anh.
 
-**Data and checkpoints** are in the Google Drive folder `FourFusion_FLAG2027_data/`, shared with the organisers only, because it
-holds their data and VoxBlink-derived material (layout: [`DATA.md`](DATA.md), [`CHECKPOINTS.md`](CHECKPOINTS.md)).
+**Data and checkpoints** are in the Google Drive folder [`FourFusion_FLAG2027_data/`](https://drive.google.com/drive/folders/12vkaLCAfi48XFIdFapYrmYjIld5mtfHV), shared with the organisers only,
+because it holds their data and VoxBlink-derived material (layout: [`docs/DATA.md`](docs/DATA.md),
+[`docs/CHECKPOINTS.md`](docs/CHECKPOINTS.md)).
 
 ## 1. The system
 
@@ -55,14 +56,14 @@ MAV-Celeb v1 clips of 70 persons); the runner refuses close variants ([`docs/VAR
 ```
 runner/        ffrun.py (command line), ffcore.py (engine), check_stage.py, verify.py, build_kaggle_notebook.py, selftest.py
 configs/       data_map.json (artifact id -> FF_DATA path), modes.json, variant_1354.json, pipeline_1354.json, expected_sha256.json
-stages/        91 stages in 11 groups (10_raw ... 80_final) + 2 environment stages in tools/stages/00_env; each: stage.json,
-               stage.ipy (cells of the run), CHANGES.md, original/
+stages/        85 stages in 11 groups (10_raw ... 80_final) + 2 environment stages (00_env); guide: stages/README.md;
+               each stage: stage.json, stage.ipy (cells of the run), CHANGES.md, original/
 assembly/      byte-exact assembly of the zip from the stored per-pair scores: assemble_exact.py + expected.json
 notebooks/     Kaggle orchestration notebooks FourFusion_1354_{infer,train,assemble}.ipynb (generated)
 docker/        environment specification (Kaggle base image digests, pinned pip sets, reference Dockerfile; Docker is optional)
-tools/         fetch_models.py (pinned pretrained models), dp_train_local.py, drive_manifest.py, secret_scan.py, build_docs.py
-src/           read-only copies of the team's builders and modules (SRC_MANIFEST.json); not needed to run
-docs/          STAGES.md, VERIFICATION.md, COMPLIANCE_NOTES.md, VARIANTS.md, NAMING.md, CHANGES_FROM_ORIGINAL.md, figures/
+tools/         fetch_models.py (pinned pretrained models), dp_train_local.py, drive_manifest.py, build_docs.py
+docs/          DATA.md, CHECKPOINTS.md, STAGES.md, VERIFICATION.md, COMPLIANCE_NOTES.md, VARIANTS.md, NAMING.md,
+               CHANGES_FROM_ORIGINAL.md, figures/
 ```
 
 Every stage keeps the **code that actually ran** (the executed Kaggle notebook or the local script), copied verbatim. Each change is
@@ -72,7 +73,7 @@ the run-time rewrites of the runner (`/kaggle/input` → the stage's own input v
 
 ## 3. Running
 
-All modes use one data root, `FF_DATA`, with the layout of the Drive folder ([`DATA.md`](DATA.md)), and one work folder, `FF_WORK`.
+All modes use one data root, `FF_DATA`, with the layout of the Drive folder ([`docs/DATA.md`](docs/DATA.md)), and one work folder, `FF_WORK`.
 The runner needs only Python 3 (the team used 3.13 / 3.14); the stages need the Kaggle image environment
 ([`docker/README.md`](docker/README.md); `FF_PIP=pinned` applies the pinned package set). `python runner/ffrun.py plan --mode <mode>`
 shows what would run and where every input comes from, without data.

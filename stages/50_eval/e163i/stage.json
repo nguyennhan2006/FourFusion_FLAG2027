@@ -120,7 +120,7 @@
    "applies_to": [
     "made"
    ],
-   "why": "in FF_MODE=train (FF_USE_SAVED=collected) t163p_c5rl re-learns the projector on a non-deterministic GPU, so the manifest_final.json pin above cannot hold for an artifact made in the session; the LoRA C1 inside it can: every C1 consumer (t163p_c5rl, t163p_fvb, t183_p*, t189_b2, t192_fvbx, t213_p*, t216_p3) resolves the SAVED original C1 (resolve: saved_only, 19/11/2026 (integration fixer r2, INTEGRATION_r2 M3)), so a C1 retrained by t163l_orig (FF_FORCE=t163l_orig) is evidence only and never reaches RFX or RFX'. Mode (a) is a recipe-level reproduction around a fixed C1 (DESIGN 0 / 5.1, docs/VARIANTS.md)",
+   "why": "in FF_MODE=train (FF_USE_SAVED=collected) t163p_c5rl re-learns the projector on a non-deterministic GPU, so the manifest_final.json pin above cannot hold for an artifact made in the session; the LoRA C1 inside it can: every C1 consumer (t163p_c5rl, t163p_fvb, t189_b2, t192_fvbx, t213_p*, t216_p3) resolves the SAVED original C1 (resolve: saved_only, 19/11/2026 (integration fixer r2, INTEGRATION_r2 M3)), so a C1 retrained by t163l_orig (FF_FORCE=t163l_orig) is evidence only and never reaches RFX or RFX'. Mode (a) is a recipe-level reproduction around a fixed C1 (DESIGN 0 / 5.1, docs/VARIANTS.md)",
    "artifact": "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p",
    "requires": [
     "made in this session by stage t163p_c5rl, whose C1 input datasets/onnhqunhh/flag2027-rfs-lora-p is the saved original (resolve: saved_only)",

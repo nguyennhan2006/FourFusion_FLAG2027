@@ -54,7 +54,7 @@ Every change against the code of the original run (fields: type, where, old, new
 - type: `variant`
 - where: stage.json input `datasets/onnhqunhh/flag2027-rfs-lora-p`: `"resolve": "saved_only"` (no code change)
 - old: the input followed configs/data_map.json `default_saved`; with `FF_FORCE=t163l_orig` the runner preferred the C1 retrained in the same session, so RFX' (this chain) could get a different C1 than RFX (WP-F stages use `saved_only`)
-- new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t183_p*, t213_p*, t216_p3
+- new: always the saved ORIGINAL C1 (`FF_DATA/03_checkpoints/rfs_lora_c1_original`, `lora_C1.pt` b97372e3...), exactly as t163p_c5rl, t213_p*, t216_p3
 - why: INTEGRATION_r1 M2 (one C1 for both Bangla files of 13.54)
 - effect on numbers: none for the 13.54 chain (the original run attached this very dataset)
 

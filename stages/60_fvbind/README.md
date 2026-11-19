@@ -27,9 +27,9 @@ This file did not enter the 13.54 zip through our pre-registered validation rule
   `GATE 2: FAIL -> keep FACTOR_ENFUSE, paper only`).
 - `posteval_FVBIND_ENFUSE_fvb.zip` was nevertheless submitted to the Evaluation phase (CodaBench submission 1053013, 15/11/2026,
   cell EERs 14.29 · 12.22 · 22.12 · 18.99).
-- The team then composed a zip cell by cell from Evaluation scores already measured (reference BEST4, stage `a_best4_ref`): the
+- The team then composed a zip cell by cell from Evaluation scores already measured (reference BEST4): the
   same-gender Bangla file was taken from FVBIND ENFUSE because its measured EER on that cell (18.99) was lower than that of FACTOR_ENFUSE
-  (20.11) (`a_best4_ref/original/make_probes.py`: `KNOWN` at lines 36-38, `BEST_NOW` at line 112). The 13.54 zip keeps this file.
+  (20.11) (team script `Experiment/EVALPROBE-01/make_probes.py`: `KNOWN` at lines 36-38, `BEST_NOW` at line 112). The 13.54 zip keeps this file.
 - Choosing a file by its Evaluation score is against question 11 of the organisers' FAQ (choose the system before submitting; no
   selection or tuning on Evaluation scores). See also `docs/COMPLIANCE_NOTES.md`.
 
@@ -42,7 +42,6 @@ This file did not enter the 13.54 zip through our pre-registered validation rule
 | `t163p_fvb` | train RFX′ (projector, 3 seeds; probes; fusers), `RFS_MODE=P`, `add [f_c5s, v_rl, v_fvb]` | `thanhhuyen11/flag-2027-nb-163-rfsfxfvb-p` (exact-staging, md5 `308d8715…`) | T4, 10 min | dataset `thanhhuyen11/flag2027-rfsfxfvb-art-p` | `FF_DATA/03_checkpoints/rfx_fvb/` |
 | `e163i_fvb` | score the four Evaluation lists with RFX′ from the original media | `thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval` (exact-staging, md5 `35435111…`) | T4, 34 min | `FLAG_RF_E2E/submission.zip` = `rfsfxfvb_eval.zip` (`45044189…`) | `FF_DATA/05_scores/` |
 | `a_fvbind` | zips U (F1s′ + RFX′) and ENFUSE; one-step cross-check | local scripts (byte-exact copies in `a_fvbind/tree/`) | CPU, seconds | `posteval_FVBIND_U_fvb.zip` (`b61c84ed…`), `posteval_FVBIND_ENFUSE_fvb.zip` (`bb0e0175…`) | rebuilt by mode (c) |
-| `a_best4_ref` | optional reference BEST4 (16.72); not an input of the final zip | new minimal assembler | CPU, seconds | `fourfusion_BEST4_v1.zip` (`eb58ba77…`) | — |
 
 Each stage folder holds `stage.json` (definition, inputs, outputs, checks, notes), `stage.ipy` (the code the runner executes: the
 original cells, cells separated by `# <<<FF-CELL>>>`), `CHANGES.md` (every change against the original code, with the reason) and

@@ -67,5 +67,5 @@ The second source `original/staging/flag-2027-nb-163-rfsfxc5rl-p.redacted.ipynb`
 - where: stage.json `inputs` (entry removed; recorded under `inputs_dropped`); no code change
 - old: attached as in the original run (only indexed by the .npy scan of `_xload`)
 - new: not attached
-- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:83) selects files by exact name for the requested blocks only (RFS_CFG {"add": ["f_c5s", "v_rl"]}); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use. Kept in t183_p1 / t183_p2 (evidence stages whose arms request `f_pel`).
+- why: INTEGRATION_r1 M7 / B3. Never read: `_xload` (decoded rfs_train.py:83) selects files by exact name for the requested blocks only (RFS_CFG {"add": ["f_c5s", "v_rl"]}); the dataset holds only `*_peL*.npy` (block `f_pel`), `bn42_clean.json`, `facelora_state.pt`, `train_log.json`. Same drop as WP-H (t163p_fvb, t189_b2). It has no producing stage, so it was a requirement-1 gap with no use.
 - effect on numbers: none

@@ -316,14 +316,6 @@
    },
    "notes": "train ArcFace / ECAPA arrays are byte-identical to FLAG_04 (DESIGN 4.5)"
   },
-  "notebooks/ff/f04_v2_ref": {
-   "path": "02_intermediate/feats_v2",
-   "class": "intermediate",
-   "producer": "f04_v2_ref",
-   "private": true,
-   "notes": "optional reference (FLAG_04, n_crops=0 mandatory)",
-   "unused": "output of an optional stage (role optional in its stage.json): no stage of the 13.54 chain mounts it"
-  },
   "notebooks/ff/f14_av": {
    "path": "02_intermediate/feats_av",
    "class": "wiring",
@@ -491,7 +483,7 @@
    "producer": null,
    "private": true,
    "e_package": "datasets/ngnnguynchn__flag2027-e2e-dev-p.zip",
-   "notes": "the frozen SAFE-04 tables under a distinct id (input of safe04_lab / safe04_compare with resolve: saved_only), so that the DAG has no cycle; same folder as datasets/ngnnguynchn/flag2027-e2e-dev-p (request of WP-E)",
+   "notes": "the frozen SAFE-04 tables under a distinct id (input of safe04_lab with resolve: saved_only), so that the DAG has no cycle; same folder as datasets/ngnnguynchn/flag2027-e2e-dev-p (request of WP-E)",
    "origin_run": "SAFE-04 lab chain (original scratch lost 1/11; frozen zip 0795818f...)",
    "requirement1_gap": "frozen SAFE-04 tables used by default (G1); a producing stage exists (safe04_lab, FF_FORCE=safe04_lab) but the 13.54 chain reads the frozen copy; the rebuilt tables may differ slightly (GPU / versions)",
    "dev_data": true
@@ -589,9 +581,9 @@
    "private": true,
    "zip_sha256": "bf9a8d1dcb7b081093640a2564307a35435d1f463702b5163055458fab54cb6a",
    "e_package": "datasets/ngnnguynchn__flag2027-t3s01-tables-p.zip",
-   "notes": "T3S-01 job tables (FLAG_167, 5 fold runs + kaggle/sat_push.sh 167g, docs/DATASETS.md:133); exact notebooks lost (staging folders empty, 18/11). Since 18/11 (integration fixer r1) consumed ONLY by t184_report (evidence, resolve: saved_only); t219_dumpv4 (sigma) reads datasets/ff/flag2027-t3s01-trca-p (stage t3s01_trca: row keys + trCA of ct02s-r2ca-tables-p, identical to this dataset's keys / trCA, WP-F 18/11).",
+   "notes": "T3S-01 job tables (FLAG_167, 5 fold runs + kaggle/sat_push.sh 167g, docs/DATASETS.md:133); exact notebooks lost (staging folders empty, 18/11). No stage reads it; t219_dumpv4 (sigma) reads datasets/ff/flag2027-t3s01-trca-p (stage t3s01_trca: row keys + trCA of ct02s-r2ca-tables-p, identical to this dataset's keys / trCA, WP-F 18/11).",
    "origin_run": "FLAG_167 T3S-01 (5 fold runs + 167g)",
-   "requirement1_gap": "evidence-only exception: consumed by t184_report (FACTOR-01 gate report, not in the 13.54 numbers); the FLAG_167 producing runs cannot be rebuilt"
+   "requirement1_gap": "kept only as the optional reference of the equality check in t3s01_trca (the stage that remakes the trCA part t219_dumpv4 reads); the FLAG_167 producing runs cannot be rebuilt"
   },
   "datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p": {
    "path": "02_intermediate/_wiring/flag2027-feats-scout-wsvrdn-p",
@@ -613,17 +605,6 @@
    "e_package": "datasets/ngnnguynchn__flag2027-ct02s-g1-tables-p.zip",
    "notes": "g1 fold tables for the B0s head (wiring); rebuild only with FF_FORCE=gather_g1 (staging copies of the three 154 runs are empty)",
    "requirement1_gap": "class wiring is always taken saved (configs/modes.json always_saved_classes); the producing stage gather_g1 runs only with FF_FORCE=gather_g1"
-  },
-  "datasets/trngsnam/flag2027-feats-peface01-pe0-p": {
-   "path": "02_intermediate/_wiring/flag2027-feats-peface01-pe0-p",
-   "class": "wiring",
-   "producer": null,
-   "private": true,
-   "zip_sha256": "3c147dfb1ea265e9b185fc2d382b43fa79506058fb976c34b4748603cfe92d25",
-   "e_package": "datasets/trngsnam__flag2027-feats-peface01-pe0-p.zip",
-   "notes": "PE-Core features; only the f_pel block reads them, c5rl does not (wiring)",
-   "origin_run": "PEFACE-01 PE-Core feature run (CLAUDE.md: FLAG_129a; slug not verified here)",
-   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 3c147dfb1ea265e9...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
   },
   "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p": {
    "path": "03_checkpoints/face_lora_b3s",
@@ -970,31 +951,6 @@
    "private": true,
    "status": "unknown whether still on Kaggle; tables copied to Experiment/XJF-01/out/dumpv4/sp/out/safe04/"
   },
-  "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p1": {
-   "path": "04_run_outputs/flag-2027-nb-183-factor-p1",
-   "class": "run_output",
-   "producer": "t183_p1",
-   "private": true,
-   "e_package": "outputs/flag-2027-nb-183-factor-p1/",
-   "notes": "evidence (gate report that chose c5rl)"
-  },
-  "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p2": {
-   "path": "04_run_outputs/flag-2027-nb-183-factor-p2",
-   "class": "run_output",
-   "producer": "t183_p2",
-   "private": true,
-   "e_package": "outputs/flag-2027-nb-183-factor-p2/",
-   "notes": "evidence (gate report that chose c5rl)"
-  },
-  "notebooks/phantrnhuyntrn/flag-2027-nb-184-factor-report": {
-   "path": "04_run_outputs/flag-2027-nb-184-factor-report",
-   "class": "run_output",
-   "producer": "t184_report",
-   "private": true,
-   "e_package": "outputs/flag-2027-nb-184-factor-report/",
-   "notes": "evidence (gate report that chose c5rl)",
-   "unused": "output of an evidence stage (FACTOR report); no stage mounts it"
-  },
   "notebooks/nguyenchonnhan/flag-2027-nb-155s-ct02ca-f12": {
    "path": "04_run_outputs/flag-2027-nb-155s-ct02ca-f12",
    "class": "run_output",
@@ -1161,7 +1117,6 @@
     "t164_f123",
     "t164_f45",
     "t164f",
-    "t184_report",
     "t219_dumpv4"
    ],
    "notes": "VBSEL-01 (10/10) list of 310 VoxCeleb2 speakers with >= 50 % of clips whose top language is South-Asian, Bengali-flagged speakers removed; read when VBSEL-01/run.py is imported (line 20). Producer: stage l_groups (cells/01_vbsel.py, rule of Experiment/EDA-VB/eda_vb.py section 4) from the FLAG_42 output, checked byte for byte against this copy (19/11/2026: identical)"
@@ -1184,7 +1139,6 @@
     "t155s_f12",
     "t155s_f34",
     "t155s_f5",
-    "t184_report",
     "t219_dumpv4"
    ],
    "notes": "STACK-02 configuration (the stream families registered as candidates on 7/10/2026 from the provenance table, before any score); holds no value computed from data",
@@ -1209,7 +1163,6 @@
     "t155s_f12",
     "t155s_f34",
     "t155s_f5",
-    "t184_report",
     "t219_dumpv4"
    ],
    "notes": "SAFE-04 fold assignment (G1); safe04_lab writes fold_persons.json (its stage.json: 'fold_persons.json identical')",
@@ -1233,7 +1186,6 @@
     "t155s_f12",
     "t155s_f34",
     "t155s_f5",
-    "t184_report",
     "t219_dumpv4"
    ],
    "notes": "= l_groups output groups/vox2b_groups.json (its verify sha256_crlf 7beb7ce7...: the embedded copy is the CRLF file)",
@@ -1257,7 +1209,6 @@
     "t155s_f12",
     "t155s_f34",
     "t155s_f5",
-    "t184_report",
     "t219_dumpv4"
    ],
    "notes": "= l_groups output groups/vox2_gender.json (verify sha256_crlf 1d229fdd...)",
@@ -1281,7 +1232,6 @@
     "t155s_f12",
     "t155s_f34",
     "t155s_f5",
-    "t184_report",
     "t219_dumpv4"
    ],
    "notes": "= l_groups output groups/vox2_groups.json (verify sha256_crlf 4f44f5ce...)",
@@ -1305,7 +1255,6 @@
     "t155s_f12",
     "t155s_f34",
     "t155s_f5",
-    "t184_report",
     "t219_dumpv4"
    ],
    "notes": "CLEANTUNE-01 round-2 plan: the recipe of the identity-classification heads (I = C5CAT4, S_A = [T, AIp], CMB_* stream lists, seeds). Written by CLEANTUNE-01 run.py report() (line 387) on 1/11/2026 from the round-1 out-of-fold validation tables of FLAG_110 (old Bengali filter, before LIDSTRICT), by the selection rule registered in Experiment/CLEANTUNE-01/README.md before the runs; it also records the round-1 deltas. The 13.54 stages (CT_GROUP=r2) read only its choice fields (run.py lines 47-48, 99: I, S_A, CMB_*). Treated as configuration: the round-1 runs belong to an earlier system and are not rebuilt by this repository.",

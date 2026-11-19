@@ -164,13 +164,6 @@
    "RFS_MODE": "P",
    "RFS_CFG": "{\"add\": [\"f_c5s\", \"v_rl\"]}"
   },
-  "t184_report": {
-   "LID_STRICT": "1",
-   "T3S": "1",
-   "CT_R2_ONLY": "CA",
-   "T3S_PER_GPU": "1",
-   "NOREL": "1"
-  },
   "t219_dumpv4": {
    "FUSENET_MODE": "dumpv4",
    "LID_STRICT": "1",
@@ -261,16 +254,6 @@
    }
   ],
   "f10_models": [
-   {
-    "regex": "FF dev-exclusion \\(CHANGES\\.md #2\\): index ONLY the organiser train list",
-    "why": "dev-exclusion (G11)"
-   }
-  ],
-  "f04_v2_ref": [
-   {
-    "regex": "^N_CROPS = 0\\b",
-    "why": "dev-exclusion (G11): no crops chosen from the dev Bangla durations"
-   },
    {
     "regex": "FF dev-exclusion \\(CHANGES\\.md #2\\): index ONLY the organiser train list",
     "why": "dev-exclusion (G11)"

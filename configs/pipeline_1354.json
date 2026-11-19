@@ -4,8 +4,7 @@
  "variant": "1354",
  "default_target": "final_verify",
  "stage_roots": [
-  "stages",
-  "tools/stages"
+  "stages"
  ],
  "cell_sep": "\n# <<<FF-CELL>>>\n",
  "groups": [
@@ -323,21 +322,6 @@
    ]
   },
   {
-   "id": "r31_mav_rows_check",
-   "group": "12_rows",
-   "wp": "WP-B",
-   "kind": "data",
-   "role_in_1354": "optional",
-   "device": "cpu",
-   "minutes_original": 10,
-   "title": "Optional: rebuild the MAV row tables without encoders (FLAG_08 listing + FLAG_31 EXTRAW listing) and compare byte for byte",
-   "inputs": [
-    "datasets/chnnhnnguyn/external-data-mavceleb"
-   ],
-   "kernel": "notebooks/ff/r31_mav_rows_check",
-   "exports": []
-  },
-  {
    "id": "r07_overlap",
    "group": "12_rows",
    "wp": "WP-B",
@@ -510,22 +494,6 @@
     "datasets/ngnnguynchn/flag2027-ext-meta-p"
    ],
    "kernel": "notebooks/ff/f12_eval_feats",
-   "exports": [],
-   "internet": true
-  },
-  {
-   "id": "f04_v2_ref",
-   "group": "20_features",
-   "wp": "WP-D",
-   "kind": "data",
-   "role_in_1354": "optional",
-   "device": "gpu",
-   "minutes_original": 80,
-   "title": "FLAG_04 (reference, optional): ArcFace + SpeechBrain ECAPA 192 / 6144 of the v4 train list, n_crops = 0",
-   "inputs": [
-    "datasets/ngnnguynchn/flag2027-raw-v4-p"
-   ],
-   "kernel": "notebooks/ff/f04_v2_ref",
    "exports": [],
    "internet": true
   },
@@ -968,39 +936,6 @@
    ]
   },
   {
-   "id": "safe04_lab_core",
-   "group": "30_F_family",
-   "wp": "",
-   "kind": "data",
-   "role_in_1354": "evidence",
-   "device": "cpu",
-   "minutes_original": null,
-   "title": "Partial SAFE-04 rebuild (level core, evidence only): pair keys, pf_m / pv_m and the other Extra columns, stack02_rows, fold_persons spliced into the frozen safe04/ tables",
-   "inputs": [
-    "datasets/ngnnguynchn/flag2027-lab-data-p",
-    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
-    "datasets/ff-frozen/flag2027-e2e-dev-p"
-   ],
-   "kernel": "notebooks/ff/safe04_lab_core",
-   "exports": []
-  },
-  {
-   "id": "safe04_compare",
-   "group": "30_F_family",
-   "wp": "WP-E",
-   "kind": "data",
-   "role_in_1354": "evidence",
-   "device": "cpu",
-   "minutes_original": null,
-   "title": "Compare the rebuilt SAFE-04 tables (safe04_lab) with the frozen e2e-dev bundle",
-   "inputs": [
-    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
-    "datasets/ff-frozen/flag2027-e2e-dev-p"
-   ],
-   "kernel": "notebooks/ff/safe04_compare",
-   "exports": []
-  },
-  {
    "id": "t164_f123",
    "group": "30_F_family",
    "wp": "WP-E",
@@ -1359,90 +1294,6 @@
    ],
    "gpus": 2,
    "internet": true
-  },
-  {
-   "id": "t183_p1",
-   "group": "40_R_family",
-   "wp": "WP-F",
-   "kind": "train",
-   "role_in_1354": "evidence",
-   "device": "gpu",
-   "minutes_original": 43,
-   "title": "FACTOR-01 lab part 1: RFS-LAB of 15 projector-input arms x 5 SAFE-04 folds (evidence for choosing c5rl on validation)",
-   "inputs": [
-    "datasets/ngnnguynchn/flag2027-lid-strict-p",
-    "datasets/hthlin/flag2027-aux-voice-feats-p",
-    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
-    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
-    "datasets/trngsnam/flag2027-feats-peface01-pe0-p",
-    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
-    "datasets/phanththui/flag2027-feats-rfs-b-p",
-    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p",
-    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
-    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
-    "datasets/ngnnguynchn/flag2027-lab-data-p",
-    "datasets/ngnnguynchn/flag2027-lab-vb-p",
-    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
-    "datasets/onnhqunhh/flag2027-rfs-lora-p"
-   ],
-   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p1",
-   "exports": []
-  },
-  {
-   "id": "t183_p2",
-   "group": "40_R_family",
-   "wp": "WP-F",
-   "kind": "train",
-   "role_in_1354": "evidence",
-   "device": "gpu",
-   "minutes_original": 50,
-   "title": "FACTOR-01 lab part 2: RFS-LAB of 15 projector-input arms x 5 SAFE-04 folds (evidence for choosing c5rl on validation)",
-   "inputs": [
-    "datasets/ngnnguynchn/flag2027-lid-strict-p",
-    "datasets/hthlin/flag2027-aux-voice-feats-p",
-    "datasets/ngnnguynchn/flag2027-ct02s-r2ca-tables-p",
-    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
-    "datasets/trngsnam/flag2027-feats-peface01-pe0-p",
-    "datasets/nguynchnngn1/flag2027-feats-rfs-a-p",
-    "datasets/phanththui/flag2027-feats-rfs-b-p",
-    "datasets/phanvnnnnn6789/flag2027-feats-rfs-c-p",
-    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
-    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
-    "datasets/ngnnguynchn/flag2027-lab-data-p",
-    "datasets/ngnnguynchn/flag2027-lab-vb-p",
-    "datasets/ngnnguynchn/flag2027-rfs-bundle-p",
-    "datasets/onnhqunhh/flag2027-rfs-lora-p"
-   ],
-   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p2",
-   "exports": []
-  },
-  {
-   "id": "t184_report",
-   "group": "40_R_family",
-   "wp": "WP-F",
-   "kind": "train",
-   "role_in_1354": "evidence",
-   "device": "cpu",
-   "minutes_original": 5,
-   "title": "FACTOR-01 gate report (CPU): nested choice of the RFX arm on SAFE-04, decision 'RFX = RFS a0 + add [f_c5s, v_rl]' (evidence)",
-   "inputs": [
-    "datasets/ngnnguynchn/flag2027-lid-strict-p",
-    "datasets/hthlin/flag2027-aux-voice-feats-p",
-    "datasets/ngnnguynchn/flag2027-e2e-dev-p",
-    "datasets/ngnnguynchn/flag2027-eda-bundle-p",
-    "datasets/phanvnhtrng/flag2027-feats-ls-b3s-p",
-    "datasets/quynhnhu82/flag2027-feats-ls-c5s-p",
-    "datasets/ngnnguynchn/flag2027-feats-screen2-p",
-    "datasets/dnq1209/flag2027-feats-tap01-voice-p",
-    "datasets/ngnnguynchn/flag2027-feats-vox2b-p",
-    "datasets/ngnnguynchn/flag2027-lab-data-p",
-    "datasets/ngnnguynchn/flag2027-lab-vb-p",
-    "datasets/ngnnguynchn/flag2027-t3s01-tables-p",
-    "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p1",
-    "notebooks/phantrnhuyntrn/flag-2027-nb-183-factor-p2"
-   ],
-   "kernel": "notebooks/phantrnhuyntrn/flag-2027-nb-184-factor-report",
-   "exports": []
   },
   {
    "id": "t163p_c5rl",
@@ -1906,22 +1757,6 @@
     "notebooks/thanhhuyen11/flag-2027-nb-163i-rfsfxfvb-eval"
    ],
    "kernel": "notebooks/ff/a_fvbind",
-   "exports": []
-  },
-  {
-   "id": "a_best4_ref",
-   "group": "60_fvbind",
-   "wp": "WP-H",
-   "kind": "assemble",
-   "role_in_1354": "optional",
-   "device": "cpu",
-   "minutes_original": 1,
-   "title": "Optional reference: BEST4 (16.72) = FACTOR_ENFUSE for ng/En, ng/Bn, g/En + FVBIND ENFUSE for g/Bn; not an input of the 13.54 zip",
-   "inputs": [
-    "notebooks/ff/a_factor",
-    "notebooks/ff/a_fvbind"
-   ],
-   "kernel": "notebooks/ff/a_best4_ref",
    "exports": []
   },
   {

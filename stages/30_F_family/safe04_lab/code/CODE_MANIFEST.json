@@ -143,15 +143,6 @@
   "repo_git": "untracked (??)",
   "role": "reference only, NOT run (list of the 10 candidate tables export.py needs)"
  },
- "Experiment/SAFE-04/ff_core_streams.py": {
-  "sha256": "2f1209f2e0ce0010d126a15e83989cabe45ab22b510ef7e59b11d84b1a5e795a",
-  "md5": "bdd7cc8e94db3627f88a87b1c9fc6cbe",
-  "bytes": 2642,
-  "source": "written for the reproduction repository (2026-11-18)",
-  "equals_repo_file": null,
-  "repo_git": "new",
-  "role": "NEW (this repository): level core; imports lab_streams.py unchanged, runs make_fold + Extra without the bridge training"
- },
  "Experiment/SAFE-04/ff_derive_stack02.py": {
   "sha256": "96f062fb42f4ade8171a53aa31df6c44245b4f5da30f0c660fd4cc6dd5fcbafc",
   "md5": "e1121534e5570e34303a0627bde84883",

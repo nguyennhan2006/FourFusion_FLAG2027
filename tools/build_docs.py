@@ -2,7 +2,7 @@
 """Regenerate the generated parts of the documentation from the configuration and the stage folders (no data, no network).
 
     python tools/build_docs.py            # docs/STAGES.md, docs/CHANGES_FROM_ORIGINAL.md and the generated tables of
-                                          # DATA.md, CHECKPOINTS.md, LICENSES.md (between <!-- BEGIN GENERATED: x --> markers)
+                                          # docs/DATA.md, docs/CHECKPOINTS.md, LICENSES.md (between <!-- BEGIN GENERATED: x --> markers)
     python tools/build_docs.py --check    # exit 1 when a generated part is out of date (nothing written)
 
 Sources: configs/data_map.json (artifacts), stages/**/stage.json (consumers, producers), tools/fetch_models.py MODELS (pretrained
@@ -27,7 +27,7 @@ def jload(p):
 
 def stages():
     out = {}
-    for p in sorted(glob.glob(str(REPO / "stages/*/*/stage.json"))) + sorted(glob.glob(str(REPO / "tools/stages/*/*/stage.json"))):
+    for p in sorted(glob.glob(str(REPO / "stages/*/*/stage.json"))):
         d = jload(p)
         out[d["id"]] = (Path(p).parent, d)
     return out
@@ -141,11 +141,11 @@ def main():
     A = jload(REPO / "configs/data_map.json")["artifacts"]
     C = consumers(S)
     stale = []
-    if fill("DATA.md", "raw", data_table(A, C, ["raw", "collected"]), a.check):
+    if fill("docs/DATA.md", "raw", data_table(A, C, ["raw", "collected"]), a.check):
         stale.append("DATA.md raw")
-    if fill("DATA.md", "intermediate", data_table(A, C, ["intermediate", "run_output", "score", "wiring", "embedded", "forbidden", "pretrained"]), a.check):
+    if fill("docs/DATA.md", "intermediate", data_table(A, C, ["intermediate", "run_output", "score", "wiring", "embedded", "forbidden", "pretrained"]), a.check):
         stale.append("DATA.md intermediate")
-    if fill("CHECKPOINTS.md", "checkpoints", checkpoint_table(A, C, S), a.check):
+    if fill("docs/CHECKPOINTS.md", "checkpoints", checkpoint_table(A, C, S), a.check):
         stale.append("CHECKPOINTS.md")
     if fill("LICENSES.md", "models", license_table(), a.check):
         stale.append("LICENSES.md")

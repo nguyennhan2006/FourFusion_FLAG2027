@@ -3,8 +3,8 @@
 ## 1. This repository
 
 The code written for this repository (runner, tools, new stages, documentation) is released by team FourFusion for the
-reproduction of its FLAG 2027 submission. The verbatim notebooks and scripts under `stages/*/*/original/`, `stages/**/tree/` and
-`src/` are the team's own code as it ran. Third-party code fetched at run time (ImageBind, CLIP, WeSpeaker, AudioCLIP, SpeechBrain,
+reproduction of its FLAG 2027 submission. The verbatim notebooks and scripts under `stages/*/*/original/` and `stages/**/tree/` are
+the team's own code as it ran. Third-party code fetched at run time (ImageBind, CLIP, WeSpeaker, AudioCLIP, SpeechBrain,
 insightface, Hugging Face libraries) keeps its own licence and is not copied here, except where a stage embeds a module verbatim as
 the original run did (the stage's `original/` folder says so).
 

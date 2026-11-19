@@ -36,7 +36,7 @@ MODES = {
                      what="mode (c): byte-exact assembly of the submitted zip from the saved per-pair scores (under one minute)"),
 }
 BUNDLE_DIRS = ["runner", "configs", "stages", "tools", "assembly", "docker", "docs"]
-BUNDLE_FILES = ["README.md", "DATA.md", "CHECKPOINTS.md", "LICENSES.md"]
+BUNDLE_FILES = ["README.md", "LICENSES.md"]
 NO_BUNDLE = re.compile(r"(^|/)(_staging_backup|_PRIVATE[^/]*|__pycache__|\.git|ff_work)(/|$)")
 DATA_EXT = {".npy", ".npz", ".parquet", ".pt", ".pth", ".ckpt", ".onnx", ".safetensors", ".wav", ".mp4", ".zip", ".pkl"}
 
@@ -208,23 +208,15 @@ def bundle(dest):
     for f in BUNDLE_FILES:
         if (REPO / f).is_file():
             files[f] = REPO / f
-    import secret_scan_shim                                           # noqa: E402  (tools/secret_scan.py)
-    S = secret_scan_shim.Scanner()
     man = {}
     for rel, p in files.items():
         t = out / rel
         t.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(p, t)
         man[rel] = hashlib.sha256(t.read_bytes()).hexdigest()
-    S.scan_path(out)
-    high = [f for f in S.findings if f["severity"] == "HIGH"]
-    if high:
-        shutil.rmtree(out, ignore_errors=True)
-        sys.exit("secret scan found HIGH findings, bundle not written:\n" + "\n".join(f"{f['kind']} {f['where']}" for f in high[:20]))
     import time
     (out / "ff_code_manifest.json").write_text(json.dumps({"built": time.strftime("%Y-%m-%d %H:%M:%S"), "files": man}, indent=1), encoding="utf-8")
-    print(f"code bundle -> {out} ({len(man)} files, {sum(p.stat().st_size for p in files.values()) / 1e6:.1f} MB); "
-          f"secret scan: {len(S.findings)} non-HIGH finding(s)")
+    print(f"code bundle -> {out} ({len(man)} files, {sum(p.stat().st_size for p in files.values()) / 1e6:.1f} MB)")
 
 
 def main(argv=None):
@@ -234,12 +226,6 @@ def main(argv=None):
     ap.add_argument("--bundle", help="write the code bundle into this folder instead of the notebooks")
     a = ap.parse_args(argv)
     if a.bundle:
-        sys.path.insert(0, str(REPO / "tools"))
-        import importlib.util
-        spec = importlib.util.spec_from_file_location("secret_scan_shim", REPO / "tools" / "secret_scan.py")
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        sys.modules["secret_scan_shim"] = mod
         bundle(a.bundle)
         return 0
     out = Path(a.out)

@@ -139,15 +139,6 @@
    "digest_confirmed": false,
    "evidence": []
   },
-  "r31_mav_rows_check": {
-   "family": "unknown",
-   "device": "cpu",
-   "python": null,
-   "torch": null,
-   "docker_image": null,
-   "digest_confirmed": false,
-   "evidence": []
-  },
   "l150_whisper": {
    "family": "unknown",
    "device": "gpu",
@@ -239,17 +230,6 @@
    "docker_image": null,
    "digest_confirmed": false,
    "evidence": []
-  },
-  "f04_v2_ref": {
-   "family": "older",
-   "device": "gpu",
-   "python": null,
-   "torch": "2.10.0+cu128",
-   "docker_image": null,
-   "digest_confirmed": false,
-   "evidence": [
-    "flag-2027-04.ipynb"
-   ]
   },
   "f103c_tap01": {
    "family": "unknown",
@@ -422,27 +402,9 @@
    "digest_confirmed": false,
    "evidence": []
   },
-  "safe04_compare": {
-   "family": "unknown",
-   "device": "cpu",
-   "python": null,
-   "torch": null,
-   "docker_image": null,
-   "digest_confirmed": false,
-   "evidence": []
-  },
   "safe04_lab": {
    "family": "unknown",
    "device": "gpu",
-   "python": null,
-   "torch": null,
-   "docker_image": null,
-   "digest_confirmed": false,
-   "evidence": []
-  },
-  "safe04_lab_core": {
-   "family": "unknown",
-   "device": "cpu",
    "python": null,
    "torch": null,
    "docker_image": null,
@@ -629,39 +591,6 @@
     "19_flag-2027-nb-163-rfsfxc5rl-p.log"
    ]
   },
-  "t183_p1": {
-   "family": "v173",
-   "device": "gpu",
-   "python": "3.13.16",
-   "torch": null,
-   "docker_image": null,
-   "digest_confirmed": false,
-   "evidence": [
-    "16_flag-2027-nb-183-factor-p1.log"
-   ]
-  },
-  "t183_p2": {
-   "family": "v173",
-   "device": "gpu",
-   "python": "3.13.16",
-   "torch": null,
-   "docker_image": null,
-   "digest_confirmed": false,
-   "evidence": [
-    "17_flag-2027-nb-183-factor-p2.log"
-   ]
-  },
-  "t184_report": {
-   "family": "v173",
-   "device": "cpu",
-   "python": "3.13.18",
-   "torch": "2.11.0+cpu",
-   "docker_image": null,
-   "digest_confirmed": false,
-   "evidence": [
-    "18_flag-2027-nb-184-factor-report.log"
-   ]
-  },
   "t213_p1": {
    "family": "unknown",
    "device": "gpu",
@@ -785,15 +714,6 @@
    "evidence": [
     "02_flag-2027-nb-65xcs-c5sx-eval.log"
    ]
-  },
-  "a_best4_ref": {
-   "family": "unknown",
-   "device": "cpu",
-   "python": null,
-   "torch": null,
-   "docker_image": null,
-   "digest_confirmed": false,
-   "evidence": []
   },
   "a_fvbind": {
    "family": "unknown",
