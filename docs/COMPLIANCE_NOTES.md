@@ -1,8 +1,7 @@
 # Compliance notes (FLAG 2027 rules, organisers' FAQ)
 
 What the 13.54 chain does with respect to the challenge rules, and what the team declares. Stage-level evidence is in each stage's
-`stage.json` / `CHANGES.md`; this file collects it. Public names follow `docs/NAMING.md` (the English branch is "DP (Different
-Profile)").
+`stage.json` / `CHANGES.md`; this file collects it. Public names follow `docs/NAMING.md` (the English branch is the "English recognition projector" of the pair-contrastive family, earlier named DP).
 
 ## 1. Organisers' dev data
 
@@ -48,9 +47,9 @@ Profile)").
   the FAQ forbids cohort normalisation even with train-only cohorts (NOREL-01).
 - No CSLS, no test-time adaptation, no statistic of a test file, no use of the trial lists to choose or mix systems. Every score of a
   pair depends only on that pair and on constants fixed from train / external data.
-- The DP scale constants sigma = 5.0983 / 3.8376 are the standard deviations of the base score on held-out **train** trials (stage
+- The English scale constants sigma = 5.0983 / 3.8376 are the standard deviations of the base score on held-out **train** trials (stage
   `dp_sigma`, from `xjfdump_v4.parquet`). The language-specific mixers (English vs Bangla) are fixed before the test, as allowed.
-- Batched feature extraction (disclosed for completeness): the DP branch computes the ECAPA voice embeddings of the Evaluation clips
+- Batched feature extraction (disclosed for completeness): the recognition projector computes the ECAPA voice embeddings of the Evaluation clips
   in zero-padded batches packed by duration (`stages/70_dp/dp_extract_eval/flag_extract.py` `run_batched`, at most 240 padded
   seconds / 32 clips per batch; relative lengths `wav_lens` are passed to SpeechBrain, so padding is masked in the feature
   normalisation and pooling). A clip's embedding can therefore differ in the last digits with the other clips of its batch. No label,
@@ -63,14 +62,14 @@ embedded code). Making that list links identities across MAV-Celeb and the organ
 (force_only, `FF_FORCE=r07_overlap`) shows how it was derived and keeps no linkage table. The list is part of the F1s′ family code (the SAFE-04
 lab code, also embedded in the stage `t219_dumpv4`).
 
-## 5. DP (Different Profile) branch: training data and risk (must be in the system description)
+## 5. English recognition projector (earlier name DP): training data and risk (must be in the system description)
 
-The data flow of the DP branch follows the letter of the rules: its external data are declared, no dev or Evaluation data enter
+The data flow of the recognition projector follows the letter of the rules: its external data are declared, no dev or Evaluation data enter
 training, and its constants are fixed on train persons. It trains on the organisers' FLAG train set (70 persons, 6 485 pairs) and on
 MAV-Celeb v1 / v2 (154 persons), with the 58 Bengali-flagged MAV-Celeb voice files dropped (stage `dp_train`). The team has identified
 the following risk and history (text of `stages/70_dp/dp_train/CHANGES.md`, "Compliance disclosure"):
 
-1. **The branch is weak on unseen persons.** On held-out FLAG train persons the DP branch alone reaches only EER 25.67 (no_gender) and
+1. **The branch is weak on unseen persons.** On held-out FLAG train persons the recognition projector alone reaches only EER 25.67 (no_gender) and
    34.64 (gender); the base system reaches about 15 / 22 on the same kind of persons. Yet adding the branch lowered the English
    Evaluation EERs from 13.78 / 22.12 (FACTOR_ENFUSE alone) to 10.20 / 12.98.
 2. **Likely cause: recording overlap.** The most plausible explanation is that some recordings of the English Evaluation file are also
@@ -99,7 +98,7 @@ VoxCeleb2 + MAV clips") is wrong for this variant; the statement above is the tr
 | source | use | access in this repository |
 |---|---|---|
 | MAV-Celeb v4 (organisers: train set, Evaluation media) | train / evaluation | `FF_DATA/00_raw/` (private Drive folder), never in git |
-| MAV-Celeb v1 / v2 (public release) | extra persons for every family and the DP branch | `FF_DATA/00_raw/mavceleb_v1_v2*` |
+| MAV-Celeb v1 / v2 (public release) | extra persons for every family and the recognition projector | `FF_DATA/00_raw/mavceleb_v1_v2*` |
 | VoxCeleb2 (Hugging Face mirrors `gaunernst/voxceleb2-dev-wds`, `ProgramComputer/voxceleb`) | extra persons (faces + voices), Bengali-filtered | collected copies in `FF_DATA/01_collected/` (collection code in `stages/11_collect/`) |
 | VoxBlink (Hugging Face mirror `adollahamini1998/VoxBlink-Video-clean-8-*`; licence CC BY-NC-SA) | extra persons, Bengali-filtered | private only (`FF_DATA/01_collected/`, shared with the organisers' e-mail); no VoxBlink media, feature or weight is in this repository |
 | pretrained models | see `LICENSES.md` | `FF_DATA/06_pretrained/` via `tools/fetch_models.py` |

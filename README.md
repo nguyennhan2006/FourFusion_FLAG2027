@@ -33,10 +33,10 @@ files.
 - **Pair-contrastive family** (internal name RFX). A linear projector maps concatenated face and voice embeddings into one space
   (symmetric InfoNCE, 3 seeds), plus side streams (ImageBind cosine with the audio adapter C1, gender probes, age match); one fuser for the
   gender files and one for the no-gender files → logit ℓ_R. For the gender/Bangla file the variant RFX′ adds the trained voice block B2 → ℓ_R′.
-- **DP (Different Profile) branch**, English files only. A small MLP projector per modality (linear 256, batch norm, ReLU, dropout 0.7,
+- **English recognition projector** (part of the pair-contrastive family; earlier name DP, folder `stages/70_dp`), English files only. A small MLP projector per modality (linear 256, batch norm, ReLU, dropout 0.7,
   linear 128) maps concatenated frozen recognition embeddings (face: VGG-Face, AdaFace, ArcFace; voice: organisers' ECAPA, SpeechBrain
   ECAPA and its pooled statistics) into one space (symmetric InfoNCE with a learnable temperature, same-identity negatives masked, FLAG
-  training identities + MAV-Celeb v1/v2, 10 seeds) → mean cosine c_DP, standardised per protocol with μ_DP / σ_DP from out-of-fold
+  training identities + MAV-Celeb v1/v2, 10 seeds) → mean cosine c_rec, standardised per protocol with μ_rec / σ_rec from out-of-fold
   training trials.
 - **Per-file rule** (chosen by the file's language and protocol, given by the organisers). Each file stores −s (lower = same person):
 
@@ -44,8 +44,8 @@ files.
 |---|---|
 | no_gender / Bangla | ℓ_F + ℓ_R |
 | gender / Bangla | ℓ_F + ℓ_R′ |
-| no_gender / English | (ℓ_F + ℓ_R) / 5.098 + (c_DP − μ_DP) / σ_DP |
-| gender / English | (ℓ_F + ℓ_R) / 3.838 + (c_DP − μ_DP) / σ_DP |
+| no_gender / English | (ℓ_F + ℓ_R) / 5.098 + (c_rec − μ_rec) / σ_rec |
+| gender / English | (ℓ_F + ℓ_R) / 3.838 + (c_rec − μ_rec) / σ_rec |
 
 5.098 and 3.838 are the standard deviations of ℓ_F + ℓ_R on held-out training English trials of each protocol; on English trials
 ℓ_F uses the fuser fitted for Bangla. Training data: the organisers'
@@ -99,7 +99,7 @@ FF_DATA=<FF_DATA> FF_WORK=<work> python runner/ffrun.py run  --mode infer       
 ```
 
 Starts from `evaluation_phase.zip` (stage `raw_evalphase`), extracts features of the four Evaluation lists, scores them with the
-saved checkpoints of the identity-classification family, RFX / RFX′ and DP, and assembles the zip. GPU arithmetic is not
+saved checkpoints of the identity-classification family, RFX / RFX′ and the recognition projector, and assembles the zip. GPU arithmetic is not
 bit-identical, so compare per file with Spearman's correlation (`runner/verify.py`).
 
 ### (a) Rebuild from the raw and collected data — about 150–170 GPU-hours (T4) + 10 CPU-hours
@@ -119,7 +119,7 @@ GPU training is not deterministic, so this is a recipe-level rebuild. With the c
 files (`ffrun.py dag`, section LINEAGE: 0 gaps). Wiring inputs marked `"optional": true` in `stage.json` (v6 members of `e50cc`,
 the dev wiring of `safe04_lab`, the e2e-dev bundle of `t164f`) are simply absent: the stage does without them and no 13.54 number
 depends on them. The original LoRA C1 defines the 13.54 variant: modes (b) and (c) take its saved copy; here `t163l_orig` retrains it
-with the original code (key bug kept, `docs/VARIANTS.md`), checked by the lineage guard. The DP branch trains on CPU:
+with the original code (key bug kept, `docs/VARIANTS.md`), checked by the lineage guard. The recognition projector trains on CPU:
 `python tools/dp_train_local.py --help`.
 
 ### On Kaggle
@@ -136,12 +136,12 @@ machine. Per-stage minutes are in [`docs/STAGES.md`](docs/STAGES.md).
 ## 5. Checks
 
 [`docs/VERIFICATION.md`](docs/VERIFICATION.md): every stage rebuilds from its original notebook or script, the stage graph is
-consistent, mode (c) reproduces the four submitted files byte for byte, and the DP branch retrained on CPU gives bit-identical scores.
+consistent, mode (c) reproduces the four submitted files byte for byte, and the recognition projector retrained on CPU gives bit-identical scores.
 
 ## 6. Compliance
 
 No organisers' dev data is used for training, fitting or selection; no score normalisation, cohort, CSLS or test-time adaptation;
 Bengali voices are removed from every voice source by speaker; pretrained encoders are frozen and declared ([`LICENSES.md`](LICENSES.md));
-VoxBlink material and the organisers' data are not in this repository. The English gain of 13.54 comes from the DP branch, which
+VoxBlink material and the organisers' data are not in this repository. The English gain of 13.54 comes from the recognition projector, which
 trains on MAV-Celeb v1 / v2; the team's own studies suggest that the gain comes from recordings shared between the English Evaluation
 file and MAV-Celeb v1 / v2. Details and the submission history: [`docs/COMPLIANCE_NOTES.md`](docs/COMPLIANCE_NOTES.md).

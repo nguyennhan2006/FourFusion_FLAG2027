@@ -39,14 +39,14 @@ SimAM-ResNet100, the audeering age / gender model).
 | `wespeaker_resnet293_lm` | core | voxceleb_resnet293_LM.zip | Apache-2.0 (WeSpeaker) / VoxCeleb | voice rn293 of CAT4 (CA head), v_rl block of RFX / RFX' (via e47rs) |
 | `wespeaker_ecapa1024_lm` | core | voxceleb_ECAPA1024_LM.zip | Apache-2.0 (WeSpeaker) / VoxCeleb | voice ecapa1024 of CAT4, v_rl block |
 | `wespeaker_resnet221_lm` | core | https://huggingface.co/Wespeaker/wespeaker-voxceleb-resnet221-LM/resolve/main/voxceleb_resnet221_LM.pt | Apache-2.0 (WeSpeaker) | RFS v_r221 |
-| `ecapa_btc_space` | core | yangwang825/ecapa-tdnn-vox2@c605f57148d4e910d4241eec714d7bc948220adb | unknown (model card not read offline; not redistributed) | organisers-space ECAPA: XALL (FLAG_08 rows), RFS xv, DP (MAV rows) |
-| `vgg_face_dag` | core | https://www.robots.ox.ac.uk/~albanie/models/pytorch-mcn/vgg_face_dag.pth | VGG-Face (non-commercial research) | FLAG_08 rows (organisers-space faces), RFS xf, DP (MAV rows) |
+| `ecapa_btc_space` | core | yangwang825/ecapa-tdnn-vox2@c605f57148d4e910d4241eec714d7bc948220adb | unknown (model card not read offline; not redistributed) | organisers-space ECAPA: XALL (FLAG_08 rows), RFS xv, recognition projector (MAV rows) |
+| `vgg_face_dag` | core | https://www.robots.ox.ac.uk/~albanie/models/pytorch-mcn/vgg_face_dag.pth | VGG-Face (non-commercial research) | FLAG_08 rows (organisers-space faces), RFS xf, recognition projector (MAV rows) |
 | `whisper_large_v3` | core | openai/whisper-large-v3@06f233fe06e710322aca913c1bc4249a0d71fce1 | Apache-2.0 | RFS v_whv3 (160a/b/c, 163i); language ID of FLAG_150 (13_lid) |
 | `vit_age` | core | nateraw/vit-age-classifier@4b5acc345d9692c3ff4f45d250531afd3a3da0ef | unknown (model card not read offline; not redistributed) | face age (fuser conditions, age-match stream) |
 | `audeering_age_gender` | core | audeering/wav2vec2-large-robust-24-ft-age-gender@bad2737f529168bc3d3fcd97edfaba9583c7d36d | CC BY-NC-SA 4.0 | voice age / gender |
-| `spkrec_ecapa_voxceleb` | dp | speechbrain/spkrec-ecapa-voxceleb@0f99f2d0ebe89ac095bcc5903c4dd8f72b367286 | Apache-2.0 | DP voice ECAPA 192 + pooled-statistics 6144; also loaded by e50cc |
-| `adaface_ir101_webface12m` | dp | minchul/cvlface_adaface_ir101_webface12m@54f602a0737bd1ee4a4e7e9fd089a485f397fefd | MIT (CVLface) / WebFace12M terms | DP face AdaFace (512) |
-| `insightface_buffalo_l` | dp | https://github.com/deepinsight/insightface/releases/download/model-zoo/buffalo_l.zip | insightface (non-commercial research) | DP face ArcFace w600k_r50 (ResNet-50, WebFace600K) + SCRFD det_10g |
+| `spkrec_ecapa_voxceleb` | dp | speechbrain/spkrec-ecapa-voxceleb@0f99f2d0ebe89ac095bcc5903c4dd8f72b367286 | Apache-2.0 | recognition-projector voice ECAPA 192 + pooled-statistics 6144; also loaded by e50cc |
+| `adaface_ir101_webface12m` | dp | minchul/cvlface_adaface_ir101_webface12m@54f602a0737bd1ee4a4e7e9fd089a485f397fefd | MIT (CVLface) / WebFace12M terms | recognition-projector face AdaFace (512) |
+| `insightface_buffalo_l` | dp | https://github.com/deepinsight/insightface/releases/download/model-zoo/buffalo_l.zip | insightface (non-commercial research) | recognition-projector face ArcFace w600k_r50 (ResNet-50, WebFace600K) + SCRFD det_10g |
 | `audioclip_full` | wiring | https://github.com/AndreyGuzhov/AudioCLIP/releases/download/v0.1/AudioCLIP-Full-Training.pt | MIT (AudioCLIP) | only so that e50cc runs verbatim (old English member, not in the 13.54 zip) |
 | `clip_vit_base_patch16` | wiring | openai/clip-vit-base-patch16@57c216476eefef5ab752ec549e440a49ae4ae5f3 | MIT | e50cc verbatim (unverified: whether it enters the numbers) |
 | `clip_vit_base_patch32` | wiring | openai/clip-vit-base-patch32@3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268 | MIT | e50cc verbatim |
