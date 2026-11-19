@@ -42,7 +42,9 @@
    "artifact": "datasets/ngnnguynchn/flag2027-members-p",
    "mount": "datasets/ngnnguynchn/flag2027-members-p",
    "use": "v6 member seeds of s007 / s010B (s007_seed1.pt ...), asserted at stage.ipy:4548; they feed only the en7 / enco arrays (English v9 / v12 streams, System.en) of components_eval.npz, which no 13.54 fuser reads; this is NOT the XALL bridge s007_xall.pt of cleancomp-final, which is in the numbers (see notes); frozen wiring dataset (DESIGN G18)",
-   "wiring_g18": true
+   "wiring_g18": true,
+   "optional": true,
+   "optional_why": "trained in the stage when absent (patch 'v6 members'); they feed only the English v9 / v12 columns en7[:, :4]"
   },
   {
    "artifact": "datasets/ngnnguynchn/flag2027-eda-bundle-p",
@@ -122,6 +124,15 @@
    "in_release": false,
    "why": "The repository mounts datasets/ngnnguynchn/flag2027-raw-v4-p as the organisers' files in FF_DATA 00_raw/btc_mavceleb_v4 (train_set.zip, dev_set.zip, meta_file_train_set.csv; configs/data_map.json, no 'exclude'), not as the tree Kaggle had auto-extracted for the original run (log: .../flag2027-raw-v4-p/train_set/train_set/train_set/train_English.txt, no 'unpacking' line). No train list is then found among the extracted inputs, so the verbatim fallback unpack_zips() runs; without this patch it unpacks dev_set.zip too (9 757 members, 989 881 860 bytes zipped) into /kaggle/working/raw. ONLY_UNDER = 'evaluation_phase' kept the dev lists out of the numbers anyway; with the patch the dev archive is never opened. Same text as the patch of stage f47b_screen2 (group 20_features).",
    "effect": "none on numbers: train_set.zip is unpacked by the same fallback into /kaggle/working/raw (same train list and media as the auto-extracted copy, other path) and the verbatim last cell removes raw/ (shutil.rmtree(WORKDIR / 'raw')), so the stage output holds no organiser media; the run log shows an 'unpacking .../train_set.zip' line the original log does not have"
+  },
+  {
+   "old": "assert v6_members is not None, \"attach flag2027-members (v6 members: s007 / s010B seeds)\"\n",
+   "new": "if v6_members is None:                                     # FF 19/11/2026 (CHANGES.md): saved v6 members not attached\n    v6_members = WORKDIR / \"members_v6\"; v6_members.mkdir(parents=True, exist_ok=True)\n    log(\"v6 members (s007 / s010B) not attached: train_members (BEST/v6_eval/pipeline.py, the code that made them) trains them \"\n        \"from the train features into\", v6_members, \"| they feed only en7[:, :4] (English v9 / v12), read by no 13.54 stage\")\n",
+   "count": 1,
+   "type": "wiring",
+   "why": "the v6 members (s007 / s010B seeds) of datasets/ngnnguynchn/flag2027-members-p have no producing stage; when they are not attached, System() hands an empty cache folder to P6.train_members, whose original code trains every missing (member, seed) from the train features of this run (feats_eval: VGG, organiser ECAPA-192, ECAPA-6144) and caches it",
+   "effect_on_numbers": "none on 13.54: the members feed only System.en() -> en7[:, :4] (s007 / s010B deep and CCA columns of the English v9 / v12 streams); a_factor / a_fvbind read b3, co, t3 and pair ids of components_eval.npz only. With the members attached (modes (b) / (c)) the run is unchanged.",
+   "added": "19/11/2026 (13.54 lineage closure)"
   }
  ],
  "drop_cells": [],

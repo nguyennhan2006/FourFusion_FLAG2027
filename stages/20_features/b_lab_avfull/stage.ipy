@@ -1,0 +1,125 @@
+print("[cell] b_lab_avfull 1/3: helpers and the FLAG_32 output (8 MAV-Celeb AudioCLIP arrays)", flush=True)
+# NEW cell (FourFusion reproduction repository, stage b_lab_avfull). The original step was an ad-hoc script in a Claude scratchpad of the
+# team machine (15/10/2026 18:06, since deleted; kaggle/kapi_runs.jsonl line 300: upload of .../scratchpad/avfull/flag2027-lab-avfull.zip
+# as the PRIVATE dataset ngnnguynchn/flag2027-lab-avfull-p). It zipped Experiment/CAFUSE-EN/feats_av_full/ext_* (FLAG_32 run 2 output)
+# under labavfull/ with a lab_manifest.json of kind "data-avfull", the layout of kaggle/build_lab_bundle.py build_vb(). This stage
+# rebuilds that layout from the f32_aclip_full output and compares every file with the frozen dataset (sha256, expected_members.json).
+import os, json, shutil, hashlib, time
+from pathlib import Path
+import numpy as np
+
+KIN = Path("/kaggle/input")        # the runner points this at the stage's own input view
+KOUT = Path("/kaggle/working")     # ... and this at the stage's own working directory
+STAGE_DIR = Path(os.environ.get("FF_STAGE_DIR", "."))
+SMOKE = os.environ.get("FF_SMOKE") == "1"
+SUB = "Experiment/CAFUSE-EN/feats_av_full"           # path inside labavfull/ (the consumers' OPTIONAL_DIRS entry CAFUSE-EN/feats_av_full)
+NAMES = [f"ext_{s}_complete_{k}_{n}.npy" for s in ("v1", "v2") for k in ("face", "voice") for n in ("aclip", "rows")]
+EXPECTED_N = {("v1", "face"): 7580, ("v1", "voice"): 19556, ("v2", "face"): 8953, ("v2", "voice"): 20715}   # ext-meta rows
+
+
+def art_root(aid):
+    """Mounted folder of an input artifact: <input>/<artifact id>; else the same slug under another owner; else <input>/<slug>."""
+    kind, owner, slug = aid.split("/")
+    for p in [KIN / aid] + sorted((KIN / kind).glob(f"*/{slug}")) + [KIN / slug]:
+        if p.is_dir():
+            return p
+    raise FileNotFoundError(f"input artifact {aid} is not mounted under {KIN}")
+
+
+def find_dir(root, *markers):
+    """The folder under `root` (root included) holding every marker file; the shallowest one when there are several."""
+    hits = [Path(dp) for dp, dns, fns in os.walk(root, followlinks=True) if all(m in fns for m in markers)]
+    assert hits, f"no folder under {root} holds {markers}"
+    return sorted(hits, key=lambda p: (len(p.parts), str(p)))[0]
+
+
+def sha256(p):
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for b in iter(lambda: f.read(1 << 22), b""):
+            h.update(b)
+    return h.hexdigest()
+
+
+def guard_action(kind):
+    """stage.json guard_policy: kind 'aclip' -> on_mismatch[FF_MODE], kind 'rows' -> rows_on_mismatch[FF_MODE] ('warn' | 'fail');
+    FF_SMOKE=1 or FF_ALLOW_MISMATCH=1 -> 'warn'. AudioCLIP on GPU is not bit-identical when re-run (FF_MODE=train may rerun FLAG_32);
+    the row files are arange(N) of the ext-meta tables and must be identical in every mode."""
+    if SMOKE or os.environ.get("FF_ALLOW_MISMATCH") == "1":
+        return "warn", "FF_SMOKE=1 or FF_ALLOW_MISMATCH=1"
+    mode = os.environ.get("FF_MODE", "")
+    key = "on_mismatch" if kind == "aclip" else "rows_on_mismatch"
+    try:
+        pol = json.loads((STAGE_DIR / "stage.json").read_text(encoding="utf-8"))["guard_policy"][key]
+    except Exception:
+        pol = {"train": "warn"} if kind == "aclip" else {}
+    return pol.get(mode, "fail"), f"stage.json guard_policy.{key}[{mode or 'FF_MODE unset'}]"
+
+
+SRC = find_dir(art_root("notebooks/ff/f32_aclip_full"), *NAMES)
+print("FLAG_32 feats_av (f32_aclip_full):", SRC, flush=True)
+# <<<FF-CELL>>>
+print("[cell] b_lab_avfull 2/3: write labavfull/ (the dataset content) and check shapes / dtypes / row indices", flush=True)
+DS = KOUT / "lab_avfull_dataset"
+shutil.rmtree(DS, ignore_errors=True)
+DST = DS / "labavfull" / SUB
+DST.mkdir(parents=True)
+problems = []
+for n in NAMES:
+    shutil.copyfile(SRC / n, DST / n)          # real copies (the export must not hold links into the input view)
+for s in ("v1", "v2"):
+    for k in ("face", "voice"):
+        rows = np.load(DST / f"ext_{s}_complete_{k}_rows.npy")
+        X = np.load(DST / f"ext_{s}_complete_{k}_aclip.npy", mmap_mode="r")
+        tag = f"{s}/{k}"
+        if rows.dtype != np.int64 or rows.ndim != 1 or not np.array_equal(rows, np.arange(len(rows))):
+            problems.append(f"{tag}: rows are not int64 arange(N) (dtype {rows.dtype}, shape {rows.shape})")
+        if not SMOKE and len(rows) != EXPECTED_N[(s, k)]:
+            problems.append(f"{tag}: {len(rows)} rows, expected {EXPECTED_N[(s, k)]} (ext-meta row count)")
+        if X.dtype != np.float16 or X.shape != (len(rows), 1024):
+            problems.append(f"{tag}: aclip array {X.dtype} {X.shape}, expected float16 ({len(rows)}, 1024)")
+        elif not np.isfinite(np.asarray(X, np.float32)).all():
+            problems.append(f"{tag}: aclip array has non-finite values")
+man = {"created": time.strftime("%Y-%m-%d %H:%M"), "kind": "data-avfull",
+       "files": {f"{SUB}/{n}": (DST / n).stat().st_size for n in NAMES},
+       "note": "AudioCLIP of the MAV-Celeb v1/v2 rows (CAFUSE-EN/feats_av_full ext_*): EN-T3-01 table_en, for FACELORA-03 zip (15/10)"}
+(DS / "labavfull" / "lab_manifest.json").write_text(json.dumps(man, indent=1))
+print(json.dumps({"files": len(man["files"]), "bytes": sum(man["files"].values()), "problems": problems}), flush=True)
+assert SMOKE or not problems, f"lab-avfull structure check failed: {problems}"
+# <<<FF-CELL>>>
+print("[cell] b_lab_avfull 3/3: compare with the frozen dataset (sha256), guard, report", flush=True)
+members = {}
+for p in sorted(DS.rglob("*")):
+    if p.is_file():
+        members[p.relative_to(DS).as_posix()] = {"bytes": p.stat().st_size, "sha256": sha256(p)}
+rep = {"stage": "b_lab_avfull", "dataset": "ngnnguynchn/flag2027-lab-avfull-p", "created": time.strftime("%Y-%m-%d %H:%M"),
+       "source_dir": str(SRC), "smoke": SMOKE, "members": members,
+       "structure": {"ok": not problems, "problems": problems}}
+exp = json.loads((STAGE_DIR / "expected_members.json").read_text(encoding="utf-8"))["members"]
+MAN = "labavfull/lab_manifest.json"                  # carries its creation time: never byte-identical, not compared
+same = sorted(n for n in members if n in exp and n != MAN and exp[n]["sha256"] == members[n]["sha256"])
+diff = sorted(n for n in members if n in exp and n != MAN and exp[n]["sha256"] != members[n]["sha256"])
+rep["vs_original"] = {"identical": len(same), "differ": diff, "missing": sorted(set(exp) - set(members)),
+                      "extra": sorted(set(members) - set(exp))}
+diff_rows = [n for n in diff if n.endswith("_rows.npy")]
+diff_aclip = [n for n in diff if n.endswith("_aclip.npy")]
+actions = []
+if diff_rows:
+    actions.append(("rows", diff_rows) + guard_action("rows"))
+if diff_aclip:
+    actions.append(("aclip", diff_aclip) + guard_action("aclip"))
+if rep["vs_original"]["missing"]:
+    actions.append(("missing", rep["vs_original"]["missing"], "warn" if SMOKE else "fail", "a member of the frozen dataset is not written"))
+rep["guard"] = {"action": "pass" if not actions else ("fail" if any(a[2] == "fail" for a in actions) else "warn"),
+                "items": [{"kind": a[0], "files": a[1], "action": a[2], "why": a[3]} for a in actions],
+                "FF_MODE": os.environ.get("FF_MODE", ""), "FF_ALLOW_MISMATCH": os.environ.get("FF_ALLOW_MISMATCH", "")}
+(KOUT / "bundle_report.json").write_text(json.dumps(rep, indent=1))
+print(json.dumps({"vs_original": rep["vs_original"], "guard": rep["guard"]}, indent=1), flush=True)
+for a in actions:
+    if a[2] == "warn":
+        print(f"!! WARNING: {a[0]} differ from the frozen lab-avfull dataset: {a[1]} ({a[3]})", flush=True)
+assert rep["guard"]["action"] != "fail", (
+    "the rebuilt lab-avfull files differ from the frozen dataset (a FLAG_32 GPU re-run, or other ext-meta rows): "
+    f"{[(a[0], a[1]) for a in actions if a[2] == 'fail']}; use the frozen copy or set FF_ALLOW_MISMATCH=1 to keep them")
+print(f"{len(members)} files in {DS} = the content of dataset ngnnguynchn/flag2027-lab-avfull-p", flush=True)
+# <<<FF-CELL>>>

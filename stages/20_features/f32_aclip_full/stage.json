@@ -1,0 +1,246 @@
+{
+ "id": "f32_aclip_full",
+ "group": "20_features",
+ "title": "FLAG_32 run 2 (wiring): AudioCLIP-Full-Training on EVERY MAV-Celeb v1 / v2 face and voice row (feats_av_full of CAFUSE-EN)",
+ "kind": "data",
+ "role_in_1354": "wiring",
+ "compute": {
+  "device": "gpu",
+  "gpus": 1,
+  "minutes_original": 76,
+  "internet": true,
+  "secrets": [],
+  "note": "original run 2 log 10:31:22 -> 11:46:48 (aclip 4 343 s incl. the 1 008-row dev list); here the train list (6 485 rows, whole clips) replaces the dev list: estimate 80-90 min on one T4 / P100; the data cell also unpacks train_set.zip (1.4 GB)"
+ },
+ "origin": {
+  "run": "FLAG_32 run 2: Kaggle web-UI run 04/10/2026 (kernel file flag-2027-nb-32; owner account not recorded); executed notebook + output zip downloaded by the team 04/10/2026 18:52 (Experiment/CAFUSE-EN/flag-2027-nb-32.ipynb, results_flag32.zip)",
+  "exactness": "exact-executed-copy",
+  "source_file": "Experiment/CAFUSE-EN/flag-2027-nb-32.ipynb",
+  "notebook_md5": "061569a8ade49e5ca45f7d1c12fb0771",
+  "original_copy": "original/flag-2027-nb-32.ipynb",
+  "original_sha256": "8549c6156e825a1e4ae3940f7eb680efbd93e00dba0788d19e47c9d13be7ef19",
+  "builder": "kaggle/build_av_notebook.py of 04/10/2026 (AudioCLIP BPE git-lfs fix, EXPERIMENT_LOG 123); not kept at that state (the working-tree builder output of 12/11/2026, kaggle/FLAG_32_aclip_ext_full.ipynb, differs in 3 cells)",
+  "certainty": "high: all 8 files of the lab-avfull dataset are byte-identical to this run's own output zip (results_flag32.zip) and match its printed shapes / times (original/SOURCE.json evidence)",
+  "added": "19/11/2026 (requirement-1: producer of datasets/ngnnguynchn/flag2027-lab-avfull-p)"
+ },
+ "inputs": [
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-raw-v4-p",
+   "exclude": [
+    "dev_set.zip",
+    "dev_set"
+   ],
+   "exclude_why": "dev-exclusion: this stage reads only train_set.zip / meta_file_train_set.csv; requested per-input mount filter (as f12_eval_feats / f14_av; runner/ffcore.py build_vin applies only the data_map 'exclude' today)",
+   "use": "organiser train list (stand-in for the dev list of the original run: the data cell needs one organiser split)"
+  },
+  {
+   "artifact": "datasets/chnnhnnguyn/external-data-mavceleb",
+   "use": "MAV-Celeb v1 / v2 media, extracted layout mavceleb_v1_complete-001/v1, mavceleb_v2_complete-002/v2 (= the original run's input)"
+  },
+  {
+   "artifact": "datasets/ngnnguynchn/flag2027-ext-meta-p",
+   "use": "ext_{v1,v2}_complete_{face,voice}_meta.csv: the row order of every MAV-Celeb array (original input not printed; mapping evidence in original/SOURCE.json)"
+  }
+ ],
+ "inputs_dropped": [
+  {
+   "artifact": "datasets/trngsnam/flag-input",
+   "why": "held the organisers' dev list used by the original run (dev-exclusion, CHANGES.md #1)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/f32_aclip_full",
+  "exports": {},
+  "main_folder": "feats_av",
+  "note": "kernel artifact = /kaggle/working: feats_av/ (8 MAV-Celeb arrays + 2 train arrays + index_train.txt + meta_file_train_set.csv + feats_manifest.json) and NB_32_feats_av.zip (the original's last cell zips feats_av); b_lab_avfull packs the 8 ext_* files",
+  "private": true,
+  "licence": "features of MAV-Celeb v1 / v2 (organisers' data, challenge terms) and of the organisers' v4 train media; private, shared only with the organisers through FF_DATA, never in the repository"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [
+  {
+   "old": "SPLIT_FILTER = [\"no_gender/English\"]   # the data cell needs one organiser split; the others exist (FLAG_14)",
+   "new": "SPLIT_FILTER = [\"train\"]   # FF dev-exclusion (CHANGES.md #1): organiser train list only (original: [\"no_gender/English\"]). the data cell needs one organiser split; the others exist (FLAG_14)",
+   "count": 1,
+   "type": "dev-exclusion",
+   "cell": 0,
+   "why": "the original run used the organisers' dev list no_gender/English only because the data cell asserts that one organiser split is present (its dev arrays face / voice_aclip_no_gender_English.npy are not in the lab-avfull dataset); no dev list is indexed or encoded here (DESIGN §2.8). The train list of raw-v4 plays that role, as in f12_eval_feats / f14_av",
+   "effect": "none on the 8 MAV-Celeb arrays (each split / source is encoded on its own, the model is in eval mode, no state is carried between jobs); the 2 dev arrays and index_no_gender_English.txt are no longer written; face_aclip_train.npy / voice_aclip_train.npy (6 485 rows each), index_train.txt and meta_file_train_set.csv are written instead (not packed by b_lab_avfull)",
+   "effect_on_numbers": "none (the lab-avfull arrays are the MAV-Celeb ones)"
+  },
+  {
+   "old": "ZIP_PREFIXES = (\"train_set\", \"dev_set\", \"eval\", \"test\")",
+   "new": "ZIP_PREFIXES = (\"train_set\", \"eval\", \"test\")   # FF dev-exclusion (CHANGES.md #2): dev_set.zip is never unpacked (original: (\"train_set\", \"dev_set\", \"eval\", \"test\"))",
+   "count": 1,
+   "type": "dev-exclusion",
+   "cell": 0,
+   "why": "with the zipped organiser release (raw-v4 = train_set.zip + dev_set.zip) the data cell unpacks every zip with one of these prefixes; the original run had the dev list unpacked in its input instead. Same patch as f12_eval_feats #2",
+   "effect": "none (the dev archive is never read)",
+   "effect_on_numbers": "none"
+  },
+  {
+   "old": "if SPLIT_FILTER:\n    S = {k: v for k, v in S.items() if k in SPLIT_FILTER}\n",
+   "new": "if SPLIT_FILTER:\n    S = {k: v for k, v in S.items() if k in SPLIT_FILTER}\nif os.environ.get(\"FF_SMOKE\") == \"1\":   # FF smoke (CHANGES.md #3): 8 rows of each organiser split\n    for v in S.values():\n        v[\"wav\"], v[\"jpg\"] = v[\"wav\"][:8], v[\"jpg\"][:8]\n",
+   "count": 1,
+   "type": "smoke",
+   "cell": 2,
+   "why": "FF_SMOKE=1 (runner smoke mode) must run on a few rows; the runner sets FF_SMOKE=0 in real runs",
+   "effect": "none in real runs",
+   "effect_on_numbers": "none in real runs (smoke only)"
+  },
+  {
+   "old": "    rows.fsel, rows.vsel = fsel, vsel\n",
+   "new": "    if os.environ.get(\"FF_SMOKE\") == \"1\":   # FF smoke (CHANGES.md #4): first 8 MAV-Celeb face / voice rows of each source\n        fsel, vsel = fsel[:8], vsel[:8]\n    rows.fsel, rows.vsel = fsel, vsel\n",
+   "count": 1,
+   "type": "smoke",
+   "cell": 2,
+   "why": "FF_SMOKE=1: 8 face and 8 voice rows per MAV-Celeb source instead of every row (7 580 + 19 556 / 8 953 + 20 715)",
+   "effect": "none in real runs (FF_SMOKE=0: the full arange(N) selection of the original, saved as ext_*_rows.npy)",
+   "effect_on_numbers": "none in real runs (smoke only)"
+  }
+ ],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "original",
+ "variant": {
+  "lora_c1": "not_used (AudioCLIP features; no LoRA C1 input)"
+ },
+ "dev_usage": "none after CHANGES.md #1 / #2 (the original run encoded the organisers' dev list no_gender/English; those arrays never reached the lab-avfull dataset)",
+ "skip_with": [
+  "02_intermediate/_wiring/flag2027-lab-avfull-p/labavfull/Experiment/CAFUSE-EN/feats_av_full"
+ ],
+ "skip_with_why": "the frozen lab-avfull dataset holds exactly the 8 ext_* files of this kernel's feats_av (byte-identical to the run's output); b_lab_avfull finds them by name. Used only when b_lab_avfull is forced without FF_FORCE=f32_aclip_full",
+ "verify": [
+  {
+   "file": "feats_av/feats_manifest.json",
+   "key": "files",
+   "equals": {
+    "ext_v1_complete_face_aclip.npy": [
+     7580,
+     1024
+    ],
+    "ext_v1_complete_face_rows.npy": [
+     7580
+    ],
+    "ext_v1_complete_voice_aclip.npy": [
+     19556,
+     1024
+    ],
+    "ext_v1_complete_voice_rows.npy": [
+     19556
+    ],
+    "ext_v2_complete_face_aclip.npy": [
+     8953,
+     1024
+    ],
+    "ext_v2_complete_face_rows.npy": [
+     8953
+    ],
+    "ext_v2_complete_voice_aclip.npy": [
+     20715,
+     1024
+    ],
+    "ext_v2_complete_voice_rows.npy": [
+     20715
+    ],
+    "face_aclip_train.npy": [
+     6485,
+     1024
+    ],
+    "voice_aclip_train.npy": [
+     6485,
+     1024
+    ]
+   },
+   "why": "the 8 MAV-Celeb arrays of the original manifest (2026-10-04 11:46) + the 2 train arrays that replace the 2 dev arrays (warning only)"
+  },
+  {
+   "file": "feats_av/ext_v1_complete_face_aclip.npy",
+   "sha256": "0a3791927127d7721633631f702d4271c725d3a0761ea2ed9171e59b6e15b2ca",
+   "why": "sha256 of the original run's file (= the lab-avfull member); informational: a GPU re-run of AudioCLIP is not bit-identical"
+  },
+  {
+   "file": "feats_av/ext_v1_complete_face_rows.npy",
+   "sha256": "9e798232885f16b37b4f0a8772c26b4fd120d2a0d1aa33d088f330b1300aaba9",
+   "why": "sha256 of the original run's file (= the lab-avfull member); the row indices are arange(N) of the ext-meta tables, expected to match exactly (b_lab_avfull enforces it)"
+  },
+  {
+   "file": "feats_av/ext_v1_complete_voice_aclip.npy",
+   "sha256": "58aee6cd67cf4cb39bfcf9977f25754ded02dc0b54c1c2dd8698c605b1153e5c",
+   "why": "sha256 of the original run's file (= the lab-avfull member); informational: a GPU re-run of AudioCLIP is not bit-identical"
+  },
+  {
+   "file": "feats_av/ext_v1_complete_voice_rows.npy",
+   "sha256": "903b7fa666df2e8e87d42597d65f25837a59fdaa10aa04167e82b8bc7159eed0",
+   "why": "sha256 of the original run's file (= the lab-avfull member); the row indices are arange(N) of the ext-meta tables, expected to match exactly (b_lab_avfull enforces it)"
+  },
+  {
+   "file": "feats_av/ext_v2_complete_face_aclip.npy",
+   "sha256": "60b096e21e9c073597509031b693ffc874d3a582b48450bca51d3e7c6dc6be4b",
+   "why": "sha256 of the original run's file (= the lab-avfull member); informational: a GPU re-run of AudioCLIP is not bit-identical"
+  },
+  {
+   "file": "feats_av/ext_v2_complete_face_rows.npy",
+   "sha256": "7337a746aee05c6606102bac894a586a6320b1b5073317715ca31d89beee0106",
+   "why": "sha256 of the original run's file (= the lab-avfull member); the row indices are arange(N) of the ext-meta tables, expected to match exactly (b_lab_avfull enforces it)"
+  },
+  {
+   "file": "feats_av/ext_v2_complete_voice_aclip.npy",
+   "sha256": "086e930cd0d481a75ac7daa26da550960dabda5ba07b1846cc14f7004fd90d28",
+   "why": "sha256 of the original run's file (= the lab-avfull member); informational: a GPU re-run of AudioCLIP is not bit-identical"
+  },
+  {
+   "file": "feats_av/ext_v2_complete_voice_rows.npy",
+   "sha256": "e3dfe099b89f494723add57e7738a35a9fc90d0b074ea700c9311b2d88d612ac",
+   "why": "sha256 of the original run's file (= the lab-avfull member); the row indices are arange(N) of the ext-meta tables, expected to match exactly (b_lab_avfull enforces it)"
+  }
+ ],
+ "post_checks": [
+  {
+   "file": "feats_av/feats_manifest.json",
+   "json_path": "external",
+   "equals": {
+    "v1_complete": [
+     7580,
+     19556
+    ],
+    "v2_complete": [
+     8953,
+     20715
+    ]
+   },
+   "why": "every MAV-Celeb v1 / v2 [face rows, voice rows] (original manifest); a skipped source (ExtRows error is only logged) fails here"
+  },
+  {
+   "file": "feats_av/feats_manifest.json",
+   "json_path": "failed",
+   "equals": {},
+   "why": "the original run printed 'failed: none'; an encoder or job failure is only recorded by the code"
+  },
+  {
+   "file": "feats_av/feats_manifest.json",
+   "json_path": "splits/train",
+   "equals": 6485,
+   "why": "organiser train rows (the split that replaces the dev list)"
+  }
+ ],
+ "stage_ipy": {
+  "cells": 8,
+  "sha256": "a41aa7b29e6ab8db1599b02f4f70ed8d9fd36fb0eaf6d7ec2e396a3f118776eb",
+  "cell_separator": "\n# <<<FF-CELL>>>\n",
+  "built_from": "flag-2027-nb-32.ipynb",
+  "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
+ },
+ "consumers": [
+  "b_lab_avfull (packs the 8 ext_* arrays into datasets/ngnnguynchn/flag2027-lab-avfull-p, read by e112f0sx: EN-T3-01 table_en of the F0 English path, wiring, not in the 13.54 zip)"
+ ],
+ "verify_notes": [
+  "AudioCLIP drift: FLAG_14's voice arrays (older image) differ from this run's (cosine median 0.974 at the same rows); faces are identical (cosine 1.00000). A re-run on today's image is expected close to this run's arrays (CAFUSE-EN/README: local run vs FLAG_32 cosine 0.9999), not bit-identical",
+  "the MAV-Celeb voices are 12 s centre crops resampled to 44.1 kHz with librosa (soxr_hq) and scaled to the int16 range; MAV arrays are saved as float16"
+ ],
+ "notes": [
+  "Model files: AudioCLIP-Full-Training.pt from FLAG_CACHE (tools/fetch_models.py audioclip_full, sha256 2441d35b...; else the GitHub release URL); the AudioCLIP code is cloned from github.com/AndreyGuzhov/AudioCLIP (depth 1, master, unpinned, as in the original); its BPE vocabulary is fetched from media.githubusercontent.com (fallback openai/CLIP) and checked by md5 933b7abb...",
+  "The ImageBind URL inside the unused IBAligned class (ENCODERS = ['aclip']) is rewritten at run time by configs/pipeline_1354.json runtime_rewrites; no stage patch."
+ ]
+}

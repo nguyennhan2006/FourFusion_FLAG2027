@@ -16,3 +16,10 @@ The output is evidence that the cheap part of the lab reproduces, nothing more: 
 exported as `flag2027-e2e-dev-p`, and copies no dev-wiring file. Smoke (`FF_SMOKE=1`): fold 1 rebuilt, folds 2-5 frozen and marked so.
 
 Every cell opens with `print("[cell] ...", flush=True)`.
+
+## Dev wiring optional (numbers: none) - added 19/11/2026
+
+- **Where:** cell 1 (input check) and cell 4 (bundle packaging) of `stage.ipy`; `safe04_lab` `stage.json` input `datasets/ff-frozen/flag2027-e2e-dev-wiring-p` gets `"optional": true` (and loses `resolve: saved_only`).
+- **Old:** level full required the dev wiring (dev-list files of the frozen bundle: `components_dev.npz`, `e2e_manifest.json`, `fusers/`, `ref/`; no producing stage) and copied it into the bundle.
+- **New:** attached, it is copied byte for byte as before; absent, the bundle gets `e2e_manifest.json` with `kind` e2e-dev, `split` dev, `files` [] and `dev_wiring` false, and no dev-list file.
+- **Why:** lineage of the 13.54 zip from raw data, and no dev data in the 13.54 chain. Readers of the bundle: the F-family training stages (bundle search accepts `safe04/` since 19/11; they read `safe04/` and the manifest's `created`), `cleancomp_tables` (copies every file), `e50cc` (copies `safe04/` from the bundle whose manifest kind is e2e-dev), `t164f` (dev scoring skipped without `components_dev.npz`).

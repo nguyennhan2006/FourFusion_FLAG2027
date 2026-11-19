@@ -117,6 +117,15 @@
    "effect_on_numbers": "none (the folder is never opened by this stage's commands)",
    "cell": 1,
    "added": "19/11/2026 (requirement-1 closure)"
+  },
+  {
+   "old": "e2e = [(d, m) for d, m in e2e if m.get(\"split\") == SPLIT and (d / f\"components_{SPLIT}.npz\").exists()]",
+   "new": "e2e = [(d, m) for d, m in e2e if m.get(\"split\") == SPLIT and ((d / f\"components_{SPLIT}.npz\").exists() or (d / \"safe04\").is_dir())]   # FF 19/11/2026: a SAFE-04 bundle without dev wiring qualifies",
+   "count": 1,
+   "type": "wiring",
+   "why": "the bundle search also accepts an e2e-dev bundle that holds the SAFE-04 tables (safe04/) but no components_dev.npz: stage safe04_lab writes such a bundle when the dev wiring (dev-list files, no producing stage) is not attached. With FF_TRAIN_ONLY=1 (default) this stage reads only safe04/ and the manifest's created field of the bundle.",
+   "effect_on_numbers": "none (same bundle chosen whenever components_dev.npz exists; the SAFE-04 tables are the same)",
+   "added": "19/11/2026 (13.54 lineage closure)"
   }
  ],
  "drop_cells": [],

@@ -930,6 +930,26 @@
    "docker_image": null,
    "digest_confirmed": false,
    "evidence": []
+  },
+  "f32_aclip_full": {
+   "family": "older",
+   "device": "gpu",
+   "python": "3.13.15",
+   "torch": "2.11.0+cu128",
+   "docker_image": null,
+   "digest_confirmed": false,
+   "evidence": [
+    "flag-2027-nb-32.ipynb"
+   ]
+  },
+  "b_lab_avfull": {
+   "family": "unknown",
+   "device": "cpu",
+   "python": null,
+   "torch": null,
+   "docker_image": null,
+   "digest_confirmed": false,
+   "evidence": []
   }
  }
 }

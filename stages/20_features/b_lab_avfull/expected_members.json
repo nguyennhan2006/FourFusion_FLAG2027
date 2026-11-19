@@ -1,0 +1,43 @@
+{
+ "source": "E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-lab-avfull-p.zip",
+ "zip_sha256": "b5febc059547e3c08650a2cbba6ca55d34eb01f3ed327efdc96d6d6365a2493c",
+ "note": "sha256 of every file of ngnnguynchn/flag2027-lab-avfull-p (package E: Kaggle download zip; members = the dataset content). labavfull/lab_manifest.json carries its creation time (2026-10-15 18:06) and is not expected to match; the 8 npy files are byte-identical to Experiment/CAFUSE-EN/feats_av_full/ and to the members of Experiment/CAFUSE-EN/results_flag32.zip (FLAG_32 run 2 output, checked 19/11/2026)",
+ "members": {
+  "labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v1_complete_face_aclip.npy": {
+   "bytes": 15523968,
+   "sha256": "0a3791927127d7721633631f702d4271c725d3a0761ea2ed9171e59b6e15b2ca"
+  },
+  "labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v1_complete_face_rows.npy": {
+   "bytes": 60768,
+   "sha256": "9e798232885f16b37b4f0a8772c26b4fd120d2a0d1aa33d088f330b1300aaba9"
+  },
+  "labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v1_complete_voice_aclip.npy": {
+   "bytes": 40050816,
+   "sha256": "58aee6cd67cf4cb39bfcf9977f25754ded02dc0b54c1c2dd8698c605b1153e5c"
+  },
+  "labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v1_complete_voice_rows.npy": {
+   "bytes": 156576,
+   "sha256": "903b7fa666df2e8e87d42597d65f25837a59fdaa10aa04167e82b8bc7159eed0"
+  },
+  "labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v2_complete_face_aclip.npy": {
+   "bytes": 18335872,
+   "sha256": "60b096e21e9c073597509031b693ffc874d3a582b48450bca51d3e7c6dc6be4b"
+  },
+  "labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v2_complete_face_rows.npy": {
+   "bytes": 71752,
+   "sha256": "7337a746aee05c6606102bac894a586a6320b1b5073317715ca31d89beee0106"
+  },
+  "labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v2_complete_voice_aclip.npy": {
+   "bytes": 42424448,
+   "sha256": "086e930cd0d481a75ac7daa26da550960dabda5ba07b1846cc14f7004fd90d28"
+  },
+  "labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v2_complete_voice_rows.npy": {
+   "bytes": 165848,
+   "sha256": "e3dfe099b89f494723add57e7738a35a9fc90d0b074ea700c9311b2d88d612ac"
+  },
+  "labavfull/lab_manifest.json": {
+   "bytes": 841,
+   "sha256": "9ac269f49fb3cdd02e923648d54b747a5a51215e88915cedf78151b9bb4c44ff"
+  }
+ }
+}

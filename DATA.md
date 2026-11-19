@@ -144,11 +144,12 @@ Inputs taken as stored copies in every mode are listed by `python runner/ffrun.p
 | `datasets/ngnnguynchn/flag2027-dsel02-oof-p` | wiring | `02_intermediate/_wiring/flag2027-dsel02-oof-p` | - | yes | `3849c9924d2f40db…` |  |
 | `datasets/ngnnguynchn/flag2027-facelora03-tables-p` | wiring | `02_intermediate/_wiring/flag2027-facelora03-tables-p` | - | yes | `8ab8e33d81317125…` |  |
 | `datasets/ngnnguynchn/flag2027-feats-scout-wsvrdn-p` | wiring | `02_intermediate/_wiring/flag2027-feats-scout-wsvrdn-p` | - | yes | `badbcb545b7fcced…` |  |
-| `datasets/ngnnguynchn/flag2027-lab-avfull-p` | wiring | `02_intermediate/_wiring/flag2027-lab-avfull-p` | - | yes | `b5febc059547e3c0…` | e112f0sx |
+| `datasets/ngnnguynchn/flag2027-lab-avfull-p` | wiring | `02_intermediate/_wiring/flag2027-lab-avfull-p` | b_lab_avfull | yes | `b5febc059547e3c0…` | e112f0sx |
 | `datasets/ngnnguynchn/flag2027-members-p` | wiring | `02_intermediate/_wiring/flag2027-members-p` | - | yes | `cba6a339c7b91d8e…` | e50cc |
 | `datasets/ngnnguynchn/flag2027-t3s01-tables-p` | wiring | `02_intermediate/_wiring/flag2027-t3s01-tables-p` | - | yes | `bf9a8d1dcb7b0810…` | t184_report |
 | `datasets/trngsnam/flag2027-feats-peface01-pe0-p` | wiring | `02_intermediate/_wiring/flag2027-feats-peface01-pe0-p` | - | yes | `3c147dfb1ea265e9…` | t183_p1, t183_p2 |
 | `notebooks/ff/f14_av` | wiring | `02_intermediate/feats_av` | f14_av | yes |  | b_lab_data |
+| `notebooks/ff/f32_aclip_full` | wiring | `02_intermediate/feats_av_full` | f32_aclip_full | yes |  | b_lab_avfull |
 | `embedded/BEST/v7_safe/cafuse_fuser.json` | embedded | - | - | no | `4148202185fa0c1b…` |  |
 | `embedded/BEST/v7_safe/fuser_en.json` | embedded | - | - | no | `8c042484b55b0cd5…` |  |
 | `embedded/Experiment/BIGB-01/cafuse_t3_fuser_v11.json` | embedded | - | - | no | `ec8a201ef8e59864…` |  |
@@ -159,7 +160,7 @@ Inputs taken as stored copies in every mode are listed by `python runner/ffrun.p
 | `embedded/Experiment/SCALE-CC-01/vox2b_groups.json` | embedded | - | l_groups | no | `7beb7ce7f67de74b…` |  |
 | `embedded/Experiment/STACK-02/eligible.json` | embedded | - | - | no | `9b4fe3f56fdb1a05…` |  |
 | `embedded/Experiment/STACK-02/fold_persons.json` | embedded | - | safe04_lab | no | `d76f684d719e5c4c…` |  |
-| `embedded/Experiment/VBSEL-01/vox2_sa_speakers.json` | embedded | - | - | no | `eccc765365323b2e…` |  |
+| `embedded/Experiment/VBSEL-01/vox2_sa_speakers.json` | embedded | - | l_groups | no | `eccc765365323b2e…` |  |
 | `datasets/ngnnguynchn/flag2027-c1fix-lora-p` | forbidden | - | - | yes |  |  |
 | `datasets/ngnnguynchn/flag2027-c1fix-rfx-art-p` | forbidden | - | - | yes |  |  |
 | `datasets/ngnnguynchn/flag2027-rf092-dev-emb-p` | forbidden | - | - | yes |  |  |

@@ -1,9 +1,9 @@
 {
  "id": "l_groups",
  "group": "13_lid",
- "title": "Evidence: language groups (DSEL-01, SCALE-CC-01) and genders of the VoxCeleb2 speakers",
+ "title": "Language groups (DSEL-01, SCALE-CC-01), genders and South-Asian speakers (VBSEL-01) of VoxCeleb2: producer of four data files the F-family stages embed",
  "kind": "data",
- "role_in_1354": "evidence",
+ "role_in_1354": "embedded-input producer",
  "compute": {
   "device": "cpu",
   "gpus": 0,
@@ -41,7 +41,9 @@
    "groups/vox2_groups.json": "FLAG_37 speakers -> [group, language, share]",
    "groups/vox2b_groups.json": "FLAG_53 new speakers",
    "groups/vox2_gender.json": "VoxCeleb2 id -> m / f",
-   "groups/l_groups_check.json": "comparison with the files the system used"
+   "groups/l_groups_check.json": "comparison with the files the system used",
+   "groups/vox2_sa_speakers.json": "VBSEL-01: 310 FLAG_37 speakers, >= 50 % South-Asian top-1 clips, Bengali-flagged removed",
+   "groups/vbsel_check.json": "comparison with the embedded copy"
   }
  },
  "env": {},
@@ -69,6 +71,10 @@
   {
    "file": "groups/vox2_gender.json",
    "sha256_crlf": "1d229fddee02f573f598497d833d1b9b28619cff53501024bd8d3dec50768089"
+  },
+  {
+   "file": "groups/vox2_sa_speakers.json",
+   "sha256_crlf": "eccc765365323b2ea52a97822b17eb33ffaa4dc46e0aca00f85f2df1911dd278"
   }
  ],
  "notes": [
@@ -78,13 +84,17 @@
   "path: dsel01_make_groups.py (copy of Experiment/DSEL-01/make_groups.py): LD and the output folder from FF_VOX2LID / FF_OUT (defaults = original paths)",
   "path: scalecc01_make_groups.py (copy of Experiment/SCALE-CC-01/make_groups.py): DSEL-01 script, FLAG_53 folder, FLAG_42 labels, vox2_meta.csv and output folder from FF_DSEL01_SCRIPT / FF_FLAG53_DIR / FF_FLAG42_LABELS / FF_VOX2_META / FF_OUT",
   "new: cells/00_groups.py: new: run both scripts, compare the outputs with the original files (line ends normalised to CRLF: the originals were written on Windows)",
-  "new: guard made mode-aware (guard_policy in stage.json, read by the cell): mismatch -> warn in FF_MODE=train or with FF_ALLOW_MISMATCH=1 / FF_SMOKE=1, fail otherwise (fixer pass 18/11)"
+  "new: guard made mode-aware (guard_policy in stage.json, read by the cell): mismatch -> warn in FF_MODE=train or with FF_ALLOW_MISMATCH=1 / FF_SMOKE=1, fail otherwise (fixer pass 18/11)",
+  "new: cells/01_vbsel.py (19/11/2026): Experiment/VBSEL-01/vox2_sa_speakers.json rebuilt from the FLAG_42 output by the rule of Experiment/EDA-VB/eda_vb.py section (4); checked byte for byte against the embedded copy (team machine, 19/11: identical)"
  ],
  "build": {
   "base": null,
   "sequence": [
    {
     "new": "cells/00_groups.py"
+   },
+   {
+    "new": "cells/01_vbsel.py"
    }
   ],
   "recipe": "ff-stage-ipy/1",
@@ -94,14 +104,18 @@
    {
     "new": "cells/00_groups.py",
     "title": "l_groups: language groups (DSEL-01, SCALE-CC-01) and genders of the VoxCeleb2 speakers"
+   },
+   {
+    "new": "cells/01_vbsel.py",
+    "title": "l_groups: South-Asian VoxCeleb2 speakers (VBSEL-01 vox2_sa_speakers.json)"
    }
   ],
-  "n_cells": 1,
-  "stage_ipy_sha256": "acc91e6e36fceca4722f5ef87cc5394d63fd4df76cf65bcb4b95699f00b284ba"
+  "n_cells": 2,
+  "stage_ipy_sha256": "e3ef60efa1aa4be7a261f30325c202bd32caab66cf604f9f8220ff87d39bd109"
  },
  "schema": "DESIGN.md §2.2 (+ build, notes, changes_summary, outputs.kernel_layout / aliases / scratch / saved_copy)",
  "guard_policy": {
-  "check": "groups/{vox2_groups,vox2b_groups,vox2_gender}.json sha256 (CRLF form) == the files the system used",
+  "check": "groups/{vox2_groups,vox2b_groups,vox2_gender,vox2_sa_speakers}.json sha256 (CRLF form) == the files the system used",
   "on_mismatch": {
    "train": "warn",
    "infer": "fail",

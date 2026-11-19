@@ -58,3 +58,9 @@ Licence (2026-11-18): the head trains with 13 471 VoxBlink speakers; its model f
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
+## SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.

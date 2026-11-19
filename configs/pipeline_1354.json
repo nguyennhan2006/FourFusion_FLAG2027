@@ -642,6 +642,41 @@
    ]
   },
   {
+   "id": "f32_aclip_full",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "wiring",
+   "device": "gpu",
+   "minutes_original": 76,
+   "title": "FLAG_32 run 2 (wiring): AudioCLIP-Full-Training on EVERY MAV-Celeb v1 / v2 face and voice row (feats_av_full of CAFUSE-EN)",
+   "inputs": [
+    "datasets/ngnnguynchn/flag2027-raw-v4-p",
+    "datasets/chnnhnnguyn/external-data-mavceleb",
+    "datasets/ngnnguynchn/flag2027-ext-meta-p"
+   ],
+   "kernel": "notebooks/ff/f32_aclip_full",
+   "exports": [],
+   "internet": true
+  },
+  {
+   "id": "b_lab_avfull",
+   "group": "20_features",
+   "wp": "WP-D",
+   "kind": "data",
+   "role_in_1354": "wiring",
+   "device": "cpu",
+   "minutes_original": 1,
+   "title": "Pack the lab-avfull bundle (FLAG_32 run 2: AudioCLIP of every MAV-Celeb v1 / v2 face / voice row, CAFUSE-EN/feats_av_full ext_*); private",
+   "inputs": [
+    "notebooks/ff/f32_aclip_full"
+   ],
+   "kernel": "notebooks/ff/b_lab_avfull",
+   "exports": [
+    "datasets/ngnnguynchn/flag2027-lab-avfull-p"
+   ]
+  },
+  {
    "id": "f47b_screen2",
    "group": "20_features",
    "wp": "WP-D",

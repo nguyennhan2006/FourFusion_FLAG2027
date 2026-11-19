@@ -104,6 +104,31 @@ for prev in ([] if LOCAL else IN.rglob("lab_out/progress.json")):
 prog = prog if prog.get("exp") == EXP else {"exp": EXP, "done": [], "files": {}, "seconds": {}}
 prog["code_md5"] = CODE_MD5
 # <<<FF-CELL>>>
+print("[cell] FF: dev scoring of final.py only when components_dev.npz is attached (19/11/2026)", flush=True)
+# New cell (FourFusion reproduction repository, CHANGES.md). Experiment/CLEANCOMP-01/final.py, decoded from CODE_B64 by the setup cell,
+# scores the four DEV lists with the new v11 head AFTER s007_xall.pt and v11_t3head.pt are saved (final.py lines 57-68). It reads
+# components_dev.npz, a dev-list file of the e2e-dev bundle that no stage of this repository produces from raw data, and writes
+# v11_head/t3_streams.npz, which no 13.54 stage reads (e50cc deletes and regenerates it). When no components_dev.npz is attached
+# (mode (a) from raw data), the decoded final.py is edited on disk to skip that block; with the original inputs nothing changes.
+# The path is built from two pieces because the runner rewrites the literal input path in stage code but not in decoded modules.
+_KI = Path("/kag" + "gle/input")
+_roots = [_KI] if _KI.exists() else [IN]                      # = final.py line 59: the literal path when it exists, else FLAG_IN
+_dev = [p for r in _roots for p in r.rglob("components_dev.npz")]
+FF_NO_DEV_SCORING = not _dev
+if FF_NO_DEV_SCORING:
+    _fp = LAB / "Experiment/CLEANCOMP-01/final.py"
+    _src = _fp.read_text(encoding="utf-8")
+    _a_txt = '    cz = next(Path("' + str(_KI.as_posix()) + '").rglob("components_dev.npz")) if Path("' + str(_KI.as_posix()) + '").exists() else next(IN.rglob("components_dev.npz"))\n'
+    _b_txt = "    H.score(hd, st, TAGS, wait_h=0.01)\n"
+    assert _src.count(_a_txt) == 1 and _src.count(_b_txt) == 1, "final.py differs from the embedded original (lines 59 / 67)"
+    _a, _b = _src.index(_a_txt), _src.index(_b_txt) + len(_b_txt)
+    _src = _src[:_a] + ('    R.log("FF: components_dev.npz not attached: dev scoring of the new v11 head skipped '
+                        '(v11_head/t3_streams.npz is read by no 13.54 stage)")\n') + _src[_b:]
+    _fp.write_text(_src, encoding="utf-8")
+    print("final.py: dev scoring block (lines 59-67) skipped in this run; s007_xall.pt and v11_t3head.pt are trained as before", flush=True)
+else:
+    print("components_dev.npz attached:", _dev[0], "-> final.py runs as originally", flush=True)
+# <<<FF-CELL>>>
 print("[cell] final-artefacts", flush=True)
 # the final artefacts (Experiment/CLEANCOMP-01/final.py): one process, lab_entry.py CLEANCOMP-01 with CC_MODE=final
 FIN = OUTD / "final"; FIN.mkdir(exist_ok=True)
@@ -117,7 +142,7 @@ for line in p.stdout:
         print(line, end="", flush=True)
 if p.wait() != 0:
     print("".join(tail)); raise RuntimeError(f"{EXP} final failed")
-need = ["s007_xall.pt", "final_info.json", "v11_head/v11_t3head.pt", "v11_head/t3_streams.npz"]
+need = ["s007_xall.pt", "final_info.json", "v11_head/v11_t3head.pt"] + ([] if FF_NO_DEV_SCORING else ["v11_head/t3_streams.npz"])   # FF 19/11/2026: t3_streams.npz = dev scoring only
 assert all((FIN / n).exists() for n in need), [n for n in need if not (FIN / n).exists()]
 print("[final] artefacts:", {n: (FIN / n).stat().st_size for n in need}, f"[{time.time() - t0:.0f}s]", flush=True)
 # <<<FF-CELL>>>

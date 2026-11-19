@@ -4545,7 +4545,10 @@ def input_dir(name):
 
 v6_members, xall = input_dir("s007_seed1.pt"), input_dir("s007_xall.pt")
 bundle, adaext = input_dir("eda_bundle_manifest.json"), input_dir("ext_v1_complete_face_adaface.npy")
-assert v6_members is not None, "attach flag2027-members (v6 members: s007 / s010B seeds)"
+if v6_members is None:                                     # FF 19/11/2026 (CHANGES.md): saved v6 members not attached
+    v6_members = WORKDIR / "members_v6"; v6_members.mkdir(parents=True, exist_ok=True)
+    log("v6 members (s007 / s010B) not attached: train_members (BEST/v6_eval/pipeline.py, the code that made them) trains them "
+        "from the train features into", v6_members, "| they feed only en7[:, :4] (English v9 / v12), read by no 13.54 stage")
 assert xall is not None and adaext is not None, "attach flag2027-best-v7 (s007_xall.pt + ext AdaFace arrays)"
 FUS = {k: json.loads((WORKDIR / "repo" / p).read_text()) for k, p in
        {"v9_bangla": "BEST/v7_safe/cafuse_fuser.json", "v9_english": "BEST/v7_safe/fuser_en.json",

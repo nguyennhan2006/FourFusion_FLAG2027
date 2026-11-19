@@ -103,14 +103,21 @@ bit-identical, so compare per file with Spearman's correlation (`runner/verify.p
 
 ```bash
 FF_DATA=<FF_DATA> FF_WORK=<work> python runner/ffrun.py run --mode train --only <stage,...>     # one session per call
-# widest rebuild (configs/modes.json -> full_rebuild_from_raw)
-FF_USE_SAVED=none FF_FORCE=raw_mavceleb,safe04_lab,f14_av,gather_g1 FF_DATA=<FF_DATA> FF_WORK=<work> \
-    python runner/ffrun.py run --mode train --only <stage,...>
+# every stage of the 13.54 lineage from its producer (configs/modes.json -> modes.train.full_rebuild_from_raw)
+FF_USE_SAVED=none FF_FORCE=raw_mavceleb,safe04_lab,f14_av,gather_g1,t163l_orig,f32_aclip_full,b_lab_avfull \
+    FF_DATA=<FF_DATA> FF_WORK=<work> python runner/ffrun.py run --mode train --only <stage,...>
 # add the collect stages to FF_FORCE to re-collect VoxCeleb2 / VoxBlink from Hugging Face (needs HF_TOKEN)
+python runner/ffrun.py run --mode train --only l_groups      # rebuilds the four VoxCeleb2 lists the F stages embed, byte check
+python runner/ffrun.py dag                                   # section LINEAGE: every input of every 13.54 stage traced to raw data
 ```
 
-GPU training is not deterministic, so this is a recipe-level rebuild. The original LoRA C1 is always taken from its saved copy,
-because it defines the 13.54 variant. The DP branch trains on CPU: `python tools/dp_train_local.py --help`.
+GPU training is not deterministic, so this is a recipe-level rebuild. With the command above, every input of every stage that the
+13.54 zip depends on comes from its producing stage, starting from raw / collected data, public pretrained models and configuration
+files (`ffrun.py dag`, section LINEAGE: 0 gaps). Wiring inputs marked `"optional": true` in `stage.json` (v6 members of `e50cc`,
+the dev wiring of `safe04_lab`, the e2e-dev bundle of `t164f`) are simply absent: the stage does without them and no 13.54 number
+depends on them. The original LoRA C1 defines the 13.54 variant: modes (b) and (c) take its saved copy; here `t163l_orig` retrains it
+with the original code (key bug kept, `docs/VARIANTS.md`), checked by the lineage guard. The DP branch trains on CPU:
+`python tools/dp_train_local.py --help`.
 
 ### On Kaggle
 

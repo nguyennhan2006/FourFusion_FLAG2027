@@ -45,12 +45,19 @@ assert created == MAN["eda_bundle_created"], f"eda bundle {created} != the lab's
 BUNDLES = [m.parent for m in IN.rglob("e2e_manifest.json") if json.loads(m.read_text()).get("kind") == "e2e-dev"]
 WIRING_ENTRIES = ["components_dev.npz", "e2e_manifest.json", "fusers", "ref"]
 if LEVEL == "full":
-    assert len(BUNDLES) == 1, f"attach exactly one dev-wiring folder (artifact datasets/ff-frozen/flag2027-e2e-dev-wiring-p): {BUNDLES}"
-    WIRING, FROZEN = BUNDLES[0], None
-    assert not (WIRING / "safe04").exists(), (f"{WIRING} holds safe04/ tables: attach the dev-wiring subset (components_dev.npz, "
-                                              "e2e_manifest.json, fusers/, ref/), not the frozen bundle; level full takes no table from a frozen copy")
-    for n in WIRING_ENTRIES:
-        assert (WIRING / n).exists(), f"dev wiring: {WIRING / n} missing"
+    # 19/11/2026 (CHANGES.md): the dev wiring is optional. Attached, it is copied byte for byte as before; absent (mode (a) from raw
+    # data), the bundle gets a manifest without dev lists and no components_dev.npz / fusers / ref. No stage of the 13.54 chain needs
+    # them: the training stages read safe04/ and the manifest's split / created fields, t164f skips its dev scoring, e50cc copies safe04/.
+    assert len(BUNDLES) <= 1, f"attach at most one dev-wiring folder (artifact datasets/ff-frozen/flag2027-e2e-dev-wiring-p): {BUNDLES}"
+    WIRING, FROZEN = (BUNDLES[0] if BUNDLES else None), None
+    if WIRING is not None:
+        assert not (WIRING / "safe04").exists(), (f"{WIRING} holds safe04/ tables: attach the dev-wiring subset (components_dev.npz, "
+                                                  "e2e_manifest.json, fusers/, ref/), not the frozen bundle; level full takes no table from a frozen copy")
+        for n in WIRING_ENTRIES:
+            assert (WIRING / n).exists(), f"dev wiring: {WIRING / n} missing"
+    else:
+        log("no dev wiring attached: the bundle gets a manifest without dev lists (kind e2e-dev, split dev, files []) and no "
+            "components_dev.npz / fusers / ref")
 else:
     FROZEN = [b for b in BUNDLES if (b / "safe04/streams_fold1.parquet").exists()]
     assert len(FROZEN) == 1, f"attach exactly one frozen e2e-dev bundle with safe04/ tables (artifact datasets/ff-frozen/flag2027-e2e-dev-p): {FROZEN}"
@@ -170,11 +177,18 @@ if LEVEL == "full":
         tabs["stack02_rows.parquet"] = pd.read_parquet(SAFE / "stack02_rows.parquet")[["fold", "data", "y", "fp", "vp"]]
     for name in tabs:
         REP["tables"][name] = "rebuilt"
-    for n in WIRING_ENTRIES:                                       # the dev wiring, byte for byte (never recomputed, never a table)
+    for n in (WIRING_ENTRIES if WIRING is not None else []):       # the dev wiring, byte for byte (never recomputed, never a table)
         src = WIRING / n
         for f in ([src] if src.is_file() else sorted(p for p in src.rglob("*") if p.is_file())):
             dst = OUTB / f.relative_to(WIRING); dst.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(f, dst)
         REP["tables"][n] = "dev wiring copied byte for byte from datasets/ff-frozen/flag2027-e2e-dev-wiring-p"
+    if WIRING is None:                                             # 19/11/2026: no dev wiring -> a manifest without dev lists
+        OUTB.mkdir(parents=True, exist_ok=True)
+        (OUTB / "e2e_manifest.json").write_text(json.dumps({
+            "created": time.strftime("%Y-%m-%d %H:%M"), "kind": "e2e-dev", "split": "dev", "files": [], "dev_wiring": False,
+            "source": "safe04_lab (level full) without datasets/ff-frozen/flag2027-e2e-dev-wiring-p: SAFE-04 tables only; no "
+                      "components_dev.npz, fusers/ or ref/ (dev-list files)"}, indent=1))
+        REP["tables"]["e2e_manifest.json"] = "written without dev lists (no dev wiring attached)"
 else:
     for s in ALL:
         fz, cz = pd.read_parquet(FT / f"streams_fold{s}.parquet"), pd.read_parquet(SAFE / f"core_streams_fold{s}.parquet")

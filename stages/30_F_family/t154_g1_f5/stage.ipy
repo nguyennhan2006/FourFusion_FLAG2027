@@ -32,7 +32,7 @@ assert len(eda) == 1, f"attach exactly one flag2027-eda-bundle (found {len(eda)}
 created = json.loads(eda[0].read_text())["created"]
 assert created == MAN["eda_bundle_created"], f"eda bundle {created} != the lab's {MAN['eda_bundle_created']}"
 e2e = [(m.parent, json.loads(m.read_text())) for m in sorted(IN.rglob("e2e_manifest.json"))]
-e2e = [(d, m) for d, m in e2e if m.get("split") == SPLIT and (d / f"components_{SPLIT}.npz").exists()]
+e2e = [(d, m) for d, m in e2e if m.get("split") == SPLIT and ((d / f"components_{SPLIT}.npz").exists() or (d / "safe04").is_dir())]   # FF 19/11/2026: a SAFE-04 bundle without dev wiring qualifies
 assert len(e2e) >= 1, f"attach flag2027-e2e-dev (or, for E2E_SPLIT=eval, the output of FLAG_50 on the Evaluation data)"
 E2E_DIR, E2E_MAN = e2e[0]
 SP = WORK / "sp"; (SP / "out/safe04").mkdir(parents=True, exist_ok=True)

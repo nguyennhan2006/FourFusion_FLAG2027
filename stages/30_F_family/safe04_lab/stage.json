@@ -32,7 +32,8 @@
   },
   {
    "artifact": "datasets/ff-frozen/flag2027-e2e-dev-wiring-p",
-   "resolve": "saved_only"
+   "optional": true,
+   "optional_why": "dev-list files (components_dev.npz, e2e_manifest.json, fusers/, ref/) copied into the bundle when attached; without them the stage writes a manifest without dev lists (19/11/2026); no 13.54 stage reads the dev-list files"
   }
  ],
  "outputs": {

@@ -1,0 +1,111 @@
+{
+ "id": "b_lab_avfull",
+ "group": "20_features",
+ "title": "Pack the lab-avfull bundle (FLAG_32 run 2: AudioCLIP of every MAV-Celeb v1 / v2 face / voice row, CAFUSE-EN/feats_av_full ext_*); private",
+ "kind": "data",
+ "role_in_1354": "wiring",
+ "compute": {
+  "device": "cpu",
+  "gpus": 0,
+  "minutes_original": 1,
+  "internet": false,
+  "secrets": [],
+  "note": "original: ad-hoc local packaging 15/10/2026 18:06 (not timed); copies 117 MB and hashes it"
+ },
+ "origin": {
+  "run": null,
+  "exactness": "new",
+  "source_file": null,
+  "translates": "the ad-hoc packaging of 15/10/2026 18:06 that made datasets/ngnnguynchn/flag2027-lab-avfull-p from Experiment/CAFUSE-EN/feats_av_full/ext_* (script lost, see original/SOURCE.json); same layout and manifest keys as kaggle/build_lab_bundle.py build_vb()",
+  "builder": null,
+  "added": "19/11/2026 (requirement-1: producer of datasets/ngnnguynchn/flag2027-lab-avfull-p)"
+ },
+ "code": {
+  "stage_ipy": "stage.ipy",
+  "sha256": "c0c165cea6a33c5244deaac89a10e4ba2879f9e871f8759548e95d1763cf0c4f",
+  "bytes": 8027,
+  "cells": 3
+ },
+ "inputs": [
+  {
+   "artifact": "notebooks/ff/f32_aclip_full",
+   "use": "feats_av/ext_v{1,2}_complete_{face,voice}_{aclip,rows}.npy (found by file name; a saved copy may be the flat feats_av_full folder)"
+  }
+ ],
+ "outputs": {
+  "kernel": "notebooks/ff/b_lab_avfull",
+  "exports": {
+   "datasets/ngnnguynchn/flag2027-lab-avfull-p": "lab_avfull_dataset"
+  },
+  "main_folder": "lab_avfull_dataset",
+  "private": true,
+  "note": "lab_avfull_dataset/labavfull/* = the dataset content (consumers mount it at datasets/ngnnguynchn/flag2027-lab-avfull-p); bundle_report.json = sha256 of every member, comparison with the frozen dataset, guard decision",
+  "licence": "features of MAV-Celeb v1 / v2 (organisers' data, challenge terms); private, shared only with the organisers through FF_DATA, never in the repository"
+ },
+ "env": {},
+ "smoke_env": {},
+ "patches": [],
+ "drop_cells": [],
+ "neutralize_upload": [],
+ "pip_policy": "skip",
+ "variant": {
+  "lora_c1": "not_used (AudioCLIP feature bundle; no LoRA C1 input)"
+ },
+ "skip_with": [],
+ "dev_usage": "none (MAV-Celeb v1 / v2 rows only)",
+ "guard_policy": {
+  "check": "sha256 of the 8 npy files == expected_members.json (the frozen dataset, package E:); labavfull/lab_manifest.json is not compared (creation time)",
+  "on_mismatch": {
+   "train": "warn",
+   "infer": "fail",
+   "assemble": "fail"
+  },
+  "rows_on_mismatch": {
+   "train": "fail",
+   "infer": "fail",
+   "assemble": "fail"
+  },
+  "when_FF_MODE_unset": "fail",
+  "overrides": {
+   "FF_ALLOW_MISMATCH=1": "warn in any mode (aclip and rows)",
+   "FF_SMOKE=1": "warn (smoke data)"
+  },
+  "read_by": "the stage's own cell 3 (FF_STAGE_DIR/stage.json; FF_MODE is set by the runner)",
+  "why": "same policy as l_groups / l_dqual_g3 / l_lid_audit / l_lid_strict for the AudioCLIP arrays: FLAG_32 is a GPU run (fp16 autocast for faces) that is not bit-identical when re-run, so FF_MODE=train warns; infer / assemble only ever copy the frozen arrays, so a difference there is an error. The *_rows.npy files are arange(N) of the ext-meta tables: a difference means other MAV-Celeb rows (misaligned arrays), so it fails in every mode unless FF_ALLOW_MISMATCH=1"
+ },
+ "verify": [
+  {
+   "file": "bundle_report.json",
+   "key": "vs_original/extra",
+   "equals": [],
+   "why": "no member beyond the original's (warning only)"
+  },
+  {
+   "file": "bundle_report.json",
+   "key": "vs_original/differ",
+   "equals": [],
+   "why": "all 8 npy files byte-identical to the frozen dataset (expected with the frozen f32 output or the skip_with copy; after a FLAG_32 GPU re-run the aclip arrays differ: warning only, the guard in cell 3 decides)"
+  }
+ ],
+ "post_checks": [
+  {
+   "file": "bundle_report.json",
+   "json_path": "vs_original/missing",
+   "equals": [],
+   "why": "every member of the original dataset (expected_members.json) is in the new bundle"
+  },
+  {
+   "file": "bundle_report.json",
+   "json_path": "structure/ok",
+   "equals": true,
+   "why": "row files int64 arange(N) with the ext-meta row counts 7 580 / 19 556 / 8 953 / 20 715; aclip arrays float16 (N, 1024), finite"
+  }
+ ],
+ "consumers": [
+  "e112f0sx (mount datasets/ngnnguynchn/flag2027-lab-avfull-p; OPTIONAL_DIRS CAFUSE-EN/feats_av_full: AudioCLIP arrays of EN-T3-01 table_en on the F0 English path; F0 English reaches f1s_eval.zip but not the 13.54 zip)"
+ ],
+ "notes": [
+  "Not byte-identical as a dataset: labavfull/lab_manifest.json carries the build time; every other member is compared.",
+  "Without FF_FORCE=f32_aclip_full the input may be the skip_with view of f32_aclip_full (the frozen feats_av_full folder): the bundle is then the frozen content and the guard passes."
+ ]
+}

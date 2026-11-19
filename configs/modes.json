@@ -10,7 +10,7 @@
  "collect_kind_runs_only_when_forced": true,
  "modes": {
   "train": {
-   "title": "(a) rebuild from the raw / collected data, except the frozen requirement-1 exceptions listed in requirement1_gaps",
+   "title": "(a) rebuild from the raw / collected data (full_rebuild_from_raw: every stage of the 13.54 lineage from its producer)",
    "use_saved_default": "collected",
    "run_kinds": [
     "raw",
@@ -53,33 +53,28 @@
    "allow_train_stages": [],
    "target": "final_verify",
    "estimate": "about 150-170 GPU-hours (T4) + about 10 CPU-hours, summed over the original runs; 4-6 days of wall time with several Kaggle accounts in parallel; one Kaggle session is at most 12 h (split with FF_ONLY)",
-   "expectation": "recipe-level reproduction, not byte-identical (GPU training is not deterministic). NOT entirely from raw data: the requirement1_gaps artifacts (wiring datasets checked only for presence / row counts by the verbatim code, the frozen SAFE-04 tables, embedded data files) are taken frozen from FF_DATA because no stage of this repository rebuilds them (DESIGN G1, G18). Rows / LID lists should match exactly (ext-meta, lid_strict.json f4065711...), frozen features cos >= 0.999 against the saved copies, final per-file Spearman >= 0.99 against the submitted zip (proposed threshold, never measured). The retrained LoRA C1 is guarded by lineage (configs/variant_1354.json file_checks rule)",
+   "expectation": "recipe-level reproduction, not byte-identical (GPU training is not deterministic). With full_rebuild_from_raw every input of every stage of the 13.54 lineage comes from its producer, starting from raw / collected data, pretrained models and configuration files (`python runner/ffrun.py dag`, section LINEAGE: 0 gaps since 19/11/2026); optional wiring inputs (members, dev wiring, e2e-dev for t164f) are simply absent. Rows / LID lists should match exactly (ext-meta, lid_strict.json f4065711...), features cos >= 0.999 against the saved copies, final per-file Spearman >= 0.99 against the submitted zip (proposed threshold, never measured). The retrained LoRA C1 is guarded by lineage (configs/variant_1354.json file_checks rule)",
    "default_saved_note": "datasets/ngnnguynchn/flag2027-e2e-dev-p (frozen SAFE-04 tables), datasets/onnhqunhh/flag2027-rfs-lora-p (ORIGINAL LoRA C1) and the stored LID outputs (l42 / l150 / l152 / f41 / lid-strict-p) are used even in this mode (default_saved). Rebuild one with FF_FORCE=<producer> (safe04_lab, t163l_orig, ...). FF_USE_SAVED=none refuses the saved copies and then blocks consumers of force_only producers unless those are forced too",
    "requirement1_gaps": [
-    "datasets/ff-frozen/flag2027-e2e-dev-p (= frozen datasets/ngnnguynchn/flag2027-e2e-dev-p, default_saved; safe04_lab can rebuild it with FF_FORCE=safe04_lab)",
-    "datasets/ff-frozen/flag2027-e2e-dev-wiring-p (dev-phase wiring members of the frozen SAFE-04 bundle; input of safe04_lab)",
-    "datasets/ngnnguynchn/flag2027-lab-avfull-p (only e112f0sx, F0 English: not in the 13.54 zip)",
-    "datasets/ngnnguynchn/flag2027-members-p (wiring: e50cc)",
-    "datasets/trngsnam/flag2027-feats-peface01-pe0-p (evidence only since 18/11: t183_p1 / t183_p2, whose arms request f_pel; dropped from t163p_c5rl, t213_p*, t216_p3, t163p_fvb, t189_b2 as never read)",
-    "datasets/ngnnguynchn/flag2027-t3s01-tables-p (evidence only since 18/11: t184_report; t219_dumpv4 reads datasets/ff/flag2027-t3s01-trca-p made by t3s01_trca from ct02s-r2ca-tables-p)",
-    "11 data files embedded in stage code (configs/data_map.json class 'embedded'; 7 without producer: STACK-02/eligible.json, CLEANTUNE-01/ct_round2.json (hand-written configuration), VBSEL-01/vox2_sa_speakers.json, and the four frozen v9 / v11 / v12 fuser JSONs of e50cc, which feed only d['v9'] / d['v11'] / d['v12'])"
+    "none in the 13.54 lineage since 19/11/2026 (`ffrun.py dag`, section LINEAGE)",
+    "outside it (evidence stages only): datasets/trngsnam/flag2027-feats-peface01-pe0-p (t183_p1 / t183_p2), datasets/ngnnguynchn/flag2027-t3s01-tables-p (t184_report), datasets/ff-frozen/flag2027-e2e-dev-p (safe04_compare, safe04_lab_core)",
+    "configuration files carried in stage code: CLEANTUNE-01/ct_round2.json (recipe chosen by CLEANTUNE-01 round 1), STACK-02/eligible.json (hand-written registration); four fuser JSONs of e50cc are carried constants read by no 13.54 output (data_map not_in_1354_outputs)"
    ],
-   "requirement1_gaps_updated": "19/11/2026 (requirement-1 closure): cc5-oof, dsel02-oof, facelora03-tables, feats-scout-wsvrdn, best-v7 dropped as never read",
+   "requirement1_gaps_updated": "19/11/2026 (13.54 lineage closure): members-p and the dev wiring optional, lab-avfull produced by f32_aclip_full + b_lab_avfull, vox2_sa_speakers.json produced by l_groups, t164f dev scoring optional",
    "full_rebuild_from_raw": {
     "env": {
      "FF_MODE": "train",
      "FF_USE_SAVED": "none",
-     "FF_FORCE": "raw_mavceleb,safe04_lab,f14_av,gather_g1"
+     "FF_FORCE": "raw_mavceleb,safe04_lab,f14_av,gather_g1,t163l_orig,f32_aclip_full,b_lab_avfull"
     },
-    "command": "FF_DATA=<data> FF_WORK=<work> FF_USE_SAVED=none FF_FORCE=raw_mavceleb,safe04_lab,f14_av,gather_g1 python runner/ffrun.py run --mode train --target final_verify   # one Kaggle / machine session per call: add --only <stage,...>",
-    "what_it_does": "FF_USE_SAVED=none ignores default_saved (the stored LID outputs l42 / l150 / l152 / lid-strict and f41 are rebuilt) and every saved intermediate / checkpoint / run output; FF_FORCE adds the producers that the runner would otherwise never run: raw_mavceleb (MAV-Celeb v1 / v2 extracted from the two original zips instead of the extracted copy), safe04_lab (force_only: the SAFE-04 tables instead of the frozen copy), f14_av and gather_g1 (class wiring, always taken saved otherwise)",
+    "command": "FF_DATA=<data> FF_WORK=<work> FF_USE_SAVED=none FF_FORCE=raw_mavceleb,safe04_lab,f14_av,gather_g1,t163l_orig,f32_aclip_full,b_lab_avfull python runner/ffrun.py run --mode train --target final_verify   # one Kaggle / machine session per call: add --only <stage,...>",
+    "what_it_does": "FF_USE_SAVED=none ignores default_saved (the stored LID outputs l42 / l150 / l152 / lid-strict and f41 are rebuilt) and every saved intermediate / checkpoint / run output; FF_FORCE adds the producers that the runner would otherwise never run: raw_mavceleb (MAV-Celeb v1 / v2 extracted from the two original zips), safe04_lab (force_only: the SAFE-04 tables), f14_av, gather_g1, f32_aclip_full and b_lab_avfull (class wiring, always taken saved otherwise) and t163l_orig (the original LoRA C1 retrained from MAV-Celeb v1 by the original code, key bug kept; a forced producer overrides the consumers' resolve: saved_only). Stage l_groups rebuilds the four embedded VoxCeleb2 lists and checks them byte for byte (run it with --only l_groups; its outputs are not mounted).",
     "optional_force": {
      "stages": "c37_vox2,c53_vox2b,c46_voxblink,c45_frames_vox2,c63_frames,c87_frames_bridge,c63v_audio_cache,c_frames_index",
      "why": "re-collect VoxCeleb2 / VoxBlink from their public Hugging Face sources (needs HF_TOKEN with the ProgramComputer/voxceleb terms accepted); sampling depends on the network (failed tars), so the 13.54 rows come from the collected copies (DESIGN G9); with these stages the plan has 79 stages (~157 h by the original runs)"
     },
     "always_saved_by_design": {
-     "datasets/onnhqunhh/flag2027-rfs-lora-p": "the ORIGINAL LoRA C1 (lora_C1.pt b97372e3...) defines the 13.54 variant; every consumer has resolve: saved_only. t163l_orig (force_only) can retrain it as a check, but its GPU output has other bytes and is never mounted by the chain",
-     "requirement1_gaps": "the wiring datasets / frozen SAFE-04 members / embedded files listed above have no producing stage and stay frozen (class wiring / embedded)"
+     "note": "since 19/11/2026 nothing in the 13.54 lineage: the original LoRA C1 is taken saved in modes (b) / (c) and the default train mode, retrained by t163l_orig when FF_FORCE names it (lineage guard)"
     },
     "plan_check": "18/11/2026, `ffrun.py plan --mode train --assume-saved` with this env: 71 stages, about 133 h by the original runs, no blocked input; with optional_force: 79 stages, about 157 h. Without FF_FORCE, FF_USE_SAVED=none blocks t155s_f12 (the frozen SAFE-04 tables have a force_only producer)"
    }
@@ -189,7 +184,7 @@
    "estimate": "about 12 GPU-hours (16 + 21 + 240 + 221 + 31 + 162 + 34 min; the MAV part of e47rs, about 3.5 h, does not enter the zip) + about 1 CPU-hour",
    "expectation": "Spearman >= 0.9999 per file against the submitted zip (the T2 test of release/flag2027_e2e reached >= 0.99999, max |diff| <= 0.06), not byte-identical",
    "expected_stages_note": "DESIGN 5.2 list + raw_btc, the check of the organisers' v4 files that the runner schedules before the first stage reading them (stage.json outputs.verifies, request of WP-B); raw_mavceleb_check (WP-B, 18/11) is scheduled the same way: it verifies datasets/chnnhnnguyn/external-data-mavceleb before the first stage reading it",
-   "required_intermediate_note": "members-p (e50cc, v9 / v12 members) and lab-avfull-p (e112f0sx, F0 English) are the remaining requirement-1 exceptions of this mode (wiring, no producing stage); cc5-oof, dsel02-oof, facelora03-tables and best-v7 are no longer inputs (19/11/2026 (requirement-1 closure))"
+   "required_intermediate_note": "members-p (e50cc) is optional since 19/11/2026 (mounted when present, trained in the stage otherwise); lab-avfull-p has producing stages (f32_aclip_full, b_lab_avfull) but is class wiring, so modes (b) / (c) take the saved copy"
   },
   "assemble": {
    "title": "(c) byte-exact assembly from the saved per-pair scores",

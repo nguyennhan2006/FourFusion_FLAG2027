@@ -45,3 +45,9 @@ when the exact notebook is given (team-private check; the release code is compar
 - input `datasets/ngnnguynchn/flag2027-best-v7-p` dropped (stage.json `inputs_dropped`): attached in the original run for s007_xall.pt and the MAV-Celeb AdaFace arrays. XALL_PREFER=cleancomp makes input_dir() take s007_xall.pt from datasets/ngnnguynchn/flag2027-cleancomp-final-p (stage t164f); the AdaFace arrays ext_v{1,2}_complete_face_adaface.npy are byte-identical (sha256 d160e51b... / 0844ca81...) to the f10_models outputs that datasets/ngnnguynchn/flag2027-lab-data-p already mounts (lab/kaggle/output/feats_models/), and under NOREL they are only row-counted (relational bridge skipped). Its dev-phase score files were never read. No producing stage exists.
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
+## v6 members optional (type `wiring`; numbers: none on 13.54) - added 19/11/2026
+
+- **Where:** last cell (driver), the line `assert v6_members is not None, ...`; `stage.json` input `datasets/ngnnguynchn/flag2027-members-p` gets `"optional": true`.
+- **Old:** the stage stopped when the saved v6 members (s007 / s010B seeds, no producing stage in this repository) were not attached.
+- **New:** when they are absent, the empty folder `members_v6/` is handed to `P6.train_members` (BEST/v6_eval/pipeline.py, the code that made them), which trains each missing (member, seed) from this run's train features and caches it there.
+- **Why:** lineage of the 13.54 zip from raw data (`python runner/ffrun.py dag`, section LINEAGE). The members feed only `System.en()` -> `en7[:, :4]` (English v9 / v12 streams); `a_factor` / `a_fvbind` read `b3`, `co`, `t3` and the pair ids of `components_eval.npz`. With the members attached the run is byte-for-byte the original.

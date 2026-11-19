@@ -95,6 +95,23 @@ def print_req1(dag):
         print(f"{len(dag['embedded_data'])} data file(s) embedded in stage code (configs/data_map.json class 'embedded'):")
         for x in dag["embedded_data"]:
             print(f"  {x['artifact']:62s} producer {x.get('producer') or '-':12s} carried by {len(x.get('carried_by') or [])} stage(s)")
+    L = dag.get("lineage_1354")
+    if L:
+        print(f"\nLINEAGE OF THE 13.54 ZIP ({L['target']}): {len(L['stages'])} stages; every required input traced to its producer "
+              f"(default-saved and force-only copies counted as produced): {len(L['gaps'])} gap(s)")
+        for x in L["gaps"]:
+            print(f"  GAP {x['artifact']:58s} {x['class']:11s} -> {', '.join(x['consumers'][:6])}")
+        by = {}
+        for x in L["starts"]:
+            by.setdefault(x["class"], []).append(x["artifact"])
+        for c, v in sorted(by.items()):
+            print(f"  starts ({c}): {len(v)}: {', '.join(v)}")
+        if L.get("outside_1354_outputs"):
+            print(f"  carried constants read by no 13.54 output (configs/data_map.json not_in_1354_outputs): "
+                  + "; ".join(f"{x['artifact']} ({', '.join(x['consumers'])})" for x in L["outside_1354_outputs"]))
+        if L["optional"]:
+            print(f"  optional inputs (used when present, the stage runs without them): "
+                  + "; ".join(f"{x['artifact']} ({', '.join(x['consumers'])})" for x in L["optional"]))
 
 
 def cmd_dag(a):

@@ -549,13 +549,13 @@
   "datasets/ngnnguynchn/flag2027-lab-avfull-p": {
    "path": "02_intermediate/_wiring/flag2027-lab-avfull-p",
    "class": "wiring",
-   "producer": null,
+   "producer": "b_lab_avfull",
    "private": true,
    "zip_sha256": "b5febc059547e3c08650a2cbba6ca55d34eb01f3ed327efdc96d6d6365a2493c",
    "e_package": "datasets/ngnnguynchn__flag2027-lab-avfull-p.zip",
-   "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: package labavfull/ (DESIGN G18)",
-   "origin_run": "team package labavfull/ (lab AV tables)",
-   "requirement1_gap": "since 19/11/2026 (requirement-1 closure) consumed only by e112f0sx, whose F0 English zip path reads the AudioCLIP arrays (EN-T3-01 table_en); F0 English reaches f1s_eval.zip but not the 13.54 zip (ENFUSE reads its English pairs only for the pair-id check). Producer outside the graph: team FLAG_32 run 2 (Experiment/CAFUSE-EN/flag-2027-nb-32.ipynb, AudioCLIP on MAV-Celeb v1 / v2). The other eleven consumers no longer need it (OPTIONAL_DIRS patch)"
+   "notes": "wiring only (not in the 13.54 numbers). Content: labavfull/lab_manifest.json (kind data-avfull) + 8 ext_* AudioCLIP / row files of FLAG_32 run 2 (member sha256: stages/20_features/b_lab_avfull/expected_members.json)",
+   "origin_run": "FLAG_32 run 2 (Experiment/CAFUSE-EN/flag-2027-nb-32.ipynb, Kaggle 04/10/2026; its output results_flag32.zip is byte-identical) -> stage f32_aclip_full; packed 15/10/2026 18:06 by an ad-hoc script (lost) -> stage b_lab_avfull",
+   "requirement1": "closed 19/11/2026: b_lab_avfull <- f32_aclip_full <- external-data-mavceleb + ext-meta-p (r08_mav_rows) + raw-v4 train list. Class wiring is always taken saved; rebuild with FF_FORCE=f32_aclip_full,b_lab_avfull (sha256 guard in b_lab_avfull)"
   },
   "datasets/ngnnguynchn/flag2027-members-p": {
    "path": "02_intermediate/_wiring/flag2027-members-p",
@@ -566,7 +566,10 @@
    "e_package": "datasets/ngnnguynchn__flag2027-members-p.zip",
    "notes": "wiring only (code checks presence / row counts; not in the 13.54 numbers). Source run: old members package (DESIGN G18)",
    "origin_run": "old members package (BEST/v6-v7 members)",
-   "requirement1_gap": "no producing stage in this repository; consumed by the verbatim code only as wiring (presence / row counts), taken frozen from FF_DATA (zip sha256 cba6a339c7b91d8e...); planned: 'wiring' patch dropping the presence / row-count check (DESIGN G18, after 20/11), or a stage rebuilding the original run"
+   "optional_for": [
+    "e50cc"
+   ],
+   "optional_why": "optional input of e50cc since 19/11/2026: absent, the members are trained in the stage (P6.train_members); they feed only en7[:, :4] (English v9 / v12), read by no 13.54 stage"
   },
   "datasets/ngnnguynchn/flag2027-best-v7-p": {
    "path": "02_intermediate/_wiring/flag2027-best-v7-p",
@@ -740,7 +743,7 @@
    },
    "notes": "ORIGINAL LoRA C1 (variant guard: configs/variant_1354.json)",
    "default_saved": true,
-   "default_saved_why": "variant-defining (ORIGINAL LoRA C1, b97372e3...): every mode uses the stored copy; t163l_orig (force_only) retrains it only with FF_FORCE=t163l_orig, then the lineage guard applies (configs/variant_1354.json file_checks rule)"
+   "default_saved_why": "variant-defining (ORIGINAL LoRA C1, b97372e3...): modes (b), (c) and the default train mode use the stored copy (consumers: resolve saved_only). The from-raw rebuild names t163l_orig in FF_FORCE: the runner then lets the consumers mount the retrained C1 (19/11/2026), which the lineage guard of configs/variant_1354.json checks (original code with its key bug; GPU, not byte-identical)"
   },
   "datasets/ngnnguynchn/flag2027-rfsfxc5rl-art-p": {
    "path": "03_checkpoints/rfx_c5rl",
@@ -1140,7 +1143,7 @@
   "embedded/Experiment/VBSEL-01/vox2_sa_speakers.json": {
    "path": null,
    "class": "embedded",
-   "producer": null,
+   "producer": "l_groups",
    "private": false,
    "sha256": "eccc765365323b2ea52a97822b17eb33ffaa4dc46e0aca00f85f2df1911dd278",
    "bytes": 4094,
@@ -1161,8 +1164,7 @@
     "t184_report",
     "t219_dumpv4"
    ],
-   "notes": "VBSEL-01 (10/10) frozen list of 310 VoxCeleb2 speakers with >= 50 % of clips whose top language is South-Asian, Bengali-flagged speakers removed (Experiment/VBSEL-01/README.md); read when VBSEL-01/run.py is imported (line 20); no stage rebuilds it",
-   "requirement1_gap": "embedded frozen file without a producing stage (derivable only by hand from the run named in notes)"
+   "notes": "VBSEL-01 (10/10) list of 310 VoxCeleb2 speakers with >= 50 % of clips whose top language is South-Asian, Bengali-flagged speakers removed; read when VBSEL-01/run.py is imported (line 20). Producer: stage l_groups (cells/01_vbsel.py, rule of Experiment/EDA-VB/eda_vb.py section 4) from the FLAG_42 output, checked byte for byte against this copy (19/11/2026: identical)"
   },
   "embedded/Experiment/STACK-02/eligible.json": {
    "path": null,
@@ -1185,8 +1187,9 @@
     "t184_report",
     "t219_dumpv4"
    ],
-   "notes": "SAFE-04 eligible persons list (STACK-02); no stage of this repository writes it",
-   "requirement1_gap": "embedded frozen file without a producing stage (derivable only by hand from the run named in notes)"
+   "notes": "STACK-02 configuration (the stream families registered as candidates on 7/10/2026 from the provenance table, before any score); holds no value computed from data",
+   "configuration": true,
+   "configuration_kind": "hand-written registration (7/10/2026, before any STACK-02 score)"
   },
   "embedded/Experiment/STACK-02/fold_persons.json": {
    "path": null,
@@ -1305,8 +1308,9 @@
     "t184_report",
     "t219_dumpv4"
    ],
-   "notes": "CLEANTUNE-01 round-2 configuration (arms / seeds), written by hand before the run; configuration, not data",
-   "requirement1_gap": "embedded frozen file without a producing stage (derivable only by hand from the run named in notes)"
+   "notes": "CLEANTUNE-01 round-2 plan: the recipe of the identity-classification heads (I = C5CAT4, S_A = [T, AIp], CMB_* stream lists, seeds). Written by CLEANTUNE-01 run.py report() (line 387) on 1/11/2026 from the round-1 out-of-fold validation tables of FLAG_110 (old Bengali filter, before LIDSTRICT), by the selection rule registered in Experiment/CLEANTUNE-01/README.md before the runs; it also records the round-1 deltas. The 13.54 stages (CT_GROUP=r2) read only its choice fields (run.py lines 47-48, 99: I, S_A, CMB_*). Treated as configuration: the round-1 runs belong to an earlier system and are not rebuilt by this repository.",
+   "configuration": true,
+   "configuration_kind": "recipe chosen by an earlier experiment round (CLEANTUNE-01 round 1)"
   },
   "datasets/ff-frozen/flag2027-e2e-dev-wiring-p": {
    "path": "02_intermediate/_wiring/e2e_dev_wiring",
@@ -1337,8 +1341,11 @@
     "e2edev/ref/submission_v12.zip": 90712
    },
    "origin_run": "frozen bundle kaggle/flag2027-e2e-dev.zip (sha256 0257b1fe...; = package E datasets/ngnnguynchn__flag2027-e2e-dev-p.zip)",
-   "requirement1_gap": "wiring members of the frozen SAFE-04 bundle (dev-phase files the verbatim lab code checks); no producing stage",
-   "notes": "input of safe04_lab (resolve saved_only): extract exactly these 9 members (no safe04/ member) of the frozen bundle kaggle/flag2027-e2e-dev.zip (sha256 0257b1fe2be4f2fde704c9662b845a4531d1ab8787eeb6c44e917d79014d130e; = package E datasets/ngnnguynchn__flag2027-e2e-dev-p.zip content) into FF_DATA/02_intermediate/_wiring/e2e_dev_wiring/ (path proposed to WP-A), keeping the e2edev/ prefix"
+   "notes": "input of safe04_lab (resolve saved_only): extract exactly these 9 members (no safe04/ member) of the frozen bundle kaggle/flag2027-e2e-dev.zip (sha256 0257b1fe2be4f2fde704c9662b845a4531d1ab8787eeb6c44e917d79014d130e; = package E datasets/ngnnguynchn__flag2027-e2e-dev-p.zip content) into FF_DATA/02_intermediate/_wiring/e2e_dev_wiring/ (path proposed to WP-A), keeping the e2edev/ prefix",
+   "optional_for": [
+    "safe04_lab"
+   ],
+   "optional_why": "optional input of safe04_lab since 19/11/2026: absent, the bundle gets a manifest without dev lists; no 13.54 stage reads the dev-list files (t164f's dev scoring is skipped without components_dev.npz)"
   },
   "notebooks/nguynlcnhtho/flag-2027-nb-53-scaleid": {
    "path": "01_collected/voxceleb2_flag53",
@@ -1417,7 +1424,8 @@
    "embedded_as": "Python raw string SRC_BEST_V7_SAFE_CAFUSE_FUSER_JSON at stages/50_eval/e50cc/stage.ipy:3553 (written to WORKDIR/repo/BEST/v7_safe/cafuse_fuser.json by the cell that follows; not a base64 payload, so runner/check_stage.py does not see it)",
    "team_file": "BEST/v7_safe/cafuse_fuser.json of the team repository (same bytes after CRLF -> LF; checked 18/11)",
    "notes": "frozen fuser weights of the old v9 / v11 / v12 systems, fitted by team scripts that are not stages of this repository (BEST/v7_safe/, Experiment/BIGB-01/build_v11.py, Experiment/EN-T3-01/build_v12.py, all on the SAFE-04 validation tables). Use in e50cc: v9 Bangla CA-FUSE logistic model (mean / scale / coef / intercept); FUS['v9_bangla'], also passed to SY.System -> S.CAFuse, whose conditions() (the 7 conditions is_en, pf_m, pv_m, gdiff, agef, agev, agegap) do not read the model values; only CAFuse.__call__ (the v9 score) does. Not in the 13.54 numbers: the F1s' head (e112f1sx) reads the streams and conditions of components_eval.npz, not d['v9'] / d['v11'] / d['v12'] (INTEGRATION_r1 \u00a72; conditions checked in CAFuse 18/11). Registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)",
-   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)"
+   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)",
+   "not_in_1354_outputs": "fitted fuser of a dev-phase system, carried verbatim by e50cc (cells 28-31) for its submission_v9 / submission / submission_v12 zips and the fusers/ folder of its output; read by no 13.54 output: CAFuse.conditions() (the 7 conditions co) uses only the face-gender model and the ages, never the fuser coefficients, and a_factor / a_fvbind read b3, co, t3 and pair ids of components_eval.npz. e112f*'s check_v11_fuser() compares a refit with fusers/v11_bangla.json as a wiring assertion only."
   },
   "embedded/BEST/v7_safe/fuser_en.json": {
    "path": null,
@@ -1432,7 +1440,8 @@
    "embedded_as": "Python raw string SRC_BEST_V7_SAFE_FUSER_EN_JSON at stages/50_eval/e50cc/stage.ipy:3750 (written to WORKDIR/repo/BEST/v7_safe/fuser_en.json by the cell that follows; not a base64 payload, so runner/check_stage.py does not see it)",
    "team_file": "BEST/v7_safe/fuser_en.json of the team repository (same bytes after CRLF -> LF; checked 18/11)",
    "notes": "frozen fuser weights of the old v9 / v11 / v12 systems, fitted by team scripts that are not stages of this repository (BEST/v7_safe/, Experiment/BIGB-01/build_v11.py, Experiment/EN-T3-01/build_v12.py, all on the SAFE-04 validation tables). Use in e50cc: v9 English fuser; FUS['v9_english'] -> SY.scores -> d['v9']. Not in the 13.54 numbers: the F1s' head (e112f1sx) reads the streams and conditions of components_eval.npz, not d['v9'] / d['v11'] / d['v12'] (INTEGRATION_r1 \u00a72; conditions checked in CAFuse 18/11). Registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)",
-   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)"
+   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)",
+   "not_in_1354_outputs": "fitted fuser of a dev-phase system, carried verbatim by e50cc (cells 28-31) for its submission_v9 / submission / submission_v12 zips and the fusers/ folder of its output; read by no 13.54 output: CAFuse.conditions() (the 7 conditions co) uses only the face-gender model and the ages, never the fuser coefficients, and a_factor / a_fvbind read b3, co, t3 and pair ids of components_eval.npz. e112f*'s check_v11_fuser() compares a refit with fusers/v11_bangla.json as a wiring assertion only."
   },
   "embedded/Experiment/BIGB-01/cafuse_t3_fuser_v11.json": {
    "path": null,
@@ -1447,7 +1456,8 @@
    "embedded_as": "Python raw string SRC_EXPERIMENT_BIGB_01_CAFUSE_T3_FUSER_V11_JSON at stages/50_eval/e50cc/stage.ipy:3956 (written to WORKDIR/repo/Experiment/BIGB-01/cafuse_t3_fuser_v11.json by the cell that follows; not a base64 payload, so runner/check_stage.py does not see it)",
    "team_file": "Experiment/BIGB-01/cafuse_t3_fuser_v11.json of the team repository (same bytes after CRLF -> LF; checked 18/11)",
    "notes": "frozen fuser weights of the old v9 / v11 / v12 systems, fitted by team scripts that are not stages of this repository (BEST/v7_safe/, Experiment/BIGB-01/build_v11.py, Experiment/EN-T3-01/build_v12.py, all on the SAFE-04 validation tables). Use in e50cc: v11 Bangla fuser (head P512); FUS['v11_bangla'] -> SY.scores -> d['v11'] (also the v11 submission.zip of the run). Not in the 13.54 numbers: the F1s' head (e112f1sx) reads the streams and conditions of components_eval.npz, not d['v9'] / d['v11'] / d['v12'] (INTEGRATION_r1 \u00a72; conditions checked in CAFuse 18/11). Registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)",
-   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)"
+   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)",
+   "not_in_1354_outputs": "fitted fuser of a dev-phase system, carried verbatim by e50cc (cells 28-31) for its submission_v9 / submission / submission_v12 zips and the fusers/ folder of its output; read by no 13.54 output: CAFuse.conditions() (the 7 conditions co) uses only the face-gender model and the ages, never the fuser coefficients, and a_factor / a_fvbind read b3, co, t3 and pair ids of components_eval.npz. e112f*'s check_v11_fuser() compares a refit with fusers/v11_bangla.json as a wiring assertion only."
   },
   "embedded/Experiment/EN-T3-01/fuser_en_t3.json": {
    "path": null,
@@ -1462,7 +1472,18 @@
    "embedded_as": "Python raw string SRC_EXPERIMENT_EN_T3_01_FUSER_EN_T3_JSON at stages/50_eval/e50cc/stage.ipy:4240 (written to WORKDIR/repo/Experiment/EN-T3-01/fuser_en_t3.json by the cell that follows; not a base64 payload, so runner/check_stage.py does not see it)",
    "team_file": "Experiment/EN-T3-01/fuser_en_t3.json of the team repository (same bytes after CRLF -> LF; checked 18/11)",
    "notes": "frozen fuser weights of the old v9 / v11 / v12 systems, fitted by team scripts that are not stages of this repository (BEST/v7_safe/, Experiment/BIGB-01/build_v11.py, Experiment/EN-T3-01/build_v12.py, all on the SAFE-04 validation tables). Use in e50cc: v12 English fuser; FUS['v12_english'] -> SY.v12_scores -> d['v12']. Not in the 13.54 numbers: the F1s' head (e112f1sx) reads the streams and conditions of components_eval.npz, not d['v9'] / d['v11'] / d['v12'] (INTEGRATION_r1 \u00a72; conditions checked in CAFuse 18/11). Registered 18/11/2026 (integration fixer r1, INTEGRATION_r1 B3)",
-   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)"
+   "requirement1_gap": "embedded frozen file without a producing stage; feeds only the v9 / v11 / v12 scores of e50cc (not the 13.54 numbers)",
+   "not_in_1354_outputs": "fitted fuser of a dev-phase system, carried verbatim by e50cc (cells 28-31) for its submission_v9 / submission / submission_v12 zips and the fusers/ folder of its output; read by no 13.54 output: CAFuse.conditions() (the 7 conditions co) uses only the face-gender model and the ages, never the fuser coefficients, and a_factor / a_fvbind read b3, co, t3 and pair ids of components_eval.npz. e112f*'s check_v11_fuser() compares a refit with fusers/v11_bangla.json as a wiring assertion only."
+  },
+  "notebooks/ff/f32_aclip_full": {
+   "path": "02_intermediate/feats_av_full",
+   "class": "wiring",
+   "producer": "f32_aclip_full",
+   "private": true,
+   "alt_paths": [
+    "02_intermediate/_wiring/flag2027-lab-avfull-p/labavfull/Experiment/CAFUSE-EN/feats_av_full"
+   ],
+   "notes": "FLAG_32 run 2 output feats_av (AudioCLIP of every MAV-Celeb v1 / v2 row); read only by b_lab_avfull (the 8 ext_* files). The alt path holds the same 8 files inside the frozen lab-avfull dataset"
   }
  },
  "requirement1_gap_doc": "User requirement 1: every intermediate table / bundle must have a producing stage that starts from raw data. Entries with 'requirement1_gap' do NOT meet it: they are consumed by stages of the chain, no stage of this repository produces them (or the modes take them frozen by default), and mode (a) takes the frozen copy (sha256 recorded). `python runner/ffrun.py dag` and `plan` list them under REQUIREMENT-1 GAPS. Planned removal (DESIGN G18, after 20/11): a 'wiring' patch that drops the presence / row-count check of the verbatim code, proving they do not enter the numbers; or rebuilding the original runs named in origin_run."

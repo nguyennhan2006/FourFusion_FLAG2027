@@ -359,6 +359,9 @@ class Stage:
         self.command = d.get("command")                     # optional: argv list run instead of stage.ipy (script-only stage)
         self.force_only = bool(d.get("force_only"))           # runs only when named in FF_FORCE
         self.saved_only = {e["artifact"] for e in d.get("inputs", []) or [] if isinstance(e, dict) and e.get("resolve") == "saved_only"}
+        # "optional": true (19/11/2026): wiring that the stage code uses when present and does without otherwise (stage.json says
+        # how); mounted when available, skipped otherwise, in every mode; not part of the lineage of the 13.54 zip
+        self.optional = {e["artifact"] for e in d.get("inputs", []) or [] if isinstance(e, dict) and e.get("optional") is True}
         self.verifies = list((d.get("outputs") or {}).get("verifies") or [])
         rr = d.get("runner_requirements") or {}
         self.literal_kaggle_input = bool(rr.get("literal_kaggle_input"))
@@ -670,7 +673,7 @@ class Runner:
     def locate(self, aid, saved_only=False):
         """-> (path, how) with how in made | saved | attached; (None, None) when not available under the current policy.
         saved_only (stage input with "resolve": "saved_only"): only a saved / attached copy counts, whatever the policy."""
-        if saved_only:
+        if saved_only and not self.is_forced(aid):           # a forced producer (FF_FORCE) overrides saved_only (19/11/2026)
             q = self.find_saved(aid) or self.find_attached(aid)
             return (q, "saved") if q is not None else (None, None)
         p = self.art_dir(self.canonical(aid))
@@ -696,11 +699,62 @@ class Runner:
 
     def soft_input(self, st, aid):
         """configs/modes.json soft_inputs_for_kinds: in that mode an input of such a stage whose producer cannot run in the mode is
-        mounted when available and otherwise skipped (the assembly stages fall back to FF_DATA/05_scores on their own)."""
+        mounted when available and otherwise skipped (the assembly stages fall back to FF_DATA/05_scores on their own).
+        Inputs marked "optional": true in stage.json behave the same way in every mode."""
+        if self.is_optional(st, aid):
+            return True
         if st.kind not in self.mode.get("soft_inputs_for_kinds", []):
             return False
         prod = self.producer_of(aid)
         return prod is not None and not self.mode_runs(self.S[prod])
+
+    def is_optional(self, st, aid):
+        return bool(st.optional) and self.canonical(aid) in {self.canonical(a) for a in st.optional}
+
+    def lineage(self, target=None):
+        """Every stage the target (default: the pipeline default target, final_verify) depends on, following every required input
+        to its producer whatever the mode policy (default-saved / force-only copies count as produced), plus the embedded data files
+        the stages carry. Leaves are classified: raw / collected / pretrained data and configuration files are allowed starts;
+        anything else is a lineage gap (requirement 1 of the user: every stage that affects 13.54 starts from raw data).
+        Inputs marked "optional": true are listed apart (the stage runs without them), and so are embedded constants that data_map
+        marks "not_in_1354_outputs" (carried by a stage of the chain for another of its outputs; the entry gives the proof)."""
+        start_classes = set(self.modes.get("start_classes", ["raw", "collected", "pretrained"]))
+        emb = {}
+        for a, e in self.dmap.items():
+            if e.get("class") == "embedded":
+                for sid in e.get("carried_by") or []:
+                    emb.setdefault(sid, []).append(a)
+        t0 = target or self.pipeline.get("default_target", "final_verify")
+        seen, todo, starts, gaps, optional, outside = set(), [t0], {}, {}, {}, {}
+        while todo:
+            sid = todo.pop()
+            if sid in seen or sid not in self.S:
+                continue
+            seen.add(sid)
+            st = self.S[sid]
+            for _m, a in list(st.inputs) + [(x, x) for x in emb.get(sid, [])]:
+                ca, e = self.canonical(a), self.entry(a) or {}
+                if self.is_optional(st, a):
+                    optional.setdefault(ca, set()).add(sid)
+                    continue
+                if e.get("not_in_1354_outputs"):              # carried constant that no 13.54 output reads (data_map gives the proof)
+                    outside.setdefault(ca, set()).add(sid)
+                    continue
+                p = self.producer_of(a) or e.get("producer")
+                c = self.cls(a)
+                if c in start_classes:
+                    starts.setdefault((c, ca), set()).add(sid)
+                elif e.get("configuration"):
+                    starts.setdefault(("configuration", ca), set()).add(sid)
+                elif p and p != sid:
+                    todo.append(p)
+                else:
+                    gaps.setdefault(ca, set()).add(sid)
+        return {"target": t0, "stages": sorted(seen),
+                "starts": [{"class": c, "artifact": a, "consumers": sorted(u)} for (c, a), u in sorted(starts.items())],
+                "gaps": [{"artifact": a, "class": self.cls(a), "consumers": sorted(u)} for a, u in sorted(gaps.items())],
+                "optional": [{"artifact": a, "consumers": sorted(u)} for a, u in sorted(optional.items())],
+                "outside_1354_outputs": [{"artifact": a, "consumers": sorted(u)} for a, u in sorted(outside.items())]}
 
     def verifiers_of(self, aid):
         return [s.id for s in self.S.values() if aid in s.verifies or self.canonical(aid) in s.verifies]
@@ -776,7 +830,7 @@ class Runner:
                 return
             visiting.add(sid)
             for _m, inp in st.inputs:
-                if inp in st.saved_only:
+                if inp in st.saved_only and not self.is_forced(inp):
                     if self.locate(inp, saved_only=True)[0] is None and not (self.cfg.assume_saved and (self.entry(inp) or {}).get("path")):
                         blocked.append((inp, sid, f"saved copy required (resolve: saved_only): put it at {self.where_hint(inp)}"))
                     continue
@@ -803,9 +857,12 @@ class Runner:
                "nonraw_without_producer": [], "default_saved_frozen": [], "unconsumed_data_map_ids": [], "embedded_data": [],
                "variant_errors": []}
         start_classes = set(self.modes.get("start_classes", ["raw", "collected", "pretrained"]))
-        consumed = {}
+        consumed, rep["optional_inputs"] = {}, []
         for st in self.S.values():
             for _m, a in st.inputs:
+                if self.is_optional(st, a):                   # wiring used when present (stage.json "optional": true)
+                    rep["optional_inputs"].append((st.id, self.canonical(a)))
+                    continue
                 consumed.setdefault(self.canonical(a), []).append(st.id)
         for a, users in sorted(consumed.items()):
             e = self.entry(a) or {}
@@ -823,7 +880,7 @@ class Runner:
             if e.get("class") == "embedded":
                 rep["embedded_data"].append({"artifact": a, "sha256": e.get("sha256"), "carried_by": e.get("carried_by", []),
                                              "producer": e.get("producer"), "gap": e.get("requirement1_gap")})
-            elif a not in consumed and e.get("class") != "forbidden" and not e.get("unused"):
+            elif a not in consumed and e.get("class") != "forbidden" and not e.get("unused") and a not in {x for _s, x in rep["optional_inputs"]}:
                 rep["unconsumed_data_map_ids"].append({"artifact": a, "class": e.get("class"), "producer": e.get("producer")})
         for st in self.S.values():                              # static variant check (no run needed): stage.json fields + stage code
             if st.skeleton:
@@ -871,6 +928,7 @@ class Runner:
                     q.append(u)
         if seen != len(self.S):
             rep["cycles"].append(sorted(s for s, d in indeg.items() if d > 0))
+        rep["lineage_1354"] = self.lineage()
         if compare_skeleton:
             sk = {d["id"]: Stage(d, None, True) for d in self.pipeline.get("stages", [])}
             for sid, st in self.S.items():
@@ -1134,8 +1192,10 @@ print("[ff] stage %%s: all %%d cells OK" %% (stage, n), flush=True)
             seen_m.add(mount)
             p, how = self.locate(aid, saved_only=aid in st.saved_only)
             if p is None and self.soft_input(st, aid):
-                self.log(f"    {mount:70s} (soft input of an assembly stage, not available: not mounted)")
-                rows.append({"mount": mount, "artifact": aid, "how": "absent (soft)", "path": None, "files": 0, "link": "-"})
+                kind = "optional input (stage.json)" if self.is_optional(st, aid) else "soft input of an assembly stage"
+                self.log(f"    {mount:70s} ({kind}, not available: not mounted)")
+                rows.append({"mount": mount, "artifact": aid, "how": "absent (optional)" if self.is_optional(st, aid) else "absent (soft)",
+                             "path": None, "files": 0, "link": "-"})
                 continue
             if p is None:
                 raise StageBlocked(f"{st.id}: input {aid} not available")
@@ -1885,7 +1945,7 @@ print("[ff] stage %%s: all %%d cells OK" %% (stage, n), flush=True)
                 self.log(f"[stage] {sid}: outside FF_ONLY (another session runs it): skipped")
                 status[sid] = rec["status"] = "not_selected"
                 continue
-            miss = [a for _m, a in st.inputs if (self.locate(a, saved_only=True)[0] is None if a in st.saved_only else
+            miss = [a for _m, a in st.inputs if (self.locate(a, saved_only=True)[0] is None if (a in st.saved_only and not self.is_forced(a)) else
                                                  (not self.available(a) and not self.soft_input(st, a)))]
             if miss:
                 self.log(f"[stage] {sid}: missing inputs {miss} -> blocked")
@@ -1926,9 +1986,11 @@ print("[ff] stage %%s: all %%d cells OK" %% (stage, n), flush=True)
                 "populate FF_DATA/06_pretrained with `python tools/fetch_models.py --dest <FF_DATA>/06_pretrained` (or FF_FORCE=models_fetch)"))
         soft = getattr(self, "soft_missing", [])
         if soft:
-            self.log(f"\n{len(soft)} soft input(s) of assembly stages not available (not mounted; those stages read FF_DATA/05_scores):")
+            self.log(f"\n{len(soft)} optional / soft input(s) not available (not mounted; the stage runs without them: stage.json "
+                     "\"optional\": true, or an assembly stage that reads FF_DATA/05_scores):")
             for aid, via in soft:
-                self.log(f"  {aid:70s} for {via}")
+                kind = "optional" if via in self.S and self.is_optional(self.S[via], aid) else "soft (assembly)"
+                self.log(f"  {aid:70s} for {via} ({kind})")
         if blocked:
             self.log(f"\n{len(blocked)} artifact(s) not available (the stage that needs one will stop as 'blocked'):")
             for aid, via, why in blocked:

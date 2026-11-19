@@ -30,76 +30,78 @@ makes at run time (path rewrites, upload switches, pip modes, environment) are n
 | 21 | [`l_lid_audit`](#l_lid_audit) | 13_lid | local-script | [../stages/13_lid/l_lid_audit/CHANGES.md](../stages/13_lid/l_lid_audit/CHANGES.md) |
 | 22 | [`l_lid_strict`](#l_lid_strict) | 13_lid | local-script | [../stages/13_lid/l_lid_strict/CHANGES.md](../stages/13_lid/l_lid_strict/CHANGES.md) |
 | 23 | [`b_eda_bundle`](#b_eda_bundle) | 20_features | local-script | [../stages/20_features/b_eda_bundle/CHANGES.md](../stages/20_features/b_eda_bundle/CHANGES.md) |
-| 24 | [`b_lab_data`](#b_lab_data) | 20_features | local-script | [../stages/20_features/b_lab_data/CHANGES.md](../stages/20_features/b_lab_data/CHANGES.md) |
-| 25 | [`b_lab_vb`](#b_lab_vb) | 20_features | local-script | [../stages/20_features/b_lab_vb/CHANGES.md](../stages/20_features/b_lab_vb/CHANGES.md) |
-| 26 | [`f04_v2_ref`](#f04_v2_ref) | 20_features | exact-executed-copy | [../stages/20_features/f04_v2_ref/CHANGES.md](../stages/20_features/f04_v2_ref/CHANGES.md) |
-| 27 | [`f103c_tap01`](#f103c_tap01) | 20_features | builder-regenerated | [../stages/20_features/f103c_tap01/CHANGES.md](../stages/20_features/f103c_tap01/CHANGES.md) |
-| 28 | [`f10_models`](#f10_models) | 20_features | builder-regenerated | [../stages/20_features/f10_models/CHANGES.md](../stages/20_features/f10_models/CHANGES.md) |
-| 29 | [`f12_eval_feats`](#f12_eval_feats) | 20_features | builder-regenerated | [../stages/20_features/f12_eval_feats/CHANGES.md](../stages/20_features/f12_eval_feats/CHANGES.md) |
-| 30 | [`f14_av`](#f14_av) | 20_features | exact-executed-copy | [../stages/20_features/f14_av/CHANGES.md](../stages/20_features/f14_av/CHANGES.md) |
-| 31 | [`f40_t3enc_mav`](#f40_t3enc_mav) | 20_features | exact-executed-copy | [../stages/20_features/f40_t3enc_mav/CHANGES.md](../stages/20_features/f40_t3enc_mav/CHANGES.md) |
-| 32 | [`f41_t3enc_vox2`](#f41_t3enc_vox2) | 20_features | exact-executed-copy | [../stages/20_features/f41_t3enc_vox2/CHANGES.md](../stages/20_features/f41_t3enc_vox2/CHANGES.md) |
-| 33 | [`f47b_screen2`](#f47b_screen2) | 20_features | exact-executed-copy | [../stages/20_features/f47b_screen2/CHANGES.md](../stages/20_features/f47b_screen2/CHANGES.md) |
-| 34 | [`f63w_aux_voice`](#f63w_aux_voice) | 20_features | builder-regenerated | [../stages/20_features/f63w_aux_voice/CHANGES.md](../stages/20_features/f63w_aux_voice/CHANGES.md) |
-| 35 | [`t160a`](#t160a) | 20_features | exact-package | [../stages/20_features/t160a/CHANGES.md](../stages/20_features/t160a/CHANGES.md) |
-| 36 | [`t160b`](#t160b) | 20_features | exact-package | [../stages/20_features/t160b/CHANGES.md](../stages/20_features/t160b/CHANGES.md) |
-| 37 | [`t160c`](#t160c) | 20_features | exact-package | [../stages/20_features/t160c/CHANGES.md](../stages/20_features/t160c/CHANGES.md) |
-| 38 | [`t162a`](#t162a) | 20_features | exact-package | [../stages/20_features/t162a/CHANGES.md](../stages/20_features/t162a/CHANGES.md) |
-| 39 | [`t162b`](#t162b) | 20_features | exact-package | [../stages/20_features/t162b/CHANGES.md](../stages/20_features/t162b/CHANGES.md) |
-| 40 | [`t162c`](#t162c) | 20_features | exact-package | [../stages/20_features/t162c/CHANGES.md](../stages/20_features/t162c/CHANGES.md) |
-| 41 | [`cleancomp_tables`](#cleancomp_tables) | 30_F_family | local-script | [../stages/30_F_family/cleancomp_tables/CHANGES.md](../stages/30_F_family/cleancomp_tables/CHANGES.md) |
-| 42 | [`gather_g1`](#gather_g1) | 30_F_family | new | [../stages/30_F_family/gather_g1/CHANGES.md](../stages/30_F_family/gather_g1/CHANGES.md) |
-| 43 | [`gather_r2ca`](#gather_r2ca) | 30_F_family | new | [../stages/30_F_family/gather_r2ca/CHANGES.md](../stages/30_F_family/gather_r2ca/CHANGES.md) |
-| 44 | [`safe04_compare`](#safe04_compare) | 30_F_family | new | [../stages/30_F_family/safe04_compare/CHANGES.md](../stages/30_F_family/safe04_compare/CHANGES.md) |
-| 45 | [`safe04_lab`](#safe04_lab) | 30_F_family | new | [../stages/30_F_family/safe04_lab/CHANGES.md](../stages/30_F_family/safe04_lab/CHANGES.md) |
-| 46 | [`safe04_lab_core`](#safe04_lab_core) | 30_F_family | new | [../stages/30_F_family/safe04_lab_core/CHANGES.md](../stages/30_F_family/safe04_lab_core/CHANGES.md) |
-| 47 | [`t112sf0s`](#t112sf0s) | 30_F_family | exact-package | [../stages/30_F_family/t112sf0s/CHANGES.md](../stages/30_F_family/t112sf0s/CHANGES.md) |
-| 48 | [`t112sf1s`](#t112sf1s) | 30_F_family | exact-package | [../stages/30_F_family/t112sf1s/CHANGES.md](../stages/30_F_family/t112sf1s/CHANGES.md) |
-| 49 | [`t153b`](#t153b) | 30_F_family | exact-package | [../stages/30_F_family/t153b/CHANGES.md](../stages/30_F_family/t153b/CHANGES.md) |
-| 50 | [`t153c`](#t153c) | 30_F_family | exact-package | [../stages/30_F_family/t153c/CHANGES.md](../stages/30_F_family/t153c/CHANGES.md) |
-| 51 | [`t154_g1_f12`](#t154_g1_f12) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f12/CHANGES.md](../stages/30_F_family/t154_g1_f12/CHANGES.md) |
-| 52 | [`t154_g1_f34`](#t154_g1_f34) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f34/CHANGES.md](../stages/30_F_family/t154_g1_f34/CHANGES.md) |
-| 53 | [`t154_g1_f5`](#t154_g1_f5) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f5/CHANGES.md](../stages/30_F_family/t154_g1_f5/CHANGES.md) |
-| 54 | [`t155s_f12`](#t155s_f12) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f12/CHANGES.md](../stages/30_F_family/t155s_f12/CHANGES.md) |
-| 55 | [`t155s_f34`](#t155s_f34) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f34/CHANGES.md](../stages/30_F_family/t155s_f34/CHANGES.md) |
-| 56 | [`t155s_f5`](#t155s_f5) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f5/CHANGES.md](../stages/30_F_family/t155s_f5/CHANGES.md) |
-| 57 | [`t164_f123`](#t164_f123) | 30_F_family | exact-pulled | [../stages/30_F_family/t164_f123/CHANGES.md](../stages/30_F_family/t164_f123/CHANGES.md) |
-| 58 | [`t164_f45`](#t164_f45) | 30_F_family | exact-pulled | [../stages/30_F_family/t164_f45/CHANGES.md](../stages/30_F_family/t164_f45/CHANGES.md) |
-| 59 | [`t164f`](#t164f) | 30_F_family | exact-package | [../stages/30_F_family/t164f/CHANGES.md](../stages/30_F_family/t164f/CHANGES.md) |
-| 60 | [`t163b`](#t163b) | 40_R_family | exact-package | [../stages/40_R_family/t163b/CHANGES.md](../stages/40_R_family/t163b/CHANGES.md) |
-| 61 | [`t163l_orig`](#t163l_orig) | 40_R_family | exact-package | [../stages/40_R_family/t163l_orig/CHANGES.md](../stages/40_R_family/t163l_orig/CHANGES.md) |
-| 62 | [`t163p_c5rl`](#t163p_c5rl) | 40_R_family | exact-package | [../stages/40_R_family/t163p_c5rl/CHANGES.md](../stages/40_R_family/t163p_c5rl/CHANGES.md) |
-| 63 | [`t183_p1`](#t183_p1) | 40_R_family | exact-package | [../stages/40_R_family/t183_p1/CHANGES.md](../stages/40_R_family/t183_p1/CHANGES.md) |
-| 64 | [`t183_p2`](#t183_p2) | 40_R_family | exact-package | [../stages/40_R_family/t183_p2/CHANGES.md](../stages/40_R_family/t183_p2/CHANGES.md) |
-| 65 | [`t184_report`](#t184_report) | 40_R_family | exact-package | [../stages/40_R_family/t184_report/CHANGES.md](../stages/40_R_family/t184_report/CHANGES.md) |
-| 66 | [`t213_p1`](#t213_p1) | 40_R_family | exact-staging | [../stages/40_R_family/t213_p1/CHANGES.md](../stages/40_R_family/t213_p1/CHANGES.md) |
-| 67 | [`t213_p2`](#t213_p2) | 40_R_family | exact-staging | [../stages/40_R_family/t213_p2/CHANGES.md](../stages/40_R_family/t213_p2/CHANGES.md) |
-| 68 | [`t216_p3`](#t216_p3) | 40_R_family | exact-staging | [../stages/40_R_family/t216_p3/CHANGES.md](../stages/40_R_family/t216_p3/CHANGES.md) |
-| 69 | [`t219_dumpv4`](#t219_dumpv4) | 40_R_family | exact-staging | [../stages/40_R_family/t219_dumpv4/CHANGES.md](../stages/40_R_family/t219_dumpv4/CHANGES.md) |
-| 70 | [`t3s01_trca`](#t3s01_trca) | 40_R_family | new | [../stages/40_R_family/t3s01_trca/CHANGES.md](../stages/40_R_family/t3s01_trca/CHANGES.md) |
-| 71 | [`a_factor`](#a_factor) | 50_eval | local-script | [../stages/50_eval/a_factor/CHANGES.md](../stages/50_eval/a_factor/CHANGES.md) |
-| 72 | [`e112f0sx`](#e112f0sx) | 50_eval | exact-package | [../stages/50_eval/e112f0sx/CHANGES.md](../stages/50_eval/e112f0sx/CHANGES.md) |
-| 73 | [`e112f1sx`](#e112f1sx) | 50_eval | exact-package | [../stages/50_eval/e112f1sx/CHANGES.md](../stages/50_eval/e112f1sx/CHANGES.md) |
-| 74 | [`e163i`](#e163i) | 50_eval | exact-package | [../stages/50_eval/e163i/CHANGES.md](../stages/50_eval/e163i/CHANGES.md) |
-| 75 | [`e47rs`](#e47rs) | 50_eval | exact-package | [../stages/50_eval/e47rs/CHANGES.md](../stages/50_eval/e47rs/CHANGES.md) |
-| 76 | [`e50cc`](#e50cc) | 50_eval | exact-package | [../stages/50_eval/e50cc/CHANGES.md](../stages/50_eval/e50cc/CHANGES.md) |
-| 77 | [`e65xbs`](#e65xbs) | 50_eval | exact-package | [../stages/50_eval/e65xbs/CHANGES.md](../stages/50_eval/e65xbs/CHANGES.md) |
-| 78 | [`e65xcs`](#e65xcs) | 50_eval | exact-package | [../stages/50_eval/e65xcs/CHANGES.md](../stages/50_eval/e65xcs/CHANGES.md) |
-| 79 | [`a_best4_ref`](#a_best4_ref) | 60_fvbind | new | [../stages/60_fvbind/a_best4_ref/CHANGES.md](../stages/60_fvbind/a_best4_ref/CHANGES.md) |
-| 80 | [`a_fvbind`](#a_fvbind) | 60_fvbind | local-script | [../stages/60_fvbind/a_fvbind/CHANGES.md](../stages/60_fvbind/a_fvbind/CHANGES.md) |
-| 81 | [`e163i_fvb`](#e163i_fvb) | 60_fvbind | exact-staging | [../stages/60_fvbind/e163i_fvb/CHANGES.md](../stages/60_fvbind/e163i_fvb/CHANGES.md) |
-| 82 | [`t163p_fvb`](#t163p_fvb) | 60_fvbind | exact-staging | [../stages/60_fvbind/t163p_fvb/CHANGES.md](../stages/60_fvbind/t163p_fvb/CHANGES.md) |
-| 83 | [`t189_b2`](#t189_b2) | 60_fvbind | exact-staging | [../stages/60_fvbind/t189_b2/CHANGES.md](../stages/60_fvbind/t189_b2/CHANGES.md) |
-| 84 | [`t192_fvbx`](#t192_fvbx) | 60_fvbind | exact-staging | [../stages/60_fvbind/t192_fvbx/CHANGES.md](../stages/60_fvbind/t192_fvbx/CHANGES.md) |
-| 85 | [`dp_extract_eval`](#dp_extract_eval) | 70_dp | local-script | [../stages/70_dp/dp_extract_eval/CHANGES.md](../stages/70_dp/dp_extract_eval/CHANGES.md) |
-| 86 | [`dp_feats_layout`](#dp_feats_layout) | 70_dp | new | [../stages/70_dp/dp_feats_layout/CHANGES.md](../stages/70_dp/dp_feats_layout/CHANGES.md) |
-| 87 | [`dp_score`](#dp_score) | 70_dp | new | [../stages/70_dp/dp_score/CHANGES.md](../stages/70_dp/dp_score/CHANGES.md) |
-| 88 | [`dp_sigma`](#dp_sigma) | 70_dp | new | [../stages/70_dp/dp_sigma/CHANGES.md](../stages/70_dp/dp_sigma/CHANGES.md) |
-| 89 | [`dp_train`](#dp_train) | 70_dp | local-script | [../stages/70_dp/dp_train/CHANGES.md](../stages/70_dp/dp_train/CHANGES.md) |
-| 90 | [`final_blend`](#final_blend) | 80_final | local-script | [../stages/80_final/final_blend/CHANGES.md](../stages/80_final/final_blend/CHANGES.md) |
-| 91 | [`final_verify`](#final_verify) | 80_final | new | [../stages/80_final/final_verify/CHANGES.md](../stages/80_final/final_verify/CHANGES.md) |
-| 92 | [`env_docker`](#env_docker) | 00_env | new | [../tools/stages/00_env/env_docker/CHANGES.md](../tools/stages/00_env/env_docker/CHANGES.md) |
-| 93 | [`models_fetch`](#models_fetch) | 00_env | new | [../tools/stages/00_env/models_fetch/CHANGES.md](../tools/stages/00_env/models_fetch/CHANGES.md) |
+| 24 | [`b_lab_avfull`](#b_lab_avfull) | 20_features | new | [../stages/20_features/b_lab_avfull/CHANGES.md](../stages/20_features/b_lab_avfull/CHANGES.md) |
+| 25 | [`b_lab_data`](#b_lab_data) | 20_features | local-script | [../stages/20_features/b_lab_data/CHANGES.md](../stages/20_features/b_lab_data/CHANGES.md) |
+| 26 | [`b_lab_vb`](#b_lab_vb) | 20_features | local-script | [../stages/20_features/b_lab_vb/CHANGES.md](../stages/20_features/b_lab_vb/CHANGES.md) |
+| 27 | [`f04_v2_ref`](#f04_v2_ref) | 20_features | exact-executed-copy | [../stages/20_features/f04_v2_ref/CHANGES.md](../stages/20_features/f04_v2_ref/CHANGES.md) |
+| 28 | [`f103c_tap01`](#f103c_tap01) | 20_features | builder-regenerated | [../stages/20_features/f103c_tap01/CHANGES.md](../stages/20_features/f103c_tap01/CHANGES.md) |
+| 29 | [`f10_models`](#f10_models) | 20_features | builder-regenerated | [../stages/20_features/f10_models/CHANGES.md](../stages/20_features/f10_models/CHANGES.md) |
+| 30 | [`f12_eval_feats`](#f12_eval_feats) | 20_features | builder-regenerated | [../stages/20_features/f12_eval_feats/CHANGES.md](../stages/20_features/f12_eval_feats/CHANGES.md) |
+| 31 | [`f14_av`](#f14_av) | 20_features | exact-executed-copy | [../stages/20_features/f14_av/CHANGES.md](../stages/20_features/f14_av/CHANGES.md) |
+| 32 | [`f32_aclip_full`](#f32_aclip_full) | 20_features | exact-executed-copy | [../stages/20_features/f32_aclip_full/CHANGES.md](../stages/20_features/f32_aclip_full/CHANGES.md) |
+| 33 | [`f40_t3enc_mav`](#f40_t3enc_mav) | 20_features | exact-executed-copy | [../stages/20_features/f40_t3enc_mav/CHANGES.md](../stages/20_features/f40_t3enc_mav/CHANGES.md) |
+| 34 | [`f41_t3enc_vox2`](#f41_t3enc_vox2) | 20_features | exact-executed-copy | [../stages/20_features/f41_t3enc_vox2/CHANGES.md](../stages/20_features/f41_t3enc_vox2/CHANGES.md) |
+| 35 | [`f47b_screen2`](#f47b_screen2) | 20_features | exact-executed-copy | [../stages/20_features/f47b_screen2/CHANGES.md](../stages/20_features/f47b_screen2/CHANGES.md) |
+| 36 | [`f63w_aux_voice`](#f63w_aux_voice) | 20_features | builder-regenerated | [../stages/20_features/f63w_aux_voice/CHANGES.md](../stages/20_features/f63w_aux_voice/CHANGES.md) |
+| 37 | [`t160a`](#t160a) | 20_features | exact-package | [../stages/20_features/t160a/CHANGES.md](../stages/20_features/t160a/CHANGES.md) |
+| 38 | [`t160b`](#t160b) | 20_features | exact-package | [../stages/20_features/t160b/CHANGES.md](../stages/20_features/t160b/CHANGES.md) |
+| 39 | [`t160c`](#t160c) | 20_features | exact-package | [../stages/20_features/t160c/CHANGES.md](../stages/20_features/t160c/CHANGES.md) |
+| 40 | [`t162a`](#t162a) | 20_features | exact-package | [../stages/20_features/t162a/CHANGES.md](../stages/20_features/t162a/CHANGES.md) |
+| 41 | [`t162b`](#t162b) | 20_features | exact-package | [../stages/20_features/t162b/CHANGES.md](../stages/20_features/t162b/CHANGES.md) |
+| 42 | [`t162c`](#t162c) | 20_features | exact-package | [../stages/20_features/t162c/CHANGES.md](../stages/20_features/t162c/CHANGES.md) |
+| 43 | [`cleancomp_tables`](#cleancomp_tables) | 30_F_family | local-script | [../stages/30_F_family/cleancomp_tables/CHANGES.md](../stages/30_F_family/cleancomp_tables/CHANGES.md) |
+| 44 | [`gather_g1`](#gather_g1) | 30_F_family | new | [../stages/30_F_family/gather_g1/CHANGES.md](../stages/30_F_family/gather_g1/CHANGES.md) |
+| 45 | [`gather_r2ca`](#gather_r2ca) | 30_F_family | new | [../stages/30_F_family/gather_r2ca/CHANGES.md](../stages/30_F_family/gather_r2ca/CHANGES.md) |
+| 46 | [`safe04_compare`](#safe04_compare) | 30_F_family | new | [../stages/30_F_family/safe04_compare/CHANGES.md](../stages/30_F_family/safe04_compare/CHANGES.md) |
+| 47 | [`safe04_lab`](#safe04_lab) | 30_F_family | new | [../stages/30_F_family/safe04_lab/CHANGES.md](../stages/30_F_family/safe04_lab/CHANGES.md) |
+| 48 | [`safe04_lab_core`](#safe04_lab_core) | 30_F_family | new | [../stages/30_F_family/safe04_lab_core/CHANGES.md](../stages/30_F_family/safe04_lab_core/CHANGES.md) |
+| 49 | [`t112sf0s`](#t112sf0s) | 30_F_family | exact-package | [../stages/30_F_family/t112sf0s/CHANGES.md](../stages/30_F_family/t112sf0s/CHANGES.md) |
+| 50 | [`t112sf1s`](#t112sf1s) | 30_F_family | exact-package | [../stages/30_F_family/t112sf1s/CHANGES.md](../stages/30_F_family/t112sf1s/CHANGES.md) |
+| 51 | [`t153b`](#t153b) | 30_F_family | exact-package | [../stages/30_F_family/t153b/CHANGES.md](../stages/30_F_family/t153b/CHANGES.md) |
+| 52 | [`t153c`](#t153c) | 30_F_family | exact-package | [../stages/30_F_family/t153c/CHANGES.md](../stages/30_F_family/t153c/CHANGES.md) |
+| 53 | [`t154_g1_f12`](#t154_g1_f12) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f12/CHANGES.md](../stages/30_F_family/t154_g1_f12/CHANGES.md) |
+| 54 | [`t154_g1_f34`](#t154_g1_f34) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f34/CHANGES.md](../stages/30_F_family/t154_g1_f34/CHANGES.md) |
+| 55 | [`t154_g1_f5`](#t154_g1_f5) | 30_F_family | builder-regenerated | [../stages/30_F_family/t154_g1_f5/CHANGES.md](../stages/30_F_family/t154_g1_f5/CHANGES.md) |
+| 56 | [`t155s_f12`](#t155s_f12) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f12/CHANGES.md](../stages/30_F_family/t155s_f12/CHANGES.md) |
+| 57 | [`t155s_f34`](#t155s_f34) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f34/CHANGES.md](../stages/30_F_family/t155s_f34/CHANGES.md) |
+| 58 | [`t155s_f5`](#t155s_f5) | 30_F_family | exact-pulled | [../stages/30_F_family/t155s_f5/CHANGES.md](../stages/30_F_family/t155s_f5/CHANGES.md) |
+| 59 | [`t164_f123`](#t164_f123) | 30_F_family | exact-pulled | [../stages/30_F_family/t164_f123/CHANGES.md](../stages/30_F_family/t164_f123/CHANGES.md) |
+| 60 | [`t164_f45`](#t164_f45) | 30_F_family | exact-pulled | [../stages/30_F_family/t164_f45/CHANGES.md](../stages/30_F_family/t164_f45/CHANGES.md) |
+| 61 | [`t164f`](#t164f) | 30_F_family | exact-package | [../stages/30_F_family/t164f/CHANGES.md](../stages/30_F_family/t164f/CHANGES.md) |
+| 62 | [`t163b`](#t163b) | 40_R_family | exact-package | [../stages/40_R_family/t163b/CHANGES.md](../stages/40_R_family/t163b/CHANGES.md) |
+| 63 | [`t163l_orig`](#t163l_orig) | 40_R_family | exact-package | [../stages/40_R_family/t163l_orig/CHANGES.md](../stages/40_R_family/t163l_orig/CHANGES.md) |
+| 64 | [`t163p_c5rl`](#t163p_c5rl) | 40_R_family | exact-package | [../stages/40_R_family/t163p_c5rl/CHANGES.md](../stages/40_R_family/t163p_c5rl/CHANGES.md) |
+| 65 | [`t183_p1`](#t183_p1) | 40_R_family | exact-package | [../stages/40_R_family/t183_p1/CHANGES.md](../stages/40_R_family/t183_p1/CHANGES.md) |
+| 66 | [`t183_p2`](#t183_p2) | 40_R_family | exact-package | [../stages/40_R_family/t183_p2/CHANGES.md](../stages/40_R_family/t183_p2/CHANGES.md) |
+| 67 | [`t184_report`](#t184_report) | 40_R_family | exact-package | [../stages/40_R_family/t184_report/CHANGES.md](../stages/40_R_family/t184_report/CHANGES.md) |
+| 68 | [`t213_p1`](#t213_p1) | 40_R_family | exact-staging | [../stages/40_R_family/t213_p1/CHANGES.md](../stages/40_R_family/t213_p1/CHANGES.md) |
+| 69 | [`t213_p2`](#t213_p2) | 40_R_family | exact-staging | [../stages/40_R_family/t213_p2/CHANGES.md](../stages/40_R_family/t213_p2/CHANGES.md) |
+| 70 | [`t216_p3`](#t216_p3) | 40_R_family | exact-staging | [../stages/40_R_family/t216_p3/CHANGES.md](../stages/40_R_family/t216_p3/CHANGES.md) |
+| 71 | [`t219_dumpv4`](#t219_dumpv4) | 40_R_family | exact-staging | [../stages/40_R_family/t219_dumpv4/CHANGES.md](../stages/40_R_family/t219_dumpv4/CHANGES.md) |
+| 72 | [`t3s01_trca`](#t3s01_trca) | 40_R_family | new | [../stages/40_R_family/t3s01_trca/CHANGES.md](../stages/40_R_family/t3s01_trca/CHANGES.md) |
+| 73 | [`a_factor`](#a_factor) | 50_eval | local-script | [../stages/50_eval/a_factor/CHANGES.md](../stages/50_eval/a_factor/CHANGES.md) |
+| 74 | [`e112f0sx`](#e112f0sx) | 50_eval | exact-package | [../stages/50_eval/e112f0sx/CHANGES.md](../stages/50_eval/e112f0sx/CHANGES.md) |
+| 75 | [`e112f1sx`](#e112f1sx) | 50_eval | exact-package | [../stages/50_eval/e112f1sx/CHANGES.md](../stages/50_eval/e112f1sx/CHANGES.md) |
+| 76 | [`e163i`](#e163i) | 50_eval | exact-package | [../stages/50_eval/e163i/CHANGES.md](../stages/50_eval/e163i/CHANGES.md) |
+| 77 | [`e47rs`](#e47rs) | 50_eval | exact-package | [../stages/50_eval/e47rs/CHANGES.md](../stages/50_eval/e47rs/CHANGES.md) |
+| 78 | [`e50cc`](#e50cc) | 50_eval | exact-package | [../stages/50_eval/e50cc/CHANGES.md](../stages/50_eval/e50cc/CHANGES.md) |
+| 79 | [`e65xbs`](#e65xbs) | 50_eval | exact-package | [../stages/50_eval/e65xbs/CHANGES.md](../stages/50_eval/e65xbs/CHANGES.md) |
+| 80 | [`e65xcs`](#e65xcs) | 50_eval | exact-package | [../stages/50_eval/e65xcs/CHANGES.md](../stages/50_eval/e65xcs/CHANGES.md) |
+| 81 | [`a_best4_ref`](#a_best4_ref) | 60_fvbind | new | [../stages/60_fvbind/a_best4_ref/CHANGES.md](../stages/60_fvbind/a_best4_ref/CHANGES.md) |
+| 82 | [`a_fvbind`](#a_fvbind) | 60_fvbind | local-script | [../stages/60_fvbind/a_fvbind/CHANGES.md](../stages/60_fvbind/a_fvbind/CHANGES.md) |
+| 83 | [`e163i_fvb`](#e163i_fvb) | 60_fvbind | exact-staging | [../stages/60_fvbind/e163i_fvb/CHANGES.md](../stages/60_fvbind/e163i_fvb/CHANGES.md) |
+| 84 | [`t163p_fvb`](#t163p_fvb) | 60_fvbind | exact-staging | [../stages/60_fvbind/t163p_fvb/CHANGES.md](../stages/60_fvbind/t163p_fvb/CHANGES.md) |
+| 85 | [`t189_b2`](#t189_b2) | 60_fvbind | exact-staging | [../stages/60_fvbind/t189_b2/CHANGES.md](../stages/60_fvbind/t189_b2/CHANGES.md) |
+| 86 | [`t192_fvbx`](#t192_fvbx) | 60_fvbind | exact-staging | [../stages/60_fvbind/t192_fvbx/CHANGES.md](../stages/60_fvbind/t192_fvbx/CHANGES.md) |
+| 87 | [`dp_extract_eval`](#dp_extract_eval) | 70_dp | local-script | [../stages/70_dp/dp_extract_eval/CHANGES.md](../stages/70_dp/dp_extract_eval/CHANGES.md) |
+| 88 | [`dp_feats_layout`](#dp_feats_layout) | 70_dp | new | [../stages/70_dp/dp_feats_layout/CHANGES.md](../stages/70_dp/dp_feats_layout/CHANGES.md) |
+| 89 | [`dp_score`](#dp_score) | 70_dp | new | [../stages/70_dp/dp_score/CHANGES.md](../stages/70_dp/dp_score/CHANGES.md) |
+| 90 | [`dp_sigma`](#dp_sigma) | 70_dp | new | [../stages/70_dp/dp_sigma/CHANGES.md](../stages/70_dp/dp_sigma/CHANGES.md) |
+| 91 | [`dp_train`](#dp_train) | 70_dp | local-script | [../stages/70_dp/dp_train/CHANGES.md](../stages/70_dp/dp_train/CHANGES.md) |
+| 92 | [`final_blend`](#final_blend) | 80_final | local-script | [../stages/80_final/final_blend/CHANGES.md](../stages/80_final/final_blend/CHANGES.md) |
+| 93 | [`final_verify`](#final_verify) | 80_final | new | [../stages/80_final/final_verify/CHANGES.md](../stages/80_final/final_verify/CHANGES.md) |
+| 94 | [`env_docker`](#env_docker) | 00_env | new | [../tools/stages/00_env/env_docker/CHANGES.md](../tools/stages/00_env/env_docker/CHANGES.md) |
+| 95 | [`models_fetch`](#models_fetch) | 00_env | new | [../tools/stages/00_env/models_fetch/CHANGES.md](../tools/stages/00_env/models_fetch/CHANGES.md) |
 
 ## raw_btc
 
@@ -802,6 +804,13 @@ Origin: local-script (`Experiment/DSEL-01/make_groups.py + Experiment/SCALE-CC-0
 
 Recipe `ff-stage-ipy/1` (same convention as `release/flag2027_e2e/build_notebook.py:stage_cells`): take the cells listed in `stage.json` `build.sequence` in that order (`orig`: index of the cell in the original notebook's `nb["cells"]` list, markdown cells counted, and the referenced cell must be a non-empty code cell, as in `runner/check_stage.py`; CRLF -> LF; `new`: a file of `cells/`), apply every `patches` entry to the original cells only (each must match exactly `count` times in total), and join every cell as `cell.rstrip('\n') + '\n# <<<FF-CELL>>>\n'`. The sha256 of the result is `build.stage_ipy_sha256`. Original code cells not in the sequence are the ones matched by `drop_cells` (regex on the cell title = its `print("[cell] ...")` text or first line).
 
+#### South-Asian VoxCeleb2 speakers (new cell; numbers: none) - added 19/11/2026
+
+- **Where:** new cell `cells/01_vbsel.py` (second cell of `stage.ipy`); outputs `groups/vox2_sa_speakers.json`, `groups/vbsel_check.json`.
+- **What:** rebuilds `Experiment/VBSEL-01/vox2_sa_speakers.json`, the frozen list of 310 VoxCeleb2 speakers that the F-family stages carry in their embedded code (VBSEL-01/run.py line 20), from the FLAG_42 output: top-1 VoxLingua107 code per clip, share of South-Asian codes (hi ur pa ta te mr gu ne si ml kn) per speaker >= 0.5, Bengali-flagged speakers of the FLAG_42 rule removed. Rule = `Experiment/EDA-VB/eda_vb.py` section (4), the computation that made the file on 10/10/2026. Written as the original (json indent 0, Windows line ends) and compared by sha256 with the embedded copy; same guard policy as the other three files.
+- **Check:** run on the team machine on 19/11/2026 with the stored FLAG_42 output (`Experiment/T3ENC-01/feats_vox2lid`): 38 345 clips, 4 877 speakers scored, 310 kept, byte-identical to the embedded file (sha256 eccc7653...).
+- **Why:** lineage of the 13.54 zip from raw data: the embedded list now has a producing stage.
+
 ## l_lid_audit
 
 `stages/13_lid/l_lid_audit/CHANGES.md` (13_lid, local-script)
@@ -890,6 +899,49 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - post_check (fatal): `bundle_report.json` `vs_original/missing` = []: every member of the original dataset (expected_members.json) is in the new bundle.
 - verify (warning only): `bundle_report.json` `vs_original/extra`: no member beyond the original's (warning only).
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
+
+## b_lab_avfull
+
+`stages/20_features/b_lab_avfull/CHANGES.md` (20_features, new)
+
+### CHANGES: stage `b_lab_avfull`
+
+Original code: none kept (exactness `new`). The dataset `datasets/ngnnguynchn/flag2027-lab-avfull-p` was packed on 15/10/2026 18:06 by an ad-hoc script in a Claude scratchpad of the team machine (deleted with the Temp folder) and uploaded at 18:07 as a private Kaggle dataset (kaggle/kapi_runs.jsonl line 300). Stage code: `stage.ipy` (3 new cells, each starting with `print("[cell] ...", flush=True)`).
+The runner points every `/kaggle/input` and `/kaggle/working` string at the stage's own input view and working directory; that is not a code change.
+
+#### What the stage rebuilds
+
+| member | made from |
+|---|---|
+| `labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v{1,2}_complete_{face,voice}_{aclip,rows}.npy` (8 files) | byte copies of the files of the same name in the output of stage `f32_aclip_full` (FLAG_32 run 2) |
+| `labavfull/lab_manifest.json` | `{"created", "kind": "data-avfull", "files": {path: bytes}, "note"}` with the original note text, json indent 1: the keys of the original manifest and of kaggle/build_lab_bundle.py build_vb() (stage b_lab_vb) |
+
+The layout (top folder `labavfull/`, repository-relative paths below it) is the one the consumers' OPTIONAL_DIRS entry `CAFUSE-EN/feats_av_full` expects (e112f0sx).
+
+#### Differences from the original dataset
+
+- `labavfull/lab_manifest.json` carries the build time (`created`), so it is never byte-identical (the original says 2026-10-15 18:06); it is not compared.
+- The 8 npy files are compared by sha256 with `expected_members.json` (read 19/11/2026 from the package E: zip, sha256 b5febc05...). With the frozen f32 output (or the f32 skip_with view = the frozen `feats_av_full` folder) they are identical (local test 19/11/2026: 8 / 8 identical, guard pass). After a GPU re-run of FLAG_32 the AudioCLIP arrays differ; the row files must not.
+
+#### Guard (stage.json `guard_policy`, read by cell 3)
+
+| difference in | FF_MODE=train | FF_MODE=infer / assemble / unset |
+|---|---|---|
+| `*_aclip.npy` | warn (FLAG_32 is a GPU run, not bit-identical when re-run) | fail |
+| `*_rows.npy` | fail (arange(N) of the ext-meta tables: other rows = misaligned arrays) | fail |
+
+`FF_ALLOW_MISMATCH=1` or `FF_SMOKE=1` turn every failure into a warning. Same policy family as l_groups / l_dqual_g3 / l_lid_audit / l_lid_strict. The decision and the list of differing files are written to `bundle_report.json` (`guard`).
+
+#### Run checks (stage.json post_checks / verify)
+
+- cell 2 (fatal outside smoke): row files int64 arange(N) with N = 7 580 / 19 556 / 8 953 / 20 715 (ext-meta rows); AudioCLIP arrays float16 (N, 1024) and finite.
+- post_check (fatal): `bundle_report.json` `vs_original/missing` = [] and `structure/ok` = true.
+- verify (warning only): `vs_original/extra` = [], `vs_original/differ` = [].
+
+#### Notes
+
+- Private: features of MAV-Celeb v1 / v2 (organisers' data, challenge terms); shared only with the organisers through FF_DATA, never in the repository.
+- Wiring only: e112f0sx reads these arrays on the F0 English path (EN-T3-01 table_en), which reaches f1s_eval.zip but not the 13.54 zip.
 
 ## b_lab_data
 
@@ -1151,6 +1203,53 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - post_check (fatal): `feats_av/feats_manifest.json` `external` = {"v1_complete": [1400, 2229], "v2_complete": [1680, 2626]}: MAV-Celeb v1 / v2 [face rows, voice rows] of the original manifest.
 - post_check (fatal): `feats_av/feats_manifest.json` `splits/train` = 6485: organiser train rows.
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
+
+## f32_aclip_full
+
+`stages/20_features/f32_aclip_full/CHANGES.md` (20_features, exact-executed-copy)
+
+### CHANGES: stage `f32_aclip_full`
+
+Original code: Experiment/CAFUSE-EN/flag-2027-nb-32.ipynb (exact-executed-copy: the executed notebook of FLAG_32 run 2, 04/10/2026, kept in `original/`). Stage code: `stage.ipy`. Change types follow DESIGN.md §2.5.
+Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/working` string at the stage's own input view and working directory (runner/ffcore.py, as release/flag2027_e2e/orch.py `_stage_code`), and applies configs/pipeline_1354.json `runtime_rewrites` (the dead ImageBind URL of the unused IBAligned class); that is not a code change.
+
+#### Which run made `datasets/ngnnguynchn/flag2027-lab-avfull-p` (certainty: high)
+
+- The 8 npy files of the frozen dataset (package E: zip sha256 b5febc05...) are byte-identical to `Experiment/CAFUSE-EN/feats_av_full/` and to the members of `Experiment/CAFUSE-EN/results_flag32.zip`, the zip that this notebook's last cell makes (`NB_32_feats_av.zip`; member times 10:31-11:46 = the run's log times).
+- The printed log of this notebook lists the same 8 files with the same shapes ((7580, 1024), (8953, 1024), (19556, 1024), (20715, 1024)); its manifest (2026-10-04 11:46) has 2 more files, the dev arrays `face/voice_aclip_no_gender_English.npy`, which the dataset does not hold.
+- Not the original: `flag-2027-nb-32_run1_lfs.ipynb` (run 1, failed after 75 s on the git-lfs pointer of the AudioCLIP BPE vocabulary, EXPERIMENT_LOG 123) and `kaggle/FLAG_32_aclip_ext_full.ipynb` (regenerated 12/11/2026 by the builder with broken-audio / short-clip handling; never run for these arrays).
+- The MAV-Celeb row tables of the original run were found by name (dataset not printed). `datasets/ngnnguynchn/flag2027-ext-meta-p` has the same row counts, and this run's face arrays equal FLAG_14's (stage f14_av, which reads ext-meta-p) at FLAG_14's selected rows with cosine 1.00000: same row order.
+- Packaging into `labavfull/` (15/10/2026 18:06) was a separate ad-hoc step: stage `b_lab_avfull`.
+
+#### Code changes
+
+| # | where | type | old -> new (full text in stage.json) | why | effect on numbers |
+|---|---|---|---|---|---|
+| 1 | cell 0, line 18 | `dev-exclusion` | `SPLIT_FILTER = ["no_gender/English"]   # the data cell needs one…` -> `SPLIT_FILTER = ["train"]   # FF dev-exclusion (CHANGES.md #1): …` | the original encoded the organisers' dev list only because the data cell asserts that one organiser split exists; no dev list is indexed or encoded here (DESIGN §2.8); the train list of raw-v4 takes that role, as in f12_eval_feats / f14_av | none on the 8 MAV-Celeb arrays (each split / source is encoded on its own; eval mode, no state between jobs). The 2 dev arrays are no longer written; `face_aclip_train.npy` / `voice_aclip_train.npy` (6 485 rows), `index_train.txt`, `meta_file_train_set.csv` are written instead and not packed |
+| 2 | cell 0, line 19 | `dev-exclusion` | `ZIP_PREFIXES = ("train_set", "dev_set", "eval", "test")` -> `ZIP_PREFIXES = ("train_set", "eval", "test")   # FF dev-exclusion…` | with the zipped organiser release the data cell unpacks every zip with these prefixes, dev_set.zip included (same patch as f12_eval_feats #2) | none |
+| 3 | cell 2 (data) | `smoke` | after `S = {k: v for k, v in S.items() if k in SPLIT_FILTER}` add `if os.environ.get("FF_SMOKE") == "1": … v["wav"][:8], v["jpg"][:8]` | FF_SMOKE=1 runs on 8 rows of the organiser split | none in real runs (the runner sets FF_SMOKE=0) |
+| 4 | cell 2 (data) | `smoke` | before `rows.fsel, rows.vsel = fsel, vsel` add `if os.environ.get("FF_SMOKE") == "1": fsel, vsel = fsel[:8], vsel[:8]` | FF_SMOKE=1 encodes 8 face and 8 voice rows per MAV-Celeb source | none in real runs (full arange(N) selection, saved as `ext_*_rows.npy`) |
+
+#### Other differences from the original run (inputs, wiring, environment)
+
+- **inputs**: the original attached `trngsnam/flag-input` (organisers' dev list) and an unprinted dataset holding the four `ext_*_meta.csv`; here `flag2027-raw-v4-p` (train list) and `flag2027-ext-meta-p` (made by stage r08_mav_rows) replace them. MAV-Celeb is the same artifact (`chnnhnnguyn/external-data-mavceleb`, extracted layout).
+- **dev-exclusion** (input view, pending runner support): the raw-v4 input asks the runner not to mount `dev_set.zip` / `dev_set` (stage.json inputs[].exclude), as f12_eval_feats / f14_av. With raw-v4 mounted unpacked, find_splits still reads the dev list files before SPLIT_FILTER drops them; no dev clip or image is decoded or encoded.
+- **environment**: the original ran on the Kaggle image of early October 2026 (Python 3.13.15, torch 2.11.0+cu128, transformers 5.16.1). Its pip cell is kept (`pip_policy: original`): onnxruntime-gpu, insightface 2.0, ImageBind from git (pinned by the runner with FF_PIP=pinned), wav2clip; only AudioCLIP is used.
+- **models**: `AudioCLIP-Full-Training.pt` comes from `FLAG_CACHE` (tools/fetch_models.py `audioclip_full`, sha256 2441d35b...; group `wiring`) or from the GitHub release URL. The AudioCLIP code is cloned from GitHub (master, depth 1, unpinned, as in the original run); the BPE vocabulary is fetched from media.githubusercontent.com (fallback openai/CLIP) and checked by md5 933b7abb....
+- **outputs**: the original's last cell (zip of feats_av as `NB_32_feats_av.zip`, Vietnamese comments) is kept; the zip is part of the kernel artifact.
+
+#### Notes
+
+- Wiring only: the arrays feed `b_lab_avfull` -> `datasets/ngnnguynchn/flag2027-lab-avfull-p` -> e112f0sx (EN-T3-01 table_en on the F0 English path), which reaches f1s_eval.zip but not the 13.54 zip.
+- A re-run is not bit-identical (GPU, fp16 autocast for faces; AudioCLIP voice arrays drifted between Kaggle images: FLAG_14 vs this run cosine median 0.974). The row files are deterministic (arange(N)).
+
+#### Run checks (stage.json post_checks / verify)
+
+- post_check (fatal): `feats_av/feats_manifest.json` `external` = {"v1_complete": [7580, 19556], "v2_complete": [8953, 20715]}: every MAV-Celeb row (a skipped source is only logged by the code).
+- post_check (fatal): `feats_av/feats_manifest.json` `failed` = {} (the original printed `failed: none`).
+- post_check (fatal): `feats_av/feats_manifest.json` `splits/train` = 6485.
+- verify (warning only): `feats_manifest.json` `files` = the 8 MAV-Celeb arrays with the original shapes + the 2 train arrays.
+- verify (informational): sha256 of the 8 files vs the original run's files (= the lab-avfull members). b_lab_avfull enforces the comparison (guard policy).
 
 ## f40_t3enc_mav
 
@@ -1602,6 +1701,13 @@ the October procedure and why:
 Every cell of stage.ipy is new and opens with `print("[cell] ...", flush=True)`; subprocess output is streamed line by line.
 The same stage.ipy text serves `safe04_lab_core` (env `FF_SAFE04_LEVEL=core`; code read from `../safe04_lab/code`).
 
+#### Dev wiring optional (numbers: none) - added 19/11/2026
+
+- **Where:** cell 1 (input check) and cell 4 (bundle packaging) of `stage.ipy`; `safe04_lab` `stage.json` input `datasets/ff-frozen/flag2027-e2e-dev-wiring-p` gets `"optional": true` (and loses `resolve: saved_only`).
+- **Old:** level full required the dev wiring (dev-list files of the frozen bundle: `components_dev.npz`, `e2e_manifest.json`, `fusers/`, `ref/`; no producing stage) and copied it into the bundle.
+- **New:** attached, it is copied byte for byte as before; absent, the bundle gets `e2e_manifest.json` with `kind` e2e-dev, `split` dev, `files` [] and `dev_wiring` false, and no dev-list file.
+- **Why:** lineage of the 13.54 zip from raw data, and no dev data in the 13.54 chain. Readers of the bundle: the F-family training stages (bundle search accepts `safe04/` since 19/11; they read `safe04/` and the manifest's `created`), `cleancomp_tables` (copies every file), `e50cc` (copies `safe04/` from the bundle whose manifest kind is e2e-dev), `t164f` (dev scoring skipped without `components_dev.npz`).
+
 ## safe04_lab_core
 
 `stages/30_F_family/safe04_lab_core/CHANGES.md` (30_F_family, new)
@@ -1624,6 +1730,13 @@ The output is evidence that the cheap part of the lab reproduces, nothing more: 
 exported as `flag2027-e2e-dev-p`, and copies no dev-wiring file. Smoke (`FF_SMOKE=1`): fold 1 rebuilt, folds 2-5 frozen and marked so.
 
 Every cell opens with `print("[cell] ...", flush=True)`.
+
+#### Dev wiring optional (numbers: none) - added 19/11/2026
+
+- **Where:** cell 1 (input check) and cell 4 (bundle packaging) of `stage.ipy`; `safe04_lab` `stage.json` input `datasets/ff-frozen/flag2027-e2e-dev-wiring-p` gets `"optional": true` (and loses `resolve: saved_only`).
+- **Old:** level full required the dev wiring (dev-list files of the frozen bundle: `components_dev.npz`, `e2e_manifest.json`, `fusers/`, `ref/`; no producing stage) and copied it into the bundle.
+- **New:** attached, it is copied byte for byte as before; absent, the bundle gets `e2e_manifest.json` with `kind` e2e-dev, `split` dev, `files` [] and `dev_wiring` false, and no dev-list file.
+- **Why:** lineage of the 13.54 zip from raw data, and no dev data in the 13.54 chain. Readers of the bundle: the F-family training stages (bundle search accepts `safe04/` since 19/11; they read `safe04/` and the manifest's `created`), `cleancomp_tables` (copies every file), `e50cc` (copies `safe04/` from the bundle whose manifest kind is e2e-dev), `t164f` (dev scoring skipped without `components_dev.npz`).
 
 ## t112sf0s
 
@@ -1691,6 +1804,13 @@ Licence (2026-11-18): the head trains with 13 471 VoxBlink speakers; its model f
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
 ## t112sf1s
 
 `stages/30_F_family/t112sf1s/CHANGES.md` (30_F_family, exact-package)
@@ -1754,6 +1874,13 @@ Licence (2026-11-18): the head trains with 13 471 VoxBlink speakers; its model f
 - patch (smoke): `pd.read_parquet(SP / "out/safe04" / f"facelora03_B3_fold{s}.parquet")` -> `pd.read_parquet(SP / "out/safe04" / f"streams_fold{s}.parquet")[["fold", "data", "protocol", "y", "fi", "vi", "XALL_deep0"]].rename(columns={"XALL_deep0": "trB3"})`. Why: smoke only (FL3Z_SMOKE / FLAG_SMOKE): the stand-in tables were noisy copies of FACELORA-03's B3 tables (datasets/ngnnguynchn/flag2027-facelora03-tables-p, no producing stage). They now start from the SAFE-04 streams table of the same fold (frozen bundle / stage safe04_lab, already in SP/out/safe04): same 7 406 rows and the same key columns fold, data, protocol, y, fi, vi (checked on fold 1 against the team copies, 19/11); XALL_deep0 plays the role of trB3, whose columns the stand-in drops anyway. Effect on numbers: none in real runs (smoke stand-ins only)
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
+
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
 ## t153b
 
@@ -1875,6 +2002,13 @@ Runner-level requirement (2026-11-18 fix; not a change of this stage's code): `s
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
 ## t154_g1_f34
 
 `stages/30_F_family/t154_g1_f34/CHANGES.md` (30_F_family, builder-regenerated)
@@ -1919,6 +2053,13 @@ Runner-level requirement (2026-11-18 fix; not a change of this stage's code): `s
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
 ## t154_g1_f5
 
 `stages/30_F_family/t154_g1_f5/CHANGES.md` (30_F_family, builder-regenerated)
@@ -1962,6 +2103,13 @@ Runner-level requirement (2026-11-18 fix; not a change of this stage's code): `s
 - patch (smoke): `pd.read_parquet(SP / "out/safe04" / f"facelora03_B3_fold{s}.parquet")` -> `pd.read_parquet(SP / "out/safe04" / f"streams_fold{s}.parquet")[["fold", "data", "protocol", "y", "fi", "vi", "XALL_deep0"]].rename(columns={"XALL_deep0": "trB3"})`. Why: smoke only (FL3Z_SMOKE / FLAG_SMOKE): the stand-in tables were noisy copies of FACELORA-03's B3 tables (datasets/ngnnguynchn/flag2027-facelora03-tables-p, no producing stage). They now start from the SAFE-04 streams table of the same fold (frozen bundle / stage safe04_lab, already in SP/out/safe04): same 7 406 rows and the same key columns fold, data, protocol, y, fi, vi (checked on fold 1 against the team copies, 19/11); XALL_deep0 plays the role of trB3, whose columns the stand-in drops anyway. Effect on numbers: none in real runs (smoke stand-ins only)
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
+
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
 ## t155s_f12
 
@@ -2009,6 +2157,13 @@ Licence (2026-11-18): the fold heads train with VoxBlink speakers (VOICELORA-01 
 - patch (smoke): `pd.read_parquet(SP / "out/safe04" / f"facelora03_B3_fold{s}.parquet")` -> `pd.read_parquet(SP / "out/safe04" / f"streams_fold{s}.parquet")[["fold", "data", "protocol", "y", "fi", "vi", "XALL_deep0"]].rename(columns={"XALL_deep0": "trB3"})`. Why: smoke only (FL3Z_SMOKE / FLAG_SMOKE): the stand-in tables were noisy copies of FACELORA-03's B3 tables (datasets/ngnnguynchn/flag2027-facelora03-tables-p, no producing stage). They now start from the SAFE-04 streams table of the same fold (frozen bundle / stage safe04_lab, already in SP/out/safe04): same 7 406 rows and the same key columns fold, data, protocol, y, fi, vi (checked on fold 1 against the team copies, 19/11); XALL_deep0 plays the role of trB3, whose columns the stand-in drops anyway. Effect on numbers: none in real runs (smoke stand-ins only)
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
+
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
 ## t155s_f34
 
@@ -2059,6 +2214,13 @@ Licence (2026-11-18): the fold heads train with VoxBlink speakers (VOICELORA-01 
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
 ## t155s_f5
 
 `stages/30_F_family/t155s_f5/CHANGES.md` (30_F_family, exact-pulled)
@@ -2108,6 +2270,13 @@ Licence (2026-11-18): the fold heads train with VoxBlink speakers (VOICELORA-01 
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
 ## t164_f123
 
 `stages/30_F_family/t164_f123/CHANGES.md` (30_F_family, exact-pulled)
@@ -2153,6 +2322,13 @@ The code cells are verbatim (stage.ipy sha256 = release/flag2027_e2e/code/t164f.
 Runner-level only (not a change of this stage's code): the runner replaces the strings /kaggle/input and /kaggle/working by the stage's own input view and working folder, and prints a `[cell] <stage> k/n` line before each cell (DESIGN 2.4).
 
 Runner-level requirement (2026-11-18 fix; not a change of this stage's code): `stage.json` declares `runner_requirements.literal_kaggle_input: true`. The modules decoded from `CODE_B64` at run time (listed in `runner_requirements.why`, with file and line) are written to /kaggle/working/lab and find their inputs by scanning the LITERAL path /kaggle/input, which the string rewrite above cannot reach. With the flag, the runner points /kaggle/input at this stage's own input view on Linux (symlink for the duration of the stage; `FF_LITERAL_KAGGLE=mounted` when a container already mounts it). On Kaggle the runner cannot change /kaggle/input and only warns: run this stage in a session with exactly its inputs attached (as the original run). Without the flag a Linux / Docker run would fail the asserts (lid_strict.json, adapter arrays, feats_vox2b, CT blocks), and a Kaggle orchestrator session would let the modules pick the session's own attachments (e.g. a saved original instead of an artifact rebuilt in the session).
+
+#### 2. Dev scoring only when components_dev.npz is attached (type `dev-exclusion`; numbers: none) - added 19/11/2026
+
+- **Where:** a new cell before `final-artefacts` (`stage.json` `insert_cells`), the `need` list of `final-artefacts` (patch), and `stage.json` input `datasets/ngnnguynchn/flag2027-e2e-dev-p` (`"optional": true`).
+- **Old:** final.py (embedded, decoded at run time) always scored the four dev lists after saving the models, reading `components_dev.npz` (dev-list file of the frozen e2e-dev bundle, no producing stage).
+- **New:** when no `components_dev.npz` is attached (mode (a) from raw data), the new cell removes final.py lines 59-67 from the decoded copy on disk (exact-text check first) and the `need` list no longer asks for `v11_head/t3_streams.npz`. With the original inputs the cell changes nothing.
+- **Why:** lineage of the 13.54 zip from raw data, and no dev data in the 13.54 chain. `s007_xall.pt` and `v11_t3head.pt` are saved before the removed block; `t3_streams.npz` is read by no 13.54 stage (section 1 above).
 
 ## t163b
 
@@ -2831,6 +3007,13 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 - patch (wiring): `"Experiment/CAFUSE-EN/feats_av_full": ["CLEANTUNE-01"]}` -> `"Experiment/CAFUSE-EN/feats_av_full": []}`. Why: the lab link loop asserts that every OPTIONAL_DIRS folder listed for the running experiment is attached; feats_av_full (AudioCLIP arrays of datasets/ngnnguynchn/flag2027-lab-avfull-p, no producing stage) is read only by the F0 English zip path (e112f0sx), which this stage never runs, so the folder becomes optional here. Effect on numbers: none (the folder is never opened by this stage's commands)
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
 
+#### SAFE-04 bundle without dev wiring accepted (type `wiring`; numbers: none) - added 19/11/2026
+
+- **Where:** the e2e bundle search (`e2e = [... components_{SPLIT}.npz ...]`).
+- **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
+- **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
+- **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
 ## t3s01_trca
 
 `stages/40_R_family/t3s01_trca/CHANGES.md` (40_R_family, new)
@@ -3090,6 +3273,13 @@ when the exact notebook is given (team-private check; the release code is compar
 
 - input `datasets/ngnnguynchn/flag2027-best-v7-p` dropped (stage.json `inputs_dropped`): attached in the original run for s007_xall.pt and the MAV-Celeb AdaFace arrays. XALL_PREFER=cleancomp makes input_dir() take s007_xall.pt from datasets/ngnnguynchn/flag2027-cleancomp-final-p (stage t164f); the AdaFace arrays ext_v{1,2}_complete_face_adaface.npy are byte-identical (sha256 d160e51b... / 0844ca81...) to the f10_models outputs that datasets/ngnnguynchn/flag2027-lab-data-p already mounts (lab/kaggle/output/feats_models/), and under NOREL they are only row-counted (relational bridge skipped). Its dev-phase score files were never read. No producing stage exists.
 - evidence: `repo_map/build/REQ1_GAPS.md` (team archive); `python runner/check_stage.py` rebuilds this stage
+
+#### v6 members optional (type `wiring`; numbers: none on 13.54) - added 19/11/2026
+
+- **Where:** last cell (driver), the line `assert v6_members is not None, ...`; `stage.json` input `datasets/ngnnguynchn/flag2027-members-p` gets `"optional": true`.
+- **Old:** the stage stopped when the saved v6 members (s007 / s010B seeds, no producing stage in this repository) were not attached.
+- **New:** when they are absent, the empty folder `members_v6/` is handed to `P6.train_members` (BEST/v6_eval/pipeline.py, the code that made them), which trains each missing (member, seed) from this run's train features and caches it there.
+- **Why:** lineage of the 13.54 zip from raw data (`python runner/ffrun.py dag`, section LINEAGE). The members feed only `System.en()` -> `en7[:, :4]` (English v9 / v12 streams); `a_factor` / `a_fvbind` read `b3`, `co`, `t3` and the pair ids of `components_eval.npz`. With the members attached the run is byte-for-byte the original.
 
 ## e65xbs
 

@@ -1,0 +1,16 @@
+{
+ "stage": "b_lab_avfull",
+ "exactness": "new",
+ "translates": {
+  "what": "datasets/ngnnguynchn/flag2027-lab-avfull-p (labavfull/lab_manifest.json kind 'data-avfull' + labavfull/Experiment/CAFUSE-EN/feats_av_full/ext_v{1,2}_complete_{face,voice}_{aclip,rows}.npy)",
+  "evidence": [
+   "package E: zip E:/FLAG2027_submit/FACTOR_ENFUSE_c5rl/datasets/ngnnguynchn__flag2027-lab-avfull-p.zip (sha256 b5febc05...): 9 members, lab_manifest.json created 2026-10-15 18:06, note 'AudioCLIP of the MAV-Celeb v1/v2 rows (CAFUSE-EN/feats_av_full ext_*): EN-T3-01 table_en, for FACELORA-03 zip (15/10)'",
+   "the 8 npy members are byte-identical to Experiment/CAFUSE-EN/feats_av_full/ and to the members of Experiment/CAFUSE-EN/results_flag32.zip (FLAG_32 run 2 output; stage f32_aclip_full) (checked 19/11/2026)",
+   "kaggle/kapi_runs.jsonl line 300 (2026-10-15 18:07): dataset ngnnguynchn/flag2027-lab-avfull-p created (private) from C:/Users/ASUS/AppData/Local/Temp/claude/.../96a2c64b-.../scratchpad/avfull/flag2027-lab-avfull.zip; line 301 privatized",
+   "docs/DATASETS.md (FLAG_86b row): 'ngnnguynchn/flag2027-lab-avfull-p (riêng tư, 15/10: CAFUSE-EN/feats_av_full/ext_*, AudioCLIP của v1/v2 cho bảng English, 117 MB, gói labavfull/ có lab_manifest.json kind data-avfull)'",
+   "layout and manifest keys (created / kind / files {path: bytes} / note, json indent 1, top folder labvb/ -> labavfull/) follow kaggle/build_lab_bundle.py build_vb() (stage b_lab_vb)"
+  ],
+  "lost_original": "the packaging script lived in the Claude scratchpad of session 96a2c64b (Temp folder, cleaned; the scratchpad folder no longer exists on 19/11/2026); kaggle/build_lab_bundle.py has no 'avfull' mode"
+ },
+ "files": []
+}
