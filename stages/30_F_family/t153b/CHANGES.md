@@ -31,3 +31,11 @@
 ## 5. Runner
 
 Runner-level only (not a change of this stage's code): the runner replaces the strings /kaggle/input and /kaggle/working by the stage's own input view and working folder, and prints a `[cell] <stage> k/n` line before each cell (DESIGN 2.4).
+
+## Comment edit (20/11/2026)
+
+Patches 3..5 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 36a56ea8a2dda19a... -> 60948737b253658a...

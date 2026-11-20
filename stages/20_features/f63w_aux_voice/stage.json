@@ -77,7 +77,22 @@
   "AUDIO_SMOKE_TARS": "1",
   "AUDIO_WIRE_N": "4"
  },
- "patches": [],
+ "patches": [
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate\\'s VoxBlink pipeline, CB",
+   "new": "A teammate\\'s VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3\\'s VoxBlink system",
+   "new": "encoder family of a teammate\\'s VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  }
+ ],
  "drop_cells": [],
  "neutralize_upload": [
   "VFEAT_UPLOAD"
@@ -128,7 +143,7 @@
  ],
  "stage_ipy": {
   "cells": 9,
-  "sha256": "c2018004ec012d87242fe96e4e98d9b85206a85ffc1e882034bfdc96c22c9638",
+  "sha256": "7e78c56a94b9336a4ba350acbe5f798c9bbb8b2d2a7dfa4d3e11571712e86da3",
   "cell_separator": "\n# <<<FF-CELL>>>\n",
   "built_from": "FLAG_63w_aux_voice_feats.ipynb",
   "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"

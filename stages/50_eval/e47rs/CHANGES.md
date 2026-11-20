@@ -1,6 +1,6 @@
 # e47rs: changes from the original run
 
-**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 9 code cells of `original/03_flag-2027-nb-47rs-screen2-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `2d667b0ad5ecf8ab3aec589babd86cbfbd17f4e3340a60057e545b28bd0ed01a`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e47rs.ipy` (sha256 `a29f667d4ac22ab85edd5b4b93d2224be729d6370c7b96342892ec9203868704`, the code of the run).
+**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 9 code cells of `original/03_flag-2027-nb-47rs-screen2-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `6e5f3456c81b8ac69da0a7c8d094d78bca43af16976019510c236d59d8c574e1`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e47rs.ipy` (sha256 `a29f667d4ac22ab85edd5b4b93d2224be729d6370c7b96342892ec9203868704`, the code of the run).
 
 | # | where | old → new | why | effect on numbers | type |
 |---|---|---|---|---|---|
@@ -17,3 +17,13 @@ notebook md5 `8efafbebda567e67b07d4839ddd7c9e6`); the team-package copy in `orig
 | mounts | default (`mount` = artifact id): the log shows the new Kaggle layout `/kaggle/input/datasets/<owner>/<slug>` | none |
 | dev data | `ONLY_UNDER = 'evaluation_phase'` (code cell 01): dev lists are not read; with change 1, `dev_set.zip` is never opened | none |
 | producer preference | DESIGN §4.8 still says `e47rs` exports `feats-screen2-p`; this repository does not (row 'export dropped'). `configs/pipeline_1354.json` `producer_preference` still names `e47rs` for `infer` / `assemble`; it has no effect today (`producer_of()` uses the preference only among several candidates, and `f47b_screen2` is the only producer), but it contradicts this stage. WP-A: remove that entry or make it `{default: f47b_screen2}`; WP-K: note the deviation from DESIGN §4.8. | none |
+
+## Comment edit (20/11/2026)
+
+Patches 1..5 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (2x; old text in the `stage.json` patch)
+- comment now reads `A teammate's voice branch` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 2d667b0ad5ecf8ab... -> 6e5f3456c81b8ac6...

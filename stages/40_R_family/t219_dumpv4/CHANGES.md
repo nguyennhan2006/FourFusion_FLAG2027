@@ -58,3 +58,9 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 - **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
+## Comment edit (20/11/2026)
+
+Patches 4..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 dc7d6521e7929e2f... -> 7c053c3d9803a1c0...

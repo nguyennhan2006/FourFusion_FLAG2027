@@ -124,6 +124,27 @@
    "cell": 2,
    "why": "FF_DATA holds the organisers' zips (00_raw/btc_mavceleb_v4/train_set.zip, dev_set.zip); the original's unpack fallback would extract dev_set.zip too",
    "effect": "none"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "encoder family of Track 3s VoxBlink s",
+   "new": "encoder family of a teammates VoxBlink s",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],
@@ -208,7 +229,7 @@
  "role_detail": "wiring only: the F1s' code paths load clipB3 next to clipC5 (FB3 / FC5 of VOICELORA-01/run.py:30, FL.ADAPTED in patch_test) and the A0 audit reads its bn42_clean.json; it feeds the B0s head (t112sf0s) and e65xbs. No number of the 13.54 zip depends on it.",
  "stage_ipy": {
   "file": "stage.ipy",
-  "sha256": "36a56ea8a2dda19a24fc2587dd055c68f7282b3c1e338b209bdbced6bf0808ff",
+  "sha256": "60948737b253658aa44530a4269f982bef2fff93f5575312ed51209989e217b7",
   "bytes": 155008,
   "cells": 14,
   "cell_separator": "\\n# <<<FF-CELL>>>\\n"

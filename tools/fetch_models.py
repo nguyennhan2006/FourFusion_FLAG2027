@@ -39,7 +39,7 @@ from pathlib import Path
 WESPK_TREE = "https://modelscope.cn/api/v1/datasets/wenet/wespeaker_pretrained_models/oss/tree"   # kaggle/vendor_t3enc/t3enc_cell.py:16
 IB_HF = "https://huggingface.co/PKU-Alignment/AnyRewardModel/resolve/40c7e2ade237848a194b2b77517da024c4ec8532/imagebind/imagebind_huge.pth"
 
-# group: core = enters the 13.54 numbers through F1s' / RFX / RFX'; dp = the DP branch (English); lid = Bengali-voice filtering only
+# group: core = enters the 13.54 numbers through F1s' / RFX / RFX'; dp = the English recognition projector (folder stages/70_dp, earlier name DP); lid = Bengali-voice filtering only
 # (13_lid); wiring = only so that verbatim notebooks run (not in the numbers)
 MODELS = [
     dict(name="imagebind_huge", group="core", kind="url", url=IB_HF, dest="imagebind_huge.pth",
@@ -86,11 +86,11 @@ MODELS = [
     dict(name="ecapa_btc_space", group="core", kind="hf", repo="yangwang825/ecapa-tdnn-vox2", revision="c605f57148d4e910d4241eec714d7bc948220adb",
          allow=["classifier.ckpt", "embedding_model.ckpt", "hyperparams.yaml", "label_encoder.txt"],
          sha256={"embedding_model.ckpt": "a9c25a7b62e68b1ad75831cda9b4c5e5e21672580c9a11cb369db7e1f2250bbf"},
-         license="unknown (model card not read offline; not redistributed)", used_by="organisers-space ECAPA: XALL (FLAG_08 rows), RFS xv, DP (MAV rows)",
+         license="unknown (model card not read offline; not redistributed)", used_by="organisers-space ECAPA: XALL (FLAG_08 rows), RFS xv, recognition projector (MAV rows)",
          note="revision = the team machine cache (refs/main); the Kaggle runs used 'main' at run time; the embedding SHA-256 equals the team package copy rfs_models/sb_btc/embedding_model.ckpt"),
     dict(name="vgg_face_dag", group="core", kind="url", url="https://www.robots.ox.ac.uk/~albanie/models/pytorch-mcn/vgg_face_dag.pth",
          dest="cache/flag/vgg_face_dag.pth", sha256="f070b241e3faf17a08c78f8700d334413230bac5de7fbcfd01b3cf05ce10de1a", size=580015466,
-         also_as=["rfs_models/vgg_face.pt"], license="VGG-Face (non-commercial research)", used_by="FLAG_08 rows (organisers-space faces), RFS xf, DP (MAV rows)"),
+         also_as=["rfs_models/vgg_face.pt"], license="VGG-Face (non-commercial research)", used_by="FLAG_08 rows (organisers-space faces), RFS xf, recognition projector (MAV rows)"),
     dict(name="whisper_large_v3", group="core", kind="hf", repo="openai/whisper-large-v3", revision="06f233fe06e710322aca913c1bc4249a0d71fce1",
          allow=["config.json", "preprocessor_config.json", "model.safetensors", "generation_config.json", "tokenizer.json", "tokenizer_config.json",
                 "vocab.json", "merges.txt", "normalizer.json", "added_tokens.json", "special_tokens_map.json"],
@@ -107,17 +107,17 @@ MODELS = [
     dict(name="spkrec_ecapa_voxceleb", group="dp", kind="hf", repo="speechbrain/spkrec-ecapa-voxceleb", revision="0f99f2d0ebe89ac095bcc5903c4dd8f72b367286",
          allow=["classifier.ckpt", "embedding_model.ckpt", "hyperparams.yaml", "label_encoder.txt", "mean_var_norm_emb.ckpt", "config.json"],
          sha256={"embedding_model.ckpt": "0575cb64845e6b9a10db9bcb74d5ac32b326b8dc90352671d345e2ee3d0126a2"}, license="Apache-2.0",
-         used_by="DP voice ECAPA 192 + pooled-statistics 6144; also loaded by e50cc"),
+         used_by="recognition-projector voice ECAPA 192 + pooled-statistics 6144; also loaded by e50cc"),
     dict(name="adaface_ir101_webface12m", group="dp", kind="hf", repo="minchul/cvlface_adaface_ir101_webface12m",
          revision="54f602a0737bd1ee4a4e7e9fd089a485f397fefd", allow=None,
          sha256={"model.safetensors": "2ea535a43877bd3de8091903935c783ce335be66a9f8917fae9a7a18ae4bbf56",
                  "pretrained_model/model.pt": "e312d79222d28027f146ed495e182e48fe0dddf404cdbbdabcccdbdd07cc3758"},
-         license="MIT (CVLface) / WebFace12M terms", used_by="DP face AdaFace (512)",
+         license="MIT (CVLface) / WebFace12M terms", used_by="recognition-projector face AdaFace (512)",
          note="the code used snapshot_download without a revision; this revision = the team machine snapshot"),
     dict(name="insightface_buffalo_l", group="dp", kind="zip_url", url="https://github.com/deepinsight/insightface/releases/download/model-zoo/buffalo_l.zip",
          dest="insightface/models/buffalo_l",
          sha256={"w600k_r50.onnx": "4c06341c33c2ca1f86781dab0e829f88ad5b64be9fba56e56bc9ebdefc619e43", "det_10g.onnx": "5838f7fe053675b1c7a08b633df49e7af5495cee0493c7dcf6697200b85b5b91"},
-         license="insightface (non-commercial research)", used_by="DP face ArcFace w600k_r50 (ResNet-50, WebFace600K) + SCRFD det_10g",
+         license="insightface (non-commercial research)", used_by="recognition-projector face ArcFace w600k_r50 (ResNet-50, WebFace600K) + SCRFD det_10g",
          note="URL of the insightface 2.0 model zoo (insightface/utils/storage.py); only the two files above are used"),
     dict(name="audioclip_full", group="wiring", kind="url", url="https://github.com/AndreyGuzhov/AudioCLIP/releases/download/v0.1/AudioCLIP-Full-Training.pt",
          dest="cache/flag/AudioCLIP-Full-Training.pt", sha256="2441d35b353352c8b1bbfb8f7c687f46314c3d2909e940eaf763b8c17f632c44", size=537302068,

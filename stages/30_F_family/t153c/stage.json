@@ -124,6 +124,27 @@
    "cell": 2,
    "why": "FF_DATA holds the organisers' zips (00_raw/btc_mavceleb_v4/train_set.zip, dev_set.zip); the original's unpack fallback would extract dev_set.zip too",
    "effect": "none"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "encoder family of Track 3s VoxBlink s",
+   "new": "encoder family of a teammates VoxBlink s",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],
@@ -208,7 +229,7 @@
  "role_detail": "enters the zip twice: the face block [FaRL ep16 ‖ clipC5] of the CA head (trCA, t155s / t112sf1s / e112f1sx) and the f_c5s block of RFX (via e65xcs).",
  "stage_ipy": {
   "file": "stage.ipy",
-  "sha256": "8bec69790fc34d7e367dc508862c752e9ad77ccb95529c244607ae2fcaa9aca2",
+  "sha256": "4314b1a98d2135c0233d7296905e24bdab1d6ceeedc5e6c7a2f4fd4d81c9b42e",
   "bytes": 155463,
   "cells": 14,
   "cell_separator": "\\n# <<<FF-CELL>>>\\n"

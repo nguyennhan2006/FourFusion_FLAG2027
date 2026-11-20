@@ -849,9 +849,9 @@ def build(name):
 print("[cell] 11 _build_face2, _release12 = build, release                  t", flush=True)
 _build_face2, _release12 = build, release                 # the T3 cell below defines its own build / release
 # <<<FF-CELL>>>
-print("[cell] 12 T3ENC-01 encoders: the encoder family of Track 3s VoxBlink s", flush=True)
-# ============================================================================ T3ENC-01 encoders: the encoder family of Track 3's VoxBlink system, frozen
-# Track 3 (a teammate's VoxBlink pipeline, CB Bangla ng ~16 / g ~25) used these four encoders; here they run on OUR rows
+print("[cell] 12 T3ENC-01 encoders: the encoder family of a teammates VoxBlink s", flush=True)
+# ============================================================================ T3ENC-01 encoders: the encoder family of a teammate's VoxBlink system, frozen
+# A teammate's VoxBlink pipeline (CB Bangla ng ~16 / g ~25) used these four encoders; here they run on OUR rows
 # (MAV-Celeb v4 train, v1/v2, dev lists; and VoxCeleb2 in FLAG_41), so we can test locally whether the encoders and a
 # cross-modal head carry the gain WITHOUT VoxBlink data (docs/PLAN_VOXBLINK_2026-10-07.md, V1). Every sample on its own.
 #   farl16V   FaRL ViT-B/16 LAION-Face 20M **ep16** (github.com/FacePerceiver/FaRL release, 652 MB) on openai CLIP ViT-B/16

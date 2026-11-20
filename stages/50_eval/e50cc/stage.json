@@ -133,6 +133,27 @@
    "why": "the v6 members (s007 / s010B seeds) of datasets/ngnnguynchn/flag2027-members-p have no producing stage; when they are not attached, System() hands an empty cache folder to P6.train_members, whose original code trains every missing (member, seed) from the train features of this run (feats_eval: VGG, organiser ECAPA-192, ECAPA-6144) and caches it",
    "effect_on_numbers": "none on 13.54: the members feed only System.en() -> en7[:, :4] (s007 / s010B deep and CCA columns of the English v9 / v12 streams); a_factor / a_fvbind read b3, co, t3 and pair ids of components_eval.npz only. With the members attached (modes (b) / (c)) the run is unchanged.",
    "added": "19/11/2026 (13.54 lineage closure)"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "encoder family of Track 3s VoxBlink s",
+   "new": "encoder family of a teammates VoxBlink s",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],

@@ -48,3 +48,11 @@ presumed identical (speaker counts 15 252 - 45 = 15 207; builder output dated be
 | `smoke_prerequisite` added (replaces the Docker-only todo) | install the two pip lines of the install cell first; no Docker needed | none |
 | `license` on every `external_sources` entry, licence notes on `models` | input for `LICENSES.md` (WP-K); uncertain items marked 'not re-checked' | none |
 | internal references labelled | design notes / team logs are internal provenance, not shipped; `CHUA CHAC` -> `unverified` | none |
+
+## Comment edit (20/11/2026)
+
+Patches 2..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 1f1bd43ddd61ab09... -> e3324e972eff554c...

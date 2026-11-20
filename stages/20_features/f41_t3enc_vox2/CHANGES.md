@@ -25,3 +25,11 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - post_check (fatal): `feats_vox2t3/feats_manifest.json` `voices` = 38345: FLAG_37 voice keys.
 - post_check (fatal): `feats_vox2t3/feats_manifest.json` `coverage` = {"face_farl16": 1.0, "face_clipL": 1.0, "voice_sam100p": 1.0, "voice_sam100f": 1.0}: every key encoded, as in the original (a lower coverage changes the rows l_dqual_g3 / l_lid_strict see).
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
+
+## Comment edit (20/11/2026)
+
+Patches 2..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 3aca98715c0e79c7... -> 92f6f8661a657387...

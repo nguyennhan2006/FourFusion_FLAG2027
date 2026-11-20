@@ -47,7 +47,7 @@ import types
 CACHE = Path(os.environ.get("FLAG_CACHE", "/tmp/flag_cache")); CACHE.mkdir(parents=True, exist_ok=True)
 os.chdir(WORK)
 # <<<FF-CELL>>>
-# WeSpeaker (commit 9fecd6c, as Track 3) and openai CLIP (commit d50d76d, FaRL's code base): --no-deps, their pins would
+# WeSpeaker (commit 9fecd6c, as in the teammate pipeline) and openai CLIP (commit d50d76d, FaRL's code base): --no-deps, their pins would
 # replace Kaggle's torch; the few runtime deps by hand.
 if not LOCAL:
     !pip -q install ftfy regex kaldiio silero-vad av "speechbrain>=1.1.1" 2>&1 | tail -1
@@ -174,8 +174,8 @@ def read_rgb(src):
         log("!! unreadable image -> black image:", BROKEN["image"][-1])
         return Image.new("RGB", (224, 224))
 # <<<FF-CELL>>>
-# ============================================================================ T3ENC-01 encoders: the encoder family of Track 3's VoxBlink system, frozen
-# Track 3 (a teammate's VoxBlink pipeline, CB Bangla ng ~16 / g ~25) used these four encoders; here they run on OUR rows
+# ============================================================================ T3ENC-01 encoders: the encoder family of a teammate's VoxBlink system, frozen
+# A teammate's VoxBlink pipeline (CB Bangla ng ~16 / g ~25) used these four encoders; here they run on OUR rows
 # (MAV-Celeb v4 train, v1/v2, dev lists; and VoxCeleb2 in FLAG_41), so we can test locally whether the encoders and a
 # cross-modal head carry the gain WITHOUT VoxBlink data (docs/PLAN_VOXBLINK_2026-10-07.md, V1). Every sample on its own.
 #   farl16V   FaRL ViT-B/16 LAION-Face 20M **ep16** (github.com/FacePerceiver/FaRL release, 652 MB) on openai CLIP ViT-B/16

@@ -1,6 +1,6 @@
 # e65xcs: changes from the original run
 
-**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 13 code cells of `original/02_flag-2027-nb-65xcs-c5sx-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `e948aca445dc5d1a1b577973b550745a62c46e2a3070c5fef76b1faadd11f6ec`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e65xcs.ipy` (sha256 `88fc960d7509dcbea17fca44c0227b9df653d08f57f29abb18f3012ccda26e97`, the code of the run). No patch of `release/flag2027_e2e/stages.py` applies (its global ImageBind URL patch has no hit in this notebook).
+**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 13 code cells of `original/02_flag-2027-nb-65xcs-c5sx-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `caa882b2f26d6f4bf2e75ad57b34a3ffa7dfc476321adb86999ebfe45c45e07e`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e65xcs.ipy` (sha256 `88fc960d7509dcbea17fca44c0227b9df653d08f57f29abb18f3012ccda26e97`, the code of the run). No patch of `release/flag2027_e2e/stages.py` applies (its global ImageBind URL patch has no hit in this notebook).
 
 | # | where | old → new | why | effect on numbers | type |
 |---|---|---|---|---|---|
@@ -18,3 +18,11 @@ team-package copy in `original/` has the same code cells.
 | inputs | the nine datasets of the run, as pushed (`original/kernel-metadata.json`) | none |
 | dev data | `ONLY_UNDER = 'evaluation_phase'` (code cell 01): dev lists are not read; with change 1, `dev_set.zip` is never opened | none |
 | output content | the output folder holds every file copied from the adapter dataset (code cell 10), including the VoxBlink face array `vb_face_clip*.npy` and `facelora_state.pt` (adapter learned with VoxBlink frames): declared in `stage.json` `outputs.contains` (`voxblink: true`); the run output is private storage only. WP-A: set `voxblink: true` on this run-output entry of `configs/data_map.json`. | none |
+
+## Comment edit (20/11/2026)
+
+Patches 1..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 e948aca445dc5d1a... -> caa882b2f26d6f4b...

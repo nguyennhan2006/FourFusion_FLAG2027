@@ -63,13 +63,14 @@
   "role": "verbatim, run by safe04_lab"
  },
  "Experiment/T3ENC-01/run.py": {
-  "sha256": "3cb048edfd4793173e937022404932705d186ba1e3ceacd7d24e237864099ee1",
-  "md5": "fd780c6f94762c24b9d9cf4db49df181",
-  "bytes": 12721,
+  "sha256": "5e6dccab3ed35d185407d2fdb5a4e08f2153dbf4233152edcb1a4ac046b42fdd",
+  "md5": "f5d9c0e24053c644e8fa516a56ca975b",
+  "bytes": 12722,
   "source": "embedded code zip (CODE_B64) of the executed notebook nguynlcnhtho/flag-2027-nb-164-cleancomp01-f123 (release/flag2027_e2e/src_nb/flag-2027-nb-164-cleancomp01-f123/flag-2027-nb-164-cleancomp01-f123.ipynb)",
   "equals_repo_file": true,
   "repo_git": "untracked (??)",
-  "role": "verbatim, run by safe04_lab"
+  "role": "verbatim except one docstring phrase (comment edit 20/11/2026), run by safe04_lab",
+  "comment_edit": "20/11/2026: docstring phrase 'the Track 3 encoder family (faces' -> 'a teammate's encoder family (faces' (comment only); sha256 before 3cb048edfd4793173e937022404932705d186ba1e3ceacd7d24e237864099ee1"
  },
  "Experiment/ALLNEG-01/run.py": {
   "sha256": "0776caba9bcdb017ef6d29e6d0276f19d9fd50e7d39d1ae472ce17f67d37cc2e",

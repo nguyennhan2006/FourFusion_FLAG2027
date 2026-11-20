@@ -50,3 +50,7 @@ from this repository (19/11/2026): no 13.54 number depends on it.
 - **Old:** level full required the dev wiring (dev-list files of the frozen bundle: `components_dev.npz`, `e2e_manifest.json`, `fusers/`, `ref/`; no producing stage) and copied it into the bundle.
 - **New:** attached, it is copied byte for byte as before; absent, the bundle gets `e2e_manifest.json` with `kind` e2e-dev, `split` dev, `files` [] and `dev_wiring` false, and no dev-list file.
 - **Why:** lineage of the 13.54 zip from raw data, and no dev data in the 13.54 chain. Readers of the bundle: the F-family training stages (bundle search accepts `safe04/` since 19/11; they read `safe04/` and the manifest's `created`), `cleancomp_tables` (copies every file), `e50cc` (copies `safe04/` from the bundle whose manifest kind is e2e-dev), `t164f` (dev scoring skipped without `components_dev.npz`).
+
+## Comment edit (20/11/2026)
+
+`code/Experiment/T3ENC-01/run.py`: docstring phrase `the Track 3 encoder family (faces` -> `a teammate's encoder family (faces` (another team's label replaced by a neutral wording, public naming rule `docs/NAMING.md`; comment only). sha256 3cb048edfd479317... -> 5e6dccab3ed35d18... in `code/CODE_MANIFEST.json` and `stage.json`.

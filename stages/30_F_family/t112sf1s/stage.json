@@ -205,6 +205,13 @@
    "why": "the bundle search also accepts an e2e-dev bundle that holds the SAFE-04 tables (safe04/) but no components_dev.npz: stage safe04_lab writes such a bundle when the dev wiring (dev-list files, no producing stage) is not attached. With FF_TRAIN_ONLY=1 (default) this stage reads only safe04/ and the manifest's created field of the bundle.",
    "effect_on_numbers": "none (same bundle chosen whenever components_dev.npz exists; the SAFE-04 tables are the same)",
    "added": "19/11/2026 (13.54 lineage closure)"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "the SUB21a amendment of 11/10",
+   "new": "the amendment of 11/10",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],

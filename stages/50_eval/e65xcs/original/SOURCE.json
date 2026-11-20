@@ -66,7 +66,7 @@
  },
  "redaction": null,
  "stage_ipy": {
-  "sha256": "e948aca445dc5d1a1b577973b550745a62c46e2a3070c5fef76b1faadd11f6ec",
+  "sha256": "caa882b2f26d6f4bf2e75ad57b34a3ffa7dfc476321adb86999ebfe45c45e07e",
   "code_cells": 13,
   "built_from": "original/02_flag-2027-nb-65xcs-c5sx-eval.ipynb",
   "algorithm": "code cells with non-empty source, CRLF -> LF, patches of stage.json applied (each must hit exactly `count` times), each cell rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' (= release/flag2027_e2e/build_notebook.py stage_cells)",

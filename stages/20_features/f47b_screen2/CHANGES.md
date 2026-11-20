@@ -28,3 +28,12 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - post_check (fatal): `feats_screen2/feats_manifest.json` `external` = {"v1_complete": [7580, 19556], "v2_complete": [8953, 20715]}: MAV-Celeb v1 / v2 [face rows, voice rows] of the original manifest.
 - post_check (fatal): `feats_screen2/feats_manifest.json` `splits/train` = 6485: organiser train rows.
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
+
+## Comment edit (20/11/2026)
+
+Patches 3..6 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- comment now reads `A teammate's voice branch` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 ff7c67cc4f959a37... -> cfc57d616543f9a0...

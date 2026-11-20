@@ -109,6 +109,27 @@
    "why": "vox2_meta.csv of the gated repo: send the token",
    "type": "url",
    "effect": "none"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "(commit 9fecd6c, as Track 3)",
+   "new": "(commit 9fecd6c, as in the teammate pipeline)",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [
@@ -199,7 +220,7 @@
   "The 117 VoxCeleb2 TEST speakers of kind 'new' have their audio only in vox2_test_aac.zip: their 936 wanted clips are the 936 clips missing from the audio cache (c63v, G22; checked by counts 18/11)."
  ],
  "stage_ipy": {
-  "sha256": "67150fc4ddf95c11eddbbb7e650d798f5aa8a9bac0362945a0a12508ebf2a495",
+  "sha256": "020df29b42fd4de67474914983dd70412d351be01d77924dc6b497eb0add2f58",
   "cells": 6,
   "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
   "original": "original/flag-2027-nb-53-scaleid.ipynb"

@@ -1,4 +1,4 @@
-r"""T3ENC-01 (registered 07/10 in README.md before any result): the Track 3 encoder family (faces FaRL ep16 + CLIP ViT-L/14,
+r"""T3ENC-01 (registered 07/10 in README.md before any result): a teammate's encoder family (faces FaRL ep16 + CLIP ViT-L/14,
 voices SimAM-ResNet100 VoxBlink2 pretrained + VoxCeleb2 fine-tuned; each L2-normalised, then concatenated) with SAFE-04's
 XALL head recipe (EXP-007 MLP, InfoNCE, PK 32 x 8, 3 nets + RidgeCCA; code L0 with arrays=, as FLAG_28 / VOX2-01).
   A       head on v4tr + ext_pool (MAV-Celeb only), 1200 steps

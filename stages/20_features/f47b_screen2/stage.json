@@ -106,6 +106,34 @@
    "type": "pin",
    "why": "on the current Kaggle image the openai CLIP build fails (its setup.py needs pkg_resources) and, in this shared pip call, takes wespeaker down with it (BEST/v1977/README.md §6). Same packages and commits (wespeaker@9fecd6c, CLIP@d50d76d), one pip call each; CLIP from a git clone at d50d76d when the pip build fails",
    "effect": "none (same code at the same commits)"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "(commit 9fecd6c, as Track 3)",
+   "new": "(commit 9fecd6c, as in the teammate pipeline)",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_4",
+   "old": "Track 3's SUB21a voice branch",
+   "new": "A teammate's voice branch",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],
@@ -118,7 +146,7 @@
  "verify": [],
  "stage_ipy": {
   "cells": 9,
-  "sha256": "ff7c67cc4f959a37d5ff5dae5c1c8a94fd94845a464444170bdcf98bb34e7732",
+  "sha256": "cfc57d616543f9a06a84928dbea21791459070a224afd9a9efbdf8a8a0e68a76",
   "cell_separator": "\n# <<<FF-CELL>>>\n",
   "built_from": "FLAG_47b_voice_screen.ipynb",
   "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"

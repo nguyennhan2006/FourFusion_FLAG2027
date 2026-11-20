@@ -51,3 +51,11 @@ when the exact notebook is given (team-private check; the release code is compar
 - **Old:** the stage stopped when the saved v6 members (s007 / s010B seeds, no producing stage in this repository) were not attached.
 - **New:** when they are absent, the empty folder `members_v6/` is handed to `P6.train_members` (BEST/v6_eval/pipeline.py, the code that made them), which trains each missing (member, seed) from this run's train features and caches it there.
 - **Why:** lineage of the 13.54 zip from raw data (`python runner/ffrun.py dag`, section LINEAGE). The members feed only `System.en()` -> `en7[:, :4]` (English v9 / v12 streams); `a_factor` / `a_fvbind` read `b3`, `co`, `t3` and the pair ids of `components_eval.npz`. With the members attached the run is byte-for-byte the original.
+
+## Comment edit (20/11/2026)
+
+Patches 3..5 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 a0fdbdef0d1265dc... -> 433f830a339ab098...

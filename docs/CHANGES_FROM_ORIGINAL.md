@@ -407,6 +407,14 @@ presumed identical (speaker counts 15 252 - 45 = 15 207; builder output dated be
 | `license` on every `external_sources` entry, licence notes on `models` | input for `LICENSES.md` (WP-K); uncertain items marked 'not re-checked' | none |
 | internal references labelled | design notes / team logs are internal provenance, not shipped; `CHUA CHAC` -> `unverified` | none |
 
+#### Comment edit (20/11/2026)
+
+Patches 2..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 1f1bd43ddd61ab09... -> e3324e972eff554c...
+
 ## c53_vox2b
 
 `stages/11_collect/c53_vox2b/CHANGES.md` (11_collect, exact-executed-copy)
@@ -474,6 +482,14 @@ md5 and sha256 are in `original/SOURCE.json` (`full_log`). The notebook in `orig
 | `verify` expect uses nested `lid` | the runner compares dict keys literally (no dotted paths) | none |
 | `license` on every `external_sources` entry, licence notes on `models` | input for `LICENSES.md` (WP-K); uncertain items marked 'not re-checked' | none |
 | internal references labelled | design notes / team logs are internal provenance, not shipped; `CHUA CHAC` -> `unverified` | none |
+
+#### Comment edit (20/11/2026)
+
+Patches 5..7 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 67150fc4ddf95c11... -> 020df29b42fd4de6...
 
 ## c63_frames
 
@@ -559,6 +575,13 @@ Upload switch(es) ['AUDIO_UPLOAD'] must stay unset (`neutralize_upload`); the co
 | `verify` expect: nested `wiring` (vb mean cosines), prose `files` moved to notes | the runner compares dict keys literally | none |
 | `license` on every `external_sources` entry, licence notes on `models` | input for `LICENSES.md` (WP-K); uncertain items marked 'not re-checked' | none |
 | internal references labelled | design notes / team logs are internal provenance, not shipped; `CHUA CHAC` -> `unverified` | none |
+
+#### Comment edit (20/11/2026)
+
+Patches 3..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate\'s VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate\'s VoxBlink system` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 baa25436b4563a58... -> 469c82f1a957d6f5...
 
 ## c87_frames_bridge
 
@@ -1059,6 +1082,14 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - verify strict (fatal when missing): 9 auxiliary-source files (list in stage.json).
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
 
+#### Comment edit (20/11/2026)
+
+Patches 2..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 0b02be12f5ded69f... -> 46635c55ebef0a1a...
+
 ## f10_models
 
 `stages/20_features/f10_models/CHANGES.md` (20_features, builder-regenerated)
@@ -1267,6 +1298,14 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - post_check (fatal): `feats_t3enc/feats_manifest.json` `splits/train` = 6485: organiser train rows.
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
 
+#### Comment edit (20/11/2026)
+
+Patches 3..5 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 02603de02dde6974... -> e263b8a127849495...
+
 ## f41_t3enc_vox2
 
 `stages/20_features/f41_t3enc_vox2/CHANGES.md` (20_features, exact-executed-copy)
@@ -1298,6 +1337,14 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - post_check (fatal): `feats_vox2t3/feats_manifest.json` `voices` = 38345: FLAG_37 voice keys.
 - post_check (fatal): `feats_vox2t3/feats_manifest.json` `coverage` = {"face_farl16": 1.0, "face_clipL": 1.0, "voice_sam100p": 1.0, "voice_sam100f": 1.0}: every key encoded, as in the original (a lower coverage changes the rows l_dqual_g3 / l_lid_strict see).
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
+
+#### Comment edit (20/11/2026)
+
+Patches 2..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 3aca98715c0e79c7... -> 92f6f8661a657387...
 
 ## f47b_screen2
 
@@ -1334,6 +1381,15 @@ Besides the changes below, the runner points every `/kaggle/input` and `/kaggle/
 - post_check (fatal): `feats_screen2/feats_manifest.json` `splits/train` = 6485: organiser train rows.
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
 
+#### Comment edit (20/11/2026)
+
+Patches 3..6 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (1x; old text in the `stage.json` patch)
+- comment now reads `A teammate's voice branch` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 ff7c67cc4f959a37... -> cfc57d616543f9a0...
+
 ## f63w_aux_voice
 
 `stages/20_features/f63w_aux_voice/CHANGES.md` (20_features, builder-regenerated)
@@ -1363,6 +1419,13 @@ none
 - post_check (fatal): `feats_aux_voice/vfeat_manifest.json` `arrays` = 6 entries: rows / wanted rows per source and encoder of the original vfeat_manifest.json (package E hthlin__flag2027-aux-voice-feats-p.zip, created 2026-10-16 17:55).
 - verify (warning only): `feats_aux_voice/vfeat_manifest.json` `arrays`: finite rows equal to the original's (warning only: the Hugging Face sources may have changed).
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
+
+#### Comment edit (20/11/2026)
+
+Patches 0..1 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate\'s VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate\'s VoxBlink system` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 c2018004ec012d87... -> 7e78c56a94b9336a...
 
 ## t160a
 
@@ -1676,6 +1739,10 @@ from this repository (19/11/2026): no 13.54 number depends on it.
 - **New:** attached, it is copied byte for byte as before; absent, the bundle gets `e2e_manifest.json` with `kind` e2e-dev, `split` dev, `files` [] and `dev_wiring` false, and no dev-list file.
 - **Why:** lineage of the 13.54 zip from raw data, and no dev data in the 13.54 chain. Readers of the bundle: the F-family training stages (bundle search accepts `safe04/` since 19/11; they read `safe04/` and the manifest's `created`), `cleancomp_tables` (copies every file), `e50cc` (copies `safe04/` from the bundle whose manifest kind is e2e-dev), `t164f` (dev scoring skipped without `components_dev.npz`).
 
+#### Comment edit (20/11/2026)
+
+`code/Experiment/T3ENC-01/run.py`: docstring phrase `the Track 3 encoder family (faces` -> `a teammate's encoder family (faces` (another team's label replaced by a neutral wording, public naming rule `docs/NAMING.md`; comment only). sha256 3cb048edfd479317... -> 5e6dccab3ed35d18... in `code/CODE_MANIFEST.json` and `stage.json`.
+
 ## t112sf0s
 
 `stages/30_F_family/t112sf0s/CHANGES.md` (30_F_family, exact-package)
@@ -1749,6 +1816,12 @@ Licence (2026-11-18): the head trains with 13 471 VoxBlink speakers; its model f
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
+#### Comment edit (20/11/2026)
+
+Patches 7..7 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 b80310a30011b923... -> 7aecdfbf515149d8...
+
 ## t112sf1s
 
 `stages/30_F_family/t112sf1s/CHANGES.md` (30_F_family, exact-package)
@@ -1820,6 +1893,12 @@ Licence (2026-11-18): the head trains with 13 471 VoxBlink speakers; its model f
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
+#### Comment edit (20/11/2026)
+
+Patches 7..7 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 fe05e12a5163821d... -> 73ffc91f138bddbd...
+
 ## t153b
 
 `stages/30_F_family/t153b/CHANGES.md` (30_F_family, exact-package)
@@ -1858,6 +1937,14 @@ Licence (2026-11-18): the head trains with 13 471 VoxBlink speakers; its model f
 
 Runner-level only (not a change of this stage's code): the runner replaces the strings /kaggle/input and /kaggle/working by the stage's own input view and working folder, and prints a `[cell] <stage> k/n` line before each cell (DESIGN 2.4).
 
+#### Comment edit (20/11/2026)
+
+Patches 3..5 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 36a56ea8a2dda19a... -> 60948737b253658a...
+
 ## t153c
 
 `stages/30_F_family/t153c/CHANGES.md` (30_F_family, exact-package)
@@ -1895,6 +1982,14 @@ Runner-level only (not a change of this stage's code): the runner replaces the s
 #### 5. Runner
 
 Runner-level only (not a change of this stage's code): the runner replaces the strings /kaggle/input and /kaggle/working by the stage's own input view and working folder, and prints a `[cell] <stage> k/n` line before each cell (DESIGN 2.4).
+
+#### Comment edit (20/11/2026)
+
+Patches 3..5 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 8bec69790fc34d7e... -> 4314b1a98d2135c0...
 
 ## t154_g1_f12
 
@@ -1947,6 +2042,12 @@ Runner-level requirement (2026-11-18 fix; not a change of this stage's code): `s
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
+#### Comment edit (20/11/2026)
+
+Patches 3..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 52c3589a65e03f2b... -> 152a7207829d7e87...
+
 ## t154_g1_f34
 
 `stages/30_F_family/t154_g1_f34/CHANGES.md` (30_F_family, builder-regenerated)
@@ -1998,6 +2099,12 @@ Runner-level requirement (2026-11-18 fix; not a change of this stage's code): `s
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
+#### Comment edit (20/11/2026)
+
+Patches 3..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 52c3589a65e03f2b... -> 152a7207829d7e87...
+
 ## t154_g1_f5
 
 `stages/30_F_family/t154_g1_f5/CHANGES.md` (30_F_family, builder-regenerated)
@@ -2048,6 +2155,12 @@ Runner-level requirement (2026-11-18 fix; not a change of this stage's code): `s
 - **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
+#### Comment edit (20/11/2026)
+
+Patches 3..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 52c3589a65e03f2b... -> 152a7207829d7e87...
 
 ## t155s_f12
 
@@ -2102,6 +2215,12 @@ Licence (2026-11-18): the fold heads train with VoxBlink speakers (VOICELORA-01 
 - **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
+#### Comment edit (20/11/2026)
+
+Patches 3..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 eada8a2d67e14f97... -> b4cd94fe1807c2d9...
 
 ## t155s_f34
 
@@ -2159,6 +2278,12 @@ Licence (2026-11-18): the fold heads train with VoxBlink speakers (VOICELORA-01 
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
+#### Comment edit (20/11/2026)
+
+Patches 3..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 6d66b9911b411402... -> 4b836d28c7f8c24d...
+
 ## t155s_f5
 
 `stages/30_F_family/t155s_f5/CHANGES.md` (30_F_family, exact-pulled)
@@ -2214,6 +2339,12 @@ Licence (2026-11-18): the fold heads train with VoxBlink speakers (VOICELORA-01 
 - **Old:** a bundle qualified only with `components_dev.npz` (dev-list arrays of the frozen dev wiring, no producing stage).
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
+
+#### Comment edit (20/11/2026)
+
+Patches 3..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 e86835fdc037cfd6... -> a03bc8facca8822a...
 
 ## t164_f123
 
@@ -2778,6 +2909,12 @@ Rebuild rule: every non-empty code cell, CRLF -> LF, the patches below in this o
 - **New:** a bundle with a `safe04/` folder qualifies too. Stage `safe04_lab` writes such a bundle (manifest without dev lists) when the dev wiring is not attached.
 - **Why:** lineage of the 13.54 zip from raw data. With `FF_TRAIN_ONLY=1` (default) this stage reads only `safe04/` and the manifest's `created` field; the dev scoring that reads `components_dev.npz` runs only with `FF_TRAIN_ONLY=0`. When `components_dev.npz` exists the same bundle is chosen as before.
 
+#### Comment edit (20/11/2026)
+
+Patches 4..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `the amendment of 11/10` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 dc7d6521e7929e2f... -> 7c053c3d9803a1c0...
+
 ## t3s01_trca
 
 `stages/40_R_family/t3s01_trca/CHANGES.md` (40_R_family, new)
@@ -2969,7 +3106,7 @@ cells. The patches applied before that push (`patch_163i_eval.py --data-root …
 
 ### e47rs: changes from the original run
 
-**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 9 code cells of `original/03_flag-2027-nb-47rs-screen2-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `2d667b0ad5ecf8ab3aec589babd86cbfbd17f4e3340a60057e545b28bd0ed01a`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e47rs.ipy` (sha256 `a29f667d4ac22ab85edd5b4b93d2224be729d6370c7b96342892ec9203868704`, the code of the run).
+**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 9 code cells of `original/03_flag-2027-nb-47rs-screen2-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `6e5f3456c81b8ac69da0a7c8d094d78bca43af16976019510c236d59d8c574e1`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e47rs.ipy` (sha256 `a29f667d4ac22ab85edd5b4b93d2224be729d6370c7b96342892ec9203868704`, the code of the run).
 
 | # | where | old → new | why | effect on numbers | type |
 |---|---|---|---|---|---|
@@ -2986,6 +3123,16 @@ notebook md5 `8efafbebda567e67b07d4839ddd7c9e6`); the team-package copy in `orig
 | mounts | default (`mount` = artifact id): the log shows the new Kaggle layout `/kaggle/input/datasets/<owner>/<slug>` | none |
 | dev data | `ONLY_UNDER = 'evaluation_phase'` (code cell 01): dev lists are not read; with change 1, `dev_set.zip` is never opened | none |
 | producer preference | DESIGN §4.8 still says `e47rs` exports `feats-screen2-p`; this repository does not (row 'export dropped'). `configs/pipeline_1354.json` `producer_preference` still names `e47rs` for `infer` / `assemble`; it has no effect today (`producer_of()` uses the preference only among several candidates, and `f47b_screen2` is the only producer), but it contradicts this stage. WP-A: remove that entry or make it `{default: f47b_screen2}`; WP-K: note the deviation from DESIGN §4.8. | none |
+
+#### Comment edit (20/11/2026)
+
+Patches 1..5 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- comment now reads `(commit 9fecd6c, as in the teammate pipeline)` (2x; old text in the `stage.json` patch)
+- comment now reads `A teammate's voice branch` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 2d667b0ad5ecf8ab... -> 6e5f3456c81b8ac6...
 
 ## e50cc
 
@@ -3045,13 +3192,21 @@ when the exact notebook is given (team-private check; the release code is compar
 - **New:** when they are absent, the empty folder `members_v6/` is handed to `P6.train_members` (BEST/v6_eval/pipeline.py, the code that made them), which trains each missing (member, seed) from this run's train features and caches it there.
 - **Why:** lineage of the 13.54 zip from raw data (`python runner/ffrun.py dag`, section LINEAGE). The members feed only `System.en()` -> `en7[:, :4]` (English v9 / v12 streams); `a_factor` / `a_fvbind` read `b3`, `co`, `t3` and the pair ids of `components_eval.npz`. With the members attached the run is byte-for-byte the original.
 
+#### Comment edit (20/11/2026)
+
+Patches 3..5 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 a0fdbdef0d1265dc... -> 433f830a339ab098...
+
 ## e65xbs
 
 `stages/50_eval/e65xbs/CHANGES.md` (50_eval, exact-package)
 
 ### e65xbs: changes from the original run
 
-**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 13 code cells of `original/01_flag-2027-nb-65xbs-b3sx-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `0a8f1ed64d83bd85ae5de06925478b9088fd8dd9b3dbb45daaa041d1e096dedc`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e65xbs.ipy` (sha256 `b129385cf497762f5e6ee2b520f0416da844b210ee8b1e2d16032f5c8755a149`, the code of the run). No patch of `release/flag2027_e2e/stages.py` applies (its global ImageBind URL patch has no hit in this notebook).
+**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 13 code cells of `original/01_flag-2027-nb-65xbs-b3sx-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `35ce6900f6c12725e5c1233b76ed50a314ff93612d9c3cce039b512c77fd5637`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e65xbs.ipy` (sha256 `b129385cf497762f5e6ee2b520f0416da844b210ee8b1e2d16032f5c8755a149`, the code of the run). No patch of `release/flag2027_e2e/stages.py` applies (its global ImageBind URL patch has no hit in this notebook).
 
 | # | where | old → new | why | effect on numbers | type |
 |---|---|---|---|---|---|
@@ -3071,13 +3226,21 @@ cells.
 | role | wiring only: the 13.54 numbers do not depend on this stage (see `stage.json` `role`) | none |
 | output content | the output folder holds every file copied from the adapter dataset (code cell 10), including the VoxBlink face array `vb_face_clip*.npy` and `facelora_state.pt` (adapter learned with VoxBlink frames): declared in `stage.json` `outputs.contains` (`voxblink: true`); the run output is private storage only. WP-A: set `voxblink: true` on this run-output entry of `configs/data_map.json`. | none |
 
+#### Comment edit (20/11/2026)
+
+Patches 1..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 0a8f1ed64d83bd85... -> 35ce6900f6c12725...
+
 ## e65xcs
 
 `stages/50_eval/e65xcs/CHANGES.md` (50_eval, exact-package)
 
 ### e65xcs: changes from the original run
 
-**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 13 code cells of `original/02_flag-2027-nb-65xcs-c5sx-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `e948aca445dc5d1a1b577973b550745a62c46e2a3070c5fef76b1faadd11f6ec`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e65xcs.ipy` (sha256 `88fc960d7509dcbea17fca44c0227b9df653d08f57f29abb18f3012ccda26e97`, the code of the run). No patch of `release/flag2027_e2e/stages.py` applies (its global ImageBind URL patch has no hit in this notebook).
+**One code change** (dev-exclusion, fix round 18/11). `stage.ipy` = the 13 code cells of `original/02_flag-2027-nb-65xcs-c5sx-eval.ipynb` with the `stage.json` patch `no_dev_zip` (sha256 `caa882b2f26d6f4bf2e75ad57b34a3ffa7dfc476321adb86999ebfe45c45e07e`). Without it, the code cells are byte-identical to `release/flag2027_e2e/code/e65xcs.ipy` (sha256 `88fc960d7509dcbea17fca44c0227b9df653d08f57f29abb18f3012ccda26e97`, the code of the run). No patch of `release/flag2027_e2e/stages.py` applies (its global ImageBind URL patch has no hit in this notebook).
 
 | # | where | old → new | why | effect on numbers | type |
 |---|---|---|---|---|---|
@@ -3095,6 +3258,14 @@ team-package copy in `original/` has the same code cells.
 | inputs | the nine datasets of the run, as pushed (`original/kernel-metadata.json`) | none |
 | dev data | `ONLY_UNDER = 'evaluation_phase'` (code cell 01): dev lists are not read; with change 1, `dev_set.zip` is never opened | none |
 | output content | the output folder holds every file copied from the adapter dataset (code cell 10), including the VoxBlink face array `vb_face_clip*.npy` and `facelora_state.pt` (adapter learned with VoxBlink frames): declared in `stage.json` `outputs.contains` (`voxblink: true`); the run output is private storage only. WP-A: set `voxblink: true` on this run-output entry of `configs/data_map.json`. | none |
+
+#### Comment edit (20/11/2026)
+
+Patches 1..3 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate's VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate's VoxBlink system` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammates VoxBlink s` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 e948aca445dc5d1a... -> caa882b2f26d6f4b...
 
 ## a_fvbind
 
@@ -3697,6 +3868,10 @@ To be carried into `docs/COMPLIANCE_NOTES.md` (WP-K) and into the system descrip
 
 - **G5.** The tower checkpoint does not exist yet. Run this stage once on the team machine (about 12 min on CPU) and check that `dp_train_check.json` says `all_identical: true`. Then upload `out/dp_towers.pt`, `out/xjf_scores.npz` and `out/consts.json` to `FF_DATA/03_checkpoints/dp_towers/out/`.
 
+#### Comment edit (19/11/2026)
+
+- `xjf.py` lines 1–2: the docstring now says the recipe came from a teammate's report; it no longer names that report's internal branch label. Comment only: no code line changed, no effect on the numbers. `original/` keeps the byte-exact text.
+
 ## final_blend
 
 `stages/80_final/final_blend/CHANGES.md` (80_final, local-script)
@@ -3763,6 +3938,10 @@ The full text is in `stages/70_dp/dp_train/CHANGES.md`, section "Compliance disc
 
 - **History of the constants.** The first zip of this recipe, `xjf_r10.zip`, used 5.8 / 2.9, read off the score scale of the test files (not allowed; the comment on line 26 of `blend.py` says so). It was submitted and scored 13.54 (16/11 10:31, CodaBench 1054532) before the constants were replaced by 5.0983 / 3.8376, measured on held-out train persons, and before `xjf_r10_trsig.zip` was built (11:08) and submitted (12:02, CodaBench 1054704). Patch BL5 makes sure the old constants can no longer be used silently.
 - **Diagnostic printout.** `blend.py` line 43 (verbatim) prints, for each English Evaluation file, the Spearman correlation between the base score and z_DP and the mean / standard deviation of z_DP. The printout uses no label and feeds no value, so it is kept verbatim. It is disclosed because the disallowed 5.8 / 2.9 came from score statistics of the test files, the kind of number this line prints. New code in the DP stages no longer prints score statistics of the test files.
+
+#### Comment edit (19/11/2026)
+
+- `blend.py` line 7: the docstring now says the recipe came from a teammate's report; it no longer names that report's internal branch label. Comment only: no code line changed, no effect on the numbers. `original/` keeps the byte-exact text.
 
 ## final_verify
 

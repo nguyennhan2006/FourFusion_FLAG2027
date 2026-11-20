@@ -37,3 +37,10 @@ Upload switch(es) ['AUDIO_UPLOAD'] must stay unset (`neutralize_upload`); the co
 | `verify` expect: nested `wiring` (vb mean cosines), prose `files` moved to notes | the runner compares dict keys literally | none |
 | `license` on every `external_sources` entry, licence notes on `models` | input for `LICENSES.md` (WP-K); uncertain items marked 'not re-checked' | none |
 | internal references labelled | design notes / team logs are internal provenance, not shipped; `CHUA CHAC` -> `unverified` | none |
+
+## Comment edit (20/11/2026)
+
+Patches 3..4 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate\'s VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate\'s VoxBlink system` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 baa25436b4563a58... -> 469c82f1a957d6f5...

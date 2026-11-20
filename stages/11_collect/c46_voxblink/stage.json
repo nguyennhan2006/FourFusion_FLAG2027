@@ -63,6 +63,27 @@
    "type": "path",
    "effect": "none (resume only; unset = original behaviour)",
    "cell": "10 / 6"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "(commit 9fecd6c, as Track 3)",
+   "new": "(commit 9fecd6c, as in the teammate pipeline)",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],
@@ -179,7 +200,7 @@
   "Re-collection: the inserted last cell writes ff_completeness.json; post_checks make 'complete' fatal, so a run stopped by VB_TIME_LIMIT_H fails instead of being accepted. Two-session procedure: README.md of 11_collect."
  ],
  "stage_ipy": {
-  "sha256": "1f1bd43ddd61ab099e7dc3c6f0e04e9cd412eec1382ebe9a3fed0472a7968099",
+  "sha256": "e3324e972eff554ccce4b9cfb4a716d1e7bc00f6b8ca517db2f914b8994d66e8",
   "cells": 10,
   "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
   "original": "original/flag-2027-nb-46.ipynb"

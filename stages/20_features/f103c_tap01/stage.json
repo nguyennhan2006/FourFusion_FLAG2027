@@ -126,6 +126,27 @@
    "type": "dev-exclusion",
    "why": "with zipped raw data the original unpacked dev_set.zip too (then SPLIT_FILTER dropped it); now the dev archive is never read",
    "effect": "none"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "(commit 9fecd6c, as Track 3)",
+   "new": "(commit 9fecd6c, as in the teammate pipeline)",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],
@@ -186,7 +207,7 @@
  ],
  "stage_ipy": {
   "cells": 10,
-  "sha256": "0b02be12f5ded69fff1e02b05393bc70649e46bb7aaae5afad3bdddbe03f4e4c",
+  "sha256": "46635c55ebef0a1a07e98b00895b23b63c73023a4a812d3e0f56fd6845dac575",
   "cell_separator": "\n# <<<FF-CELL>>>\n",
   "built_from": "FLAG_103c_tap01_voice.ipynb",
   "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"

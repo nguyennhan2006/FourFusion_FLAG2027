@@ -92,6 +92,20 @@
    "type": "path",
    "effect": "none (resume only; unset = original behaviour)",
    "cell": "2 / 2"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate\\'s VoxBlink pipeline, CB",
+   "new": "A teammate\\'s VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3\\'s VoxBlink system",
+   "new": "encoder family of a teammate\\'s VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],
@@ -176,7 +190,7 @@
   "post_checks make the notebook's own 'complete' flag fatal: a run stopped by AUDIO_TIME_LIMIT_H fails instead of being accepted."
  ],
  "stage_ipy": {
-  "sha256": "baa25436b4563a58d7aae879ebc43db2c3f75c0700605dbf40a5ad3e9102d10e",
+  "sha256": "469c82f1a957d6f50149627ab21412a4336147d49850686b7b940516d203c3fd",
   "cells": 7,
   "recipe": "release/flag2027_e2e/build_notebook.py stage_cells(): code cells of the original notebook in order, empty ones skipped, CRLF -> LF, cells whose title (first line, or the name in a leading print(\"[cell]/[boot] ...\"), cut to 90 chars) matches a drop_cells regex removed, then every patch applied in list order (each must match exactly `count` times), then ''.join(cell.rstrip('\\n') + '\\n# <<<FF-CELL>>>\\n' for cell in cells), written UTF-8 with LF. No global patch is assumed.",
   "original": "original/FLAG_63v_audio_cache.ipynb"

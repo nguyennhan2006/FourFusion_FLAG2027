@@ -23,3 +23,10 @@ none
 - post_check (fatal): `feats_aux_voice/vfeat_manifest.json` `arrays` = 6 entries: rows / wanted rows per source and encoder of the original vfeat_manifest.json (package E hthlin__flag2027-aux-voice-feats-p.zip, created 2026-10-16 17:55).
 - verify (warning only): `feats_aux_voice/vfeat_manifest.json` `arrays`: finite rows equal to the original's (warning only: the Hugging Face sources may have changed).
 - Comparisons the runner cannot express (row cosine, NaN pattern, finite-row masks) are kept as text in stage.json `verify_notes` for runner/verify.py / a person; they no longer sit in `verify` (where an entry without a file logged `WARN verify: missing None`).
+
+## Comment edit (20/11/2026)
+
+Patches 0..1 of `stage.json` (ids `comment_team_label_*`) change comment text only: another team's label is replaced by a neutral wording (public naming rule, `docs/NAMING.md`). No code, path, parameter or number changes; the original notebook in `original/` is unchanged.
+- comment now reads `A teammate\'s VoxBlink pipeline (CB` (1x; old text in the `stage.json` patch)
+- comment now reads `encoder family of a teammate\'s VoxBlink system` (1x; old text in the `stage.json` patch)
+- `stage.ipy` sha256 c2018004ec012d87... -> 7e78c56a94b9336a...

@@ -146,7 +146,7 @@ prog = json.loads(PROG.read_text()) if PROG.exists() else {}
 if not prog.get("done"):
     prevs = [] if LOCAL else [(q, json.loads(q.read_text())) for q in IN.rglob("e2e_out/progress.json")]
     prevs = [(q, p) for q, p in prevs if p.get("exp") == EXP and p.get("done")]
-    # an output made by DIFFERENT code of this experiment (e.g. FLAG_51 before / after the SUB21a amendment of 11/10) is not
+    # an output made by DIFFERENT code of this experiment (e.g. FLAG_51 before / after the amendment of 11/10) is not
     # resumed: its finished folds would be mixed with folds of the new recipe
     changed = lambda p: [f for f in EXP_CODE if p.get("code_md5", {}).get(f) != CODE_MD5.get(f)]
     if os.environ.get("E2E_ALLOW_CODE_CHANGE") != "1":

@@ -54,6 +54,27 @@
    "type": "url",
    "why": "ProgramComputer/voxceleb is gated today (403 for a token without accepted terms, 18/11/2026); the original resolved the zip URL without a token. With HF_TOKEN set, the resolve request carries it (requests drops the header on the redirect to the CDN host); same files",
    "effect": "none (same files; without HF_TOKEN the request is the original one)"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "(commit 9fecd6c, as Track 3)",
+   "new": "(commit 9fecd6c, as in the teammate pipeline)",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],
@@ -66,7 +87,7 @@
  "verify": [],
  "stage_ipy": {
   "cells": 8,
-  "sha256": "3aca98715c0e79c756e4db6d72d6561fa4e29ea84f4f392cea5fd46b7a500fab",
+  "sha256": "92f6f8661a65738742dc0afcd85dfb40c06a35999832092aa09c7c2e946d8cae",
   "cell_separator": "\n# <<<FF-CELL>>>\n",
   "built_from": "flag-2027-nb-41.ipynb",
   "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"

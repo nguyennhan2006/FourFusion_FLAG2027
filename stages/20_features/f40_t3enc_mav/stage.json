@@ -73,6 +73,27 @@
    "type": "pin",
    "why": "on the current Kaggle image the openai CLIP build fails (its setup.py needs pkg_resources) and, in this shared pip call, takes wespeaker down with it (BEST/v1977/README.md §6). Same packages and commits (wespeaker@9fecd6c, CLIP@d50d76d), one pip call each; CLIP from a git clone at d50d76d when the pip build fails",
    "effect": "none (same code at the same commits)"
+  },
+  {
+   "id": "comment_team_label_1",
+   "old": "Track 3 (a teammate's VoxBlink pipeline, CB",
+   "new": "A teammate's VoxBlink pipeline (CB",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_2",
+   "old": "encoder family of Track 3's VoxBlink system",
+   "new": "encoder family of a teammate's VoxBlink system",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
+  },
+  {
+   "id": "comment_team_label_3",
+   "old": "(commit 9fecd6c, as Track 3)",
+   "new": "(commit 9fecd6c, as in the teammate pipeline)",
+   "count": 1,
+   "note": "comment-only edit 20/11/2026: another team's label replaced by a neutral wording (public naming rule, docs/NAMING.md); no effect on code or numbers"
   }
  ],
  "drop_cells": [],
@@ -85,7 +106,7 @@
  "verify": [],
  "stage_ipy": {
   "cells": 8,
-  "sha256": "02603de02dde6974ec32504c7f27ef1cd17ed17476c16a75ffe5cd5bfd7adffb",
+  "sha256": "e263b8a127849495bdd41b1f4cb70d80648963ebe5f2a2b22dea45aab39f8ea1",
   "cell_separator": "\n# <<<FF-CELL>>>\n",
   "built_from": "flag-2027-nb-40-t3enc-01.ipynb",
   "rule": "code cells of the original (CRLF->LF, empty cells skipped), drop_cells removed, patches applied in order with exact counts, each cell rstrip('\\n') + cell_separator"
